@@ -1,0 +1,13 @@
+*.pyc
+__pycache__/
+db.sqlite3
+.env
+media/
+staticfiles/
+*.egg-info/
+.venv/
+venv/
+.DS_Store
+Thumbs.db
+local_data.json
+media.tar.gz

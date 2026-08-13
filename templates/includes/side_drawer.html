@@ -1,0 +1,121 @@
+{% load static i18n fragrance_extras %}
+
+<div class="side-drawer-backdrop" id="sideDrawerBackdrop" hidden></div>
+
+<aside class="side-drawer" id="sideDrawer" aria-hidden="true" data-mode="cart">
+  <div class="side-drawer-inner">
+    <header class="side-drawer-header">
+      <h2 class="side-drawer-title" data-drawer-title-cart>{% trans "Your cart" %}</h2>
+      <h2 class="side-drawer-title" data-drawer-title-wishlist hidden>{% trans "Your wishlist" %}</h2>
+      <button type="button"
+              class="side-drawer-close"
+              id="sideDrawerClose"
+              data-drawer-close
+              aria-label="{% trans 'Close' %}">
+        <i class="bi bi-x-lg" aria-hidden="true"></i>
+      </button>
+    </header>
+
+    <div class="side-drawer-body">
+      <div class="side-drawer-panel" data-panel="cart">
+        {% if cart_items %}
+        <ul class="side-drawer-list">
+          {% for item in cart_items %}
+          {% if item.product %}{% product_image_url item.product as image_url %}{% endif %}
+          <li class="side-drawer-item">
+            <a class="side-drawer-thumb" href="{% if item.gift_set %}{% url 'products:gift_set_detail' item.gift_set.slug %}{% else %}{% url 'products:product_detail' item.product.slug %}{% endif %}">
+              {% if item.gift_set and item.gift_set.image %}
+              <img src="{{ item.gift_set.image.url }}" alt="">
+              {% elif image_url %}
+              <img src="{{ image_url }}" alt="">
+              {% else %}
+              <img src="{% static 'images/products/elvessora-moon-blossom.png' %}" alt="">
+              {% endif %}
+            </a>
+            <div class="side-drawer-item-info">
+              <a href="{% if item.gift_set %}{% url 'products:gift_set_detail' item.gift_set.slug %}{% else %}{% url 'products:product_detail' item.product.slug %}{% endif %}">
+                {% if item.gift_set %}{{ item.gift_set.name }}{% else %}{{ item.product|product_short_name }}{% endif %}
+              </a>
+              {% if item.variant %}<span class="side-drawer-meta">{{ item.variant.size }}</span>{% endif %}
+              <span class="side-drawer-price">{{ item.unit_price|format_price }} × {{ item.quantity }}</span>
+            </div>
+            <form action="{% url 'cart:remove' item.id %}" method="post" class="side-drawer-remove-form">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="drawer">
+              <button type="submit" class="side-drawer-remove" title="{% trans 'Remove' %}">
+                <i class="bi bi-trash" aria-hidden="true"></i>
+              </button>
+            </form>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <div class="side-drawer-empty">
+          <i class="bi bi-bag"></i>
+          <p>{% trans "Your cart is empty." %}</p>
+          <button type="button" class="btn btn-gold btn-sm" data-drawer-close>{% trans "Continue shopping" %}</button>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="side-drawer-panel" data-panel="wishlist" hidden>
+        {% if wishlist_items %}
+        <ul class="side-drawer-list">
+          {% for item in wishlist_items %}
+          {% product_image_url item.product as wimg %}
+          <li class="side-drawer-item">
+            <a class="side-drawer-thumb" href="{% url 'products:product_detail' item.product.slug %}">
+              {% if wimg %}
+              <img src="{{ wimg }}" alt="">
+              {% else %}
+              <img src="{% static 'images/products/elvessora-moon-blossom.png' %}" alt="">
+              {% endif %}
+            </a>
+            <div class="side-drawer-item-info">
+              <a href="{% url 'products:product_detail' item.product.slug %}">{{ item.product|product_short_name }}</a>
+              <span class="side-drawer-price">{{ item.product.current_price|format_price }}</span>
+              <form action="{% url 'cart:add' %}" method="post" class="side-drawer-mini-form">
+                {% csrf_token %}
+                <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                {% if item.product.default_variant %}
+                <input type="hidden" name="variant_id" value="{{ item.product.default_variant.id }}">
+                {% endif %}
+                <button type="submit" class="btn btn-gold btn-sm">{% trans "Add to cart" %}</button>
+              </form>
+            </div>
+            <a href="{% url 'accounts:wishlist_toggle' item.product.id %}?drawer=1" class="side-drawer-remove" title="{% trans 'Remove' %}">
+              <i class="bi bi-trash" aria-hidden="true"></i>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <div class="side-drawer-empty">
+          <i class="bi bi-heart"></i>
+          <p>{% trans "Your wishlist is empty." %}</p>
+          <button type="button" class="btn btn-gold btn-sm" data-drawer-close>{% trans "Continue shopping" %}</button>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <footer class="side-drawer-footer">
+      <div class="side-drawer-footer-cart" data-footer="cart">
+        {% if cart_items %}
+        <div class="side-drawer-subtotal">
+          <span>{% trans "Subtotal" %}</span>
+          <strong>{{ cart_subtotal|format_price }}</strong>
+        </div>
+        <a href="{% url 'orders:checkout' %}" class="btn btn-gold w-100">{% trans "Checkout" %}</a>
+        <a href="{% url 'cart:cart' %}" class="btn btn-outline-gold w-100 mt-2">{% trans "View cart" %}</a>
+        {% endif %}
+      </div>
+      <div class="side-drawer-footer-wishlist" data-footer="wishlist" hidden>
+        {% if wishlist_items %}
+        <a href="{% url 'accounts:wishlist' %}" class="btn btn-gold w-100">{% trans "View wishlist" %}</a>
+        <button type="button" class="btn btn-outline-gold w-100 mt-2" data-drawer-close>{% trans "Continue shopping" %}</button>
+        {% endif %}
+      </div>
+    </footer>
+  </div>
+</aside>

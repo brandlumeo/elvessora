@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} — {{ site_settings.brand_name }}{% endblock %}
+
+{% block content %}
+<div class="page-header"><div class="container"><h1>{{ title }}</h1>{% if subtitle %}<p class="text-muted">{{ subtitle }}</p>{% endif %}</div></div>
+<div class="container pb-5">
+    <div class="row">
+        {% for product in products %}
+        {% include 'includes/product_card.html' %}
+        {% empty %}
+        <div class="col-12 text-center py-5"><p class="text-muted">No products available.</p></div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

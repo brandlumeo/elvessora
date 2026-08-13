@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page.title }} — {{ site_settings.brand_name }}{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1>{{ page.title }}</h1><p class="text-muted small">Last updated: {{ page.updated_at|date:"F d, Y" }}</p></div></div>
+<div class="container pb-5"><div class="col-lg-8 mx-auto">{{ page.content|linebreaks }}</div></div>
+{% endblock %}

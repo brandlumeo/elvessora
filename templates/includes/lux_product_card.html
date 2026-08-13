@@ -1,0 +1,32 @@
+{% load static fragrance_extras %}
+{% product_image_url product as image_url %}
+<article class="lux-product-card{% if extra_class %} {{ extra_class }}{% endif %}">
+  <div class="lux-product-image-wrap">
+    <a href="{% url 'products:product_detail' product.slug %}" class="lux-product-image-link">
+      <img src="{{ image_url }}"
+           alt="{{ product.name }}" loading="lazy">
+    </a>
+    <a href="{% url 'accounts:wishlist_toggle' product.id %}"
+       class="lux-product-wishlist{% if product.id in wishlist_product_ids %} is-active{% endif %}"
+       aria-label="{% if product.id in wishlist_product_ids %}Remove from wishlist{% else %}Add to wishlist{% endif %}"
+       title="Wishlist">
+      <i class="bi bi-heart{% if product.id in wishlist_product_ids %}-fill{% endif %}"></i>
+    </a>
+    <a href="{% url 'products:product_detail' product.slug %}"
+       class="lux-product-view"
+       aria-label="View {{ product.name }}"
+       title="View">
+      <i class="bi bi-eye"></i>
+      <span>View</span>
+    </a>
+    <form action="{% url 'cart:add' %}" method="post" class="lux-product-add">
+      {% csrf_token %}
+      <input type="hidden" name="product_id" value="{{ product.id }}">
+      {% if product.default_variant %}<input type="hidden" name="variant_id" value="{{ product.default_variant.id }}">{% endif %}
+      <button type="submit" aria-label="Add {{ product.name }} to cart" title="Add to cart"><i class="bi bi-plus-lg"></i></button>
+    </form>
+  </div>
+  <h3><a href="{% url 'products:product_detail' product.slug %}">{{ product|product_short_name }}</a></h3>
+  <p class="lux-product-tag">{{ product|product_scent_line }}</p>
+  <p class="lux-product-price">{{ product.current_price|format_price }}</p>
+</article>

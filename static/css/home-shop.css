@@ -1,0 +1,298 @@
+/* ===== Homepage shop sections — Azhrance-inspired layout (navy / white / gold) ===== */
+
+.home-shop-zone {
+    --shop-navy: #061022;
+    --shop-navy-mid: #0b1830;
+    --shop-white: #ffffff;
+    --shop-cream: #f7f8fb;
+    --shop-gold: #c8a96a;
+    background: var(--shop-white);
+}
+
+/* Section headers — clean Azhrance-style with divider */
+.shop-section-head {
+    text-align: center;
+    margin-bottom: clamp(28px, 4vw, 44px);
+}
+
+.shop-section-head h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-weight: 600;
+    color: var(--shop-navy);
+    margin: 0 0 10px;
+}
+
+.shop-section-head p {
+    color: #526694;
+    font-size: 0.92rem;
+    margin: 0;
+}
+
+.shop-section-head::after {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 2px;
+    background: var(--shop-gold);
+    margin: 16px auto 0;
+}
+
+.shop-section-head--light h2 {
+    color: var(--shop-white);
+}
+
+.shop-section-head--light p {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.shop-section-head--row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    text-align: left;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.shop-section-head--row::after {
+    display: none;
+}
+
+.shop-section-head--row .shop-view-all {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--shop-gold);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(200, 169, 106, 0.4);
+    padding-bottom: 2px;
+    transition: color 0.25s ease;
+}
+
+.shop-section-head--row .shop-view-all:hover {
+    color: var(--shop-navy);
+}
+
+/* Best sellers — dark navy band */
+.home-best-sellers {
+    background: linear-gradient(180deg, var(--shop-navy) 0%, var(--shop-navy-mid) 100%);
+    color: var(--shop-white);
+    padding: clamp(56px, 8vw, 88px) 0;
+}
+
+.home-best-sellers .luxury-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(200, 169, 106, 0.15);
+}
+
+.home-best-sellers .luxury-card:hover {
+    border-color: rgba(200, 169, 106, 0.35);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
+}
+
+.home-best-sellers .product-info h5 a,
+.home-best-sellers .product-info h5 {
+    color: var(--shop-white);
+}
+
+.home-best-sellers .product-collection {
+    color: var(--shop-gold);
+}
+
+.home-best-sellers .price-offer {
+    color: var(--shop-gold);
+}
+
+/* Signature collection — white */
+.home-signature-grid {
+    background: var(--shop-white);
+    padding: clamp(56px, 8vw, 88px) 0;
+}
+
+/* Quick links — pill bar */
+.home-quick-links {
+    background: var(--shop-cream);
+    border-top: 1px solid rgba(6, 16, 34, 0.06);
+    border-bottom: 1px solid rgba(6, 16, 34, 0.06);
+    padding: 14px 0;
+}
+
+.quick-link-chip {
+    background: var(--shop-white);
+    border: 1px solid rgba(6, 16, 34, 0.1);
+    color: var(--shop-navy);
+}
+
+.quick-link-chip.active,
+.quick-link-chip:hover {
+    background: var(--shop-navy);
+    border-color: var(--shop-navy);
+    color: var(--shop-white);
+}
+
+.quick-link-chip.active i,
+.quick-link-chip:hover i {
+    color: var(--shop-gold);
+}
+
+/* Perks row */
+.home-perks {
+    background: var(--shop-white);
+    padding: clamp(40px, 6vw, 56px) 0;
+    border-bottom: 1px solid rgba(6, 16, 34, 0.06);
+}
+
+.perk-card {
+    background: var(--shop-cream);
+    border: 1px solid rgba(6, 16, 34, 0.06);
+    border-radius: 12px;
+    padding: 20px 16px;
+    text-align: center;
+    height: 100%;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.perk-card:hover {
+    border-color: rgba(200, 169, 106, 0.35);
+    transform: translateY(-3px);
+}
+
+.perk-icon {
+    color: var(--shop-gold);
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.perk-card h6 {
+    color: var(--shop-navy);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+}
+
+.perk-card p {
+    color: #526694;
+    font-size: 0.78rem;
+    margin: 0;
+}
+
+/* Fragrance families — cream band */
+.home-families {
+    background: var(--shop-cream);
+    padding: clamp(56px, 8vw, 88px) 0;
+}
+
+/* New arrivals — white */
+.home-new-arrivals {
+    background: var(--shop-white);
+    padding: clamp(56px, 8vw, 88px) 0;
+}
+
+/* Occasions */
+.home-occasions {
+    background: var(--shop-cream);
+    padding: clamp(56px, 8vw, 88px) 0;
+}
+
+/* Brand story — navy */
+.brand-story-section {
+    background: linear-gradient(135deg, var(--shop-navy) 0%, var(--shop-navy-mid) 100%);
+    color: var(--shop-white);
+}
+
+.brand-story-section h2 {
+    color: var(--shop-white);
+}
+
+.brand-story-section .section-label {
+    color: var(--shop-gold);
+}
+
+.brand-story-section .lead-text {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.brand-features li {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.brand-features i {
+    color: var(--shop-gold);
+}
+
+/* Testimonials — navy band, readable text */
+.testimonials-section {
+    background: linear-gradient(180deg, var(--shop-navy) 0%, var(--shop-navy-mid) 100%);
+    padding: clamp(56px, 8vw, 88px) 0;
+}
+
+.testimonials-section .section-label {
+    color: var(--shop-gold);
+}
+
+.testimonial-card {
+    border: 1px solid rgba(200, 169, 106, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 28px;
+    height: 100%;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.testimonial-card.featured {
+    border-color: rgba(200, 169, 106, 0.45);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.testimonial-stars {
+    color: var(--shop-gold);
+    font-size: 0.95rem;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+}
+
+.testimonial-text {
+    font-size: 0.92rem;
+    line-height: 1.75;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.78) !important;
+    margin-bottom: 16px;
+}
+
+.testimonial-author {
+    display: block;
+    color: var(--shop-white) !important;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.testimonial-location {
+    color: rgba(255, 255, 255, 0.45) !important;
+    font-size: 0.78rem;
+}
+
+/* Quiz CTA */
+.home-cta-quiz {
+    background: var(--shop-navy);
+}
+
+.cta-quiz-box {
+    border: 1px solid rgba(200, 169, 106, 0.2);
+}
+
+/* Lenis smooth scroll helpers */
+html.lenis,
+html.lenis body {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}

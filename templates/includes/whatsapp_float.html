@@ -1,0 +1,11 @@
+{% if site_settings.whatsapp_chat_url %}
+<a href="{{ site_settings.whatsapp_chat_url }}"
+   class="whatsapp-float"
+   target="_blank"
+   rel="noopener noreferrer"
+   aria-label="Chat on WhatsApp"
+   title="Chat on WhatsApp">
+    <i class="bi bi-whatsapp"></i>
+    <span class="whatsapp-float-label">Chat with us</span>
+</a>
+{% endif %}

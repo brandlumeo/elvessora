@@ -1,0 +1,151 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: ru\n"
+
+msgid "Language"
+msgstr "Язык"
+
+msgid "Select language"
+msgstr "Выберите язык"
+
+msgid "Luxury Perfumes"
+msgstr "Люксовые ароматы"
+
+msgid "Discover luxury fragrances at %(brand)s. Shop perfumes by fragrance family, occasion, and more."
+msgstr "Откройте люксовые ароматы в %(brand)s. Покупайте по семействам, поводам и другому."
+
+msgid "Free shipping on orders above %(amount)s"
+msgstr "Бесплатная доставка от %(amount)s"
+
+msgid "Free shipping %(amount)s+"
+msgstr "Бесплатная доставка %(amount)s+"
+
+msgid "Track Order"
+msgstr "Отследить заказ"
+
+msgid "Contact"
+msgstr "Контакты"
+
+msgid "Chat on WhatsApp"
+msgstr "Написать в WhatsApp"
+
+msgid "Shop"
+msgstr "Магазин"
+
+msgid "All Perfumes"
+msgstr "Все ароматы"
+
+msgid "Best Sellers"
+msgstr "Бестселлеры"
+
+msgid "New Arrivals"
+msgstr "Новинки"
+
+msgid "Gift Sets"
+msgstr "Подарочные наборы"
+
+msgid "Policies"
+msgstr "Политики"
+
+msgid "Privacy Policy"
+msgstr "Политика конфиденциальности"
+
+msgid "Terms & Conditions"
+msgstr "Условия использования"
+
+msgid "Shipping Policy"
+msgstr "Политика доставки"
+
+msgid "Return & Refund"
+msgstr "Возврат и возмещение"
+
+msgid "Help"
+msgstr "Помощь"
+
+msgid "FAQ"
+msgstr "FAQ"
+
+msgid "Contact Us"
+msgstr "Связаться с нами"
+
+msgid "Returns"
+msgstr "Возвраты"
+
+msgid "Newsletter"
+msgstr "Рассылка"
+
+msgid "Subscribe for exclusive offers and new arrivals."
+msgstr "Подпишитесь на эксклюзивные предложения и новинки."
+
+msgid "Your email"
+msgstr "Ваш email"
+
+msgid "Subscribe"
+msgstr "Подписаться"
+
+msgid "All rights reserved."
+msgstr "Все права защищены."
+
+msgid "Privacy"
+msgstr "Конфиденциальность"
+
+msgid "Terms"
+msgstr "Условия"
+
+msgid "Shipping"
+msgstr "Доставка"
+
+msgid "Cookies"
+msgstr "Cookies"
+
+msgid "Home"
+msgstr "Главная"
+
+msgid "Collection"
+msgstr "Коллекция"
+
+msgid "Perfume Finder"
+msgstr "Подбор аромата"
+
+msgid "About Us"
+msgstr "О нас"
+
+msgid "Search"
+msgstr "Поиск"
+
+msgid "Search perfumes"
+msgstr "Искать ароматы"
+
+msgid "Wishlist"
+msgstr "Избранное"
+
+msgid "Cart"
+msgstr "Корзина"
+
+msgid "Account"
+msgstr "Аккаунт"
+
+msgid "My Profile"
+msgstr "Мой профиль"
+
+msgid "Orders"
+msgstr "Заказы"
+
+msgid "Addresses"
+msgstr "Адреса"
+
+msgid "Admin Dashboard"
+msgstr "Админ-панель"
+
+msgid "Logout"
+msgstr "Выйти"
+
+msgid "Sign In"
+msgstr "Войти"
+
+msgid "Menu"
+msgstr "Меню"
+
+msgid "Search fragrances..."
+msgstr "Искать ароматы..."

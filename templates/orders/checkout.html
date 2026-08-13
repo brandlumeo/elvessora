@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load humanize static fragrance_extras crispy_forms_tags %}
+
+{% block title %}Checkout — {{ site_settings.brand_name }}{% endblock %}
+{% block extra_css %}<link href="{% static 'css/auth-shop.css' %}" rel="stylesheet">{% endblock %}
+
+{% block content %}
+<div class="shop-page">
+  <div class="container">
+    <div class="shop-page-header">
+      <h1>Checkout</h1>
+      <p>Secure checkout — Dubai, UAE delivery</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-7">
+        <div class="cart-lux-card p-4 checkout-form-lux">
+          {% crispy form %}
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="order-summary-lux">
+          <h5>Order Summary</h5>
+          {% for item in cart_items %}
+          <div class="summary-row small">
+            <span>
+              {% if item.gift_set %}{{ item.gift_set.name }}{% else %}{{ item.product|product_short_name }}{% endif %}
+              × {{ item.quantity }}
+            </span>
+            <span>{{ item.line_total|format_price }}</span>
+          </div>
+          {% endfor %}
+          <hr style="border-color:rgba(255,255,255,0.1);">
+          <div class="summary-row"><span>Subtotal</span><span>{{ totals.subtotal|format_price }}</span></div>
+          {% if totals.discount %}<div class="summary-row" style="color:#4ade80;"><span>Discount</span><span>-{{ totals.discount|format_price }}</span></div>{% endif %}
+          <div class="summary-row"><span>Shipping</span><span>{% if totals.shipping %}{{ totals.shipping|format_price }}{% else %}FREE{% endif %}</span></div>
+          <div class="summary-row"><span>Tax (VAT)</span><span>{{ totals.tax|format_price }}</span></div>
+          <div class="summary-row total"><span>Total</span><span>{{ totals.total|format_price }}</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

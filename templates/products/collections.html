@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Collections — {{ site_settings.brand_name }}{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1>Collections</h1></div></div>
+<div class="container pb-5">
+    <div class="row g-4">
+        {% for collection in collections %}
+        <div class="col-md-4">
+            <a href="{% url 'products:collection_detail' collection.slug %}" class="text-decoration-none">
+                <div class="family-card"><h5>{{ collection.name }}</h5><p class="small text-muted">{{ collection.description|truncatewords:20 }}</p></div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

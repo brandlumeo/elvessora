@@ -1,0 +1,38 @@
+{% load static %}
+<section id="lux-scroll-showcase" class="lux-scroll-showcase"
+         data-frame-count="50"
+         data-frame-url="{% static 'images/ezgif-frame-' %}"
+         aria-label="Luxury perfume showcase">
+    <div class="lux-scroll-track">
+        <div class="lux-scroll-pin">
+            <div class="lux-frame-stage">
+                <canvas class="lux-frame-canvas" aria-hidden="true"></canvas>
+                <div class="lux-frame-shine"></div>
+                <div class="lux-frame-vignette"></div>
+                <div class="lux-frame-bloom"></div>
+            </div>
+
+            <div class="lux-scroll-overlay">
+                <img src="{% static 'images/elvessora-logo.svg' %}" alt="Elvessora" class="lux-scroll-logo" loading="lazy">
+                <p class="lux-scroll-eyebrow">Elvessora · Signature Collection</p>
+                <h2 class="lux-scroll-headline">
+                    <span class="lux-headline-line">Crafted for</span>
+                    <span class="lux-headline-line lux-headline-gold">Timeless Luxury</span>
+                </h2>
+                <p class="lux-scroll-tagline">Scroll slowly to experience the art of fine fragrance</p>
+                <a href="{% url 'products:shop' %}" class="lux-scroll-cta">Shop Collection</a>
+            </div>
+
+            <div class="lux-scroll-loader">
+                <div class="lux-loader-ring"></div>
+                <div class="lux-loader-bar"><span class="lux-loader-fill"></span></div>
+                <span class="lux-loader-text">Loading experience <em>0%</em></span>
+            </div>
+
+            <div class="lux-scroll-hint">
+                <span>Scroll to explore</span>
+                <i class="bi bi-chevron-down"></i>
+            </div>
+        </div>
+    </div>
+</section>

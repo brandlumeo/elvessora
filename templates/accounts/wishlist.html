@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static fragrance_extras %}
+
+{% block title %}My Wishlist — {{ site_settings.brand_name }}{% endblock %}
+{% block extra_css %}
+<link href="{% static 'css/auth-shop.css' %}" rel="stylesheet">
+<link href="{% static 'css/luxury-home.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="shop-page">
+  <div class="container">
+    <div class="shop-page-header">
+      <h1>My Wishlist</h1>
+      <p>{{ items|length }} saved fragrance{{ items|length|pluralize }}</p>
+    </div>
+
+    {% if items %}
+    <div class="row g-4 lux-collection-grid wishlist-lux-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));">
+      {% for item in items %}
+      {% include 'includes/lux_product_card.html' with product=item.product %}
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state-lux">
+      <i class="bi bi-heart"></i>
+      <p>Your wishlist is empty. Save your favourite Elvessora scents here.</p>
+      <a href="{% url 'products:shop' %}" class="btn btn-gold">Browse Collection</a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

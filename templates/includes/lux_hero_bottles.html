@@ -1,0 +1,10 @@
+{% load static fragrance_extras %}
+<div class="lux-hero-bottles" aria-label="Elvessora signature collection">
+  {% for product in signature_fragrances %}
+  {% product_image_url product as hero_bottle %}
+  <img src="{{ hero_bottle }}"
+       alt="{{ product|product_short_name }}"
+       class="lux-hero-bottle lux-hero-bottle-{{ forloop.counter }}"
+       loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+  {% endfor %}
+</div>

@@ -1,0 +1,450 @@
+/* Auth, cart, wishlist, checkout — white + navy + gold theme */
+
+.shop-page {
+    background: linear-gradient(180deg, #ffffff 0%, #f7f8fb 100%);
+    min-height: 60vh;
+    color: var(--primary-bg, #061022);
+    padding-bottom: 4rem;
+}
+
+.shop-page-header {
+    padding: 3rem 0 2rem;
+    border-bottom: 1px solid rgba(6, 16, 34, 0.08);
+    margin-bottom: 2rem;
+}
+
+.shop-page-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    color: var(--primary-blue, #0A2163);
+    margin-bottom: 0.35rem;
+}
+
+.shop-page-header p {
+    color: rgba(6, 16, 34, 0.65);
+    margin: 0;
+}
+
+.auth-shell {
+    min-height: calc(100vh - 120px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    background:
+        radial-gradient(ellipse 60% 50% at 20% 20%, rgba(200, 169, 106, 0.1) 0%, transparent 55%),
+        linear-gradient(180deg, #ffffff 0%, #f7f8fb 100%);
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 480px;
+    padding: 2.5rem 2rem;
+    border-radius: 18px;
+    border: 1px solid rgba(200, 169, 106, 0.25);
+    background: #ffffff;
+    box-shadow: 0 24px 48px rgba(6, 16, 34, 0.08);
+}
+
+.auth-card-wide {
+    max-width: 560px;
+}
+
+.auth-card h1,
+.auth-card h2 {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--primary-blue, #0A2163);
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.auth-card .auth-subtitle {
+    text-align: center;
+    color: rgba(6, 16, 34, 0.65);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+}
+
+.auth-links {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.88rem;
+    color: rgba(6, 16, 34, 0.65);
+}
+
+.auth-links a {
+    color: var(--champagne-gold, #C8A96A);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-links a:hover {
+    color: #b89458;
+}
+
+.auth-card label {
+    color: var(--primary-blue, #0A2163);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.auth-card .form-control,
+.auth-card input[type="text"],
+.auth-card input[type="email"],
+.auth-card input[type="password"],
+.auth-card textarea,
+.auth-card select {
+    background: #ffffff !important;
+    border: 1px solid rgba(6, 16, 34, 0.12) !important;
+    color: var(--primary-bg, #061022) !important;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+}
+
+.auth-card .form-control:focus {
+    border-color: #C8A96A !important;
+    box-shadow: 0 0 0 3px rgba(200, 169, 106, 0.15) !important;
+}
+
+.auth-card .helptext,
+.auth-card .form-text,
+.auth-card ul.errorlist {
+    color: rgba(6, 16, 34, 0.55);
+    font-size: 0.78rem;
+}
+
+.auth-card ul.errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 0.35rem 0 0;
+    color: #c0392b;
+}
+
+.auth-card .btn-gold,
+.auth-card input[type="submit"] {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.85rem;
+    border-radius: 999px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* Password visibility toggle */
+.password-field-wrap {
+    position: relative;
+}
+
+.password-field-wrap .form-control,
+.password-field-wrap input[type="password"],
+.password-field-wrap input[type="text"] {
+    padding-right: 2.85rem !important;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    right: 0.55rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.1rem;
+    height: 2.1rem;
+    border: 0;
+    background: transparent;
+    color: rgba(6, 16, 34, 0.55);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+.password-toggle-btn:hover {
+    color: var(--primary-blue, #0A2163);
+    background: rgba(200, 169, 106, 0.15);
+}
+
+.password-toggle-btn:focus-visible {
+    outline: 2px solid rgba(200, 169, 106, 0.7);
+    outline-offset: 2px;
+}
+
+.password-toggle-btn i {
+    font-size: 1.1rem;
+}
+
+/* Google auth — model layout: button, OR divider, then form */
+.auth-google-wrap {
+    margin-bottom: 0.25rem;
+}
+
+.btn-google-auth {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1.25rem;
+    border-radius: 999px;
+    border: 1.5px solid rgba(200, 169, 106, 0.85);
+    background: #f8f6f1;
+    color: var(--primary-blue, #0A2163);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-decoration: none !important;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+    box-sizing: border-box;
+}
+
+.btn-google-auth:hover {
+    background: #fff;
+    border-color: #C8A96A;
+    color: var(--primary-blue, #0A2163);
+    transform: translateY(-1px);
+}
+
+.btn-google-auth:disabled,
+.btn-google-auth.is-loading {
+    opacity: 0.7;
+    cursor: wait;
+    transform: none;
+}
+
+.btn-google-auth .google-g {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.35rem 0 1.5rem;
+    color: rgba(6, 16, 34, 0.45);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(6, 16, 34, 0.12);
+}
+
+/* Cart */
+.cart-lux-card {
+    background: #ffffff;
+    border: 1px solid rgba(6, 16, 34, 0.08);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(6, 16, 34, 0.04);
+}
+
+.cart-lux-item {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    border-bottom: 1px solid rgba(6, 16, 34, 0.06);
+    align-items: center;
+}
+
+.cart-lux-item:last-child {
+    border-bottom: none;
+}
+
+.cart-lux-item img {
+    width: 80px;
+    height: 100px;
+    object-fit: contain;
+    background: #f7f8fb;
+    border-radius: 10px;
+    padding: 0.5rem;
+}
+
+.cart-lux-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.cart-lux-item-info h5 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    margin-bottom: 0.25rem;
+}
+
+.cart-lux-item-info h5 a {
+    color: var(--primary-blue, #0A2163);
+    text-decoration: none;
+}
+
+.cart-lux-item-info h5 a:hover {
+    color: #C8A96A;
+}
+
+.cart-qty-form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.cart-qty-form input {
+    width: 56px;
+    text-align: center;
+    background: #ffffff;
+    border: 1px solid rgba(6, 16, 34, 0.12);
+    color: var(--primary-bg, #061022);
+    border-radius: 8px;
+    padding: 0.35rem;
+}
+
+.order-summary-lux {
+    background: #ffffff;
+    border: 1px solid rgba(200, 169, 106, 0.3);
+    border-radius: 16px;
+    padding: 1.75rem;
+    position: sticky;
+    top: 100px;
+    box-shadow: 0 12px 32px rgba(6, 16, 34, 0.06);
+}
+
+.order-summary-lux h5 {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--primary-blue, #0A2163);
+    margin-bottom: 1rem;
+}
+
+.order-summary-lux .summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.65rem;
+    font-size: 0.9rem;
+    color: rgba(6, 16, 34, 0.75);
+}
+
+.order-summary-lux .summary-row.total {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--primary-blue, #0A2163);
+    border-top: 1px solid rgba(6, 16, 34, 0.08);
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+.order-summary-lux .summary-row.total span:last-child {
+    color: #C8A96A;
+}
+
+.empty-state-lux {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: rgba(6, 16, 34, 0.65);
+}
+
+.empty-state-lux i {
+    font-size: 3.5rem;
+    color: #C8A96A;
+    opacity: 0.7;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.payment-lux-card {
+    max-width: 520px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 3rem 2rem;
+    border-radius: 18px;
+    border: 1px solid rgba(200, 169, 106, 0.3);
+    background: #ffffff;
+    box-shadow: 0 16px 40px rgba(6, 16, 34, 0.08);
+}
+
+.payment-lux-card .payment-amount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #C8A96A;
+    margin: 1rem 0 2rem;
+}
+
+.payment-methods {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.payment-methods span {
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(6, 16, 34, 0.1);
+    font-size: 0.75rem;
+    color: rgba(6, 16, 34, 0.65);
+}
+
+.checkout-form-lux .form-label {
+    color: var(--primary-blue, #0A2163);
+}
+
+.checkout-form-lux .form-control,
+.checkout-form-lux select,
+.checkout-form-lux textarea {
+    background: #ffffff;
+    border-color: rgba(6, 16, 34, 0.12);
+    color: var(--primary-bg, #061022);
+}
+
+.checkout-form-lux .form-control:focus,
+.checkout-form-lux select:focus,
+.checkout-form-lux textarea:focus {
+    background: #ffffff;
+    border-color: #C8A96A;
+    color: var(--primary-bg, #061022);
+    box-shadow: 0 0 0 3px rgba(200, 169, 106, 0.15);
+}
+
+.checkout-form-lux ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.35rem 0 0;
+    color: #c0392b;
+    font-size: 0.78rem;
+}
+
+.checkout-form-lux .form-check-label {
+    color: rgba(6, 16, 34, 0.75);
+}
+
+.checkout-form-lux hr {
+    border-color: rgba(6, 16, 34, 0.08);
+}
+
+.btn-outline-gold {
+    color: #C8A96A;
+    border: 1px solid rgba(200, 169, 106, 0.55);
+    background: transparent;
+}
+
+.btn-outline-gold:hover {
+    color: #061022;
+    background: #C8A96A;
+    border-color: #C8A96A;
+}
+
+.wishlist-lux-grid .lux-product-card {
+    flex: unset;
+    min-width: 0;
+}

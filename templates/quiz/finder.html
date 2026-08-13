@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Perfume Finder — {{ site_settings.brand_name }}{% endblock %}
+
+{% block body_class %}page-luxury-home page-perfume-finder{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/luxury-home.css' %}" rel="stylesheet">
+<link href="{% static 'css/perfume-finder.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="lux-page">
+  {% include 'includes/perfume_finder_section.html' with standalone=True %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/perfume-finder.js' %}" defer></script>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% load static humanize fragrance_extras %}
+
+<div class="lux-page">
+<div class="lux-home" id="luxHome">
+
+  <section class="lux-scroll-cinema" id="luxScrollCinema"
+           data-frame-base="{% get_static_prefix %}images/ezifimage/ezgif-frame-"
+           data-frame-count="105"
+           aria-label="Elvessora boutique showcase">
+    <div class="lux-scroll-cinema__pin">
+      <div class="lux-scroll-cinema__frame-wrap">
+        <img class="lux-scroll-cinema__poster"
+             src="{% static 'images/ezifimage/ezgif-frame-001.png' %}"
+             alt=""
+             aria-hidden="true"
+             loading="eager" decoding="async">
+        <canvas class="lux-scroll-cinema__canvas" aria-hidden="true"></canvas>
+      </div>
+      <div class="lux-scroll-cinema__loader" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <span class="lux-scroll-cinema__loader-bar"></span>
+        <span class="lux-scroll-cinema__loader-text">Loading experience</span>
+      </div>
+      <p class="lux-scroll-cinema__hint" aria-hidden="true">
+        <span>Scroll to explore</span>
+        <i class="bi bi-chevron-down"></i>
+      </p>
+    </div>
+  </section>
+
+  <!-- HERO -->
+  <section class="lux-hero" id="luxHero">
+    <div class="lux-hero-bg"></div>
+    <div class="lux-hero-glow"></div>
+    <div class="container lux-hero-grid">
+      <div class="lux-hero-copy lux-reveal lux-reveal--instant">
+        <p class="lux-eyebrow">{{ homepage.hero_eyebrow }}</p>
+        <h1 class="lux-hero-title">{{ homepage.hero_title|linebreaksbr }}</h1>
+        <p class="lux-hero-desc">{{ homepage.hero_description }}</p>
+        <div class="lux-hero-btns">
+          <a href="{% url 'products:collection' %}" class="lux-btn lux-btn-gold">{{ homepage.hero_cta_primary_text }} <i class="bi bi-arrow-right"></i></a>
+          <a href="{% url 'products:shop' %}" class="lux-btn lux-btn-outline">{{ homepage.hero_cta_secondary_text }}</a>
+        </div>
+        {% if hero_features %}
+        <div class="lux-hero-features">
+          {% for item in hero_features %}
+          <div class="lux-feature">
+            <i class="bi {{ item.icon }}"></i>
+            <span>{{ item.title }}</span>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      <div class="lux-hero-visual lux-reveal lux-reveal--instant">
+        {% if homepage.hero_image %}
+        <img src="{{ homepage.hero_image.url }}" alt="{{ site_settings.brand_name }} luxury perfume" class="lux-hero-feature-img" loading="eager">
+        {% else %}
+        <img src="{% static 'images/hero/elvessora-hero-hand-bottle.png' %}"
+             alt="{{ site_settings.brand_name }} luxury fragrance"
+             class="lux-hero-feature-img"
+             loading="eager">
+        {% endif %}
+      </div>
+    </div>
+    <nav class="lux-scroll-rail" aria-label="Page sections">
+      <a href="#luxHero" class="is-active">01</a>
+      <a href="#luxCollection">02</a>
+      <a href="#luxPerfumeFinder">03</a>
+      <a href="#luxSpotlight">04</a>
+    </nav>
+  </section>
+
+</div>

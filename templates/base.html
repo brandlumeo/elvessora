@@ -1,0 +1,157 @@
+{% load static humanize fragrance_extras i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% if site_settings.default_meta_title %}{{ site_settings.default_meta_title }}{% else %}{{ site_settings.brand_name }} — {% trans "Luxury Perfumes" %}{% endif %}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{% if site_settings.default_meta_description %}{{ site_settings.default_meta_description }}{% else %}{% blocktrans with brand=site_settings.brand_name %}Discover luxury fragrances at {{ brand }}. Shop perfumes by fragrance family, occasion, and more.{% endblocktrans %}{% endif %}{% endblock %}">
+    <meta property="og:site_name" content="{{ site_settings.brand_name }}">
+    <meta property="og:title" content="{% block og_title %}{{ site_settings.brand_name }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{% if site_settings.default_meta_description %}{{ site_settings.default_meta_description }}{% else %}{{ site_settings.tagline }}{% endif %}{% endblock %}">
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    {% if site_settings.og_image %}
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ site_settings.og_image.url }}">
+    {% endif %}
+    {% block schema_jsonld %}{% endblock %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/luxury.css' %}" rel="stylesheet">
+    <link href="{% static 'css/language-switcher.css' %}" rel="stylesheet">
+    <link href="{% static 'css/side-drawer.css' %}" rel="stylesheet">
+    <link rel="icon" href="{% static 'images/elvessora-logo.svg' %}" type="image/svg+xml">
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}"{% if open_drawer %} data-open-drawer="{{ open_drawer }}"{% endif %}>
+    {% include 'includes/navbar.html' %}
+
+    {% if messages %}
+    <div class="elv-toast-stack" aria-live="polite" aria-atomic="true">
+        {% for message in messages %}
+        <div class="elv-toast elv-toast-{{ message.level_tag }}" role="status">
+            <div class="elv-toast-body">{{ message }}</div>
+            <button type="button" class="elv-toast-close" aria-label="Close" data-elv-toast-close>&times;</button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <main>{% block content %}{% endblock %}</main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="footer-brand">
+                        {% include 'includes/brand_logo.html' %}
+                    </div>
+                    <p class="footer-legal small">ELVESSORA GENERAL TRADING LLC</p>
+                    <p style="color: var(--silver);">{{ site_settings.tagline|default:"General Trading & E-commerce — Dubai, UAE" }}</p>
+                    {% if site_settings.business_address %}
+                    <p class="small" style="color: var(--silver);"><i class="bi bi-geo-alt"></i> {{ site_settings.business_address|truncatewords:12 }}</p>
+                    {% endif %}
+                    {% if site_settings.email %}<p class="small" style="color: var(--silver);"><i class="bi bi-envelope"></i> {{ site_settings.email }}</p>{% endif %}
+                    {% if site_settings.phone %}<p class="small" style="color: var(--silver);"><i class="bi bi-telephone"></i> {{ site_settings.phone }}</p>{% endif %}
+                    {% if site_settings.whatsapp_chat_url %}
+                    <a href="{{ site_settings.whatsapp_chat_url }}" class="btn btn-whatsapp btn-sm mt-2" target="_blank" rel="noopener noreferrer">
+                        <i class="bi bi-whatsapp"></i> {% trans "Chat on WhatsApp" %}
+                    </a>
+                    {% endif %}
+                    <div class="social-links mt-3">
+                        <a href="{{ site_settings.instagram_url|default:'https://www.instagram.com/elvessoraperfumes/' }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="{{ site_settings.twitter_url|default:'https://x.com/elvessora' }}" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="bi bi-twitter-x"></i></a>
+                        <a href="{{ site_settings.facebook_url|default:'https://www.facebook.com/profile.php?id=61592052402320' }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        {% if site_settings.youtube_url %}<a href="{{ site_settings.youtube_url }}" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="bi bi-youtube"></i></a>{% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <h6>{% trans "Shop" %}</h6>
+                    <ul class="footer-links">
+                        <li><a href="{% url 'products:shop' %}">{% trans "All Perfumes" %}</a></li>
+                        <li><a href="{% url 'products:best_sellers' %}">{% trans "Best Sellers" %}</a></li>
+                        <li><a href="{% url 'products:new_arrivals' %}">{% trans "New Arrivals" %}</a></li>
+                        <li><a href="{% url 'products:gift_sets' %}">{% trans "Gift Sets" %}</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <h6>{% trans "Policies" %}</h6>
+                    <ul class="footer-links">
+                        <li><a href="{% url 'core:legal' 'privacy' %}">{% trans "Privacy Policy" %}</a></li>
+                        <li><a href="{% url 'core:legal' 'terms' %}">{% trans "Terms & Conditions" %}</a></li>
+                        <li><a href="{% url 'core:legal' 'shipping' %}">{% trans "Shipping Policy" %}</a></li>
+                        <li><a href="{% url 'core:legal' 'returns' %}">{% trans "Return & Refund" %}</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <h6>{% trans "Help" %}</h6>
+                    <ul class="footer-links">
+                        <li><a href="{% url 'core:faq' %}">{% trans "FAQ" %}</a></li>
+                        <li><a href="{% url 'blog:post_list' %}">{% trans "Blog" %}</a></li>
+                        <li><a href="{% url 'orders:tracking' %}">{% trans "Track Order" %}</a></li>
+                        <li><a href="{% url 'core:contact' %}">{% trans "Contact Us" %}</a></li>
+                        <li><a href="{% url 'core:legal' 'returns' %}">{% trans "Returns" %}</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h6>{% trans "Newsletter" %}</h6>
+                    <p class="text-muted small">{% trans "Subscribe for exclusive offers and new arrivals." %}</p>
+                    <form action="{% url 'core:newsletter_subscribe' %}" method="post" class="newsletter-form">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input type="email" name="email" class="form-control" placeholder="{% trans 'Your email' %}" required>
+                            <button class="btn btn-gold" type="submit">{% trans "Subscribe" %}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <hr>
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="small text-muted mb-0">&copy; {% now "Y" %} {{ site_settings.brand_name }}. {% trans "All rights reserved." %}</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="{% url 'core:legal' 'privacy' %}" class="small text-muted me-3">{% trans "Privacy" %}</a>
+                    <a href="{% url 'core:legal' 'terms' %}" class="small text-muted me-3">{% trans "Terms" %}</a>
+                    <a href="{% url 'core:legal' 'shipping' %}" class="small text-muted me-3">{% trans "Shipping" %}</a>
+                    <a href="{% url 'core:legal' 'cookies' %}" class="small text-muted">{% trans "Cookies" %}</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    {% if promo_popup %}
+    <div class="modal fade" id="promoModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content promo-modal">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <h4>{{ promo_popup.title }}</h4>
+                    <p>{{ promo_popup.content }}</p>
+                    {% if promo_popup.coupon_code %}
+                    <code class="promo-code">{{ promo_popup.coupon_code }}</code>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% include 'includes/whatsapp_float.html' %}
+    {% include 'includes/side_drawer.html' %}
+
+    <button type="button" class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top" title="Back to top">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/language-switcher.js' %}"></script>
+    <script src="{% static 'js/side-drawer.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

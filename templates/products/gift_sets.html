@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load humanize static fragrance_extras %}
+
+{% block title %}Gift Sets — {{ site_settings.brand_name }}{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1>Gift Sets</h1><p class="text-muted">Perfect presents with custom wrapping & personalized messages</p></div></div>
+<div class="container pb-5">
+    <div class="row">
+        {% for gift_set in gift_sets %}
+        <div class="col-md-3">
+            <div class="product-card">
+                <div class="product-image">
+                    {% if gift_set.display_image_url %}
+                    <img src="{{ gift_set.display_image_url }}" alt="{{ gift_set.name }}">
+                    {% else %}
+                    <div class="lux-gift-image-empty" aria-hidden="true">
+                        <i class="bi bi-gift"></i>
+                        <span>Gift Set</span>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="product-info">
+                    <h5><a href="{% url 'products:gift_set_detail' gift_set.slug %}">{{ gift_set.name }}</a></h5>
+                    <span class="product-collection">{{ gift_set.get_gift_type_display }}</span>
+                    <div class="product-price"><span class="price-offer">{{ gift_set.current_price|format_price }}</span></div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted text-center">No gift sets available yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,120 @@
+{% load i18n fragrance_extras %}
+<header class="site-header site-chrome sticky-top">
+    <div class="nav-promo d-none d-md-block">
+        <div class="container d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-truck"></i> {% blocktrans with amount=site_settings.free_shipping_threshold|format_price %}Free shipping on orders above {{ amount }}{% endblocktrans %}</span>
+            <a href="{% url 'orders:tracking' %}" class="nav-promo-link">{% trans "Track Order" %}</a>
+        </div>
+    </div>
+    <nav class="luxury-nav">
+        <div class="container">
+            <div class="nav-row">
+                <div class="nav-brand">
+                    {% include 'includes/brand_logo.html' %}
+                </div>
+
+                <ul class="nav-menu nav-menu--flat d-none d-xl-flex">
+                    <li class="nav-menu-item">
+                        <a href="{% url 'core:home' %}" class="nav-menu-link{% if request.resolver_match.url_name == 'home' %} is-active{% endif %}">{% trans "Home" %}</a>
+                    </li>
+                    <li class="nav-menu-item">
+                        <a href="{% url 'products:collection' %}" class="nav-menu-link{% if request.resolver_match.url_name == 'collection' %} is-active{% endif %}">{% trans "Collection" %}</a>
+                    </li>
+                    <li class="nav-menu-item">
+                        <a href="{% url 'products:shop' %}" class="nav-menu-link{% if request.resolver_match.namespace == 'products' and request.resolver_match.url_name == 'shop' %} is-active{% endif %}">{% trans "Shop" %}</a>
+                    </li>
+                    <li class="nav-menu-item">
+                        <a href="{% url 'quiz:finder' %}" class="nav-menu-link{% if request.resolver_match.namespace == 'quiz' %} is-active{% endif %}">{% trans "Perfume Finder" %}</a>
+                    </li>
+                    <li class="nav-menu-item">
+                        <a href="{% url 'core:about' %}" class="nav-menu-link{% if request.resolver_match.url_name == 'about' %} is-active{% endif %}">{% trans "About Us" %}</a>
+                    </li>
+                    <li class="nav-menu-item">
+                        <a href="{% url 'core:contact' %}" class="nav-menu-link{% if request.resolver_match.url_name == 'contact' %} is-active{% endif %}">{% trans "Contact" %}</a>
+                    </li>
+                </ul>
+
+                <div class="nav-actions">
+                    <div class="lang-switcher--desktop d-none d-lg-flex">
+                        {% include 'includes/language_switcher.html' with select_id='langSelectNav' %}
+                    </div>
+                    <button type="button" class="nav-icon-btn" id="navSearchToggle" title="{% trans 'Search' %}" aria-label="{% trans 'Search perfumes' %}" aria-expanded="false" aria-controls="navSearchPanel">
+                        <i class="bi bi-search"></i>
+                    </button>
+                    <a href="{% url 'accounts:wishlist' %}"
+                       class="nav-icon-btn"
+                       data-open-drawer="wishlist"
+                       title="{% trans 'Wishlist' %}">
+                        <i class="bi bi-heart"></i>
+                        {% if wishlist_count %}<span class="nav-icon-badge wishlist-badge">{{ wishlist_count }}</span>{% endif %}
+                    </a>
+                    <a href="{% url 'cart:cart' %}"
+                       class="nav-icon-btn"
+                       data-open-drawer="cart"
+                       title="{% trans 'Cart' %}">
+                        <i class="bi bi-bag"></i>
+                        {% if cart_count %}<span class="nav-icon-badge">{{ cart_count }}</span>{% endif %}
+                    </a>
+                    {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <a href="#" class="nav-icon-btn nav-account-btn dropdown-toggle" data-bs-toggle="dropdown" title="{% trans 'Account' %}">
+                            <i class="bi bi-person"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li class="dropdown-header">{{ user.first_name|default:user.username|truncatechars:20 }}</li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">{% trans "My Profile" %}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:order_history' %}">{% trans "Orders" %}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:wishlist' %}">{% trans "Wishlist" %}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:addresses' %}">{% trans "Addresses" %}</a></li>
+                            {% if user.is_staff %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'admin:index' %}"><i class="bi bi-speedometer2"></i> {% trans "Admin Dashboard" %}</a></li>
+                            {% endif %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">{% trans "Logout" %}</a></li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <a href="{% url 'accounts:login' %}" class="nav-icon-btn d-none d-md-flex" title="{% trans 'Sign In' %}" aria-label="{% trans 'Sign In' %}">
+                        <i class="bi bi-person"></i>
+                    </a>
+                    {% endif %}
+
+                    <button class="nav-toggle d-xl-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNav" aria-label="{% trans 'Menu' %}">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="nav-search-panel" id="navSearchPanel" hidden>
+                <form class="nav-search-form" action="{% url 'products:shop' %}" method="get" role="search">
+                    <i class="bi bi-search" aria-hidden="true"></i>
+                    <input type="search" name="q" id="navSearchInput" placeholder="{% trans 'Search fragrances...' %}" value="{{ request.GET.q }}" autocomplete="off">
+                    <button type="submit" class="nav-search-submit">{% trans "Search" %}</button>
+                    <button type="button" class="nav-search-close" id="navSearchClose" aria-label="{% trans 'Close search' %}">&times;</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="collapse mobile-nav-collapse" id="mobileNav">
+            <div class="container">
+                <ul class="mobile-nav-list">
+                    <li><a href="{% url 'core:home' %}">{% trans "Home" %}</a></li>
+                    <li><a href="{% url 'products:collection' %}">{% trans "Collection" %}</a></li>
+                    <li><a href="{% url 'products:shop' %}">{% trans "Shop" %}</a></li>
+                    <li><a href="{% url 'quiz:finder' %}">{% trans "Perfume Finder" %}</a></li>
+                    <li><a href="{% url 'core:about' %}">{% trans "About Us" %}</a></li>
+                    <li><a href="{% url 'core:contact' %}">{% trans "Contact" %}</a></li>
+                    <li><a href="{% url 'orders:tracking' %}">{% trans "Track Order" %}</a></li>
+                    <li><a href="{% url 'products:best_sellers' %}">{% trans "Best Sellers" %}</a></li>
+                    {% if not user.is_authenticated %}
+                    <li><a href="{% url 'accounts:login' %}">{% trans "Sign In" %}</a></li>
+                    {% endif %}
+                </ul>
+                <div class="mobile-nav-lang">
+                    {% include 'includes/language_switcher.html' with select_id='langSelectMobileNav' %}
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>

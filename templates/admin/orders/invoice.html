@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{{ doc_title }}</title>
+    <style>
+        body { font-family: Georgia, 'Times New Roman', serif; color: #1a1a1a; margin: 32px; }
+        h1 { font-size: 1.6rem; margin: 0 0 4px; letter-spacing: 0.08em; text-transform: uppercase; }
+        .muted { color: #666; font-size: 0.9rem; }
+        .row { display: flex; justify-content: space-between; gap: 24px; margin: 24px 0; }
+        .box { flex: 1; }
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        th, td { border-bottom: 1px solid #ddd; padding: 8px 6px; text-align: left; font-size: 0.95rem; }
+        th { border-bottom: 2px solid #111; }
+        .right { text-align: right; }
+        .totals td { border: none; }
+        .totals .label { text-align: right; color: #555; }
+        .grand { font-weight: bold; font-size: 1.05rem; }
+        .actions { margin-bottom: 24px; }
+        .actions button {
+            background: #0A2163; color: #fff; border: 0; padding: 8px 16px;
+            cursor: pointer; font-size: 0.9rem;
+        }
+        @media print {
+            .actions { display: none; }
+            body { margin: 12mm; }
+        }
+    </style>
+</head>
+<body>
+    <div class="actions">
+        <button type="button" onclick="window.print()">Print Invoice</button>
+    </div>
+
+    <h1>{{ site.brand_name|default:"Elvessora" }}</h1>
+    <p class="muted">Tax Invoice</p>
+    {% if site.business_address %}<p class="muted">{{ site.business_address }}</p>{% endif %}
+    {% if site.email %}<p class="muted">{{ site.email }}{% if site.phone %} · {{ site.phone }}{% endif %}</p>{% endif %}
+
+    <div class="row">
+        <div class="box">
+            <strong>Bill To</strong><br>
+            {{ order.shipping_name }}<br>
+            {{ order.shipping_address }}<br>
+            {{ order.shipping_city }}, {{ order.shipping_state }} {{ order.shipping_pincode }}<br>
+            {{ order.shipping_country }}<br>
+            {{ order.shipping_phone }}
+            {% if order.guest_email or order.user %}<br>{{ order.guest_email|default:order.user.email }}{% endif %}
+        </div>
+        <div class="box right">
+            <strong>Order #{{ order.order_number }}</strong><br>
+            Date: {{ order.created_at|date:"d M Y" }}<br>
+            Status: {{ order.get_status_display }}<br>
+            Payment: {{ order.get_payment_status_display }} ({{ order.get_payment_method_display }})
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Size</th>
+                <th class="right">Qty</th>
+                <th class="right">Unit</th>
+                <th class="right">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.product_name }}</td>
+                <td>{{ item.variant_size|default:"—" }}</td>
+                <td class="right">{{ item.quantity }}</td>
+                <td class="right">₹{{ item.unit_price }}</td>
+                <td class="right">₹{{ item.line_total }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="totals" style="width: 320px; margin-left: auto;">
+        <tr><td class="label">Subtotal</td><td class="right">₹{{ order.subtotal }}</td></tr>
+        <tr><td class="label">Shipping</td><td class="right">₹{{ order.shipping_charge }}</td></tr>
+        <tr><td class="label">Tax</td><td class="right">₹{{ order.tax_amount }}</td></tr>
+        {% if order.discount_amount %}<tr><td class="label">Discount</td><td class="right">-₹{{ order.discount_amount }}</td></tr>{% endif %}
+        <tr class="grand"><td class="label">Total</td><td class="right">₹{{ order.total }}</td></tr>
+    </table>
+
+    {% if order.notes %}
+    <p class="muted" style="margin-top:24px;"><strong>Notes:</strong> {{ order.notes }}</p>
+    {% endif %}
+</body>
+</html>

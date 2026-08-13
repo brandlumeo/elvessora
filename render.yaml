@@ -1,0 +1,26 @@
+databases:
+  - name: elvessora-db
+    plan: free
+
+services:
+  - type: web
+    name: elvessora
+    runtime: python
+    plan: free
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn config.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: DEBUG
+        value: "False"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: elvessora-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: "2"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"

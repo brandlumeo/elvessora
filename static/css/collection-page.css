@@ -1,0 +1,345 @@
+/* ===== Dedicated Collection Page ===== */
+
+body.page-collection {
+    background: #ffffff;
+}
+
+body.page-collection .lux-page {
+    background: #ffffff;
+}
+
+.col-page-intro {
+    max-width: 36rem;
+    margin-top: 0.5rem;
+}
+
+/* Detailed fragrance rows */
+.col-signature-grid {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2.5rem, 5vw, 4rem);
+    margin-top: 2rem;
+}
+
+.col-fragrance-row {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    background: #fff;
+    border: 1px solid rgba(6, 16, 34, 0.08);
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(6, 16, 34, 0.05);
+}
+
+.col-fragrance-row.is-reverse {
+    grid-template-columns: 1.1fr 1fr;
+}
+
+.col-fragrance-row.is-reverse .col-fragrance-visual {
+    order: 2;
+}
+
+.col-fragrance-row.is-reverse .col-fragrance-details {
+    order: 1;
+}
+
+.col-fragrance-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 280px;
+    padding: 1.5rem;
+    background: linear-gradient(165deg, #faf8f4 0%, #f0ebe3 100%);
+    border-radius: 16px;
+    border: 1px solid rgba(200, 169, 106, 0.2);
+}
+
+.col-fragrance-image-link img {
+    max-height: 320px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 40px rgba(6, 16, 34, 0.12));
+    transition: transform 0.4s ease;
+}
+
+.col-fragrance-row:hover .col-fragrance-image-link img {
+    transform: scale(1.04);
+}
+
+.col-fragrance-tag {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    padding: 0.3rem 0.75rem;
+    background: var(--lux-navy-mid, #0A2163);
+    color: var(--lux-gold, #C8A96A);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 999px;
+}
+
+.col-fragrance-tag.is-new {
+    background: var(--lux-gold, #C8A96A);
+    color: var(--lux-navy, #061022);
+    left: auto;
+    right: 1rem;
+}
+
+.col-fragrance-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 600;
+    color: var(--lux-navy, #061022);
+    margin: 0.35rem 0 0.75rem;
+}
+
+.col-fragrance-desc {
+    color: rgba(6, 16, 34, 0.68);
+    font-size: 0.92rem;
+    line-height: 1.75;
+    margin-bottom: 1.25rem;
+}
+
+.col-fragrance-notes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin-bottom: 1.25rem;
+    padding: 1rem 1.15rem;
+    background: #faf8f4;
+    border-radius: 12px;
+    border-left: 3px solid var(--lux-gold, #C8A96A);
+}
+
+.col-note-line {
+    font-size: 0.82rem;
+    color: rgba(6, 16, 34, 0.75);
+    line-height: 1.5;
+}
+
+.col-note-line strong {
+    color: var(--lux-navy-mid, #0A2163);
+    font-weight: 600;
+    margin-right: 0.35rem;
+    min-width: 3rem;
+    display: inline-block;
+}
+
+.col-fragrance-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.col-fragrance-meta span {
+    padding: 0.3rem 0.75rem;
+    background: rgba(10, 33, 99, 0.06);
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--lux-navy-mid, #0A2163);
+}
+
+.col-fragrance-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(6, 16, 34, 0.08);
+}
+
+.col-fragrance-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--lux-gold, #C8A96A);
+    margin: 0;
+}
+
+.col-fragrance-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+}
+
+.col-fragrance-actions .lux-btn {
+    padding: 0.65rem 1.25rem;
+    font-size: 0.72rem;
+}
+
+/* Comparison table */
+.col-page-compare {
+    background: #faf8f4;
+    border-top: 1px solid rgba(200, 169, 106, 0.15);
+    border-bottom: 1px solid rgba(200, 169, 106, 0.15);
+}
+
+.col-compare-wrap {
+    overflow-x: auto;
+    border-radius: 16px;
+    border: 1px solid rgba(6, 16, 34, 0.08);
+    background: #fff;
+    box-shadow: 0 8px 32px rgba(6, 16, 34, 0.04);
+}
+
+.col-compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+.col-compare-table th,
+.col-compare-table td {
+    padding: 1rem 1.25rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(6, 16, 34, 0.06);
+}
+
+.col-compare-table th {
+    background: var(--lux-navy-mid, #0A2163);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.col-compare-table tbody tr:hover {
+    background: rgba(200, 169, 106, 0.06);
+}
+
+.col-compare-table td strong {
+    color: var(--lux-navy, #061022);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+}
+
+/* CTA cards */
+.col-page-cta {
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.col-cta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+}
+
+.col-cta-card {
+    display: block;
+    padding: 1.75rem;
+    background: #fff;
+    border: 1px solid rgba(200, 169, 106, 0.25);
+    border-radius: 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.col-cta-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(6, 16, 34, 0.1);
+    border-color: var(--lux-gold, #C8A96A);
+    color: inherit;
+}
+
+.col-cta-card i {
+    font-size: 1.75rem;
+    color: var(--lux-gold, #C8A96A);
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+.col-cta-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    color: var(--lux-navy, #061022);
+    margin-bottom: 0.5rem;
+}
+
+.col-cta-card p {
+    font-size: 0.85rem;
+    color: rgba(6, 16, 34, 0.65);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+body.page-collection .nav-menu-link[href*="collection"] {
+    color: var(--lux-gold, #C8A96A) !important;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .col-fragrance-row,
+    .col-fragrance-row.is-reverse {
+        grid-template-columns: 1fr;
+    }
+
+    .col-fragrance-row.is-reverse .col-fragrance-visual,
+    .col-fragrance-row.is-reverse .col-fragrance-details {
+        order: unset;
+    }
+
+    .col-cta-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .col-compare-table thead {
+        display: none;
+    }
+
+    .col-compare-table tr {
+        display: block;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid rgba(6, 16, 34, 0.08);
+    }
+
+    .col-compare-table td {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.65rem 1rem;
+        border: none;
+    }
+
+    .col-compare-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--lux-navy-mid, #0A2163);
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        flex-shrink: 0;
+    }
+}
+
+@media (max-width: 575px) {
+    .col-fragrance-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .col-fragrance-actions .lux-btn,
+    .col-fragrance-actions form {
+        width: 100%;
+    }
+
+    .col-fragrance-actions form button {
+        width: 100%;
+    }
+
+    .col-fragrance-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

@@ -1,0 +1,545 @@
+/* ===== Shop Your Favorites — polished split-screen ===== */
+
+.shop-favorites-section {
+    --fav-navy: #061022;
+    --fav-navy-mid: #0a1628;
+    --fav-panel: #0b1830;
+    --fav-gold: #c8a96a;
+    --fav-white: #ffffff;
+    --fav-slot-gap: clamp(10px, 1.6vw, 20px);
+    --fav-platform-h: 48px;
+    --fav-hotspot: clamp(34px, 4.5vw, 42px);
+    position: relative;
+    z-index: 10;
+    scroll-margin-top: 120px;
+    overflow: hidden;
+}
+
+/* --- 50/50 split --- */
+.fav-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: clamp(540px, 74vh, 720px);
+    align-items: stretch;
+}
+
+/* ========== LEFT: Visual showcase ========== */
+.fav-split-visual {
+    position: relative;
+    background: #07090d;
+    overflow: hidden;
+    min-height: 440px;
+}
+
+.fav-scene-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.fav-scene-ambient {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+    opacity: 0.18;
+    filter: blur(3px) saturate(0.65);
+    transform: scale(1.1);
+}
+
+.fav-scene-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+        linear-gradient(105deg, rgba(0, 0, 0, 0.62) 0%, transparent 48%),
+        linear-gradient(to top, rgba(0, 0, 0, 0.78) 0%, transparent 52%),
+        radial-gradient(ellipse 65% 45% at 50% 78%, rgba(200, 169, 106, 0.14) 0%, transparent 62%);
+    pointer-events: none;
+}
+
+.fav-scene-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.fav-scene-glow-a {
+    width: 280px;
+    height: 280px;
+    bottom: 8%;
+    left: 12%;
+    background: rgba(200, 169, 106, 0.16);
+}
+
+.fav-scene-glow-b {
+    width: 200px;
+    height: 200px;
+    top: 18%;
+    right: 8%;
+    background: rgba(255, 255, 255, 0.035);
+}
+
+/* Equal columns — hotspots, bottles, platforms share one vertical axis */
+.fav-bottles-showcase {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: end;
+    column-gap: var(--fav-slot-gap);
+    height: 100%;
+    min-height: inherit;
+    width: 100%;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: clamp(48px, 7vw, 72px) clamp(20px, 3.5vw, 40px) clamp(28px, 4vw, 44px);
+    box-sizing: border-box;
+}
+
+.fav-bottle-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    cursor: pointer;
+    isolation: isolate;
+}
+
+/* Uniform platform — same height & baseline for all five */
+.fav-block {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 108%;
+    height: var(--fav-platform-h);
+    transform: translateX(-50%) perspective(120px) rotateX(12deg);
+    transform-origin: center bottom;
+    background: linear-gradient(160deg, #3e3e42 0%, #232326 42%, #101012 100%);
+    box-shadow:
+        0 -1px 0 rgba(200, 169, 106, 0.22),
+        0 10px 28px rgba(0, 0, 0, 0.5);
+    z-index: 0;
+    border-radius: 3px;
+}
+
+.fav-slot-1,
+.fav-slot-2,
+.fav-slot-3,
+.fav-slot-4,
+.fav-slot-5 {
+    --block-h: var(--fav-platform-h);
+}
+
+.fav-pedestal {
+    width: 72%;
+    height: 6px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, #2a2a2e 0%, #0e0e10 100%);
+    z-index: 1;
+    border-radius: 1px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+    flex-shrink: 0;
+}
+
+.fav-bottle-wrap {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: calc(var(--fav-platform-h) - 4px);
+    z-index: 2;
+    padding-top: calc(var(--fav-hotspot) + 14px);
+}
+
+.fav-bottle-img {
+    display: block;
+    width: 100%;
+    height: clamp(140px, 24vw, 250px);
+    object-fit: contain;
+    object-position: bottom center;
+    filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.55));
+    transition: transform 0.5s cubic-bezier(0.34, 1.2, 0.64, 1), filter 0.5s ease, opacity 0.5s ease;
+    opacity: 0.72;
+}
+
+.fav-bottle-slot.is-highlighted .fav-bottle-img,
+.fav-bottle-slot:has(.fav-hotspot.is-active) .fav-bottle-img {
+    transform: scale(1.08) translateY(-8px);
+    filter: drop-shadow(0 20px 40px rgba(200, 169, 106, 0.38));
+    opacity: 1;
+}
+
+.fav-bottle-slot.is-highlighted .fav-block,
+.fav-bottle-slot:has(.fav-hotspot.is-active) .fav-block {
+    box-shadow:
+        0 -1px 0 rgba(200, 169, 106, 0.45),
+        0 12px 32px rgba(0, 0, 0, 0.55),
+        0 0 24px rgba(200, 169, 106, 0.12);
+}
+
+/* Numbers aligned on one horizontal line above bottles */
+.fav-hotspot {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: var(--fav-hotspot);
+    height: var(--fav-hotspot);
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    background: rgba(8, 12, 20, 0.55);
+    color: var(--fav-white);
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(0.8rem, 1.6vw, 0.95rem);
+    font-weight: 700;
+    cursor: pointer;
+    z-index: 4;
+    transition: transform 0.35s cubic-bezier(0.34, 1.2, 0.64, 1),
+        background 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        color 0.3s ease;
+    padding: 0;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(6px);
+}
+
+.fav-hotspot:hover {
+    transform: translateX(-50%) scale(1.1);
+    border-color: var(--fav-gold);
+    box-shadow: 0 0 18px rgba(200, 169, 106, 0.35);
+}
+
+.fav-hotspot.is-active {
+    background: var(--fav-white);
+    color: var(--fav-navy);
+    border-color: var(--fav-white);
+    box-shadow: 0 0 0 3px rgba(200, 169, 106, 0.4);
+    transform: translateX(-50%) scale(1.12);
+}
+
+/* ========== RIGHT: Shop panel ========== */
+.fav-split-shop {
+    background: linear-gradient(165deg, var(--fav-navy) 0%, var(--fav-panel) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(40px, 6vw, 72px) clamp(28px, 5vw, 64px);
+    border-left: 1px solid rgba(200, 169, 106, 0.12);
+}
+
+.fav-shop-inner {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.shop-favorites-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.55rem, 2.8vw, 2rem);
+    font-weight: 600;
+    color: var(--fav-white);
+    margin: 0 0 14px;
+    letter-spacing: 0.04em;
+}
+
+.fav-title-rule {
+    width: 64px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(200, 169, 106, 0.7), transparent);
+    margin: 0 auto clamp(22px, 3.5vw, 32px);
+}
+
+.fav-product-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+    margin-bottom: 28px;
+}
+
+.fav-product-card:hover {
+    border-color: rgba(200, 169, 106, 0.4);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.38);
+    transform: translateY(-4px);
+    color: inherit;
+}
+
+.fav-product-card.is-switching {
+    opacity: 0.72;
+}
+
+.fav-product-card.is-switching .fav-card-hero-img {
+    transform: scale(0.97);
+    opacity: 0.55;
+}
+
+.fav-card-image-zone {
+    position: relative;
+    background: linear-gradient(180deg, #ececef 0%, #d8d8dc 100%);
+    padding: clamp(24px, 4vw, 36px) clamp(20px, 3vw, 28px);
+    min-height: clamp(210px, 30vw, 290px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.fav-card-image-zone::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 48%, rgba(0, 0, 0, 0.05) 100%);
+    pointer-events: none;
+}
+
+.fav-card-hero-img {
+    width: auto;
+    max-width: 78%;
+    max-height: clamp(190px, 28vw, 250px);
+    object-fit: contain;
+    object-position: center;
+    transition: transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1), opacity 0.35s ease;
+    filter: drop-shadow(0 10px 28px rgba(0, 0, 0, 0.18));
+}
+
+.fav-card-details {
+    padding: 22px 24px 24px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.28);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fav-card-brand {
+    display: block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.42);
+    margin-bottom: 8px;
+}
+
+.fav-card-name {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.35rem, 2.4vw, 1.65rem);
+    font-weight: 600;
+    color: var(--fav-white);
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+}
+
+.fav-card-prices {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.fav-card-regular {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.32);
+    text-decoration: line-through;
+}
+
+.fav-card-regular:empty {
+    display: none;
+}
+
+.fav-card-price {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--fav-gold);
+    letter-spacing: 0.04em;
+}
+
+.fav-card-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+    transition: color 0.25s ease, gap 0.25s ease;
+}
+
+.fav-product-card:hover .fav-card-cta {
+    color: var(--fav-gold);
+    gap: 10px;
+}
+
+/* Carousel nav — centered under card */
+.fav-carousel-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    width: 100%;
+}
+
+.fav-nav-track {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 132px;
+    padding: 0 8px;
+}
+
+.fav-nav-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.fav-dots {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--fav-panel);
+    padding: 0 10px;
+}
+
+.fav-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.22);
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.fav-dot.is-active {
+    background: var(--fav-white);
+    transform: scale(1.35);
+}
+
+.fav-nav-arrow {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.38);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.25s ease, transform 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.fav-nav-arrow:hover {
+    color: var(--fav-white);
+    transform: scale(1.08);
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 991px) {
+    .fav-split {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .fav-split-visual {
+        min-height: 380px;
+    }
+
+    .fav-bottles-showcase {
+        max-width: 480px;
+        padding-top: 40px;
+        padding-bottom: 32px;
+    }
+
+    .fav-split-shop {
+        border-left: none;
+        border-top: 1px solid rgba(200, 169, 106, 0.12);
+        padding: 48px 24px 56px;
+    }
+
+    .fav-shop-inner {
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 575px) {
+    .fav-bottles-showcase {
+        column-gap: 6px;
+        padding-left: 12px;
+        padding-right: 12px;
+        max-width: none;
+    }
+
+    .fav-bottle-img {
+        height: clamp(110px, 30vw, 160px);
+    }
+
+    .fav-hotspot {
+        --fav-hotspot: 28px;
+        font-size: 0.72rem;
+    }
+
+    .fav-bottle-wrap {
+        padding-top: calc(28px + 10px);
+    }
+
+    .fav-card-image-zone {
+        min-height: 180px;
+    }
+
+    .shop-favorites-title {
+        font-size: 1.4rem;
+    }
+}
+
+/* 4 bottles or fewer — keep equal columns */
+.fav-bottles-showcase:has(.fav-bottle-slot:nth-child(4):last-child) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    max-width: 460px;
+}
+
+.fav-bottles-showcase:has(.fav-bottle-slot:nth-child(3):last-child) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 360px;
+}

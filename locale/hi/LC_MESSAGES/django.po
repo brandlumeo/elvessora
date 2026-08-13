@@ -1,0 +1,151 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: hi\n"
+
+msgid "Language"
+msgstr "भाषा"
+
+msgid "Select language"
+msgstr "भाषा चुनें"
+
+msgid "Luxury Perfumes"
+msgstr "लक्ज़री परफ्यूम"
+
+msgid "Discover luxury fragrances at %(brand)s. Shop perfumes by fragrance family, occasion, and more."
+msgstr "%(brand)s पर लक्ज़री खुशबू खोजें। परिवार, अवसर और अधिक के अनुसार खरीदें।"
+
+msgid "Free shipping on orders above %(amount)s"
+msgstr "%(amount)s से ऊपर के ऑर्डर पर मुफ़्त शिपिंग"
+
+msgid "Free shipping %(amount)s+"
+msgstr "मुफ़्त शिपिंग %(amount)s+"
+
+msgid "Track Order"
+msgstr "ऑर्डर ट्रैक करें"
+
+msgid "Contact"
+msgstr "संपर्क"
+
+msgid "Chat on WhatsApp"
+msgstr "व्हाट्सऐप पर चैट करें"
+
+msgid "Shop"
+msgstr "शॉप"
+
+msgid "All Perfumes"
+msgstr "सभी परफ्यूम"
+
+msgid "Best Sellers"
+msgstr "बेस्ट सेलर"
+
+msgid "New Arrivals"
+msgstr "नए आगमन"
+
+msgid "Gift Sets"
+msgstr "गिफ्ट सेट"
+
+msgid "Policies"
+msgstr "नीतियाँ"
+
+msgid "Privacy Policy"
+msgstr "गोपनीयता नीति"
+
+msgid "Terms & Conditions"
+msgstr "नियम और शर्तें"
+
+msgid "Shipping Policy"
+msgstr "शिपिंग नीति"
+
+msgid "Return & Refund"
+msgstr "वापसी और रिफंड"
+
+msgid "Help"
+msgstr "सहायता"
+
+msgid "FAQ"
+msgstr "अक्सर पूछे जाने वाले प्रश्न"
+
+msgid "Contact Us"
+msgstr "हमसे संपर्क करें"
+
+msgid "Returns"
+msgstr "रिटर्न"
+
+msgid "Newsletter"
+msgstr "न्यूज़लेटर"
+
+msgid "Subscribe for exclusive offers and new arrivals."
+msgstr "विशेष ऑफ़र और नए आगमन के लिए सदस्यता लें।"
+
+msgid "Your email"
+msgstr "आपका ईमेल"
+
+msgid "Subscribe"
+msgstr "सब्सक्राइब"
+
+msgid "All rights reserved."
+msgstr "सर्वाधिकार सुरक्षित।"
+
+msgid "Privacy"
+msgstr "गोपनीयता"
+
+msgid "Terms"
+msgstr "शर्तें"
+
+msgid "Shipping"
+msgstr "शिपिंग"
+
+msgid "Cookies"
+msgstr "कुकीज़"
+
+msgid "Home"
+msgstr "होम"
+
+msgid "Collection"
+msgstr "कलेक्शन"
+
+msgid "Perfume Finder"
+msgstr "परफ्यूम फाइंडर"
+
+msgid "About Us"
+msgstr "हमारे बारे में"
+
+msgid "Search"
+msgstr "खोज"
+
+msgid "Search perfumes"
+msgstr "परफ्यूम खोजें"
+
+msgid "Wishlist"
+msgstr "विशलिस्ट"
+
+msgid "Cart"
+msgstr "कार्ट"
+
+msgid "Account"
+msgstr "खाता"
+
+msgid "My Profile"
+msgstr "मेरी प्रोफ़ाइल"
+
+msgid "Orders"
+msgstr "ऑर्डर"
+
+msgid "Addresses"
+msgstr "पते"
+
+msgid "Admin Dashboard"
+msgstr "एडमिन डैशबोर्ड"
+
+msgid "Logout"
+msgstr "लॉग आउट"
+
+msgid "Sign In"
+msgstr "साइन इन"
+
+msgid "Menu"
+msgstr "मेनू"
+
+msgid "Search fragrances..."
+msgstr "खुशबू खोजें..."

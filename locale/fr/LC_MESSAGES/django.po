@@ -1,0 +1,151 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: fr\n"
+
+msgid "Language"
+msgstr "Langue"
+
+msgid "Select language"
+msgstr "Choisir la langue"
+
+msgid "Luxury Perfumes"
+msgstr "Parfums de luxe"
+
+msgid "Discover luxury fragrances at %(brand)s. Shop perfumes by fragrance family, occasion, and more."
+msgstr "Découvrez les fragrances de luxe chez %(brand)s. Achetez par famille olfactive, occasion et plus."
+
+msgid "Free shipping on orders above %(amount)s"
+msgstr "Livraison gratuite dès %(amount)s"
+
+msgid "Free shipping %(amount)s+"
+msgstr "Livraison gratuite %(amount)s+"
+
+msgid "Track Order"
+msgstr "Suivre la commande"
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "Chat on WhatsApp"
+msgstr "Discuter sur WhatsApp"
+
+msgid "Shop"
+msgstr "Boutique"
+
+msgid "All Perfumes"
+msgstr "Tous les parfums"
+
+msgid "Best Sellers"
+msgstr "Meilleures ventes"
+
+msgid "New Arrivals"
+msgstr "Nouveautés"
+
+msgid "Gift Sets"
+msgstr "Coffrets cadeaux"
+
+msgid "Policies"
+msgstr "Politiques"
+
+msgid "Privacy Policy"
+msgstr "Politique de confidentialité"
+
+msgid "Terms & Conditions"
+msgstr "Conditions générales"
+
+msgid "Shipping Policy"
+msgstr "Politique de livraison"
+
+msgid "Return & Refund"
+msgstr "Retours et remboursements"
+
+msgid "Help"
+msgstr "Aide"
+
+msgid "FAQ"
+msgstr "FAQ"
+
+msgid "Contact Us"
+msgstr "Nous contacter"
+
+msgid "Returns"
+msgstr "Retours"
+
+msgid "Newsletter"
+msgstr "Newsletter"
+
+msgid "Subscribe for exclusive offers and new arrivals."
+msgstr "Abonnez-vous pour des offres exclusives et les nouveautés."
+
+msgid "Your email"
+msgstr "Votre e-mail"
+
+msgid "Subscribe"
+msgstr "S'abonner"
+
+msgid "All rights reserved."
+msgstr "Tous droits réservés."
+
+msgid "Privacy"
+msgstr "Confidentialité"
+
+msgid "Terms"
+msgstr "Conditions"
+
+msgid "Shipping"
+msgstr "Livraison"
+
+msgid "Cookies"
+msgstr "Cookies"
+
+msgid "Home"
+msgstr "Accueil"
+
+msgid "Collection"
+msgstr "Collection"
+
+msgid "Perfume Finder"
+msgstr "Trouver mon parfum"
+
+msgid "About Us"
+msgstr "À propos"
+
+msgid "Search"
+msgstr "Rechercher"
+
+msgid "Search perfumes"
+msgstr "Rechercher des parfums"
+
+msgid "Wishlist"
+msgstr "Liste de souhaits"
+
+msgid "Cart"
+msgstr "Panier"
+
+msgid "Account"
+msgstr "Compte"
+
+msgid "My Profile"
+msgstr "Mon profil"
+
+msgid "Orders"
+msgstr "Commandes"
+
+msgid "Addresses"
+msgstr "Adresses"
+
+msgid "Admin Dashboard"
+msgstr "Tableau d'administration"
+
+msgid "Logout"
+msgstr "Déconnexion"
+
+msgid "Sign In"
+msgstr "Connexion"
+
+msgid "Menu"
+msgstr "Menu"
+
+msgid "Search fragrances..."
+msgstr "Rechercher des fragrances..."

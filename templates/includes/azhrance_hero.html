@@ -1,0 +1,45 @@
+{% load static %}
+<section class="az-hero" id="azHero">
+    <div class="az-hero-slides">
+        <div class="az-hero-slide is-active" data-slide="0">
+            <img src="{% static 'images/ezgif-frame-025.png' %}" alt="" class="az-hero-bg-img" loading="eager">
+            <div class="az-hero-overlay"></div>
+        </div>
+        <div class="az-hero-slide" data-slide="1">
+            <img src="{% static 'images/products/elvessora-moon-blossom.png' %}" alt="" class="az-hero-bg-img" loading="lazy">
+            <div class="az-hero-overlay"></div>
+        </div>
+        <div class="az-hero-slide" data-slide="2">
+            <img src="{% static 'images/products/elvessora-divine-aura.png' %}" alt="" class="az-hero-bg-img" loading="lazy">
+            <div class="az-hero-overlay"></div>
+        </div>
+    </div>
+
+    <div class="az-hero-promo">
+        <span>Signature Collection · UAE Crafted Luxury</span>
+    </div>
+
+    <div class="az-hero-content">
+        <div class="container">
+            <p class="az-hero-eyebrow">Elvessora</p>
+            <h1 class="az-hero-title">
+                <span class="az-hero-title-line is-active" data-slide="0">Discover Your<br>Signature Scent</span>
+                <span class="az-hero-title-line" data-slide="1">Moon Blossom<br><em>Extrait de Parfum</em></span>
+                <span class="az-hero-title-line" data-slide="2">Divine Aura<br><em>Fresh Luxury</em></span>
+            </h1>
+            <p class="az-hero-sub is-active" data-slide="0">Explore our curated collection of luxury fragrances crafted for timeless elegance.</p>
+            <p class="az-hero-sub" data-slide="1">A luminous night-floral fragrance — soft, romantic, and beautifully refined.</p>
+            <p class="az-hero-sub" data-slide="2">Celestial fresh-floral opening with lavender, jasmine, and white musk.</p>
+            <div class="az-hero-actions">
+                <a href="{% url 'products:shop' %}" class="az-hero-btn az-hero-btn-primary">Shop Collection</a>
+                <a href="#favoritesPicker" class="az-hero-btn az-hero-btn-ghost">Shop Favorites</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="az-hero-dots">
+        <button type="button" class="az-hero-dot is-active" data-slide="0" aria-label="Slide 1"></button>
+        <button type="button" class="az-hero-dot" data-slide="1" aria-label="Slide 2"></button>
+        <button type="button" class="az-hero-dot" data-slide="2" aria-label="Slide 3"></button>
+    </div>
+</section>

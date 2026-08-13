@@ -1,0 +1,34 @@
+{% load fragrance_extras %}
+
+{% with accords=product.main_accords|parse_main_accords %}
+{% if accords %}
+<div class="fp-accords">
+    <div class="fp-panel-head">
+        <span class="fp-panel-kicker">Character</span>
+        <h3>Main Accords</h3>
+        <p>How strongly each facet comes through</p>
+    </div>
+    <ul class="fp-accord-list">
+        {% for accord in accords %}
+        <li class="fp-accord-item">
+            <div class="fp-accord-label">
+                <span class="fp-accord-name">{{ accord.name }}</span>
+                <span class="fp-accord-pct">{{ accord.weight }}%</span>
+            </div>
+            <div class="fp-accord-track">
+                <div class="fp-accord-fill" style="--fp-w: {{ accord.weight }}%; --fp-i: {{ forloop.counter0 }};"></div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% else %}
+<div class="fp-accords fp-accords-empty">
+    <div class="fp-panel-head">
+        <span class="fp-panel-kicker">Character</span>
+        <h3>Main Accords</h3>
+        <p>Accords will appear when set for this fragrance.</p>
+    </div>
+</div>
+{% endif %}
+{% endwith %}

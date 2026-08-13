@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load humanize static fragrance_extras %}
+
+{% block title %}Shopping Cart — {{ site_settings.brand_name }}{% endblock %}
+{% block extra_css %}<link href="{% static 'css/auth-shop.css' %}" rel="stylesheet">{% endblock %}
+
+{% block content %}
+<div class="shop-page">
+  <div class="container">
+    <div class="shop-page-header">
+      <h1>Shopping Cart</h1>
+      <p>{% if cart_items %}{{ cart_items|length }} item{{ cart_items|length|pluralize }} in your bag{% else %}Your bag is empty{% endif %}</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-8">
+        {% if cart_items %}
+        <div class="cart-lux-card">
+          {% for item in cart_items %}
+          {% if item.product %}{% product_image_url item.product as image_url %}{% endif %}
+          <div class="cart-lux-item">
+            {% if item.gift_set and item.gift_set.image %}
+            <img src="{{ item.gift_set.image.url }}" alt="{{ item.gift_set.name }}">
+            {% elif image_url %}
+            <img src="{{ image_url }}" alt="{{ item.product.name }}">
+            {% else %}
+            <img src="{% static 'images/products/elvessora-moon-blossom.png' %}" alt="">
+            {% endif %}
+            <div class="cart-lux-item-info">
+              <h5>
+                {% if item.gift_set %}
+                  <a href="{% url 'products:gift_set_detail' item.gift_set.slug %}">{{ item.gift_set.name }}</a>
+                {% else %}
+                  <a href="{% url 'products:product_detail' item.product.slug %}">{{ item.product|product_short_name }}</a>
+                {% endif %}
+              </h5>
+              {% if item.variant %}<small class="text-muted">{{ item.variant.size }}</small>{% endif %}
+              <p class="mb-0 mt-1" style="color:#C8A96A;">{{ item.unit_price|format_price }}</p>
+            </div>
+            <form action="{% url 'cart:update' item.id %}" method="post" class="cart-qty-form">
+              {% csrf_token %}
+              <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="10" aria-label="Quantity">
+              <button type="submit" class="btn btn-sm btn-outline-gold" title="Update"><i class="bi bi-arrow-repeat"></i></button>
+            </form>
+            <strong style="color:#fff; min-width:70px; text-align:right;">{{ item.line_total|format_price }}</strong>
+            <a href="{% url 'cart:remove' item.id %}" class="text-danger ms-2" title="Remove"><i class="bi bi-trash"></i></a>
+          </div>
+          {% endfor %}
+        </div>
+
+        <form action="{% url 'cart:apply_coupon' %}" method="post" class="d-flex gap-2 mt-3">
+          {% csrf_token %}
+          <input type="text" name="coupon_code" class="form-control" placeholder="Coupon code" value="{{ coupon_code }}" style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.12);color:#fff;">
+          <button type="submit" class="btn btn-outline-gold">Apply</button>
+        </form>
+        {% else %}
+        <div class="empty-state-lux">
+          <i class="bi bi-bag"></i>
+          <p>Your cart is empty.</p>
+          <a href="{% url 'products:shop' %}" class="btn btn-gold">Shop Our 5 Signature Scents</a>
+        </div>
+        {% endif %}
+      </div>
+
+      {% if cart_items %}
+      <div class="col-lg-4">
+        <div class="order-summary-lux">
+          <h5>Order Summary</h5>
+          <div class="summary-row"><span>Subtotal</span><span>{{ totals.subtotal|format_price }}</span></div>
+          {% if totals.discount %}<div class="summary-row" style="color:#4ade80;"><span>Discount</span><span>-{{ totals.discount|format_price }}</span></div>{% endif %}
+          <div class="summary-row"><span>Shipping</span><span>{% if totals.shipping %}{{ totals.shipping|format_price }}{% else %}FREE{% endif %}</span></div>
+          <div class="summary-row"><span>Tax (VAT)</span><span>{{ totals.tax|format_price }}</span></div>
+          <div class="summary-row total"><span>Total</span><span>{{ totals.total|format_price }}</span></div>
+          <a href="{% url 'orders:checkout' %}" class="btn btn-gold w-100 mt-3">Proceed to Checkout</a>
+          <a href="{% url 'products:shop' %}" class="btn btn-outline-gold w-100 mt-2">Continue Shopping</a>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,236 @@
+{% load static %}
+<section class="pf-section{% if standalone %} pf-section--standalone{% endif %}" id="luxPerfumeFinder" data-perfume-finder>
+  <div class="container">
+
+    <!-- Hero banner with uploaded image -->
+    <div class="pf-hero lux-reveal lux-reveal--instant">
+      <div class="pf-hero-copy">
+        <span class="pf-label">Perfume Finder</span>
+        <h2 class="pf-title">Discover Your Signature Scent</h2>
+        <p class="pf-subtitle">Use quick filters or take our guided quiz to find the perfect Elvessora fragrance for you.</p>
+        <ul class="pf-hero-perks">
+          <li><i class="bi bi-stars"></i> Personalised matches</li>
+          <li><i class="bi bi-sliders"></i> Quick filters or guided quiz</li>
+          <li><i class="bi bi-gem"></i> Signature Elvessora collection</li>
+        </ul>
+      </div>
+      <div class="pf-hero-visual">
+        <div class="pf-hero-frame">
+          <div class="pf-hero-frame-glow" aria-hidden="true"></div>
+          <img src="{% static 'images/perfume-finder/elvessora-finder-hero.png' %}"
+               alt="Couple enjoying Elvessora luxury fragrances"
+               class="pf-hero-img"
+               width="680"
+               height="850"
+               loading="eager">
+          <span class="pf-hero-badge">Elvessora Signature</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mode tabs -->
+    <div class="pf-mode-tabs lux-reveal lux-reveal--instant" role="tablist">
+      <button type="button" class="pf-mode-btn is-active" data-pf-mode="filters" role="tab" aria-selected="true">
+        <i class="bi bi-sliders"></i> Quick Filters
+      </button>
+      <button type="button" class="pf-mode-btn" data-pf-mode="quiz" role="tab" aria-selected="false">
+        <i class="bi bi-magic"></i> Quiz Mode
+      </button>
+    </div>
+
+    <!-- Quick Filters panel -->
+    <div class="pf-panel pf-panel--filters is-active" data-pf-panel="filters">
+      <div class="pf-filters-grid">
+
+        <div class="pf-filter-group">
+          <label class="pf-filter-label">For Whom</label>
+          <div class="pf-btn-group" data-filter="gender">
+            <button type="button" class="pf-chip pf-chip--btn" data-value="men">Men</button>
+            <button type="button" class="pf-chip pf-chip--btn" data-value="women">Women</button>
+            <button type="button" class="pf-chip pf-chip--btn is-active" data-value="unisex">Unisex</button>
+          </div>
+        </div>
+
+        <div class="pf-filter-group pf-filter-group--wide">
+          <label class="pf-filter-label">Occasion <small>(multi-select)</small></label>
+          <div class="pf-chip-row" data-filter="occasions" data-multi="true">
+            <button type="button" class="pf-chip" data-value="daily">Daily</button>
+            <button type="button" class="pf-chip" data-value="office">Office</button>
+            <button type="button" class="pf-chip" data-value="date">Date Night</button>
+            <button type="button" class="pf-chip" data-value="party">Party</button>
+            <button type="button" class="pf-chip" data-value="wedding">Wedding</button>
+            <button type="button" class="pf-chip" data-value="gift">Gift</button>
+          </div>
+        </div>
+
+        <div class="pf-filter-group pf-filter-group--wide">
+          <label class="pf-filter-label">Season <small>(multi-select)</small></label>
+          <div class="pf-chip-row" data-filter="seasons" data-multi="true">
+            <button type="button" class="pf-chip" data-value="spring">Spring</button>
+            <button type="button" class="pf-chip" data-value="summer">Summer</button>
+            <button type="button" class="pf-chip" data-value="autumn">Autumn</button>
+            <button type="button" class="pf-chip" data-value="winter">Winter</button>
+            <button type="button" class="pf-chip is-active" data-value="all">All Seasons</button>
+          </div>
+        </div>
+
+        <div class="pf-filter-group pf-filter-group--wide">
+          <label class="pf-filter-label">Scent Family <small>(multi-select)</small></label>
+          <div class="pf-chip-row" data-filter="scent_families" data-multi="true">
+            <button type="button" class="pf-chip" data-value="fresh">Fresh</button>
+            <button type="button" class="pf-chip" data-value="woody">Woody</button>
+            <button type="button" class="pf-chip" data-value="floral">Floral</button>
+            <button type="button" class="pf-chip" data-value="oriental">Oriental</button>
+            <button type="button" class="pf-chip" data-value="citrus">Citrus</button>
+            <button type="button" class="pf-chip" data-value="spicy">Spicy</button>
+            <button type="button" class="pf-chip" data-value="sweet">Sweet</button>
+            <button type="button" class="pf-chip" data-value="aquatic">Aquatic</button>
+          </div>
+        </div>
+
+        <div class="pf-filter-group">
+          <label class="pf-filter-label">Intensity</label>
+          <div class="pf-btn-group" data-filter="intensity">
+            <button type="button" class="pf-chip pf-chip--btn" data-value="light">Light</button>
+            <button type="button" class="pf-chip pf-chip--btn is-active" data-value="moderate">Moderate</button>
+            <button type="button" class="pf-chip pf-chip--btn" data-value="strong">Strong</button>
+            <button type="button" class="pf-chip pf-chip--btn" data-value="long-lasting">Long-lasting</button>
+          </div>
+        </div>
+
+        <div class="pf-filter-group pf-filter-group--wide">
+          <label class="pf-filter-label">Budget: <span data-budget-display>AED 100 – 1,000+</span></label>
+          <div class="pf-budget-slider">
+            <input type="range" min="100" max="1000" value="1000" step="50" data-filter="budget_max" aria-label="Maximum budget in AED">
+            <div class="pf-budget-labels"><span>AED 100</span><span>AED 1,000+</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pf-actions">
+        <button type="button" class="pf-btn pf-btn--gold" data-pf-find>Find My Fragrance</button>
+        <button type="button" class="pf-btn pf-btn--outline" data-pf-clear>Clear All Filters</button>
+      </div>
+    </div>
+
+    <!-- Quiz panel -->
+    <div class="pf-panel pf-panel--quiz" data-pf-panel="quiz">
+      <div class="pf-quiz-progress">
+        <div class="pf-quiz-progress-bar" data-quiz-progress style="width:14%"></div>
+      </div>
+      <p class="pf-quiz-step-label" data-quiz-step-label>Question 1 of 7</p>
+
+      <div class="pf-quiz-steps" data-quiz-steps>
+        <div class="pf-quiz-step is-active" data-step="0">
+          <h3 class="pf-quiz-q">Who is this fragrance for?</h3>
+          <div class="pf-quiz-options">
+            <button type="button" class="pf-quiz-opt" data-quiz-key="gender" data-value="women">For Her</button>
+            <button type="button" class="pf-quiz-opt" data-quiz-key="gender" data-value="men">For Him</button>
+            <button type="button" class="pf-quiz-opt" data-quiz-key="gender" data-value="unisex">For Everyone</button>
+          </div>
+        </div>
+        <div class="pf-quiz-step" data-step="1">
+          <h3 class="pf-quiz-q">When will you wear it most?</h3>
+          <div class="pf-quiz-options pf-quiz-options--grid">
+            <button type="button" class="pf-quiz-opt" data-quiz-key="occasion" data-value="daily">Daily Wear</button>
+            <button type="button" class="pf-quiz-opt" data-quiz-key="occasion" data-value="office">Office</button>
+            <button type="button" class="pf-quiz-opt" data-quiz-key="occasion" data-value="date">Date Night</button>
+            <button type="button" class="pf-quiz-opt" data-quiz-key="occasion" data-value="party">Party</button>
+            <button type="button" class="pf-quiz-opt" data-quiz-key="occasion" data-value="wedding">Wedding</button>
+            <button type="button" class="pf-quiz-opt" data-quiz-key="occasion" data-value="gift">As a Gift</button>
+          </div>
+        </div>
+        <div class="pf-quiz-step" data-step="2">
+          <h3 class="pf-quiz-q">Which season feels right?</h3>
+          <div class="pf-quiz-options pf-quiz-options--grid">
+            <button type="button" class="pf-quiz-opt" data-quiz-key="season" data-value="spring">Spring</button>
+            <button type="button" class="pf-quiz-opt" data-quiz-key="season" data-value="summer">Summer</button>
+            <button type="button" class="pf-quiz-opt" data-quiz-key="season" data-value="autumn">Autumn</button>
+            <button type="button" class="pf-quiz-opt" data-quiz-key="season" data-value="winter">Winter</button>
+            <button type="button" class="pf-quiz-opt" data-quiz-key="season" data-value="all">All Seasons</button>
+          </div>
+        </div>
+        <div class="pf-quiz-step" data-step="3">
+          <h3 class="pf-quiz-q">What scent family do you love?</h3>
+          <div class="pf-quiz-options pf-quiz-options--grid">
+            <button type="button" class="pf-quiz-opt" data-quiz-key="scent_family" data-value="fresh">Fresh</button>
+            <button type="button" class="pf-quiz-opt" data-quiz-key="scent_family" data-value="floral">Floral</button>
+            <button type="button" class="pf-quiz-opt" data-quiz-key="scent_family" data-value="fruity">Fruity</button>
+            <button type="button" class="pf-quiz-opt" data-quiz-key="scent_family" data-value="oriental">Oriental</button>
+            <button type="button" class="pf-quiz-opt" data-quiz-key="scent_family" data-value="woody">Woody</button>
+            <button type="button" class="pf-quiz-opt" data-quiz-key="scent_family" data-value="aquatic">Aquatic</button>
+          </div>
+        </div>
+        <div class="pf-quiz-step" data-step="4">
+          <h3 class="pf-quiz-q">How strong should your fragrance be?</h3>
+          <div class="pf-quiz-options">
+            <button type="button" class="pf-quiz-opt" data-quiz-key="intensity" data-value="light">Light &amp; Subtle</button>
+            <button type="button" class="pf-quiz-opt" data-quiz-key="intensity" data-value="moderate">Moderate</button>
+            <button type="button" class="pf-quiz-opt" data-quiz-key="intensity" data-value="strong">Strong</button>
+            <button type="button" class="pf-quiz-opt" data-quiz-key="intensity" data-value="long-lasting">Long-lasting</button>
+          </div>
+        </div>
+        <div class="pf-quiz-step" data-step="5">
+          <h3 class="pf-quiz-q">What's your budget?</h3>
+          <div class="pf-quiz-budget">
+            <input type="range" min="100" max="1000" value="500" step="50" data-quiz-key="budget_max" aria-label="Budget">
+            <p class="pf-quiz-budget-val" data-quiz-budget-display>Up to AED 500</p>
+          </div>
+          <button type="button" class="pf-btn pf-btn--gold pf-quiz-next mt-3" data-quiz-next>Budget looks good</button>
+        </div>
+        <div class="pf-quiz-step" data-step="6">
+          <h3 class="pf-quiz-q">Any favourite notes? <small>(optional)</small></h3>
+          <input type="text" class="pf-quiz-input" data-quiz-key="notes" placeholder="e.g. rose, amber, vanilla, jasmine">
+          <button type="button" class="pf-btn pf-btn--gold pf-quiz-finish mt-3" data-quiz-finish>See My Matches</button>
+          <button type="button" class="pf-btn pf-btn--ghost pf-quiz-finish mt-2" data-quiz-finish-skip>Skip &amp; See Results</button>
+        </div>
+      </div>
+
+      <div class="pf-quiz-nav">
+        <button type="button" class="pf-btn pf-btn--ghost" data-quiz-back hidden>Back</button>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="pf-results" data-pf-results hidden>
+      <div class="pf-results-head">
+        <h3 class="pf-results-title" data-results-title>Your Matches</h3>
+        <p class="pf-results-sub" data-results-sub></p>
+      </div>
+      <div class="pf-results-grid" data-results-grid></div>
+      <div class="pf-no-results" data-no-results hidden>
+        <i class="bi bi-search"></i>
+        <h4>No exact matches found</h4>
+        <p>Try relaxing your filters or explore our full signature collection.</p>
+        <button type="button" class="pf-btn pf-btn--gold" data-pf-clear>Clear Filters</button>
+        <a href="{% url 'products:collection' %}" class="pf-btn pf-btn--outline">View Collection</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Floating help button -->
+  <button type="button" class="pf-help-float" data-pf-help aria-label="Need help choosing? Start quiz">
+    <i class="bi bi-stars"></i>
+    <span>Need Help Choosing?</span>
+  </button>
+
+  <!-- Compare bar -->
+  <div class="pf-compare-bar" data-compare-bar hidden>
+    <span data-compare-count>0 selected</span>
+    <button type="button" class="pf-btn pf-btn--gold pf-btn--sm" data-compare-open>Compare</button>
+    <button type="button" class="pf-btn pf-btn--ghost pf-btn--sm" data-compare-clear>Clear</button>
+  </div>
+
+  <!-- Compare modal -->
+  <div class="pf-compare-modal" data-compare-modal hidden>
+    <div class="pf-compare-modal-inner">
+      <button type="button" class="pf-compare-close" data-compare-close aria-label="Close">&times;</button>
+      <h3>Compare Fragrances</h3>
+      <div class="pf-compare-table-wrap" data-compare-table></div>
+    </div>
+  </div>
+
+  {{ finder_catalog|json_script:"pf-catalog-data" }}
+</section>

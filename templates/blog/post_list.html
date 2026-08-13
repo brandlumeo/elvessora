@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog — {{ site_settings.brand_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4" style="font-family:var(--font-serif, Georgia, serif);">Journal</h1>
+    <div class="mb-4">
+        <a href="{% url 'blog:post_list' %}" class="btn btn-sm {% if not active_category %}btn-dark{% else %}btn-outline-dark{% endif %}">All</a>
+        {% for cat in categories %}
+        <a href="?category={{ cat.slug }}" class="btn btn-sm {% if active_category == cat.slug %}btn-dark{% else %}btn-outline-dark{% endif %}">{{ cat.name }}</a>
+        {% endfor %}
+    </div>
+    <div class="row g-4">
+        {% for post in posts %}
+        <div class="col-md-6 col-lg-4">
+            <a href="{{ post.get_absolute_url }}" class="text-decoration-none text-dark">
+                {% if post.featured_image %}
+                <img src="{{ post.featured_image.url }}" alt="" class="img-fluid mb-3" style="height:200px;width:100%;object-fit:cover;">
+                {% endif %}
+                <h3 style="font-size:1.2rem;font-family:var(--font-serif, Georgia, serif);">{{ post.title }}</h3>
+                <p class="text-muted small">{{ post.excerpt|truncatewords:22 }}</p>
+            </a>
+        </div>
+        {% empty %}
+        <p class="text-muted">No posts published yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,184 @@
+{% load static humanize fragrance_extras %}
+
+  <!-- SIGNATURE LINE GRID -->
+  {% if signature_fragrances %}
+  <section class="lux-section lux-collection col-page-catalog" id="luxCollection">
+    <div class="container">
+      <div class="lux-section-head lux-reveal lux-reveal--instant">
+        <div>
+          <span class="lux-label">The Signature Line</span>
+          <h2 class="lux-heading">Five Fragrances. One Legacy.</h2>
+          <p class="lux-text col-page-intro">Explore each Elvessora creation — crafted in Dubai with rare ingredients and timeless elegance.</p>
+        </div>
+        <a href="{% url 'products:shop' %}" class="lux-link-arrow">Shop All <i class="bi bi-arrow-right"></i></a>
+      </div>
+
+      <div class="col-signature-grid">
+        {% for product in signature_fragrances %}
+        {% product_image_url product as product_img %}
+        <article class="col-fragrance-row lux-reveal lux-reveal--instant{% if forloop.counter|divisibleby:2 %} is-reverse{% endif %}">
+          <div class="col-fragrance-visual">
+            <a href="{% url 'products:product_detail' product.slug %}" class="col-fragrance-image-link">
+              <img src="{{ product_img }}" alt="{{ product.name }}" loading="lazy">
+            </a>
+            {% if product.is_best_seller %}<span class="col-fragrance-tag">Bestseller</span>{% endif %}
+            {% if product.is_new_arrival %}<span class="col-fragrance-tag is-new">New</span>{% endif %}
+          </div>
+          <div class="col-fragrance-details">
+            <span class="lux-label">No. {{ forloop.counter|stringformat:"02d" }}</span>
+            <h3 class="col-fragrance-name">{{ product|product_short_name }}</h3>
+            <p class="col-fragrance-desc">{{ product.description|truncatewords:36 }}</p>
+            <div class="col-fragrance-notes">
+              {% if product.top_notes %}
+              <div class="col-note-line"><strong>Top</strong> {{ product.top_notes }}</div>
+              {% endif %}
+              {% if product.heart_notes %}
+              <div class="col-note-line"><strong>Heart</strong> {{ product.heart_notes }}</div>
+              {% endif %}
+              {% if product.base_notes %}
+              <div class="col-note-line"><strong>Base</strong> {{ product.base_notes }}</div>
+              {% endif %}
+            </div>
+            <div class="col-fragrance-meta">
+              <span>{{ product.get_gender_display }}</span>
+              <span>{{ product.get_concentration_display|default:"EDP" }}</span>
+              {% for family in product.fragrance_families.all|slice:":2" %}
+              <span>{{ family.get_name_display }}</span>
+              {% endfor %}
+            </div>
+            <div class="col-fragrance-footer">
+              <p class="col-fragrance-price">{{ product.current_price|format_price }}</p>
+              <div class="col-fragrance-actions">
+                <a href="{% url 'products:product_detail' product.slug %}" class="lux-btn lux-btn-gold">View Fragrance</a>
+                <form action="{% url 'cart:add' %}" method="post" class="d-inline">
+                  {% csrf_token %}
+                  <input type="hidden" name="product_id" value="{{ product.id }}">
+                  {% if product.default_variant %}<input type="hidden" name="variant_id" value="{{ product.default_variant.id }}">{% endif %}
+                  <button type="submit" class="lux-btn lux-btn-outline">Add to Cart</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON TABLE -->
+  <section class="lux-section col-page-compare" id="luxCompare">
+    <div class="container">
+      <div class="lux-section-head text-center lux-reveal lux-reveal--instant">
+        <span class="lux-label">Compare</span>
+        <h2 class="lux-heading">Find Your Match at a Glance</h2>
+      </div>
+      <div class="col-compare-wrap lux-reveal lux-reveal--instant">
+        <table class="col-compare-table">
+          <thead>
+            <tr>
+              <th>Fragrance</th>
+              <th>Character</th>
+              <th>Top Notes</th>
+              <th>Price</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in signature_fragrances %}
+            <tr>
+              <td data-label="Fragrance"><strong>{{ product|product_short_name }}</strong></td>
+              <td data-label="Character">{{ product|product_scent_line }}</td>
+              <td data-label="Top Notes">{{ product.top_notes|truncatewords:8 }}</td>
+              <td data-label="Price">{{ product.current_price|format_price }}</td>
+              <td data-label=""><a href="{% url 'products:product_detail' product.slug %}" class="lux-link-arrow">View</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- SHOP BY FRAGRANCE -->
+  {% if fragrance_families %}
+  <section class="lux-section lux-discover col-page-families" id="luxDiscover">
+    <div class="container">
+      <div class="lux-section-head">
+        <div>
+          <span class="lux-label">Browse by Profile</span>
+          <h2 class="lux-heading">Shop by Fragrance Family</h2>
+        </div>
+      </div>
+      <div class="lux-family-row">
+        {% for family in fragrance_families|slice:":8" %}
+        <a href="{% url 'products:fragrance_family' family.slug %}" class="lux-family-chip">
+          <i class="bi bi-flower1"></i>
+          <span>{{ family.get_name_display }}</span>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- GIFT SETS -->
+  {% if gift_sets %}
+  <section class="lux-section lux-gifts col-page-gifts" id="luxGifts">
+    <div class="container">
+      <div class="lux-section-head lux-gifts-head">
+        <div>
+          <span class="lux-label">Gift the Collection</span>
+          <h2 class="lux-heading">Curated Gift Sets</h2>
+        </div>
+        <a href="{% url 'products:gift_sets' %}" class="lux-link-arrow">View All Gifts <i class="bi bi-arrow-right"></i></a>
+      </div>
+      <div class="row g-4">
+        {% for gift_set in gift_sets %}
+        <div class="col-6 col-lg-3">
+          <article class="lux-gift-card">
+            <a href="{% url 'products:gift_set_detail' gift_set.slug %}" class="lux-gift-image">
+              {% if gift_set.display_image_url %}
+              <img src="{{ gift_set.display_image_url }}" alt="{{ gift_set.name }}" loading="lazy">
+              {% else %}
+              <div class="lux-gift-image-empty" aria-hidden="true">
+                <i class="bi bi-gift"></i>
+                <span>Gift Set</span>
+              </div>
+              {% endif %}
+            </a>
+            <h3><a href="{% url 'products:gift_set_detail' gift_set.slug %}">{{ gift_set.name }}</a></h3>
+            <p class="lux-product-price">{{ gift_set.current_price|format_price }}</p>
+          </article>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- CTA STRIP — links to home features, not duplicated -->
+  <section class="lux-section col-page-cta" id="luxCollectionCta">
+    <div class="container">
+      <div class="col-cta-grid">
+        <a href="{% url 'quiz:finder' %}" class="col-cta-card">
+          <i class="bi bi-magic"></i>
+          <h3>Not sure which scent?</h3>
+          <p>Take our Perfume Finder quiz for personalised recommendations.</p>
+          <span class="lux-link-arrow">Start Finder <i class="bi bi-arrow-right"></i></span>
+        </a>
+        <a href="{% url 'core:home' %}#luxStory" class="col-cta-card">
+          <i class="bi bi-gem"></i>
+          <h3>Our Story</h3>
+          <p>Discover the craftsmanship behind Elvessora fragrances.</p>
+          <span class="lux-link-arrow">Learn More <i class="bi bi-arrow-right"></i></span>
+        </a>
+        <a href="{% url 'products:shop' %}" class="col-cta-card">
+          <i class="bi bi-bag"></i>
+          <h3>Ready to shop?</h3>
+          <p>Browse all signature fragrances and add to cart.</p>
+          <span class="lux-link-arrow">Shop Now <i class="bi bi-arrow-right"></i></span>
+        </a>
+      </div>
+    </div>
+  </section>

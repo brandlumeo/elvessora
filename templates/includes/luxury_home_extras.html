@@ -1,0 +1,63 @@
+{% if homepage.show_favorites_picker %}
+{% include 'includes/favorites_picker.html' %}
+{% endif %}
+
+{% if homepage.show_reviews %}
+<section class="lux-subsection testimonials-section">
+    <div class="container">
+        <div class="lux-section-head">
+            <div>
+                <span class="lux-label">Reviews</span>
+                <h2 class="lux-heading">Loved by Our Customers</h2>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="lux-testimonial-card">
+                    <div class="lux-testimonial-stars">★★★★★</div>
+                    <p>"Absolutely stunning fragrance! Long-lasting and gets compliments all day. Packaging was luxurious too."</p>
+                    <strong>— Priya M.</strong>
+                    <small>Dubai, UAE</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="lux-testimonial-card is-featured">
+                    <div class="lux-testimonial-stars">★★★★★</div>
+                    <p>"The perfume finder quiz helped me pick the perfect scent. WhatsApp support was incredibly helpful!"</p>
+                    <strong>— Rahul K.</strong>
+                    <small>Abu Dhabi, UAE</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="lux-testimonial-card">
+                    <div class="lux-testimonial-stars">★★★★★</div>
+                    <p>"Ordered a gift set for my wife's birthday. Beautiful wrapping and she loved every perfume in the box."</p>
+                    <strong>— Ananya S.</strong>
+                    <small>Sharjah, UAE</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if site_settings.whatsapp_number %}
+<section class="lux-subsection lux-whatsapp-cta">
+    <div class="container">
+        <div class="lux-whatsapp-box">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-8">
+                    <h2 class="lux-heading"><i class="bi bi-whatsapp"></i> Need Help Choosing?</h2>
+                    <p class="lux-text mb-0">Chat with our fragrance experts on WhatsApp for personalized recommendations.</p>
+                </div>
+                <div class="col-lg-4">
+                    <a href="https://wa.me/{{ site_settings.whatsapp_number }}?text=Hi%20{{ site_settings.brand_name }}%2C%20I%20need%20help%20choosing%20a%20perfume"
+                       class="lux-btn lux-btn-gold w-100 justify-content-center" target="_blank" rel="noopener">
+                        <i class="bi bi-whatsapp"></i> Chat on WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}

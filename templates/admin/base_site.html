@@ -1,0 +1,80 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | Elvessora Admin{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="{% static 'admin/css/elvassora_admin.css' %}">
+{% endblock %}
+
+{% block header %}
+<header id="header" class="elv-admin-header">
+    {% if has_permission %}
+    <div class="elv-adm-bar">
+        <div class="elv-adm-inner">
+            <a href="{% url 'admin:index' %}" class="elv-adm-brand">
+                <span class="elv-adm-logo">Elvessora</span>
+            </a>
+
+            <nav class="elv-adm-nav" aria-label="Admin navigation">
+                <a href="{% url 'admin:index' %}" class="elv-adm-nav-item{% if request.path == '/admin/' %} active{% endif %}">
+                    <i class="bi bi-grid-1x2"></i><span>Dashboard</span>
+                </a>
+                <a href="{% url 'admin:products_product_changelist' %}" class="elv-adm-nav-item{% if '/admin/products/product' in request.path %} active{% endif %}">
+                    <i class="bi bi-droplet"></i><span>Products</span>
+                </a>
+                <a href="{% url 'admin:inventory_inventory_changelist' %}" class="elv-adm-nav-item{% if '/admin/inventory/' in request.path %} active{% endif %}">
+                    <i class="bi bi-boxes"></i><span>Inventory</span>
+                </a>
+                <a href="{% url 'admin:orders_order_changelist' %}" class="elv-adm-nav-item{% if '/admin/orders/order' in request.path %} active{% endif %}">
+                    <i class="bi bi-bag-check"></i><span>Orders</span>
+                </a>
+                <a href="{% url 'admin:accounts_customer_changelist' %}" class="elv-adm-nav-item{% if '/admin/accounts/customer' in request.path %} active{% endif %}">
+                    <i class="bi bi-people"></i><span>Customers</span>
+                </a>
+                <div class="elv-adm-more{% if '/admin/products/category' in request.path or '/admin/products/collection' in request.path or '/admin/orders/coupon' in request.path or '/admin/reviews/' in request.path or '/admin/core/legalpage' in request.path or '/admin/core/sitesettings' in request.path %} active{% endif %}">
+                    <button type="button" class="elv-adm-nav-item elv-adm-more-toggle" aria-haspopup="true">
+                        <i class="bi bi-three-dots"></i><span>More</span>
+                    </button>
+                    <div class="elv-adm-more-menu">
+                        <a href="{% url 'admin:core_sitesettings_change' 1 %}"><i class="bi bi-gear"></i> Settings</a>
+                        <a href="{% url 'admin:products_category_changelist' %}"><i class="bi bi-folder"></i> Categories</a>
+                        <a href="{% url 'admin:products_collection_changelist' %}"><i class="bi bi-collection"></i> Collections</a>
+                        <a href="{% url 'admin:orders_coupon_changelist' %}"><i class="bi bi-tag"></i> Coupons</a>
+                        <a href="{% url 'admin:reviews_review_changelist' %}"><i class="bi bi-star"></i> Reviews</a>
+                        <a href="{% url 'admin:core_legalpage_changelist' %}"><i class="bi bi-file-text"></i> Legal Pages</a>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="elv-adm-actions">
+                <a href="/" class="elv-adm-btn-outline" target="_blank" rel="noopener" title="View Store">
+                    <i class="bi bi-box-arrow-up-right"></i>
+                </a>
+                <div class="elv-adm-user">
+                    {% block userlinks %}
+                    {% if user.has_usable_password %}
+                    <a href="{% url 'admin:password_change' %}" class="elv-adm-icon-btn" title="Change password">
+                        <i class="bi bi-key"></i>
+                    </a>
+                    {% endif %}
+                    <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="elv-adm-icon-btn" title="Log out">
+                            <i class="bi bi-box-arrow-right"></i>
+                        </button>
+                    </form>
+                    {% include "admin/color_theme_toggle.html" %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</header>
+{% endblock %}

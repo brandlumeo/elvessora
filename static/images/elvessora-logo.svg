@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 44" role="img" aria-label="Elvessora">
+  <defs>
+    <linearGradient id="elvGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e8d4a8"/>
+      <stop offset="50%" stop-color="#c8a96a"/>
+      <stop offset="100%" stop-color="#9a7844"/>
+    </linearGradient>
+    <linearGradient id="elvGoldLight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f0e2c4"/>
+      <stop offset="100%" stop-color="#c8a96a"/>
+    </linearGradient>
+  </defs>
+  <!-- Geometric monogram -->
+  <g transform="translate(2, 4)">
+    <rect x="0" y="0" width="36" height="36" rx="4" fill="none" stroke="url(#elvGold)" stroke-width="1.2"/>
+    <path d="M9 10h18M9 18h14M9 26h18" stroke="url(#elvGoldLight)" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M28 8 L34 18 L28 28" fill="none" stroke="url(#elvGold)" stroke-width="1.5" stroke-linejoin="round"/>
+  </g>
+  <!-- Wordmark -->
+  <text x="48" y="31" fill="url(#elvGold)" font-family="Cormorant Garamond, Georgia, serif" font-size="28" font-weight="600" letter-spacing="5.5">ELVESSORA</text>
+</svg>

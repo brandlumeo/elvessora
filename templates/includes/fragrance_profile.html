@@ -1,0 +1,32 @@
+{% load fragrance_extras %}
+
+<section class="fp-section" id="fragranceProfile">
+    <div class="fp-bg" aria-hidden="true"></div>
+    <div class="container position-relative">
+        <header class="fp-header">
+            <span class="fp-eyebrow">Olfactory Composition</span>
+            <h2 class="fp-title">Fragrance Profile</h2>
+            <p class="fp-lead">The notes and accords that shape {{ product|product_short_name }}.</p>
+            <div class="fp-meta">
+                {% if product.concentration %}
+                <span class="fp-chip"><i class="bi bi-droplet-half"></i> {{ product.get_concentration_display }}</span>
+                {% endif %}
+                {% if product.longevity %}
+                <span class="fp-chip"><i class="bi bi-hourglass-split"></i> {{ product.longevity }}</span>
+                {% endif %}
+                {% if product.sillage %}
+                <span class="fp-chip"><i class="bi bi-wind"></i> {{ product.sillage }}</span>
+                {% endif %}
+            </div>
+        </header>
+
+        <div class="fp-grid">
+            <aside class="fp-panel fp-panel-accords">
+                {% include 'includes/main_accords.html' %}
+            </aside>
+            <div class="fp-panel fp-panel-pyramid">
+                {% include 'includes/perfume_pyramid.html' %}
+            </div>
+        </div>
+    </div>
+</section>

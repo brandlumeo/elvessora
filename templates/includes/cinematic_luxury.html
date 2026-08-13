@@ -1,0 +1,124 @@
+{% load static humanize fragrance_extras %}
+<section id="cinematicLuxury" class="cine-experience">
+
+  <!-- ========== 1. FRAGRANCE NOTES ========== -->
+  <section id="cineNotes" class="cine-section cine-notes-section">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-5 cine-reveal">
+          <div class="cine-notes-bottle-wrap">
+            <img src="{% static 'images/elvessora-bottle-ref2.png' %}" alt="Elvessora" class="cine-notes-bottle" loading="lazy">
+            <div class="cine-ingredient cine-ing-1">🌿</div>
+            <div class="cine-ingredient cine-ing-2">🌼</div>
+            <div class="cine-ingredient cine-ing-3">✨</div>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <span class="cine-section-num">01</span>
+          <span class="cine-label">Fragrance Notes</span>
+          <h2 class="cine-heading">The Pyramid</h2>
+          <div class="cine-note-cards">
+            <article class="cine-note-card cine-reveal" data-delay="0">
+              <span class="cine-note-icon">🍋</span>
+              <div>
+                <h3>Top Notes</h3>
+                <p>Bergamot, Lemon, Green Apple</p>
+              </div>
+            </article>
+            <article class="cine-note-card cine-reveal" data-delay="1">
+              <span class="cine-note-icon">🌸</span>
+              <div>
+                <h3>Heart Notes</h3>
+                <p>Lavender, Jasmine, Rose</p>
+              </div>
+            </article>
+            <article class="cine-note-card cine-reveal" data-delay="2">
+              <span class="cine-note-icon">🪵</span>
+              <div>
+                <h3>Base Notes</h3>
+                <p>Amber, Musk, Sandalwood</p>
+              </div>
+            </article>
+          </div>
+          <a href="{% url 'products:shop' %}" class="cine-btn cine-btn-outline mt-4">Discover More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 2. COLLECTION CAROUSEL ========== -->
+  <section id="cineCollection" class="cine-section cine-collection-section">
+    <div class="container text-center">
+      <span class="cine-section-num">02</span>
+      <span class="cine-label">Signature Scents</span>
+      <h2 class="cine-heading mb-5">Our Collection</h2>
+
+      <div class="cine-carousel" data-carousel>
+        <button type="button" class="cine-carousel-arrow cine-carousel-prev" aria-label="Previous"><i class="bi bi-chevron-left"></i></button>
+        <div class="cine-carousel-stage">
+          <div class="cine-carousel-ring"></div>
+          <div class="cine-carousel-viewport">
+            <div class="cine-carousel-track">
+              {% for product in signature_fragrances %}
+              {% product_image_url product as image_url %}
+              <div class="cine-carousel-item{% if forloop.first %} is-active{% endif %}"
+                   data-index="{{ forloop.counter0 }}"
+                   data-name="{{ product.name|cut:'Elvessora ' }}"
+                   data-price="{{ product.current_price|format_price }}"
+                   data-url="{% url 'products:product_detail' product.slug %}">
+                <div class="cine-carousel-item-inner">
+                  <img src="{% if image_url %}{{ image_url }}{% else %}{% static 'images/elvessora-bottle-ref2.png' %}{% endif %}"
+                       alt="{{ product.name }}"
+                       loading="lazy">
+                </div>
+                <p class="cine-carousel-label">{{ product.name|cut:"Elvessora " }}</p>
+              </div>
+              {% empty %}
+              <div class="cine-carousel-item is-active" data-index="0">
+                <div class="cine-carousel-item-inner">
+                  <img src="{% static 'images/elvessora-bottle-ref2.png' %}" alt="Elvessora" loading="lazy">
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <button type="button" class="cine-carousel-arrow cine-carousel-next" aria-label="Next"><i class="bi bi-chevron-right"></i></button>
+      </div>
+
+      <div class="cine-carousel-info cine-reveal">
+        <h3 id="cineCarouselName">{% if signature_fragrances.0 %}{{ signature_fragrances.0.name|cut:"Elvessora " }}{% else %}Elvessora{% endif %}</h3>
+        <p id="cineCarouselPrice">{% if signature_fragrances.0 %}{{ signature_fragrances.0.current_price|format_price }}{% endif %}</p>
+        <a id="cineCarouselLink" href="{% if signature_fragrances.0 %}{% url 'products:product_detail' signature_fragrances.0.slug %}{% else %}{% url 'products:shop' %}{% endif %}" class="cine-btn cine-btn-solid mt-3">View Product</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 3. FINAL CTA ========== -->
+  <section id="cineCTA" class="cine-section cine-cta-section">
+    <div class="cine-cta-glow"></div>
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6 cine-reveal">
+          <span class="cine-section-num">03</span>
+          <span class="cine-label">Experience</span>
+          <h2 class="cine-heading">Experience Luxury<br><em>In Every Spray</em></h2>
+          <p class="cine-text">Discover the Elvessora signature — UAE crafted for those who wear confidence effortlessly.</p>
+          <div class="cine-hero-btns">
+            <a href="{% url 'products:shop' %}" class="cine-btn cine-btn-solid">Shop Now</a>
+            <a href="{% url 'products:shop' %}" class="cine-btn cine-btn-outline">Explore Collection</a>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="cine-cta-stage">
+            <img src="{% static 'images/elvessora-bottle-ref2.png' %}"
+                 alt="Elvessora perfume bottle"
+                 class="cine-cta-bottle-img"
+                 loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</section>

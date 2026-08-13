@@ -1,0 +1,106 @@
+{% load humanize static fragrance_extras %}
+{% with first_product=signature_fragrances|first %}
+<section class="shop-favorites-section" id="favoritesPicker">
+    {% if signature_fragrances %}
+    <div class="fav-split">
+
+        <!-- LEFT: Visual exploration — bottles + hotspots -->
+        <div class="fav-split-visual">
+            <div class="fav-scene-bg" aria-hidden="true">
+                {% product_image_url first_product as ambient_url %}
+                <img src="{{ ambient_url }}"
+                     alt=""
+                     class="fav-scene-ambient"
+                     loading="lazy">
+            </div>
+            <div class="fav-scene-overlay"></div>
+            <div class="fav-scene-glow fav-scene-glow-a"></div>
+            <div class="fav-scene-glow fav-scene-glow-b"></div>
+
+            <div class="fav-bottles-showcase">
+                {% for product in signature_fragrances %}
+                {% product_image_url product as image_url %}
+                <div class="fav-bottle-slot fav-slot-{{ forloop.counter }}">
+                    <div class="fav-block" aria-hidden="true"></div>
+                    <div class="fav-pedestal" aria-hidden="true"></div>
+                    <div class="fav-bottle-wrap">
+                        <img src="{{ image_url }}"
+                             alt="{{ product.name }}"
+                             class="fav-bottle-img"
+                             loading="lazy">
+                        <button type="button"
+                                class="fav-hotspot{% if forloop.first %} is-active{% endif %}"
+                                data-index="{{ forloop.counter0 }}"
+                                data-name="{{ product.name }}"
+                                data-short="{{ product|product_short_name }}"
+                                data-price="{{ product.current_price|format_price }}"
+                                data-regular="{% if product.offer_price %}{{ product.regular_price|format_price }}{% endif %}"
+                                data-image="{{ image_url }}"
+                                data-url="{% url 'products:product_detail' product.slug %}"
+                                aria-label="View {{ product|product_short_name }}">
+                            {{ forloop.counter }}
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- RIGHT: Shop carousel panel -->
+        <div class="fav-split-shop">
+            <div class="fav-shop-inner">
+                <h2 class="shop-favorites-title">Shop Your Favorites</h2>
+                <div class="fav-title-rule"></div>
+
+                <a href="{% url 'products:product_detail' first_product.slug %}"
+                   class="fav-product-card"
+                   id="favProductCard">
+                    <div class="fav-card-image-zone">
+                        {% product_image_url first_product as image_url %}
+                        <img src="{{ image_url }}"
+                             alt="{{ first_product.name }}"
+                             class="fav-card-hero-img"
+                             id="favCardThumb"
+                             loading="lazy">
+                    </div>
+                    <div class="fav-card-details">
+                        <span class="fav-card-brand">Elvessora</span>
+                        <span class="fav-card-name" id="favCardName">{{ first_product|product_short_name }}</span>
+                        <div class="fav-card-prices">
+                            <span class="fav-card-regular" id="favCardRegular">{% if first_product.offer_price %}{{ first_product.regular_price|format_price }}{% endif %}</span>
+                            <span class="fav-card-price" id="favCardPrice">{{ first_product.current_price|format_price }}</span>
+                        </div>
+                        <span class="fav-card-cta">View Product <i class="bi bi-arrow-right"></i></span>
+                    </div>
+                </a>
+
+                <div class="fav-carousel-nav">
+                    <button type="button" class="fav-nav-arrow fav-nav-prev" aria-label="Previous fragrance">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <div class="fav-nav-track">
+                        <span class="fav-nav-line"></span>
+                        <div class="fav-dots" role="tablist">
+                            {% for product in signature_fragrances %}
+                            <button type="button"
+                                    class="fav-dot{% if forloop.first %} is-active{% endif %}"
+                                    data-index="{{ forloop.counter0 }}"
+                                    aria-label="Fragrance {{ forloop.counter }}"></button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <button type="button" class="fav-nav-arrow fav-nav-next" aria-label="Next fragrance">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {% else %}
+    <div class="container py-5 text-center">
+        <p class="text-muted">Signature fragrances loading soon.</p>
+    </div>
+    {% endif %}
+</section>
+{% endwith %}

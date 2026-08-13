@@ -1,0 +1,98 @@
+{% load fragrance_extras %}
+
+<div class="fp-pyramid">
+    <div class="fp-panel-head">
+        <span class="fp-panel-kicker">Structure</span>
+        <h3>Perfume Pyramid</h3>
+        <p>How the scent unfolds from first spray to dry-down</p>
+    </div>
+
+    <div class="fp-timeline">
+        {% if product.top_notes %}
+        <article class="fp-tier fp-tier-top">
+            <div class="fp-tier-rail" aria-hidden="true">
+                <span class="fp-tier-dot"></span>
+            </div>
+            <div class="fp-tier-content">
+                <div class="fp-tier-head">
+                    <span class="fp-tier-num">01</span>
+                    <div>
+                        <h4>Top Notes</h4>
+                        <p>First impression · 15–30 min</p>
+                    </div>
+                </div>
+                <div class="fp-notes">
+                    {% for note in product.top_notes|split_fragrance_notes %}
+                    {% with note_meta=note|fragrance_note_icon %}
+                    <div class="fp-note">
+                        <span class="fp-note-icon" style="--note-color: {{ note_meta.color }};">
+                            <i class="bi {{ note_meta.icon }}"></i>
+                        </span>
+                        <span class="fp-note-name">{{ note }}</span>
+                    </div>
+                    {% endwith %}
+                    {% endfor %}
+                </div>
+            </div>
+        </article>
+        {% endif %}
+
+        {% if product.heart_notes %}
+        <article class="fp-tier fp-tier-heart">
+            <div class="fp-tier-rail" aria-hidden="true">
+                <span class="fp-tier-dot"></span>
+            </div>
+            <div class="fp-tier-content">
+                <div class="fp-tier-head">
+                    <span class="fp-tier-num">02</span>
+                    <div>
+                        <h4>Heart Notes</h4>
+                        <p>The soul of the fragrance · 2–4 hours</p>
+                    </div>
+                </div>
+                <div class="fp-notes">
+                    {% for note in product.heart_notes|split_fragrance_notes %}
+                    {% with note_meta=note|fragrance_note_icon %}
+                    <div class="fp-note">
+                        <span class="fp-note-icon" style="--note-color: {{ note_meta.color }};">
+                            <i class="bi {{ note_meta.icon }}"></i>
+                        </span>
+                        <span class="fp-note-name">{{ note }}</span>
+                    </div>
+                    {% endwith %}
+                    {% endfor %}
+                </div>
+            </div>
+        </article>
+        {% endif %}
+
+        {% if product.base_notes %}
+        <article class="fp-tier fp-tier-base">
+            <div class="fp-tier-rail" aria-hidden="true">
+                <span class="fp-tier-dot"></span>
+            </div>
+            <div class="fp-tier-content">
+                <div class="fp-tier-head">
+                    <span class="fp-tier-num">03</span>
+                    <div>
+                        <h4>Base Notes</h4>
+                        <p>Lasting trail · 6+ hours</p>
+                    </div>
+                </div>
+                <div class="fp-notes">
+                    {% for note in product.base_notes|split_fragrance_notes %}
+                    {% with note_meta=note|fragrance_note_icon %}
+                    <div class="fp-note">
+                        <span class="fp-note-icon" style="--note-color: {{ note_meta.color }};">
+                            <i class="bi {{ note_meta.icon }}"></i>
+                        </span>
+                        <span class="fp-note-name">{{ note }}</span>
+                    </div>
+                    {% endwith %}
+                    {% endfor %}
+                </div>
+            </div>
+        </article>
+        {% endif %}
+    </div>
+</div>

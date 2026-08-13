@@ -1,0 +1,151 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: ar\n"
+
+msgid "Language"
+msgstr "اللغة"
+
+msgid "Select language"
+msgstr "اختر اللغة"
+
+msgid "Luxury Perfumes"
+msgstr "عطور فاخرة"
+
+msgid "Discover luxury fragrances at %(brand)s. Shop perfumes by fragrance family, occasion, and more."
+msgstr "اكتشف العطور الفاخرة لدى %(brand)s. تسوّق حسب العائلة العطرية والمناسبة والمزيد."
+
+msgid "Free shipping on orders above %(amount)s"
+msgstr "شحن مجاني للطلبات فوق %(amount)s"
+
+msgid "Free shipping %(amount)s+"
+msgstr "شحن مجاني %(amount)s+"
+
+msgid "Track Order"
+msgstr "تتبع الطلب"
+
+msgid "Contact"
+msgstr "اتصل بنا"
+
+msgid "Chat on WhatsApp"
+msgstr "تواصل عبر واتساب"
+
+msgid "Shop"
+msgstr "تسوق"
+
+msgid "All Perfumes"
+msgstr "جميع العطور"
+
+msgid "Best Sellers"
+msgstr "الأكثر مبيعاً"
+
+msgid "New Arrivals"
+msgstr "وصل حديثاً"
+
+msgid "Gift Sets"
+msgstr "أطقم الهدايا"
+
+msgid "Policies"
+msgstr "السياسات"
+
+msgid "Privacy Policy"
+msgstr "سياسة الخصوصية"
+
+msgid "Terms & Conditions"
+msgstr "الشروط والأحكام"
+
+msgid "Shipping Policy"
+msgstr "سياسة الشحن"
+
+msgid "Return & Refund"
+msgstr "الإرجاع والاسترداد"
+
+msgid "Help"
+msgstr "المساعدة"
+
+msgid "FAQ"
+msgstr "الأسئلة الشائعة"
+
+msgid "Contact Us"
+msgstr "تواصل معنا"
+
+msgid "Returns"
+msgstr "المرتجعات"
+
+msgid "Newsletter"
+msgstr "النشرة البريدية"
+
+msgid "Subscribe for exclusive offers and new arrivals."
+msgstr "اشترك للحصول على عروض حصرية والوصول الجديد."
+
+msgid "Your email"
+msgstr "بريدك الإلكتروني"
+
+msgid "Subscribe"
+msgstr "اشترك"
+
+msgid "All rights reserved."
+msgstr "جميع الحقوق محفوظة."
+
+msgid "Privacy"
+msgstr "الخصوصية"
+
+msgid "Terms"
+msgstr "الشروط"
+
+msgid "Shipping"
+msgstr "الشحن"
+
+msgid "Cookies"
+msgstr "ملفات تعريف الارتباط"
+
+msgid "Home"
+msgstr "الرئيسية"
+
+msgid "Collection"
+msgstr "المجموعة"
+
+msgid "Perfume Finder"
+msgstr "مكتشف العطور"
+
+msgid "About Us"
+msgstr "من نحن"
+
+msgid "Search"
+msgstr "بحث"
+
+msgid "Search perfumes"
+msgstr "ابحث عن العطور"
+
+msgid "Wishlist"
+msgstr "قائمة الأمنيات"
+
+msgid "Cart"
+msgstr "السلة"
+
+msgid "Account"
+msgstr "الحساب"
+
+msgid "My Profile"
+msgstr "ملفي الشخصي"
+
+msgid "Orders"
+msgstr "طلباتي"
+
+msgid "Addresses"
+msgstr "العناوين"
+
+msgid "Admin Dashboard"
+msgstr "لوحة التحكم"
+
+msgid "Logout"
+msgstr "تسجيل الخروج"
+
+msgid "Sign In"
+msgstr "تسجيل الدخول"
+
+msgid "Menu"
+msgstr "القائمة"
+
+msgid "Search fragrances..."
+msgstr "ابحث عن العطور..."

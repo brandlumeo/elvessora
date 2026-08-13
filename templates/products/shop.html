@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Shop Perfumes — {{ site_settings.brand_name }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <span class="section-label">Collection</span>
+        <h1>Shop Perfumes</h1>
+        <p class="text-muted">Our 5 signature Elvessora fragrances</p>
+    </div>
+</div>
+
+<div class="container pb-5">
+    <div class="row">
+        <div class="col-lg-3 mb-4">
+            <button type="button" class="btn btn-outline-gold filter-toggle-btn w-100 mb-3" id="filterToggle">
+                <i class="bi bi-sliders"></i> Show Filters
+            </button>
+            <div class="filter-sidebar" id="filterSidebar">
+                <h6><i class="bi bi-funnel"></i> Filters</h6>
+                <form method="get">
+                    {% if request.GET.q %}<input type="hidden" name="q" value="{{ request.GET.q }}">{% endif %}
+                    <div class="mb-3">
+                        <label class="form-label small">Gender</label>
+                        <select name="gender" class="form-select form-select-sm">
+                            <option value="">All</option>
+                            <option value="men" {% if request.GET.gender == 'men' %}selected{% endif %}>Men</option>
+                            <option value="women" {% if request.GET.gender == 'women' %}selected{% endif %}>Women</option>
+                            <option value="unisex" {% if request.GET.gender == 'unisex' %}selected{% endif %}>Unisex</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small">Fragrance Family</label>
+                        <select name="fragrance_family" class="form-select form-select-sm">
+                            <option value="">All</option>
+                            {% for f in fragrance_families %}
+                            <option value="{{ f.slug }}" {% if request.GET.fragrance_family == f.slug %}selected{% endif %}>{{ f.get_name_display }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small">Occasion</label>
+                        <select name="occasion" class="form-select form-select-sm">
+                            <option value="">All</option>
+                            {% for o in occasions %}
+                            <option value="{{ o.slug }}" {% if request.GET.occasion == o.slug %}selected{% endif %}>{{ o.get_name_display }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small">Min Price (AED)</label>
+                        <input type="number" name="min_price" class="form-control form-control-sm" value="{{ request.GET.min_price }}" placeholder="0">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small">Max Price (AED)</label>
+                        <input type="number" name="max_price" class="form-control form-control-sm" value="{{ request.GET.max_price }}" placeholder="10000">
+                    </div>
+                    <button type="submit" class="btn btn-gold btn-sm w-100">Apply Filters</button>
+                    <a href="{% url 'products:shop' %}" class="btn btn-link btn-sm w-100 text-muted">Clear All</a>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="shop-toolbar d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <span class="text-muted"><strong>{{ products|length }}</strong> fragrances found</span>
+                <select class="form-select form-select-sm w-auto" onchange="location.href='?sort='+this.value+'&{{ request.GET.urlencode }}'">
+                    <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest First</option>
+                    <option value="price_low" {% if sort == 'price_low' %}selected{% endif %}>Price: Low → High</option>
+                    <option value="price_high" {% if sort == 'price_high' %}selected{% endif %}>Price: High → Low</option>
+                    <option value="name" {% if sort == 'name' %}selected{% endif %}>Name A–Z</option>
+                    <option value="popular" {% if sort == 'popular' %}selected{% endif %}>Most Popular</option>
+                </select>
+            </div>
+            <div class="row g-3 g-md-4">
+                {% for product in products %}
+                {% include 'includes/product_card.html' %}
+                {% empty %}
+                <div class="col-12 text-center py-5">
+                    <i class="bi bi-search display-4 text-muted"></i>
+                    <p class="text-muted mt-4">No products found matching your criteria.</p>
+                    <a href="{% url 'products:shop' %}" class="btn btn-gold">Browse All</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

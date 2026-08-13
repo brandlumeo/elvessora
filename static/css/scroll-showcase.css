@@ -1,0 +1,280 @@
+/* ===== Scroll-driven luxury frame showcase ===== */
+
+.lux-scroll-showcase {
+    --lux-navy: #081526;
+    --lux-gold: #C8A96A;
+    --lux-silver: #E0DFE3;
+    --lux-ease: cubic-bezier(0.76, 0, 0.24, 1);
+    position: relative;
+    background: var(--lux-navy);
+    z-index: 3;
+}
+
+.lux-scroll-track {
+    height: 280vh;
+    position: relative;
+}
+
+.lux-scroll-pin {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--lux-navy);
+}
+
+.lux-frame-stage {
+    position: absolute;
+    inset: 0;
+}
+
+.lux-frame-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    image-rendering: auto;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
+
+.lux-frame-shine {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+        115deg,
+        transparent 40%,
+        rgba(255, 255, 255, 0.04) 50%,
+        transparent 60%
+    );
+    mix-blend-mode: overlay;
+}
+
+.lux-frame-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(to bottom, rgba(8, 21, 38, 0.45) 0%, transparent 20%, transparent 75%, rgba(8, 21, 38, 0.65) 100%),
+        radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.4) 100%);
+}
+
+.lux-frame-bloom {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 50% 42%, rgba(200, 169, 106, 0.07) 0%, transparent 55%);
+    mix-blend-mode: screen;
+}
+
+/* Overlay copy */
+.lux-scroll-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 24px 96px;
+    text-align: center;
+    pointer-events: none;
+    z-index: 4;
+}
+
+.lux-scroll-logo {
+    height: clamp(32px, 5vw, 48px);
+    width: auto;
+    margin-bottom: 14px;
+    opacity: 0;
+    transform: translateY(12px);
+    filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.35));
+}
+
+.lux-scroll-eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--lux-gold);
+    margin-bottom: 12px;
+    opacity: 0;
+    transform: translateY(16px);
+}
+
+.lux-scroll-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 600;
+    line-height: 1.05;
+    color: var(--lux-silver);
+    margin-bottom: 12px;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.4);
+}
+
+.lux-headline-line {
+    display: block;
+    opacity: 0;
+    transform: translateY(28px);
+}
+
+.lux-headline-gold {
+    font-style: italic;
+    color: var(--lux-gold);
+}
+
+.lux-scroll-tagline {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.55);
+    max-width: 380px;
+    margin-bottom: 24px;
+    opacity: 0;
+    transform: translateY(12px);
+}
+
+.lux-scroll-cta {
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 36px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--lux-navy);
+    border: 1px solid #fff;
+    background: #fff;
+    border-radius: 2px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+        box-shadow 0.5s var(--lux-ease),
+        background 0.5s var(--lux-ease),
+        transform 0.4s var(--lux-ease);
+}
+
+.lux-scroll-cta:hover,
+.lux-scroll-cta:focus-visible {
+    background: transparent;
+    color: #fff;
+    box-shadow: 0 0 32px rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+/* Loader */
+.lux-scroll-loader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background: var(--lux-navy);
+    z-index: 10;
+    transition: opacity 0.9s var(--lux-ease), visibility 0.9s;
+}
+
+.lux-scroll-loader.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.lux-loader-text {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.lux-loader-text em {
+    font-style: normal;
+    color: var(--lux-gold);
+}
+
+.lux-loader-bar {
+    width: 160px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.lux-loader-fill {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--lux-gold), #e2c992);
+    border-radius: 2px;
+    transition: width 0.25s var(--lux-ease);
+}
+
+.lux-loader-ring {
+    width: 36px;
+    height: 36px;
+    border: 2px solid rgba(200, 169, 106, 0.15);
+    border-top-color: var(--lux-gold);
+    border-radius: 50%;
+    animation: luxSpin 0.9s linear infinite;
+}
+
+@keyframes luxSpin {
+    to { transform: rotate(360deg); }
+}
+
+/* Scroll hint */
+.lux-scroll-hint {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    z-index: 5;
+    animation: luxHintPulse 2.4s ease-in-out infinite;
+    transition: opacity 0.5s var(--lux-ease);
+}
+
+.lux-scroll-hint i {
+    font-size: 0.85rem;
+}
+
+@keyframes luxHintPulse {
+    0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.4; }
+    50% { transform: translateX(-50%) translateY(7px); opacity: 0.85; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lux-scroll-track { height: auto; }
+    .lux-scroll-pin {
+        height: auto;
+        min-height: 70vh;
+        position: relative !important;
+    }
+    .lux-scroll-loader,
+    .lux-scroll-hint { display: none; }
+    .lux-scroll-overlay * {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .lux-scroll-track { height: 340vh; }
+    .lux-scroll-overlay { padding-bottom: 84px; }
+    .lux-scroll-headline { font-size: clamp(1.6rem, 8vw, 2.4rem); }
+    .lux-scroll-logo { height: 28px; }
+}

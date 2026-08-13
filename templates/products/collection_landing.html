@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% load humanize static fragrance_extras %}
+
+
+
+{% block title %}Our Collection — {{ site_settings.brand_name }}{% endblock %}
+
+
+
+{% block body_class %}page-luxury-home page-collection{% endblock %}
+
+
+
+{% block extra_css %}
+
+<link href="{% static 'css/luxury-home.css' %}" rel="stylesheet">
+
+<link href="{% static 'css/collection-page.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="lux-page">
+
+<div class="lux-home" id="luxCollectionPage">
+
+
+
+  <!-- COLLECTION PAGE HERO -->
+
+  <section class="lux-hero lux-collection-hero" id="luxCollectionHero">
+
+    <div class="lux-hero-bg"></div>
+
+    <div class="lux-hero-glow"></div>
+
+    <div class="container lux-hero-grid">
+
+      <div class="lux-hero-copy lux-reveal lux-reveal--instant">
+
+        <p class="lux-eyebrow">Elvessora Signature</p>
+
+        <h1 class="lux-hero-title">{{ homepage.collection_heading|linebreaksbr }}</h1>
+
+        <p class="lux-hero-desc">Five luxury fragrances crafted in Dubai — each with its own character, story, and signature accords. Explore the complete line below.</p>
+
+        <div class="lux-hero-btns">
+
+          <a href="#luxCollection" class="lux-btn lux-btn-gold">Explore Fragrances <i class="bi bi-arrow-down"></i></a>
+
+          <a href="{% url 'products:shop' %}" class="lux-btn lux-btn-outline">Shop Collection</a>
+
+        </div>
+
+      </div>
+
+      <div class="lux-hero-visual lux-reveal lux-reveal--instant">
+
+        <img src="{% static 'images/hero/elvessora-collection-hero-bottle.png' %}"
+
+             alt="{{ site_settings.brand_name }} signature fragrance"
+
+             class="lux-hero-feature-img lux-collection-hero-img"
+
+             loading="eager">
+
+      </div>
+
+    </div>
+
+    <nav class="lux-scroll-rail" aria-label="Page sections">
+
+      <a href="#luxCollection" class="is-active">01</a>
+
+      <a href="#luxCompare">02</a>
+
+      <a href="#luxDiscover">03</a>
+
+      <a href="#luxGifts">04</a>
+
+    </nav>
+
+  </section>
+
+
+
+  {% include 'includes/collection_page_sections.html' %}
+
+
+
+</div>
+
+</div><!-- .lux-page -->
+
+{% endblock %}
+
+
+
+{% block extra_js %}
+
+<script src="{% static 'js/luxury-home.js' %}" defer></script>
+
+{% endblock %}
+
+

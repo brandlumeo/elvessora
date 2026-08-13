@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}My Orders — {{ site_settings.brand_name }}{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h2>Order History</h2>
+    {% for order in orders %}
+    <div class="border-bottom py-3">
+        <div class="d-flex justify-content-between">
+            <div>
+                <strong>{{ order.order_number }}</strong>
+                <span class="badge bg-secondary ms-2">{{ order.get_status_display }}</span>
+                <p class="text-muted small mb-0">{{ order.created_at|date:"M d, Y" }} — ₹{{ order.total|floatformat:0|intcomma }}</p>
+            </div>
+            <div>
+                <a href="{% url 'orders:order_detail' order.order_number %}" class="btn btn-sm btn-outline-gold">Details</a>
+                <a href="{% url 'orders:reorder' order.order_number %}" class="btn btn-sm btn-gold">Reorder</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-muted">No orders yet. <a href="{% url 'products:shop' %}">Start shopping</a></p>
+    {% endfor %}
+</div>
+{% endblock %}

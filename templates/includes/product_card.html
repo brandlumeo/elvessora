@@ -1,0 +1,62 @@
+{% load humanize %}
+{% load fragrance_extras %}
+<div class="col-6 col-md-4 col-lg-3 d-flex">
+    <article class="product-card luxury-card w-100 d-flex flex-column{% if signature_card %} signature-product-card{% endif %}">
+        <div class="product-image">
+            <a href="{% url 'products:product_detail' product.slug %}" class="product-image-link">
+                {% product_image_url product as image_url %}
+                {% if image_url %}
+                <img src="{{ image_url }}" alt="{{ product.name }}" loading="lazy">
+                {% else %}
+                {% cycle 'variant-blue' 'variant-silver' 'variant-dark' as bottle_variant silent %}
+                {% include 'includes/perfume_placeholder.html' with variant=bottle_variant %}
+                {% endif %}
+            </a>
+            <div class="product-badges">
+                {% if product.discount_percent %}<span class="badge-discount">-{{ product.discount_percent }}%</span>{% endif %}
+                {% if product.is_new_arrival %}<span class="badge-new">New</span>{% endif %}
+                {% if product.is_best_seller %}<span class="badge-bestseller">Bestseller</span>{% endif %}
+            </div>
+            <div class="product-actions">
+                <a href="{% url 'products:product_detail' product.slug %}" class="btn btn-sm btn-gold" title="Quick view"><i class="bi bi-eye"></i></a>
+                <a href="{% url 'accounts:wishlist_toggle' product.id %}"
+                   class="btn btn-sm {% if product.id in wishlist_product_ids %}btn-gold{% else %}btn-outline-light{% endif %}" title="Wishlist">
+                    <i class="bi bi-heart{% if product.id in wishlist_product_ids %}-fill{% endif %}"></i>
+                </a>
+            </div>
+        </div>
+        <div class="product-info flex-grow-1 d-flex flex-column">
+            <div class="product-meta">
+                {% if product.collection %}<span class="product-collection">{{ product.collection.name }}</span>{% endif %}
+                <span class="product-tag">{{ product.get_gender_display }}</span>
+            </div>
+            <h5 class="product-title"><a href="{% url 'products:product_detail' product.slug %}">{{ product|product_short_name }}</a></h5>
+            {% if product.top_notes %}<p class="product-notes">{{ product.top_notes|truncatewords:6 }}</p>{% endif %}
+            <div class="product-price-row mt-auto">
+                <div class="product-price">
+                    {% if product.offer_price %}
+                    <span class="price-offer">{{ product.offer_price|format_price }}</span>
+                    <span class="price-regular">{{ product.regular_price|format_price }}</span>
+                    {% else %}
+                    <span class="price-offer">{{ product.regular_price|format_price }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="product-card-buttons">
+                <a href="{% url 'products:product_detail' product.slug %}" class="btn btn-outline-gold btn-card-action">View Details</a>
+                {% if product.in_stock %}
+                <form action="{% url 'cart:add' %}" method="post" class="w-100">
+                    {% csrf_token %}
+                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                    {% if product.default_variant %}<input type="hidden" name="variant_id" value="{{ product.default_variant.id }}">{% endif %}
+                    <button type="submit" class="btn btn-gold btn-card-action w-100">
+                        <i class="bi bi-bag-plus"></i> Add to Cart
+                    </button>
+                </form>
+                {% else %}
+                <button class="btn btn-card-action btn-out-of-stock w-100" disabled>Out of Stock</button>
+                {% endif %}
+            </div>
+        </div>
+    </article>
+</div>

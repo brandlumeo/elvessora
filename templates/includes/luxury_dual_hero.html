@@ -1,0 +1,52 @@
+{% load static %}
+<section class="lux-dual-hero" id="luxDualHero" aria-label="Elvessora luxury hero">
+    <div class="lux-hero-bg">
+        <div class="lux-hero-gradient"></div>
+        <div class="lux-hero-rays"></div>
+        <canvas class="lux-hero-particles" aria-hidden="true"></canvas>
+        <div class="lux-hero-vignette"></div>
+    </div>
+
+    <div class="container lux-hero-container">
+        <div class="lux-hero-grid">
+            <div class="lux-hero-copy">
+                <span class="lux-hero-eyebrow">
+                    <img src="{% static 'images/elvessora-logo.svg' %}" alt="" class="lux-hero-logo-mark" loading="eager">
+                    {{ site_settings.brand_name }}
+                </span>
+                {% if banners %}
+                <h1 class="lux-hero-title">{{ banners.0.title }}</h1>
+                <p class="lux-hero-desc">{{ banners.0.subtitle }}</p>
+                {% else %}
+                <h1 class="lux-hero-title">Crafted for<br><em>Timeless Luxury</em></h1>
+                <p class="lux-hero-desc">Signature Elvessora fragrances — refined compositions of elegance, depth, and lasting presence for those who wear confidence effortlessly.</p>
+                {% endif %}
+                <div class="lux-hero-actions">
+                    <a href="{% url 'products:shop' %}" class="lux-hero-cta lux-hero-cta-primary">Shop Collection</a>
+                    <a href="{% url 'quiz:finder' %}" class="lux-hero-cta lux-hero-cta-ghost">Find Your Scent</a>
+                </div>
+                <div class="lux-hero-trust">
+                    <span><i class="bi bi-gem"></i> Premium EDP</span>
+                    <span><i class="bi bi-shield-check"></i> Authentic</span>
+                    <span><i class="bi bi-stars"></i> UAE Crafted</span>
+                </div>
+            </div>
+
+            <div class="lux-hero-stage">
+                <div class="lux-hero-spotlight"></div>
+                <div class="lux-hero-product-frame">
+                    <div class="lux-hero-product-glow"></div>
+                    <img src="{% static 'images/products/elvessora-moon-blossom.png' %}"
+                         alt="Elvessora Moon Blossom Extrait de Parfum"
+                         class="lux-hero-product-img"
+                         loading="eager">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="lux-hero-scroll">
+        <span>Scroll</span>
+        <i class="bi bi-chevron-down"></i>
+    </div>
+</section>

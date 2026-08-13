@@ -1,0 +1,8 @@
+{% load static %}
+<a class="brand-logo-link brand-logo-lockup" href="{% url 'core:home' %}" aria-label="{{ site_settings.brand_name }} home">
+    {% if site_settings.logo %}
+    <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.brand_name }}" class="brand-logo-img">
+    {% else %}
+    <img src="{% static 'images/brand/elvessora-logo-gold.png' %}" alt="{{ site_settings.brand_name }}" class="brand-logo-img">
+    {% endif %}
+</a>

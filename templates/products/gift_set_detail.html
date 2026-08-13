@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}{{ gift_set.name }} — {{ site_settings.brand_name }}{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row g-5">
+        <div class="col-lg-6">
+            <div class="product-detail-image">
+                {% if gift_set.display_image_url %}
+                <img src="{{ gift_set.display_image_url }}" alt="{{ gift_set.name }}">
+                {% else %}
+                <div class="placeholder-img"><i class="bi bi-gift"></i></div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <span class="product-collection">{{ gift_set.get_gift_type_display }}</span>
+            <h1>{{ gift_set.name }}</h1>
+            <div class="product-price mb-3">
+                <span class="price-offer fs-3">₹{{ gift_set.current_price|floatformat:0|intcomma }}</span>
+            </div>
+            <p>{{ gift_set.description }}</p>
+            {% if gift_set.custom_wrapping_available %}<p><i class="bi bi-check-circle text-success"></i> Custom gift wrapping available</p>{% endif %}
+            {% if gift_set.personalized_message_available %}<p><i class="bi bi-check-circle text-success"></i> Personalized gift message available</p>{% endif %}
+            <h6 class="mt-4">Includes:</h6>
+            <ul>{% for p in gift_set.products.all %}<li><a href="{% url 'products:product_detail' p.slug %}">{{ p.name }}</a></li>{% endfor %}</ul>
+            <form action="{% url 'cart:add' %}" method="post" class="mt-4">
+                {% csrf_token %}
+                <input type="hidden" name="gift_set_id" value="{{ gift_set.id }}">
+                <div class="mb-3"><label class="form-label">Gift Message (optional)</label><textarea name="gift_message" class="form-control" rows="2"></textarea></div>
+                <div class="form-check mb-3"><input type="checkbox" name="gift_wrapping" class="form-check-input" id="wrap"><label class="form-check-label" for="wrap">Add gift wrapping (+₹49)</label></div>
+                <button type="submit" class="btn btn-gold">Add to Cart</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

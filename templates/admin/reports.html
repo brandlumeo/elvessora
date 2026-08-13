@@ -1,0 +1,107 @@
+{% extends "admin/base_site.html" %}
+{% load humanize static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'admin/css/elvassora_admin.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="elv-dashboard">
+    <div class="elv-dashboard-intro">
+        <h2>Reports &amp; Analytics</h2>
+        <p>Sales, products, customers, inventory, payments, shipping, and tax summaries.</p>
+    </div>
+
+    <div class="elv-stats-grid">
+        <div class="elv-stat-card elv-stat-primary">
+            <div><h3>Paid Revenue</h3><p class="elv-stat-value">₹{{ total_revenue|floatformat:0|intcomma }}</p></div>
+        </div>
+        <div class="elv-stat-card">
+            <div><h3>Total Orders</h3><p class="elv-stat-value">{{ total_orders }}</p></div>
+        </div>
+        <div class="elv-stat-card">
+            <div><h3>Customers</h3><p class="elv-stat-value">{{ customer_stats.total }}</p></div>
+        </div>
+        <div class="elv-stat-card elv-stat-danger">
+            <div><h3>Out of Stock SKUs</h3><p class="elv-stat-value">{{ inventory_report.out_of_stock }}</p></div>
+        </div>
+    </div>
+
+    <div class="elv-panel">
+        <h2>Sales (last 30 days)</h2>
+        <div class="elv-table-wrap">
+            <table class="elv-table">
+                <thead><tr><th>Date</th><th>Orders</th><th>Revenue</th></tr></thead>
+                <tbody>
+                {% for row in sales_by_day %}
+                <tr><td>{{ row.day }}</td><td>{{ row.orders }}</td><td>₹{{ row.revenue|floatformat:0|intcomma }}</td></tr>
+                {% empty %}
+                <tr><td colspan="3">No paid sales in this period.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="elv-panel">
+        <h2>Product Performance</h2>
+        <div class="elv-table-wrap">
+            <table class="elv-table">
+                <thead><tr><th>Product</th><th>Units</th><th>Revenue</th></tr></thead>
+                <tbody>
+                {% for row in product_perf %}
+                <tr><td>{{ row.product_name }}</td><td>{{ row.units }}</td><td>₹{{ row.revenue|floatformat:0|intcomma|default:"0" }}</td></tr>
+                {% empty %}
+                <tr><td colspan="3">No product sales yet.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="elv-panel">
+        <h2>Customer Report</h2>
+        <p>Total customers: <strong>{{ customer_stats.total }}</strong> · With orders: <strong>{{ customer_stats.with_orders }}</strong></p>
+    </div>
+
+    <div class="elv-panel">
+        <h2>Inventory Report</h2>
+        <p>
+            Active products: <strong>{{ inventory_report.active_products }}</strong> ·
+            SKUs: <strong>{{ inventory_report.skus }}</strong> ·
+            Low stock: <strong>{{ inventory_report.low_stock }}</strong> ·
+            Out of stock: <strong>{{ inventory_report.out_of_stock }}</strong>
+        </p>
+    </div>
+
+    <div class="elv-panel">
+        <h2>Payment Report</h2>
+        <p>
+            Paid orders: <strong>{{ payment_report.paid_orders }}</strong> ·
+            Pending: <strong>{{ payment_report.pending_payments }}</strong> ·
+            Transactions: <strong>{{ payment_report.transactions }}</strong> ·
+            Refunds: <strong>{{ payment_report.refunds }}</strong>
+            (₹{{ payment_report.refund_amount|floatformat:0|intcomma|default:"0" }})
+        </p>
+    </div>
+
+    <div class="elv-panel">
+        <h2>Shipping Report</h2>
+        <p>
+            Shipped: <strong>{{ shipping_report.shipped }}</strong> ·
+            Delivered: <strong>{{ shipping_report.delivered }}</strong> ·
+            With tracking: <strong>{{ shipping_report.with_tracking }}</strong> ·
+            Shipping collected: <strong>₹{{ shipping_report.shipping_collected|floatformat:0|intcomma|default:"0" }}</strong>
+        </p>
+    </div>
+
+    <div class="elv-panel">
+        <h2>Tax Report</h2>
+        <p>
+            Store tax rate: <strong>{{ tax_report.store_tax_rate }}%</strong> ·
+            Tax collected (paid orders): <strong>₹{{ tax_report.tax_collected|floatformat:0|intcomma|default:"0" }}</strong>
+        </p>
+    </div>
+</div>
+{% endblock %}

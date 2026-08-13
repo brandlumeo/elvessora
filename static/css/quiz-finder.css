@@ -1,0 +1,38 @@
+.quiz-finder-page .quiz-card {
+    background: #fff;
+    border: 1px solid rgba(10, 33, 99, 0.08);
+    border-radius: 18px;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    box-shadow: 0 16px 40px rgba(6, 16, 34, 0.06);
+}
+
+.quiz-finder-page .form-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0a2163;
+}
+
+.quiz-finder-page .form-select,
+.quiz-finder-page .form-control {
+    border-color: rgba(10, 33, 99, 0.15);
+    min-height: 48px;
+}
+
+.quiz-finder-page .form-select:focus,
+.quiz-finder-page .form-control:focus {
+    border-color: #c8a96a;
+    box-shadow: 0 0 0 0.2rem rgba(200, 169, 106, 0.18);
+}
+
+.quiz-results .lux-product-card {
+    height: 100%;
+}
+
+@media (max-width: 575px) {
+    .quiz-results .col-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}

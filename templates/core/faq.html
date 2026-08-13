@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}FAQ — {{ site_settings.brand_name }}{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1>Frequently Asked Questions</h1></div></div>
+<div class="container pb-5"><div class="col-lg-8 mx-auto">
+    <div class="accordion" id="faqAccordion">
+        {% for faq in faqs %}
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ faq.id }}">{{ faq.question }}</button>
+            </h2>
+            <div id="faq{{ faq.id }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">{{ faq.answer|linebreaks }}</div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted text-center">No FAQs available yet.</p>
+        {% endfor %}
+    </div>
+</div></div>
+{% endblock %}

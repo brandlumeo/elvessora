@@ -1,0 +1,23 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="elv-inv-header">
+    <p class="elv-inv-subtitle">Update stock quantities for each product size (50ml, 100ml, etc.)</p>
+    <div class="elv-inv-summary">
+        <div class="elv-inv-stat">
+            <span class="elv-inv-stat-num">{{ total_items|default:"0" }}</span>
+            <span class="elv-inv-stat-label">Total Variants</span>
+        </div>
+        <div class="elv-inv-stat elv-inv-stat-warn">
+            <span class="elv-inv-stat-num">{{ low_stock_count|default:"0" }}</span>
+            <span class="elv-inv-stat-label">Low Stock (≤ {{ low_stock_threshold }})</span>
+        </div>
+        <div class="elv-inv-stat elv-inv-stat-danger">
+            <span class="elv-inv-stat-num">{{ out_of_stock_count|default:"0" }}</span>
+            <span class="elv-inv-stat-label">Out of Stock</span>
+        </div>
+    </div>
+</div>
+{{ block.super }}
+{% endblock %}

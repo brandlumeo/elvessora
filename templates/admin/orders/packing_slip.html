@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{{ doc_title }}</title>
+    <style>
+        body { font-family: Georgia, 'Times New Roman', serif; color: #1a1a1a; margin: 32px; }
+        h1 { font-size: 1.5rem; margin: 0 0 4px; letter-spacing: 0.08em; text-transform: uppercase; }
+        .muted { color: #666; font-size: 0.9rem; }
+        .row { display: flex; justify-content: space-between; gap: 24px; margin: 24px 0; }
+        .box { flex: 1; }
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        th, td { border-bottom: 1px solid #ddd; padding: 10px 6px; text-align: left; }
+        th { border-bottom: 2px solid #111; }
+        .right { text-align: right; }
+        .actions { margin-bottom: 24px; }
+        .actions button {
+            background: #0A2163; color: #fff; border: 0; padding: 8px 16px;
+            cursor: pointer; font-size: 0.9rem;
+        }
+        .pack-check { width: 28px; height: 28px; border: 1px solid #999; display: inline-block; }
+        @media print {
+            .actions { display: none; }
+            body { margin: 12mm; }
+        }
+    </style>
+</head>
+<body>
+    <div class="actions">
+        <button type="button" onclick="window.print()">Print Packing Slip</button>
+    </div>
+
+    <h1>{{ site.brand_name|default:"Elvessora" }}</h1>
+    <p class="muted">Packing Slip</p>
+
+    <div class="row">
+        <div class="box">
+            <strong>Ship To</strong><br>
+            {{ order.shipping_name }}<br>
+            {{ order.shipping_address }}<br>
+            {{ order.shipping_city }}, {{ order.shipping_state }} {{ order.shipping_pincode }}<br>
+            {{ order.shipping_country }}<br>
+            Phone: {{ order.shipping_phone }}
+        </div>
+        <div class="box right">
+            <strong>Order #{{ order.order_number }}</strong><br>
+            Date: {{ order.created_at|date:"d M Y" }}<br>
+            {% if order.tracking_number %}Tracking: {{ order.tracking_number }}<br>{% endif %}
+            {% if order.courier_name %}Courier: {{ order.courier_name }}{% endif %}
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Packed</th>
+                <th>Item</th>
+                <th>Size</th>
+                <th class="right">Qty</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td><span class="pack-check"></span></td>
+                <td>
+                    {{ item.product_name }}
+                    {% if item.gift_wrapping %}<br><span class="muted">+ Gift wrapping</span>{% endif %}
+                    {% if item.gift_message %}<br><span class="muted">Msg: {{ item.gift_message }}</span>{% endif %}
+                </td>
+                <td>{{ item.variant_size|default:"—" }}</td>
+                <td class="right">{{ item.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if order.notes %}
+    <p class="muted" style="margin-top:24px;"><strong>Order notes:</strong> {{ order.notes }}</p>
+    {% endif %}
+</body>
+</html>

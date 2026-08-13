@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us — {{ site.brand_name }}{% endblock %}
+
+{% block content %}
+<section class="about-hero">
+    <div class="about-hero-bg"></div>
+    <div class="container position-relative">
+        <span class="about-hero-label">ELVESSORA GENERAL TRADING LLC</span>
+        <h1>About {{ site.brand_name }}</h1>
+        <p class="about-hero-lead">{{ site.tagline|default:"General Trading & E-commerce — Dubai, UAE" }}</p>
+        <div class="about-hero-stats">
+            <div><strong>Dubai</strong><span>UAE Based</span></div>
+            <div><strong>4+</strong><span>Business Lines</span></div>
+            <div><strong>100%</strong><span>Quality Focus</span></div>
+        </div>
+    </div>
+</section>
+
+<div class="container about-page-body pb-5">
+    <div class="row g-5">
+        <div class="col-lg-8">
+            <section class="about-block fade-up">
+                <p class="about-intro-text">
+                    {{ site.about_company|default:"Dubai-based trading company delivering premium products with luxury and trust. We serve retail and corporate clients across the UAE with quality, elegance, and reliability." }}
+                </p>
+                {% if site.brand_story %}
+                <p class="about-story-text">{{ site.brand_story|linebreaksbr }}</p>
+                {% else %}
+                <p class="about-story-text">
+                    From medical supplies and home furnishings to electronics and office essentials, Elvessora brings together trusted sourcing, competitive pricing, and dependable delivery — all under one premium trading brand.
+                </p>
+                {% endif %}
+            </section>
+
+            <section class="about-block fade-up">
+                <span class="section-label section-label-dark">What We Do</span>
+                <h2 class="about-title">Our Activities</h2>
+                <p class="about-subtitle">A diversified portfolio serving corporate and retail clients across the UAE.</p>
+                <div class="row g-3 g-md-4">
+                    <div class="col-md-6">
+                        <article class="about-activity-card">
+                            <div class="about-activity-icon"><i class="bi bi-heart-pulse"></i></div>
+                            <h3>Medical &amp; Healthcare</h3>
+                            <p>Masks, gloves, bandages, alcohol swabs, PPE kits, sanitizers, and essential healthcare supplies.</p>
+                        </article>
+                    </div>
+                    <div class="col-md-6">
+                        <article class="about-activity-card">
+                            <div class="about-activity-icon"><i class="bi bi-house-door"></i></div>
+                            <h3>Blinds &amp; Curtains</h3>
+                            <p>Motorized and manual blinds, custom curtains, blackout and sheer fabrics, professional installation.</p>
+                        </article>
+                    </div>
+                    <div class="col-md-6">
+                        <article class="about-activity-card">
+                            <div class="about-activity-icon"><i class="bi bi-phone"></i></div>
+                            <h3>Electronics &amp; Accessories</h3>
+                            <p>Mobile devices, smart watches, chargers, accessories, and IT peripherals for business and retail.</p>
+                        </article>
+                    </div>
+                    <div class="col-md-6">
+                        <article class="about-activity-card">
+                            <div class="about-activity-icon"><i class="bi bi-journal-text"></i></div>
+                            <h3>Stationery &amp; Office</h3>
+                            <p>Office supplies, school items, corporate gifts, printing solutions, and bulk order fulfillment.</p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section class="about-block fade-up">
+                <span class="section-label section-label-dark">Why Choose Us</span>
+                <h2 class="about-title">Why Elvessora</h2>
+                <ul class="about-benefits">
+                    <li><i class="bi bi-check-circle-fill"></i><span>Premium quality products</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span>Dubai based — global sourcing</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span>One-stop trading solution</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span>Corporate &amp; retail clients</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span>Competitive pricing &amp; reliable supply</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span>Secure online shopping &amp; fast delivery</span></li>
+                </ul>
+            </section>
+
+            <section class="about-block fade-up">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="about-vision-card">
+                            <h3><i class="bi bi-eye"></i> Our Vision</h3>
+                            <p>To become one of the UAE's most trusted general trading and e-commerce companies — recognized for quality, innovation, reliability, and excellence across diverse industries.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="about-vision-card about-vision-mission">
+                            <h3><i class="bi bi-bullseye"></i> Our Mission</h3>
+                            <p>To provide businesses and individuals with quality products and dependable solutions through efficient sourcing, innovative services, and a customer-focused approach.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="about-closing-banner fade-up">
+                <p class="mb-0"><strong>{{ site.brand_name }}</strong> — Your trusted partner in general trading &amp; e-commerce.</p>
+                <a href="{% url 'core:contact' %}" class="btn btn-gold btn-sm mt-3">Get In Touch</a>
+            </section>
+        </div>
+
+        <div class="col-lg-4">
+            <aside class="about-sidebar fade-up">
+                <div class="about-sidebar-card">
+                    <h4>Contact Us</h4>
+                    <p class="about-sidebar-legal">ELVESSORA GENERAL TRADING LLC</p>
+                    <ul class="about-contact-list">
+                        <li>
+                            <i class="bi bi-geo-alt"></i>
+                            <span>{% if site.business_address %}{{ site.business_address|linebreaksbr }}{% else %}Dubai, United Arab Emirates{% endif %}</span>
+                        </li>
+                        {% if site.email %}
+                        <li>
+                            <i class="bi bi-envelope"></i>
+                            <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+                        </li>
+                        {% endif %}
+                        {% if site.phone %}
+                        <li>
+                            <i class="bi bi-telephone"></i>
+                            <a href="tel:{{ site.phone|cut:' ' }}">{{ site.phone }}</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    {% if site.whatsapp_url %}
+                    <a href="{{ site.whatsapp_chat_url }}" class="btn btn-whatsapp w-100 mt-3" target="_blank" rel="noopener noreferrer">
+                        <i class="bi bi-whatsapp"></i> WhatsApp Us
+                    </a>
+                    {% endif %}
+                </div>
+
+                <div class="about-sidebar-card">
+                    <h5>Follow Us</h5>
+                    <div class="about-social">
+                        <a href="{{ site.instagram_url|default:'https://www.instagram.com/elvessoraperfumes/' }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="{{ site.twitter_url|default:'https://x.com/elvessora' }}" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="bi bi-twitter-x"></i></a>
+                        <a href="{{ site.facebook_url|default:'https://www.facebook.com/profile.php?id=61592052402320' }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                    </div>
+                </div>
+
+                <div class="about-sidebar-card">
+                    <h5>Policies</h5>
+                    <ul class="about-policy-links">
+                        <li><a href="{% url 'core:legal' 'privacy' %}">Privacy Policy</a></li>
+                        <li><a href="{% url 'core:legal' 'terms' %}">Terms &amp; Conditions</a></li>
+                        <li><a href="{% url 'core:legal' 'shipping' %}">Shipping Policy</a></li>
+                        <li><a href="{% url 'core:legal' 'returns' %}">Return &amp; Refund Policy</a></li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

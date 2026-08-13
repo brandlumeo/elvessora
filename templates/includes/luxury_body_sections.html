@@ -1,0 +1,236 @@
+{% load static humanize fragrance_extras %}
+
+  <!-- OUR COLLECTION -->
+  {% if signature_fragrances %}
+  <section class="lux-section lux-collection" id="luxCollection">
+    <div class="container">
+      <div class="lux-section-head lux-reveal">
+        <div>
+          <span class="lux-label">{{ homepage.collection_label }}</span>
+          <h2 class="lux-heading">{{ homepage.collection_heading }}</h2>
+        </div>
+        <a href="{% url 'products:shop' %}" class="lux-link-arrow">Shop All <i class="bi bi-arrow-right"></i></a>
+      </div>
+
+      <div class="lux-collection-slider d-lg-none" data-lux-collection>
+        <button type="button" class="lux-slider-arrow lux-slider-prev" aria-label="Previous"><i class="bi bi-chevron-left"></i></button>
+        <div class="lux-collection-track-wrap">
+          <div class="lux-collection-track">
+            {% for product in signature_fragrances %}
+            {% include 'includes/lux_product_card.html' with extra_class='lux-reveal' %}
+            {% endfor %}
+          </div>
+        </div>
+        <button type="button" class="lux-slider-arrow lux-slider-next" aria-label="Next"><i class="bi bi-chevron-right"></i></button>
+      </div>
+
+      <div class="lux-collection-grid">
+        {% for product in signature_fragrances %}
+        {% include 'includes/lux_product_card.html' %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- PERFUME FINDER -->
+  {% if finder_catalog %}
+  {% include 'includes/perfume_finder_section.html' %}
+  {% endif %}
+
+  <!-- SHOP BY FRAGRANCE -->
+  {% if fragrance_families %}
+  <section class="lux-section lux-discover" id="luxDiscover">
+    <div class="container">
+      <div class="lux-section-head">
+        <div>
+          <span class="lux-label">Discover</span>
+          <h2 class="lux-heading">Shop by Fragrance</h2>
+        </div>
+        <a href="{% url 'products:shop' %}" class="lux-link-arrow">View All <i class="bi bi-arrow-right"></i></a>
+      </div>
+      <div class="lux-family-row">
+        {% for family in fragrance_families|slice:":6" %}
+        <a href="{% url 'products:fragrance_family' family.slug %}" class="lux-family-chip">
+          <i class="bi bi-flower1"></i>
+          <span>{{ family.get_name_display }}</span>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- GIFT SETS -->
+  {% if gift_sets %}
+  <section class="lux-section lux-gifts" id="luxGifts">
+    <div class="container">
+      <div class="lux-section-head lux-gifts-head">
+        <div>
+          <span class="lux-label">Perfect Gifts</span>
+          <h2 class="lux-heading">Luxury Gift Sets</h2>
+        </div>
+        <a href="{% url 'products:gift_sets' %}" class="lux-link-arrow">View All Gifts <i class="bi bi-arrow-right"></i></a>
+      </div>
+      <div class="row g-4">
+        {% for gift_set in gift_sets %}
+        <div class="col-6 col-lg-3">
+          <article class="lux-gift-card">
+            <a href="{% url 'products:gift_set_detail' gift_set.slug %}" class="lux-gift-image">
+              {% if gift_set.display_image_url %}
+              <img src="{{ gift_set.display_image_url }}" alt="{{ gift_set.name }}" loading="lazy">
+              {% else %}
+              <div class="lux-gift-image-empty" aria-hidden="true">
+                <i class="bi bi-gift"></i>
+                <span>Gift Set</span>
+              </div>
+              {% endif %}
+            </a>
+            <h3><a href="{% url 'products:gift_set_detail' gift_set.slug %}">{{ gift_set.name }}</a></h3>
+            <p class="lux-product-price">{{ gift_set.current_price|format_price }}</p>
+            <a href="{% url 'products:gift_set_detail' gift_set.slug %}" class="lux-link-arrow">View Gift Set <i class="bi bi-arrow-right"></i></a>
+          </article>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- CRAFTED WITH EXCELLENCE -->
+  <section class="lux-section lux-excellence" id="luxExcellence">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-5 lux-reveal">
+          <span class="lux-label">{{ homepage.excellence_label }}</span>
+          <h2 class="lux-heading lux-heading-serif">{{ homepage.excellence_heading }}</h2>
+          <p class="lux-text">{{ homepage.excellence_text }}</p>
+          <a href="{% url 'core:about' %}" class="lux-link-arrow">Learn More <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="col-lg-7">
+          {% if ingredients %}
+          <div class="lux-ingredient-grid">
+            {% for item in ingredients %}
+            <div class="lux-ingredient-item lux-reveal">
+              <span class="lux-ing-icon"><i class="bi {{ item.icon }}"></i></span>
+              <strong>{{ item.title }}</strong>
+              {% if item.subtitle %}<small>{{ item.subtitle }}</small>{% endif %}
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEST SELLER SPOTLIGHT -->
+  {% if spotlight %}
+  {% product_image_url spotlight as spotlight_img %}
+  <section class="lux-section lux-spotlight" id="luxSpotlight" data-spotlight-panel>
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-4 lux-reveal">
+          <span class="lux-badge">Best Seller</span>
+          <h2 class="lux-heading lux-heading-serif" data-spotlight-name>{{ spotlight.name|product_short_name }}</h2>
+          <p class="lux-text" data-spotlight-desc>{{ spotlight.description|truncatewords:28 }}</p>
+          <p class="lux-spotlight-price" data-spotlight-price>{{ spotlight.current_price|format_price }}</p>
+          <a href="{% url 'products:product_detail' spotlight.slug %}" class="lux-link-arrow" data-spotlight-link>Discover Now <i class="bi bi-arrow-right"></i></a>
+          {% if signature_fragrances %}
+          <div class="lux-spotlight-thumbs" role="tablist" aria-label="Choose fragrance">
+            {% for product in signature_fragrances|slice:":4" %}
+            {% product_image_url product as thumb_url %}
+            <button type="button"
+                    class="lux-thumb{% if product.id == spotlight.id %} is-active{% endif %}"
+                    role="tab"
+                    aria-selected="{% if product.id == spotlight.id %}true{% else %}false{% endif %}"
+                    aria-label="{{ product.name|product_short_name }}"
+                    data-spotlight-thumb
+                    data-name="{{ product.name|product_short_name }}"
+                    data-image="{{ thumb_url }}"
+                    data-price="{{ product.current_price|format_price }}"
+                    data-desc="{{ product.description|truncatewords:28|escape }}"
+                    data-url="{% url 'products:product_detail' product.slug %}"
+                    data-top="{{ product.top_notes|default:'Bergamot, Mandarin, Pink Pepper'|escape }}"
+                    data-heart="{{ product.heart_notes|default:'Jasmine, Rose, Peony'|escape }}"
+                    data-base="{{ product.base_notes|default:'Amber, Musk, Sandalwood'|escape }}">
+              <img src="{{ thumb_url }}" alt="">
+            </button>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        <div class="col-lg-4 lux-spotlight-visual lux-reveal">
+          <div class="lux-spotlight-stage">
+            <div class="lux-spotlight-stage-glow" aria-hidden="true"></div>
+            <img src="{{ spotlight_img }}"
+                 alt="{{ spotlight.name }}" class="lux-spotlight-hero-img" data-spotlight-image loading="lazy">
+          </div>
+        </div>
+        <div class="col-lg-4 lux-reveal">
+          <div class="lux-notes-stack">
+            <div class="lux-note-block">
+              <span class="lux-note-label">Top Notes</span>
+              <p data-spotlight-top>{{ spotlight.top_notes|default:"Bergamot, Mandarin, Pink Pepper" }}</p>
+            </div>
+            <div class="lux-note-block">
+              <span class="lux-note-label">Heart Notes</span>
+              <p data-spotlight-heart>{{ spotlight.heart_notes|default:"Jasmine, Rose, Peony" }}</p>
+            </div>
+            <div class="lux-note-block">
+              <span class="lux-note-label">Base Notes</span>
+              <p data-spotlight-base>{{ spotlight.base_notes|default:"Amber, Musk, Sandalwood" }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- OUR STORY -->
+  <section class="lux-section lux-story" id="luxStory">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-4 lux-reveal">
+          <div class="lux-story-visual">
+            {% if homepage.story_image %}
+            <img src="{{ homepage.story_image.url }}" alt="{{ site_settings.brand_name }} luxury fragrance" class="lux-story-photo" loading="lazy">
+            {% else %}
+            <img src="{% static 'images/story/elvessora-story-model.png' %}"
+                 alt="{{ site_settings.brand_name }} luxury fragrance"
+                 class="lux-story-photo"
+                 loading="lazy">
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-lg-4 lux-reveal">
+          <span class="lux-label">{{ homepage.story_label }}</span>
+          <h2 class="lux-heading lux-heading-serif">{{ homepage.story_heading }}</h2>
+          <p class="lux-text">
+            {% if homepage.story_text %}
+              {{ homepage.story_text|truncatewords:35 }}
+            {% else %}
+              {{ site_settings.about_company|default:"Elvessora crafts premium fragrances in Dubai — blending rare ingredients with modern elegance for those who wear confidence effortlessly."|truncatewords:35 }}
+            {% endif %}
+          </p>
+          <a href="{% url 'core:about' %}" class="lux-link-arrow">{{ homepage.story_link_text }} <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="col-lg-4">
+          {% if value_props %}
+          <div class="lux-value-stack">
+            {% for item in value_props %}
+            <div class="lux-value-item lux-reveal">
+              <i class="bi {{ item.icon }}"></i>
+              <div>
+                <strong>{{ item.title }}</strong>
+                {% if item.subtitle %}<small>{{ item.subtitle }}</small>{% endif %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>

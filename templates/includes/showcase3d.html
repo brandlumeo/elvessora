@@ -1,0 +1,84 @@
+{% load static fragrance_extras i18n %}
+{# Premium 3D showcase ABOVE existing hero — does not replace or alter #luxHero #}
+<section class="showcase3d" id="showcase3d"
+         data-add-url="{% url 'cart:add' %}"
+         data-collection-url="{% url 'products:collection' %}"
+         data-csrf="{{ csrf_token }}"
+         data-products='[
+           {% for product in signature_fragrances %}
+           {% product_image_url product as product_img %}
+           {
+             "id": {{ product.id }},
+             "sku": "{{ product.sku|escapejs }}",
+             "name": "{{ product|product_short_name|escapejs }}",
+             "image_url": "{{ product_img|escapejs }}",
+             "price_display": "{{ product.current_price|format_price|escapejs }}",
+             "description": "{{ product.description|truncatechars:220|escapejs }}",
+             "top_notes": "{{ product.top_notes|escapejs }}",
+             "heart_notes": "{{ product.heart_notes|escapejs }}",
+             "base_notes": "{{ product.base_notes|escapejs }}",
+             "url": "{% url 'products:product_detail' product.slug %}"
+           }{% if not forloop.last %},{% endif %}
+           {% endfor %}
+         ]'>
+  <div class="showcase3d-stage">
+    <canvas class="showcase3d-canvas" aria-label="{% trans 'Elvessora 3D fragrance showcase' %}"></canvas>
+    <div class="showcase3d-vignette" aria-hidden="true"></div>
+  </div>
+
+  <div class="showcase3d-brand">
+    <p class="showcase3d-eyebrow">{% trans "Signature Collection" %}</p>
+    <h2 class="showcase3d-title">{% trans "The Art of Fragrance" %}</h2>
+  </div>
+
+  <p class="showcase3d-hint">{% trans "Scroll to browse · Click a bottle to explore" %}</p>
+
+  <div class="showcase3d-scroll-progress" aria-hidden="true">
+    <span class="showcase3d-scroll-name" data-s3d-scroll-name>Moon Blossom</span>
+    <div class="showcase3d-scroll-bar">
+      <div class="showcase3d-scroll-fill"></div>
+    </div>
+  </div>
+
+  <aside class="showcase3d-panel" hidden>
+    <button type="button" class="showcase3d-panel-close" data-s3d-close aria-label="{% trans 'Close' %}">&times;</button>
+    <h3 class="showcase3d-panel-name" data-s3d-name></h3>
+    <p class="showcase3d-panel-tag" data-s3d-tag></p>
+    <p class="showcase3d-panel-desc" data-s3d-desc></p>
+
+    <dl class="showcase3d-notes">
+      <div>
+        <dt>{% trans "Top Notes" %}</dt>
+        <dd data-s3d-top></dd>
+      </div>
+      <div>
+        <dt>{% trans "Heart Notes" %}</dt>
+        <dd data-s3d-heart></dd>
+      </div>
+      <div>
+        <dt>{% trans "Base Notes" %}</dt>
+        <dd data-s3d-base></dd>
+      </div>
+    </dl>
+
+    <span class="showcase3d-panel-price" data-s3d-price></span>
+
+    <div class="showcase3d-actions">
+      <button type="button" class="showcase3d-add" data-s3d-buy>
+        {% trans "Buy Now" %}
+      </button>
+      <a href="{% url 'products:collection' %}" class="showcase3d-explore" data-s3d-explore>
+        {% trans "Explore Collection" %}
+      </a>
+    </div>
+  </aside>
+
+  <div class="showcase3d-dots" role="tablist" aria-label="{% trans 'Fragrances' %}"></div>
+
+  <a href="#luxHero" class="showcase3d-scroll">
+    <span>{% trans "Scroll" %}</span>
+    <i class="bi bi-chevron-down" aria-hidden="true"></i>
+  </a>
+
+  <div class="showcase3d-loader">{% trans "Loading fragrances" %}…</div>
+</section>

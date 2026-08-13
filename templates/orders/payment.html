@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load humanize static fragrance_extras %}
+
+{% block title %}Payment — {{ site_settings.brand_name }}{% endblock %}
+{% block extra_css %}<link href="{% static 'css/auth-shop.css' %}" rel="stylesheet">{% endblock %}
+
+{% block content %}
+<div class="shop-page">
+  <div class="container py-5">
+    <div class="payment-lux-card">
+      <h2 style="font-family:'Cormorant Garamond',serif;color:#fff;">Complete Payment</h2>
+      <p style="color:rgba(255,255,255,0.55);">Order <strong style="color:#C8A96A;">{{ order.order_number }}</strong></p>
+      <div class="payment-amount">{{ order.total|format_price }}</div>
+      <div class="payment-methods">
+        <span><i class="bi bi-credit-card"></i> Card</span>
+        <span><i class="bi bi-phone"></i> Apple Pay</span>
+        <span><i class="bi bi-wallet2"></i> Wallet</span>
+      </div>
+      <button id="payBtn" class="btn btn-gold btn-lg w-100">Pay Securely</button>
+      <p class="mt-3 small" style="color:rgba(255,255,255,0.4);">Secured by Razorpay · AED</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.getElementById('payBtn').onclick = function() {
+    var options = {
+        key: '{{ razorpay_key }}',
+        amount: {{ amount }},
+        currency: 'AED',
+        name: '{{ site_settings.brand_name }}',
+        description: 'Order {{ order.order_number }}',
+        order_id: '{{ order.razorpay_order_id }}',
+        handler: function(response) {
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{% url "orders:payment_verify" %}';
+            var csrf = document.createElement('input');
+            csrf.type = 'hidden'; csrf.name = 'csrfmiddlewaretoken'; csrf.value = '{{ csrf_token }}';
+            form.appendChild(csrf);
+            ['razorpay_payment_id','razorpay_order_id','razorpay_signature'].forEach(function(f) {
+                var inp = document.createElement('input');
+                inp.type = 'hidden'; inp.name = f; inp.value = response[f];
+                form.appendChild(inp);
+            });
+            document.body.appendChild(form);
+            form.submit();
+        }
+    };
+    new Razorpay(options).open();
+};
+</script>
+{% endblock %}

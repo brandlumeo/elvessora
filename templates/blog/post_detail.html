@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ post.meta_title|default:post.title }} — {{ site_settings.brand_name }}{% endblock %}
+{% block meta_description %}{{ post.meta_description|default:post.excerpt }}{% endblock %}
+
+{% block content %}
+<article class="container py-5" style="max-width:860px;">
+    <p class="text-muted small mb-2">
+        {% if post.category %}<a href="{% url 'blog:post_list' %}?category={{ post.category.slug }}">{{ post.category.name }}</a> · {% endif %}
+        {{ post.published_at|date:"M d, Y"|default:post.created_at|date:"M d, Y" }}
+    </p>
+    <h1 class="mb-3" style="font-family:var(--font-serif, Georgia, serif);">{{ post.title }}</h1>
+    {% if post.featured_image %}
+    <img src="{{ post.featured_image.url }}" alt="" class="img-fluid mb-4 rounded" style="width:100%;max-height:420px;object-fit:cover;">
+    {% endif %}
+    {% if post.excerpt %}<p class="lead">{{ post.excerpt }}</p>{% endif %}
+    <div class="blog-body" style="line-height:1.8;white-space:pre-wrap;">{{ post.content }}</div>
+
+    {% if related_posts %}
+    <hr class="my-5">
+    <h3>Related</h3>
+    <ul>
+        {% for r in related_posts %}
+        <li><a href="{{ r.get_absolute_url }}">{{ r.title }}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</article>
+{% endblock %}
