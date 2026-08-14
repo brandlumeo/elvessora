@@ -93,7 +93,7 @@ if os.environ.get('DATABASE_URL'):
     DATABASES = {
         'default': dj_database_url.config(
             default=_database_url,
-            conn_max_age=600,
+            conn_max_age=int(os.environ.get('DB_CONN_MAX_AGE', '0')),
             conn_health_checks=True,
             ssl_require=not DEBUG and _database_url.startswith(('postgres://', 'postgresql://')),
         )
