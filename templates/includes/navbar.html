@@ -56,6 +56,12 @@
                         {% if cart_count %}<span class="nav-icon-badge">{{ cart_count }}</span>{% endif %}
                     </a>
                     {% if user.is_authenticated %}
+                    <a href="{% url 'notifications:list' %}"
+                       class="nav-icon-btn"
+                       title="{% trans 'Notifications' %}">
+                        <i class="bi bi-bell"></i>
+                        {% if unread_notifications_count %}<span class="nav-icon-badge">{{ unread_notifications_count }}</span>{% endif %}
+                    </a>
                     <div class="dropdown">
                         <a href="#" class="nav-icon-btn nav-account-btn dropdown-toggle" data-bs-toggle="dropdown" title="{% trans 'Account' %}">
                             <i class="bi bi-person"></i>
@@ -63,6 +69,7 @@
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li class="dropdown-header">{{ user.first_name|default:user.username|truncatechars:20 }}</li>
                             <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">{% trans "My Profile" %}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'notifications:list' %}">{% trans "Notifications" %}{% if unread_notifications_count %} <span class="badge bg-danger rounded-pill">{{ unread_notifications_count }}</span>{% endif %}</a></li>
                             <li><a class="dropdown-item" href="{% url 'accounts:order_history' %}">{% trans "Orders" %}</a></li>
                             <li><a class="dropdown-item" href="{% url 'accounts:wishlist' %}">{% trans "Wishlist" %}</a></li>
                             <li><a class="dropdown-item" href="{% url 'accounts:addresses' %}">{% trans "Addresses" %}</a></li>
