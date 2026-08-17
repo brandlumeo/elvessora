@@ -155,7 +155,7 @@ def payment_verify(request):
         ).hexdigest()
 
         order = get_object_or_404(Order, razorpay_order_id=order_id)
-        if generated == signature:
+        if hmac.compare_digest(generated, signature or ''):
             order.payment_status = 'paid'
             order.status = 'confirmed'
             order.razorpay_payment_id = payment_id

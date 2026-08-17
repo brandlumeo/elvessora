@@ -6,12 +6,15 @@
       <img src="{{ image_url }}"
            alt="{{ product.name }}" loading="lazy">
     </a>
-    <a href="{% url 'accounts:wishlist_toggle' product.id %}"
-       class="lux-product-wishlist{% if product.id in wishlist_product_ids %} is-active{% endif %}"
-       aria-label="{% if product.id in wishlist_product_ids %}Remove from wishlist{% else %}Add to wishlist{% endif %}"
-       title="Wishlist">
-      <i class="bi bi-heart{% if product.id in wishlist_product_ids %}-fill{% endif %}"></i>
-    </a>
+    <form method="post" action="{% url 'accounts:wishlist_toggle' product.id %}"
+       class="lux-product-wishlist{% if product.id in wishlist_product_ids %} is-active{% endif %}">
+      {% csrf_token %}
+      <button type="submit" class="lux-product-wishlist-btn"
+         aria-label="{% if product.id in wishlist_product_ids %}Remove from wishlist{% else %}Add to wishlist{% endif %}"
+         title="Wishlist">
+        <i class="bi bi-heart{% if product.id in wishlist_product_ids %}-fill{% endif %}"></i>
+      </button>
+    </form>
     <a href="{% url 'products:product_detail' product.slug %}"
        class="lux-product-view"
        aria-label="View {{ product.name }}"

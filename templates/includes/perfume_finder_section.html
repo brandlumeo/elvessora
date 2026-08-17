@@ -44,57 +44,135 @@
 
         <div class="pf-filter-group">
           <label class="pf-filter-label">For Whom</label>
-          <div class="pf-btn-group" data-filter="gender">
-            <button type="button" class="pf-chip pf-chip--btn" data-value="men">Men</button>
-            <button type="button" class="pf-chip pf-chip--btn" data-value="women">Women</button>
-            <button type="button" class="pf-chip pf-chip--btn is-active" data-value="unisex">Unisex</button>
+          <div class="pf-gender-row" data-filter="gender">
+            <button type="button" class="pf-chip pf-gender-card" data-value="men">
+              <span class="pf-gender-icon"><i class="bi bi-gender-male"></i></span>
+              <span class="pf-gender-label">Men</span>
+            </button>
+            <button type="button" class="pf-chip pf-gender-card" data-value="women">
+              <span class="pf-gender-icon"><i class="bi bi-gender-female"></i></span>
+              <span class="pf-gender-label">Women</span>
+            </button>
+            <button type="button" class="pf-chip pf-gender-card is-active" data-value="unisex">
+              <span class="pf-gender-icon"><i class="bi bi-gender-ambiguous"></i></span>
+              <span class="pf-gender-label">Unisex</span>
+            </button>
           </div>
         </div>
 
         <div class="pf-filter-group pf-filter-group--wide">
           <label class="pf-filter-label">Occasion <small>(multi-select)</small></label>
           <div class="pf-chip-row" data-filter="occasions" data-multi="true">
-            <button type="button" class="pf-chip" data-value="daily">Daily</button>
-            <button type="button" class="pf-chip" data-value="office">Office</button>
-            <button type="button" class="pf-chip" data-value="date">Date Night</button>
-            <button type="button" class="pf-chip" data-value="party">Party</button>
-            <button type="button" class="pf-chip" data-value="wedding">Wedding</button>
-            <button type="button" class="pf-chip" data-value="gift">Gift</button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="daily">
+              <span class="pf-icon-badge"><i class="bi bi-brightness-high"></i></span>
+              <span class="pf-icon-card-label">Daily</span>
+            </button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="office">
+              <span class="pf-icon-badge"><i class="bi bi-briefcase"></i></span>
+              <span class="pf-icon-card-label">Office</span>
+            </button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="date">
+              <span class="pf-icon-badge"><i class="bi bi-heart"></i></span>
+              <span class="pf-icon-card-label">Date Night</span>
+            </button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="party">
+              <span class="pf-icon-badge"><i class="bi bi-music-note-beamed"></i></span>
+              <span class="pf-icon-card-label">Party</span>
+            </button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="wedding">
+              <span class="pf-icon-badge"><i class="bi bi-gem"></i></span>
+              <span class="pf-icon-card-label">Wedding</span>
+            </button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="gift">
+              <span class="pf-icon-badge"><i class="bi bi-gift"></i></span>
+              <span class="pf-icon-card-label">Gift</span>
+            </button>
           </div>
         </div>
 
         <div class="pf-filter-group pf-filter-group--wide">
           <label class="pf-filter-label">Season <small>(multi-select)</small></label>
           <div class="pf-chip-row" data-filter="seasons" data-multi="true">
-            <button type="button" class="pf-chip" data-value="spring">Spring</button>
-            <button type="button" class="pf-chip" data-value="summer">Summer</button>
-            <button type="button" class="pf-chip" data-value="autumn">Autumn</button>
-            <button type="button" class="pf-chip" data-value="winter">Winter</button>
-            <button type="button" class="pf-chip is-active" data-value="all">All Seasons</button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="spring">
+              <span class="pf-icon-badge"><i class="bi bi-flower1"></i></span>
+              <span class="pf-icon-card-label">Spring</span>
+            </button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="summer">
+              <span class="pf-icon-badge"><i class="bi bi-sun"></i></span>
+              <span class="pf-icon-card-label">Summer</span>
+            </button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="autumn">
+              <span class="pf-icon-badge"><i class="bi bi-cloud-sun"></i></span>
+              <span class="pf-icon-card-label">Autumn</span>
+            </button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="winter">
+              <span class="pf-icon-badge"><i class="bi bi-snow2"></i></span>
+              <span class="pf-icon-card-label">Winter</span>
+            </button>
+            <button type="button" class="pf-chip pf-icon-card is-active" data-value="all">
+              <span class="pf-icon-badge"><i class="bi bi-arrow-repeat"></i></span>
+              <span class="pf-icon-card-label">All Seasons</span>
+            </button>
           </div>
         </div>
 
         <div class="pf-filter-group pf-filter-group--wide">
           <label class="pf-filter-label">Scent Family <small>(multi-select)</small></label>
           <div class="pf-chip-row" data-filter="scent_families" data-multi="true">
-            <button type="button" class="pf-chip" data-value="fresh">Fresh</button>
-            <button type="button" class="pf-chip" data-value="woody">Woody</button>
-            <button type="button" class="pf-chip" data-value="floral">Floral</button>
-            <button type="button" class="pf-chip" data-value="oriental">Oriental</button>
-            <button type="button" class="pf-chip" data-value="citrus">Citrus</button>
-            <button type="button" class="pf-chip" data-value="spicy">Spicy</button>
-            <button type="button" class="pf-chip" data-value="sweet">Sweet</button>
-            <button type="button" class="pf-chip" data-value="aquatic">Aquatic</button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="fresh">
+              <span class="pf-icon-badge"><i class="bi bi-wind"></i></span>
+              <span class="pf-icon-card-label">Fresh</span>
+            </button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="woody">
+              <span class="pf-icon-badge"><i class="bi bi-tree"></i></span>
+              <span class="pf-icon-card-label">Woody</span>
+            </button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="floral">
+              <span class="pf-icon-badge"><i class="bi bi-flower1"></i></span>
+              <span class="pf-icon-card-label">Floral</span>
+            </button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="oriental">
+              <span class="pf-icon-badge"><i class="bi bi-gem"></i></span>
+              <span class="pf-icon-card-label">Oriental</span>
+            </button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="citrus">
+              <span class="pf-icon-badge"><i class="bi bi-brightness-high"></i></span>
+              <span class="pf-icon-card-label">Citrus</span>
+            </button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="spicy">
+              <span class="pf-icon-badge"><i class="bi bi-fire"></i></span>
+              <span class="pf-icon-card-label">Spicy</span>
+            </button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="sweet">
+              <span class="pf-icon-badge"><i class="bi bi-cake2"></i></span>
+              <span class="pf-icon-card-label">Sweet</span>
+            </button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="aquatic">
+              <span class="pf-icon-badge"><i class="bi bi-water"></i></span>
+              <span class="pf-icon-card-label">Aquatic</span>
+            </button>
           </div>
         </div>
 
         <div class="pf-filter-group">
           <label class="pf-filter-label">Intensity</label>
           <div class="pf-btn-group" data-filter="intensity">
-            <button type="button" class="pf-chip pf-chip--btn" data-value="light">Light</button>
-            <button type="button" class="pf-chip pf-chip--btn is-active" data-value="moderate">Moderate</button>
-            <button type="button" class="pf-chip pf-chip--btn" data-value="strong">Strong</button>
-            <button type="button" class="pf-chip pf-chip--btn" data-value="long-lasting">Long-lasting</button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="light">
+              <span class="pf-icon-badge"><i class="bi bi-brightness-low"></i></span>
+              <span class="pf-icon-card-label">Light</span>
+            </button>
+            <button type="button" class="pf-chip pf-icon-card is-active" data-value="moderate">
+              <span class="pf-icon-badge"><i class="bi bi-droplet"></i></span>
+              <span class="pf-icon-card-label">Moderate</span>
+            </button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="strong">
+              <span class="pf-icon-badge"><i class="bi bi-lightning-charge"></i></span>
+              <span class="pf-icon-card-label">Strong</span>
+            </button>
+            <button type="button" class="pf-chip pf-icon-card" data-value="long-lasting">
+              <span class="pf-icon-badge"><i class="bi bi-infinity"></i></span>
+              <span class="pf-icon-card-label">Long-lasting</span>
+            </button>
           </div>
         </div>
 
@@ -124,51 +202,123 @@
       <div class="pf-quiz-steps" data-quiz-steps>
         <div class="pf-quiz-step is-active" data-step="0">
           <h3 class="pf-quiz-q">Who is this fragrance for?</h3>
-          <div class="pf-quiz-options">
-            <button type="button" class="pf-quiz-opt" data-quiz-key="gender" data-value="women">For Her</button>
-            <button type="button" class="pf-quiz-opt" data-quiz-key="gender" data-value="men">For Him</button>
-            <button type="button" class="pf-quiz-opt" data-quiz-key="gender" data-value="unisex">For Everyone</button>
+          <div class="pf-quiz-options pf-quiz-options--gender">
+            <button type="button" class="pf-quiz-opt pf-gender-card" data-quiz-key="gender" data-value="women">
+              <span class="pf-gender-icon"><i class="bi bi-gender-female"></i></span>
+              <span class="pf-gender-label">For Her</span>
+            </button>
+            <button type="button" class="pf-quiz-opt pf-gender-card" data-quiz-key="gender" data-value="men">
+              <span class="pf-gender-icon"><i class="bi bi-gender-male"></i></span>
+              <span class="pf-gender-label">For Him</span>
+            </button>
+            <button type="button" class="pf-quiz-opt pf-gender-card" data-quiz-key="gender" data-value="unisex">
+              <span class="pf-gender-icon"><i class="bi bi-gender-ambiguous"></i></span>
+              <span class="pf-gender-label">For Everyone</span>
+            </button>
           </div>
         </div>
         <div class="pf-quiz-step" data-step="1">
           <h3 class="pf-quiz-q">When will you wear it most?</h3>
           <div class="pf-quiz-options pf-quiz-options--grid">
-            <button type="button" class="pf-quiz-opt" data-quiz-key="occasion" data-value="daily">Daily Wear</button>
-            <button type="button" class="pf-quiz-opt" data-quiz-key="occasion" data-value="office">Office</button>
-            <button type="button" class="pf-quiz-opt" data-quiz-key="occasion" data-value="date">Date Night</button>
-            <button type="button" class="pf-quiz-opt" data-quiz-key="occasion" data-value="party">Party</button>
-            <button type="button" class="pf-quiz-opt" data-quiz-key="occasion" data-value="wedding">Wedding</button>
-            <button type="button" class="pf-quiz-opt" data-quiz-key="occasion" data-value="gift">As a Gift</button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="occasion" data-value="daily">
+              <span class="pf-icon-badge"><i class="bi bi-brightness-high"></i></span>
+              <span class="pf-icon-card-label">Daily Wear</span>
+            </button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="occasion" data-value="office">
+              <span class="pf-icon-badge"><i class="bi bi-briefcase"></i></span>
+              <span class="pf-icon-card-label">Office</span>
+            </button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="occasion" data-value="date">
+              <span class="pf-icon-badge"><i class="bi bi-heart"></i></span>
+              <span class="pf-icon-card-label">Date Night</span>
+            </button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="occasion" data-value="party">
+              <span class="pf-icon-badge"><i class="bi bi-music-note-beamed"></i></span>
+              <span class="pf-icon-card-label">Party</span>
+            </button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="occasion" data-value="wedding">
+              <span class="pf-icon-badge"><i class="bi bi-gem"></i></span>
+              <span class="pf-icon-card-label">Wedding</span>
+            </button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="occasion" data-value="gift">
+              <span class="pf-icon-badge"><i class="bi bi-gift"></i></span>
+              <span class="pf-icon-card-label">As a Gift</span>
+            </button>
           </div>
         </div>
         <div class="pf-quiz-step" data-step="2">
           <h3 class="pf-quiz-q">Which season feels right?</h3>
           <div class="pf-quiz-options pf-quiz-options--grid">
-            <button type="button" class="pf-quiz-opt" data-quiz-key="season" data-value="spring">Spring</button>
-            <button type="button" class="pf-quiz-opt" data-quiz-key="season" data-value="summer">Summer</button>
-            <button type="button" class="pf-quiz-opt" data-quiz-key="season" data-value="autumn">Autumn</button>
-            <button type="button" class="pf-quiz-opt" data-quiz-key="season" data-value="winter">Winter</button>
-            <button type="button" class="pf-quiz-opt" data-quiz-key="season" data-value="all">All Seasons</button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="season" data-value="spring">
+              <span class="pf-icon-badge"><i class="bi bi-flower1"></i></span>
+              <span class="pf-icon-card-label">Spring</span>
+            </button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="season" data-value="summer">
+              <span class="pf-icon-badge"><i class="bi bi-sun"></i></span>
+              <span class="pf-icon-card-label">Summer</span>
+            </button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="season" data-value="autumn">
+              <span class="pf-icon-badge"><i class="bi bi-cloud-sun"></i></span>
+              <span class="pf-icon-card-label">Autumn</span>
+            </button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="season" data-value="winter">
+              <span class="pf-icon-badge"><i class="bi bi-snow2"></i></span>
+              <span class="pf-icon-card-label">Winter</span>
+            </button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="season" data-value="all">
+              <span class="pf-icon-badge"><i class="bi bi-arrow-repeat"></i></span>
+              <span class="pf-icon-card-label">All Seasons</span>
+            </button>
           </div>
         </div>
         <div class="pf-quiz-step" data-step="3">
           <h3 class="pf-quiz-q">What scent family do you love?</h3>
           <div class="pf-quiz-options pf-quiz-options--grid">
-            <button type="button" class="pf-quiz-opt" data-quiz-key="scent_family" data-value="fresh">Fresh</button>
-            <button type="button" class="pf-quiz-opt" data-quiz-key="scent_family" data-value="floral">Floral</button>
-            <button type="button" class="pf-quiz-opt" data-quiz-key="scent_family" data-value="fruity">Fruity</button>
-            <button type="button" class="pf-quiz-opt" data-quiz-key="scent_family" data-value="oriental">Oriental</button>
-            <button type="button" class="pf-quiz-opt" data-quiz-key="scent_family" data-value="woody">Woody</button>
-            <button type="button" class="pf-quiz-opt" data-quiz-key="scent_family" data-value="aquatic">Aquatic</button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="scent_family" data-value="fresh">
+              <span class="pf-icon-badge"><i class="bi bi-wind"></i></span>
+              <span class="pf-icon-card-label">Fresh</span>
+            </button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="scent_family" data-value="floral">
+              <span class="pf-icon-badge"><i class="bi bi-flower1"></i></span>
+              <span class="pf-icon-card-label">Floral</span>
+            </button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="scent_family" data-value="fruity">
+              <span class="pf-icon-badge"><i class="bi bi-apple"></i></span>
+              <span class="pf-icon-card-label">Fruity</span>
+            </button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="scent_family" data-value="oriental">
+              <span class="pf-icon-badge"><i class="bi bi-gem"></i></span>
+              <span class="pf-icon-card-label">Oriental</span>
+            </button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="scent_family" data-value="woody">
+              <span class="pf-icon-badge"><i class="bi bi-tree"></i></span>
+              <span class="pf-icon-card-label">Woody</span>
+            </button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="scent_family" data-value="aquatic">
+              <span class="pf-icon-badge"><i class="bi bi-water"></i></span>
+              <span class="pf-icon-card-label">Aquatic</span>
+            </button>
           </div>
         </div>
         <div class="pf-quiz-step" data-step="4">
           <h3 class="pf-quiz-q">How strong should your fragrance be?</h3>
-          <div class="pf-quiz-options">
-            <button type="button" class="pf-quiz-opt" data-quiz-key="intensity" data-value="light">Light &amp; Subtle</button>
-            <button type="button" class="pf-quiz-opt" data-quiz-key="intensity" data-value="moderate">Moderate</button>
-            <button type="button" class="pf-quiz-opt" data-quiz-key="intensity" data-value="strong">Strong</button>
-            <button type="button" class="pf-quiz-opt" data-quiz-key="intensity" data-value="long-lasting">Long-lasting</button>
+          <div class="pf-quiz-options pf-quiz-options--grid">
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="intensity" data-value="light">
+              <span class="pf-icon-badge"><i class="bi bi-brightness-low"></i></span>
+              <span class="pf-icon-card-label">Light &amp; Subtle</span>
+            </button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="intensity" data-value="moderate">
+              <span class="pf-icon-badge"><i class="bi bi-droplet"></i></span>
+              <span class="pf-icon-card-label">Moderate</span>
+            </button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="intensity" data-value="strong">
+              <span class="pf-icon-badge"><i class="bi bi-lightning-charge"></i></span>
+              <span class="pf-icon-card-label">Strong</span>
+            </button>
+            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="intensity" data-value="long-lasting">
+              <span class="pf-icon-badge"><i class="bi bi-infinity"></i></span>
+              <span class="pf-icon-card-label">Long-lasting</span>
+            </button>
           </div>
         </div>
         <div class="pf-quiz-step" data-step="5">

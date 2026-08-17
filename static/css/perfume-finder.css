@@ -771,3 +771,202 @@
         width: 100%;
     }
 }
+
+/* ===== Gender selector — modern icon cards (shared by Quick Filters + Quiz mode) ===== */
+.pf-gender-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(96px, 1fr));
+    gap: 0.75rem;
+    max-width: 420px;
+}
+
+.pf-quiz-options--gender {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(96px, 1fr));
+    gap: 0.75rem;
+}
+
+.pf-gender-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 1.1rem 0.75rem;
+    border-radius: 16px;
+    border: 1px solid rgba(6, 16, 34, 0.1);
+    background: #fff;
+    text-align: center;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.pf-gender-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--pf-beige-soft);
+    border: 1.5px solid rgba(200, 169, 106, 0.4);
+    color: var(--pf-navy-mid);
+    font-size: 1.4rem;
+    transition: all 0.25s ease;
+}
+
+.pf-gender-label {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--pf-navy);
+}
+
+.pf-gender-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--pf-gold);
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(6, 16, 34, 0.1);
+}
+
+.pf-gender-card:hover .pf-gender-icon {
+    border-color: var(--pf-gold);
+    color: var(--pf-gold);
+}
+
+.pf-gender-card.is-active,
+.pf-gender-card.is-selected {
+    border-color: var(--pf-gold);
+    background: linear-gradient(180deg, rgba(200, 169, 106, 0.12) 0%, #fff 100%);
+    box-shadow: 0 10px 26px rgba(200, 169, 106, 0.28);
+    transform: translateY(-2px);
+    animation: pf-gender-pop 0.3s ease;
+}
+
+.pf-gender-card.is-active .pf-gender-icon,
+.pf-gender-card.is-selected .pf-gender-icon {
+    background: linear-gradient(145deg, #e8d4a8 0%, var(--pf-gold) 60%, #9a7844 100%);
+    border-color: var(--pf-gold);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(200, 169, 106, 0.45);
+}
+
+.pf-gender-card.is-active .pf-gender-label,
+.pf-gender-card.is-selected .pf-gender-label {
+    color: var(--pf-navy-mid);
+}
+
+@keyframes pf-gender-pop {
+    0% { transform: translateY(-2px) scale(0.94); }
+    60% { transform: translateY(-2px) scale(1.05); }
+    100% { transform: translateY(-2px) scale(1); }
+}
+
+@media (max-width: 480px) {
+    .pf-gender-row,
+    .pf-quiz-options--gender {
+        gap: 0.5rem;
+    }
+
+    .pf-gender-card {
+        padding: 0.85rem 0.5rem;
+    }
+
+    .pf-gender-icon {
+        width: 46px;
+        height: 46px;
+        font-size: 1.15rem;
+    }
+
+    .pf-gender-label {
+        font-size: 0.8rem;
+    }
+}
+
+/* ===== Compact icon cards — Occasion / Season / Scent Family / Intensity ===== */
+.pf-icon-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    padding: 0.85rem 0.6rem;
+    min-width: 92px;
+    border-radius: 14px;
+    border: 1px solid rgba(6, 16, 34, 0.1);
+    background: #fff;
+    text-align: center;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.pf-icon-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--pf-beige-soft);
+    border: 1.5px solid rgba(200, 169, 106, 0.35);
+    color: var(--pf-navy-mid);
+    font-size: 1.05rem;
+    transition: all 0.25s ease;
+}
+
+.pf-icon-card-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--pf-navy);
+    letter-spacing: 0.01em;
+}
+
+.pf-icon-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--pf-gold);
+    background: #fff;
+    box-shadow: 0 8px 18px rgba(6, 16, 34, 0.08);
+}
+
+.pf-icon-card:hover .pf-icon-badge {
+    border-color: var(--pf-gold);
+    color: var(--pf-gold);
+}
+
+.pf-icon-card.is-active,
+.pf-icon-card.is-selected {
+    border-color: var(--pf-gold);
+    background: linear-gradient(180deg, rgba(200, 169, 106, 0.12) 0%, #fff 100%);
+    box-shadow: 0 8px 20px rgba(200, 169, 106, 0.25);
+    animation: pf-gender-pop 0.3s ease;
+}
+
+.pf-icon-card.is-active .pf-icon-badge,
+.pf-icon-card.is-selected .pf-icon-badge {
+    background: linear-gradient(145deg, #e8d4a8 0%, var(--pf-gold) 60%, #9a7844 100%);
+    border-color: var(--pf-gold);
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(200, 169, 106, 0.4);
+}
+
+.pf-icon-card.is-active .pf-icon-card-label,
+.pf-icon-card.is-selected .pf-icon-card-label {
+    color: var(--pf-navy-mid);
+}
+
+@media (max-width: 480px) {
+    .pf-icon-card {
+        min-width: 78px;
+        padding: 0.7rem 0.45rem;
+    }
+
+    .pf-icon-badge {
+        width: 36px;
+        height: 36px;
+        font-size: 0.95rem;
+    }
+
+    .pf-icon-card-label {
+        font-size: 0.72rem;
+    }
+}

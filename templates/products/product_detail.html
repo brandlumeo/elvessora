@@ -128,7 +128,7 @@
                 <div class="d-flex gap-2 mb-4 flex-wrap">
                     <button type="submit" class="btn btn-gold flex-grow-1" {% if not product.in_stock %}disabled{% endif %}>Add to Cart</button>
                     <button type="submit" name="buy_now" value="1" class="btn btn-outline-gold flex-grow-1" {% if not product.in_stock %}disabled{% endif %}>Buy Now</button>
-                    <a href="{% url 'accounts:wishlist_toggle' product.id %}" class="btn btn-silver" title="Wishlist"><i class="bi bi-heart{% if product.id in wishlist_product_ids %}-fill{% endif %}"></i></a>
+                    <button type="submit" formaction="{% url 'accounts:wishlist_toggle' product.id %}" class="btn btn-silver" title="Wishlist"><i class="bi bi-heart{% if product.id in wishlist_product_ids %}-fill{% endif %}"></i></button>
                     <button type="button" class="btn btn-silver" data-share><i class="bi bi-share"></i></button>
                 </div>
             </form>

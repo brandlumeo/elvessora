@@ -179,6 +179,11 @@
     margin-top: 0.4rem;
 }
 
+.side-drawer-remove-form {
+    margin: 0;
+    padding: 0;
+}
+
 .side-drawer-remove {
     color: rgba(255, 255, 255, 0.55);
     text-decoration: none;

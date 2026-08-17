@@ -24,7 +24,10 @@
                 <p class="small mb-1">{{ address.address_line1 }}{% if address.address_line2 %}, {{ address.address_line2 }}{% endif %}</p>
                 <p class="small mb-1">{{ address.city }}, {{ address.state }} — {{ address.pincode }}</p>
                 <p class="small mb-0">{{ address.phone }}</p>
-                <a href="{% url 'accounts:address_delete' address.pk %}" class="btn btn-sm btn-outline-danger mt-2">Remove</a>
+                <form method="post" action="{% url 'accounts:address_delete' address.pk %}" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-outline-danger mt-2">Remove</button>
+                </form>
             </div>
             {% empty %}
             <p class="text-muted">No saved addresses yet.</p>

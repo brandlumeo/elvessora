@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.urls import reverse_lazy, reverse
+from django.views.decorators.http import require_POST
 from .forms import RegisterForm, LoginForm, ProfileForm, AddressForm, ElvessoraPasswordResetForm
 from .models import Address, UserProfile
 from .wishlist_service import merge_session_wishlist, toggle_wishlist, wishlist_queryset
@@ -289,6 +290,7 @@ def addresses(request):
 
 
 @login_required
+@require_POST
 def address_delete(request, pk):
     Address.objects.filter(pk=pk, user=request.user).delete()
     messages.success(request, 'Address removed.')
@@ -300,6 +302,7 @@ def wishlist(request):
     return render(request, 'accounts/wishlist.html', {'items': items})
 
 
+@require_POST
 def wishlist_toggle(request, product_id):
     product = get_object_or_404(Product, id=product_id, is_active=True)
     added = toggle_wishlist(request, product)

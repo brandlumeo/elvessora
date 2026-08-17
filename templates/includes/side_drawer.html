@@ -83,9 +83,12 @@
                 <button type="submit" class="btn btn-gold btn-sm">{% trans "Add to cart" %}</button>
               </form>
             </div>
-            <a href="{% url 'accounts:wishlist_toggle' item.product.id %}?drawer=1" class="side-drawer-remove" title="{% trans 'Remove' %}">
-              <i class="bi bi-trash" aria-hidden="true"></i>
-            </a>
+            <form method="post" action="{% url 'accounts:wishlist_toggle' item.product.id %}?drawer=1" class="side-drawer-remove-form">
+              {% csrf_token %}
+              <button type="submit" class="side-drawer-remove" title="{% trans 'Remove' %}">
+                <i class="bi bi-trash" aria-hidden="true"></i>
+              </button>
+            </form>
           </li>
           {% endfor %}
         </ul>

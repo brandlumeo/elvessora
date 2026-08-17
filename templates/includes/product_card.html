@@ -19,10 +19,13 @@
             </div>
             <div class="product-actions">
                 <a href="{% url 'products:product_detail' product.slug %}" class="btn btn-sm btn-gold" title="Quick view"><i class="bi bi-eye"></i></a>
-                <a href="{% url 'accounts:wishlist_toggle' product.id %}"
-                   class="btn btn-sm {% if product.id in wishlist_product_ids %}btn-gold{% else %}btn-outline-light{% endif %}" title="Wishlist">
-                    <i class="bi bi-heart{% if product.id in wishlist_product_ids %}-fill{% endif %}"></i>
-                </a>
+                <form method="post" action="{% url 'accounts:wishlist_toggle' product.id %}" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit"
+                       class="btn btn-sm {% if product.id in wishlist_product_ids %}btn-gold{% else %}btn-outline-light{% endif %}" title="Wishlist">
+                        <i class="bi bi-heart{% if product.id in wishlist_product_ids %}-fill{% endif %}"></i>
+                    </button>
+                </form>
             </div>
         </div>
         <div class="product-info flex-grow-1 d-flex flex-column">
