@@ -30,10 +30,12 @@
     function resizeCanvas() {
         var width = pin.clientWidth;
         var height = pin.clientHeight;
+        // Only the internal pixel buffer is set here — the on-screen box size
+        // always comes from the CSS width:100%/height:100% rule, so the canvas
+        // can never get stuck narrower than its container after a mobile
+        // browser toolbar show/hide or an early, pre-layout measurement.
         canvas.width = Math.floor(width * dpr);
         canvas.height = Math.floor(height * dpr);
-        canvas.style.width = width + 'px';
-        canvas.style.height = height + 'px';
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         if (ready && currentFrame >= 0) {
             drawFrame(currentFrame, getProgress());
@@ -75,7 +77,7 @@
         var image = frames[index];
         if (!image) return;
 
-        var scale = 1.08 - progress * 0.08;
+        var scale = 1.02 - progress * 0.02;
         drawCover(image, scale);
         currentFrame = index;
     }
@@ -158,6 +160,10 @@
     function init() {
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas, { passive: true });
+        window.addEventListener('orientationchange', resizeCanvas, { passive: true });
+        if (window.ResizeObserver) {
+            new ResizeObserver(resizeCanvas).observe(pin);
+        }
         window.addEventListener('scroll', onScroll, { passive: true });
 
         preloadFrames().then(function () {
