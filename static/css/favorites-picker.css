@@ -164,16 +164,24 @@
     height: clamp(170px, 28vw, 290px);
     object-fit: contain;
     object-position: bottom center;
-    filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.55));
+    filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.55)) grayscale(0.4) brightness(0.88);
     transition: transform 0.5s cubic-bezier(0.34, 1.2, 0.64, 1), filter 0.5s ease, opacity 0.5s ease;
-    opacity: 0.92;
+    opacity: 0.85;
 }
 
+/* Spotlight effect: the picked bottle pops in full colour, the rest
+   stay quietly desaturated so the eye goes straight to the selection. */
 .fav-bottle-slot.is-highlighted .fav-bottle-img,
 .fav-bottle-slot:has(.fav-hotspot.is-active) .fav-bottle-img {
-    transform: scale(1.08) translateY(-8px);
-    filter: drop-shadow(0 20px 40px rgba(200, 169, 106, 0.38));
+    transform: scale(1.1) translateY(-10px);
+    filter: drop-shadow(0 22px 44px rgba(200, 169, 106, 0.42)) grayscale(0) brightness(1);
     opacity: 1;
+}
+
+.fav-bottle-slot:not(.is-highlighted):hover .fav-bottle-img {
+    transform: scale(1.03) translateY(-4px);
+    filter: drop-shadow(0 16px 34px rgba(0, 0, 0, 0.5)) grayscale(0.15) brightness(0.97);
+    opacity: 0.96;
 }
 
 .fav-bottle-slot.is-highlighted .fav-block,
@@ -182,6 +190,21 @@
         0 -1px 0 rgba(200, 169, 106, 0.45),
         0 12px 32px rgba(0, 0, 0, 0.55),
         0 0 24px rgba(200, 169, 106, 0.12);
+}
+
+/* Soft floor spotlight glow beneath the selected bottle */
+.fav-bottle-slot.is-highlighted .fav-bottle-wrap::before,
+.fav-bottle-slot:has(.fav-hotspot.is-active) .fav-bottle-wrap::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 140%;
+    height: 60%;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(200, 169, 106, 0.22) 0%, transparent 72%);
+    pointer-events: none;
+    z-index: -1;
 }
 
 /* Numbers aligned on one horizontal line above bottles */
