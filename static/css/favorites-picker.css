@@ -88,7 +88,7 @@
     z-index: 3;
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    align-items: end;
+    align-items: center;
     column-gap: var(--fav-slot-gap);
     height: 100%;
     min-height: inherit;
@@ -161,12 +161,12 @@
 .fav-bottle-img {
     display: block;
     width: 100%;
-    height: clamp(140px, 24vw, 250px);
+    height: clamp(170px, 28vw, 290px);
     object-fit: contain;
     object-position: bottom center;
     filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.55));
     transition: transform 0.5s cubic-bezier(0.34, 1.2, 0.64, 1), filter 0.5s ease, opacity 0.5s ease;
-    opacity: 0.72;
+    opacity: 0.92;
 }
 
 .fav-bottle-slot.is-highlighted .fav-bottle-img,
