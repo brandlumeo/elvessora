@@ -448,3 +448,38 @@
     flex: unset;
     min-width: 0;
 }
+
+/* Responsive */
+@media (max-width: 576px) {
+    .cart-lux-item {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+
+    .cart-lux-item img {
+        width: 64px;
+        height: 80px;
+    }
+
+    .cart-lux-item-info {
+        flex: 1 1 calc(100% - 64px - 0.75rem);
+    }
+
+    .cart-lux-item .cart-qty-form {
+        order: 3;
+        margin-right: auto;
+    }
+
+    .cart-lux-item strong {
+        order: 4;
+    }
+
+    .cart-lux-item .text-danger {
+        order: 5;
+    }
+
+    .order-summary-lux {
+        position: static;
+    }
+}

@@ -1027,6 +1027,36 @@ body.page-luxury-home .brand-logo-svg {
     .nav-brand-text { font-size: 1.4rem; letter-spacing: 2px; }
 }
 
+/* Prevent the icon cluster (search/wishlist/cart/notifications/account/menu)
+   from overflowing narrow phone widths once the desktop menu is hidden. */
+@media (max-width: 767px) {
+    .nav-row { gap: 8px; }
+    .nav-actions { gap: 4px; }
+    .nav-icon-btn,
+    .nav-toggle {
+        width: 36px;
+        height: 36px;
+        font-size: 0.95rem;
+    }
+    .brand-logo-img { height: 38px; max-width: 160px; }
+    .brand-logo-svg { height: 32px; min-width: 130px; }
+}
+
+@media (max-width: 420px) {
+    .nav-row { gap: 6px; }
+    .nav-actions { gap: 3px; }
+    .nav-icon-btn,
+    .nav-toggle {
+        width: 32px;
+        height: 32px;
+        font-size: 0.88rem;
+    }
+    .brand-logo-img { height: 34px; max-width: 130px; }
+    .brand-logo-svg { height: 28px; min-width: 110px; }
+    /* Notifications are still reachable from the account dropdown menu below. */
+    .nav-notif-btn { display: none; }
+}
+
 .family-card-luxury {
     border-radius: 10px;
     padding: 28px 16px 22px;
