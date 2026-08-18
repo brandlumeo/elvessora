@@ -1188,16 +1188,13 @@ h1, h2, h3, h4, h5, h6, .brand-logo {
         padding: 14px 16px;
     }
 
+    /* Touch devices never trigger :hover, so the quick-view/wishlist
+       overlay must stay visible on its own instead of relying on it.
+       It stays absolutely positioned (not static) because .product-image
+       clips overflow to its aspect-ratio box — a static/in-flow version
+       gets pushed past that box and clipped out of view entirely. */
     .product-actions {
         opacity: 1;
-        position: static;
-        background: transparent;
-        padding: 10px 0 0;
-    }
-
-    .product-actions .btn {
-        flex: 1;
-        font-size: 0.75rem;
     }
 }
 

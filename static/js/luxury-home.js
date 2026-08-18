@@ -79,37 +79,36 @@
     window.addEventListener('scroll', updateRail, { passive: true });
     updateRail();
 
-    /* --- Collection carousel --- */
+    /* --- Collection carousel ---
+       Native horizontal scroll-snap instead of a JS transform slider: the
+       track itself is the scroll container, so touch swipe always works
+       (no custom touch math to get wrong), and the arrows just nudge the
+       scroll position by one card width. */
     var slider = document.querySelector('[data-lux-collection]');
     if (slider) {
+        var wrap = slider.querySelector('.lux-collection-track-wrap');
         var track = slider.querySelector('.lux-collection-track');
         var prevBtn = slider.querySelector('.lux-slider-prev');
         var nextBtn = slider.querySelector('.lux-slider-next');
         var cards = track ? track.querySelectorAll('.lux-product-card') : [];
-        var index = 0;
         var autoplayTimer;
 
-        function cardsPerView() {
-            if (window.innerWidth <= 575) return 1;
-            if (window.innerWidth <= 991) return 2;
-            return 4;
-        }
-
-        function maxIndex() {
-            return Math.max(0, cards.length - cardsPerView());
-        }
-
-        function slideTo(i) {
-            index = Math.max(0, Math.min(i, maxIndex()));
-            if (!cards.length) return;
-            var card = cards[0];
+        function cardStep() {
+            if (!cards.length) return 0;
             var gap = parseFloat(getComputedStyle(track).gap) || 20;
-            var shift = (card.offsetWidth + gap) * index;
-            track.style.transform = 'translateX(-' + shift + 'px)';
+            return cards[0].offsetWidth + gap;
         }
 
-        function next() { slideTo(index + 1 >= maxIndex() + 1 ? 0 : index + 1); }
-        function prev() { slideTo(index - 1 < 0 ? maxIndex() : index - 1); }
+        function next() {
+            if (!wrap) return;
+            var atEnd = wrap.scrollLeft + wrap.clientWidth >= wrap.scrollWidth - 4;
+            wrap.scrollTo({ left: atEnd ? 0 : wrap.scrollLeft + cardStep(), behavior: 'smooth' });
+        }
+
+        function prev() {
+            if (!wrap) return;
+            wrap.scrollBy({ left: -cardStep(), behavior: 'smooth' });
+        }
 
         if (prevBtn) prevBtn.addEventListener('click', prev);
         if (nextBtn) nextBtn.addEventListener('click', next);
@@ -125,25 +124,11 @@
 
         slider.addEventListener('mouseenter', stopAutoplay);
         slider.addEventListener('mouseleave', startAutoplay);
+        if (wrap) {
+            wrap.addEventListener('touchstart', stopAutoplay, { passive: true });
+            wrap.addEventListener('touchend', startAutoplay, { passive: true });
+        }
 
-        /* Touch swipe */
-        var touchStartX = 0;
-        track.addEventListener('touchstart', function (e) {
-            touchStartX = e.changedTouches[0].screenX;
-            stopAutoplay();
-        }, { passive: true });
-
-        track.addEventListener('touchend', function (e) {
-            var diff = touchStartX - e.changedTouches[0].screenX;
-            if (Math.abs(diff) > 40) {
-                if (diff > 0) next();
-                else prev();
-            }
-            startAutoplay();
-        }, { passive: true });
-
-        window.addEventListener('resize', function () { slideTo(index); });
-        slideTo(0);
         startAutoplay();
     }
 
