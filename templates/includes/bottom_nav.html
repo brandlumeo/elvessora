@@ -1,0 +1,40 @@
+{% load i18n %}
+<nav class="bottom-tab-bar d-lg-none" aria-label="{% trans 'Primary' %}">
+    <a href="{% url 'core:home' %}" class="bottom-tab{% if request.resolver_match.url_name == 'home' %} is-active{% endif %}">
+        <i class="bi {% if request.resolver_match.url_name == 'home' %}bi-house-fill{% else %}bi-house{% endif %}"></i>
+        <span>{% trans "Home" %}</span>
+    </a>
+    <a href="{% url 'products:shop' %}" class="bottom-tab{% if request.resolver_match.namespace == 'products' and request.resolver_match.url_name == 'shop' %} is-active{% endif %}">
+        <i class="bi {% if request.resolver_match.namespace == 'products' and request.resolver_match.url_name == 'shop' %}bi-grid-fill{% else %}bi-grid{% endif %}"></i>
+        <span>{% trans "Shop" %}</span>
+    </a>
+    <a href="{% url 'accounts:wishlist' %}"
+       class="bottom-tab{% if request.resolver_match.url_name == 'wishlist' %} is-active{% endif %}"
+       data-open-drawer="wishlist">
+        <span class="bottom-tab-icon-wrap">
+            <i class="bi {% if request.resolver_match.url_name == 'wishlist' %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+            {% if wishlist_count %}<span class="bottom-tab-badge">{{ wishlist_count }}</span>{% endif %}
+        </span>
+        <span>{% trans "Wishlist" %}</span>
+    </a>
+    <a href="{% url 'cart:cart' %}"
+       class="bottom-tab{% if request.resolver_match.url_name == 'cart' %} is-active{% endif %}"
+       data-open-drawer="cart">
+        <span class="bottom-tab-icon-wrap">
+            <i class="bi {% if request.resolver_match.url_name == 'cart' %}bi-bag-fill{% else %}bi-bag{% endif %}"></i>
+            {% if cart_count %}<span class="bottom-tab-badge bottom-tab-badge-gold">{{ cart_count }}</span>{% endif %}
+        </span>
+        <span>{% trans "Cart" %}</span>
+    </a>
+    {% if user.is_authenticated %}
+    <a href="{% url 'accounts:profile' %}" class="bottom-tab{% if request.resolver_match.url_name == 'profile' %} is-active{% endif %}">
+        <i class="bi {% if request.resolver_match.url_name == 'profile' %}bi-person-fill{% else %}bi-person{% endif %}"></i>
+        <span>{% trans "Account" %}</span>
+    </a>
+    {% else %}
+    <a href="{% url 'accounts:login' %}" class="bottom-tab{% if request.resolver_match.url_name == 'login' %} is-active{% endif %}">
+        <i class="bi bi-person"></i>
+        <span>{% trans "Account" %}</span>
+    </a>
+    {% endif %}
+</nav>

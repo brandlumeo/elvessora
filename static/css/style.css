@@ -517,6 +517,95 @@ h1, h2, h3, h4, h5, h6, .brand-logo {
     transform: translateY(0);
 }
 
+/* Bottom tab bar (mobile app style, like Flipkart/Amazon) */
+.bottom-tab-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1060;
+    display: none;
+    background: #ffffff;
+    border-top: 1px solid rgba(6, 16, 34, 0.08);
+    box-shadow: 0 -4px 20px rgba(6, 16, 34, 0.08);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.bottom-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    height: 58px;
+    color: rgba(6, 16, 34, 0.55);
+    text-decoration: none;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.bottom-tab i {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+.bottom-tab.is-active {
+    color: var(--champagne-gold, #C8A96A);
+}
+
+.bottom-tab-icon-wrap {
+    position: relative;
+    display: inline-flex;
+}
+
+.bottom-tab-badge {
+    position: absolute;
+    top: -4px;
+    right: -8px;
+    min-width: 15px;
+    height: 15px;
+    padding: 0 3px;
+    border-radius: 50%;
+    background: #c0392b;
+    color: #fff;
+    font-size: 0.55rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.bottom-tab-badge-gold {
+    background: var(--champagne-gold, #C8A96A);
+    color: #061022;
+}
+
+@media (max-width: 991.98px) {
+    .bottom-tab-bar {
+        display: flex;
+    }
+
+    body {
+        padding-bottom: calc(58px + env(safe-area-inset-bottom, 0));
+    }
+
+    /* Keep the WhatsApp button and scroll-to-top clear of the tab bar */
+    .whatsapp-float {
+        bottom: calc(24px + 58px + env(safe-area-inset-bottom, 0));
+    }
+
+    .scroll-top-btn {
+        bottom: calc(96px + 58px + env(safe-area-inset-bottom, 0));
+    }
+}
+
+/* The side drawer and its backdrop already sit above everything else via
+   their own z-index (12040/12050); no extra rule needed to cover the tab bar. */
+
 .scroll-top-btn:hover {
     background: linear-gradient(135deg, #c0a060, #d4af37);
     color: #0b1f3a;
