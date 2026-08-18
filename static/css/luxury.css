@@ -1027,32 +1027,34 @@ body.page-luxury-home .brand-logo-svg {
     .nav-brand-text { font-size: 1.4rem; letter-spacing: 2px; }
 }
 
-/* Prevent the icon cluster (search/wishlist/cart/notifications/account/menu)
-   from overflowing narrow phone widths once the desktop menu is hidden. */
+/* Wishlist/cart now live in the bottom tab bar below 992px (see
+   bottom_nav.html), so the top bar only needs search/notifications/
+   account/menu here — leaves room for a bigger logo instead of
+   shrinking everything to fit. */
 @media (max-width: 767px) {
     .nav-row { gap: 8px; }
-    .nav-actions { gap: 4px; }
+    .nav-actions { gap: 6px; }
     .nav-icon-btn,
     .nav-toggle {
-        width: 36px;
-        height: 36px;
-        font-size: 0.95rem;
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
     }
-    .brand-logo-img { height: 38px; max-width: 160px; }
-    .brand-logo-svg { height: 32px; min-width: 130px; }
+    .brand-logo-img { height: 44px; max-width: 200px; }
+    .brand-logo-svg { height: 36px; min-width: 150px; }
 }
 
 @media (max-width: 420px) {
     .nav-row { gap: 6px; }
-    .nav-actions { gap: 3px; }
+    .nav-actions { gap: 4px; }
     .nav-icon-btn,
     .nav-toggle {
-        width: 32px;
-        height: 32px;
-        font-size: 0.88rem;
+        width: 34px;
+        height: 34px;
+        font-size: 0.92rem;
     }
-    .brand-logo-img { height: 34px; max-width: 130px; }
-    .brand-logo-svg { height: 28px; min-width: 110px; }
+    .brand-logo-img { height: 38px; max-width: 170px; }
+    .brand-logo-svg { height: 32px; min-width: 130px; }
     /* Notifications are still reachable from the account dropdown menu below. */
     .nav-notif-btn { display: none; }
 }

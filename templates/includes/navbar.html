@@ -42,14 +42,14 @@
                         <i class="bi bi-search"></i>
                     </button>
                     <a href="{% url 'accounts:wishlist' %}"
-                       class="nav-icon-btn"
+                       class="nav-icon-btn d-none d-lg-flex"
                        data-open-drawer="wishlist"
                        title="{% trans 'Wishlist' %}">
                         <i class="bi bi-heart"></i>
                         {% if wishlist_count %}<span class="nav-icon-badge wishlist-badge">{{ wishlist_count }}</span>{% endif %}
                     </a>
                     <a href="{% url 'cart:cart' %}"
-                       class="nav-icon-btn"
+                       class="nav-icon-btn d-none d-lg-flex"
                        data-open-drawer="cart"
                        title="{% trans 'Cart' %}">
                         <i class="bi bi-bag"></i>
