@@ -662,12 +662,6 @@
     filter: drop-shadow(0 2px 12px rgba(200, 169, 106, 0.28));
 }
 
-body.page-luxury-home .brand-logo-img,
-body.page-luxury-home .brand-logo-svg {
-    height: 40px;
-    max-width: 200px;
-}
-
 .brand-logo-link:hover .brand-logo-img {
     transform: translateY(-1px);
     filter: drop-shadow(0 4px 16px rgba(200, 169, 106, 0.45));
@@ -2301,11 +2295,6 @@ body.page-luxury-home .brand-logo-svg {
 }
 
 @media (max-width: 576px) {
-    .brand-logo-img {
-        height: 40px;
-        max-width: 130px;
-    }
-
     .pyramid-note-luxury {
         width: 80px;
     }
