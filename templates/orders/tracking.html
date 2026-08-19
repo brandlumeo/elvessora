@@ -7,7 +7,7 @@
 <div class="container pb-5">
     <form method="get" class="row g-3 justify-content-center mb-5">
         <div class="col-md-4"><input type="text" name="order_number" class="form-control" placeholder="Order Number" value="{{ order_number }}" required></div>
-        <div class="col-md-4"><input type="email" name="email" class="form-control" placeholder="Email Address"></div>
+        <div class="col-md-4"><input type="email" name="email" class="form-control" placeholder="Email Address" required></div>
         <div class="col-md-2"><button type="submit" class="btn btn-gold w-100">Track</button></div>
     </form>
     {% if order_number and not order %}

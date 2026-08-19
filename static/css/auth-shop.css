@@ -294,6 +294,15 @@
     color: #C8A96A;
 }
 
+.cart-remove-btn {
+    color: rgba(6, 16, 34, 0.45);
+    font-size: 1.1rem;
+}
+
+.cart-remove-btn:hover {
+    color: #c0392b;
+}
+
 .cart-qty-form {
     display: flex;
     align-items: center;
@@ -405,6 +414,8 @@
     background: #ffffff;
     border-color: rgba(6, 16, 34, 0.12);
     color: var(--primary-bg, #061022);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
 }
 
 .checkout-form-lux .form-control:focus,
@@ -475,7 +486,7 @@
         order: 4;
     }
 
-    .cart-lux-item .text-danger {
+    .cart-lux-item .cart-remove-btn {
         order: 5;
     }
 

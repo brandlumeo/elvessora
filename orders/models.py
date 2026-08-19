@@ -101,7 +101,7 @@ class Order(models.Model):
     shipping_city = models.CharField(max_length=100)
     shipping_state = models.CharField(max_length=100)
     shipping_pincode = models.CharField(max_length=10)
-    shipping_country = models.CharField(max_length=100, default='India')
+    shipping_country = models.CharField(max_length=100, default='United Arab Emirates')
 
     subtotal = models.DecimalField(max_digits=10, decimal_places=2)
     shipping_charge = models.DecimalField(max_digits=10, decimal_places=2, default=0)

@@ -41,7 +41,7 @@ class Command(BaseCommand):
             'pinterest_url': 'https://pinterest.com/elvassora',
             'free_shipping_threshold': Decimal('1999'),
             'default_shipping_charge': Decimal('99'),
-            'tax_rate': Decimal('18'),
+            'tax_rate': Decimal('5'),
             'courier_partner': 'BlueDart Express',
         })
 
@@ -103,15 +103,15 @@ class Command(BaseCommand):
         })
 
         FAQ.objects.get_or_create(question='How long does shipping take?', defaults={
-            'answer': 'Standard delivery takes 3-5 business days across India.',
+            'answer': 'Standard delivery takes 3-5 business days across the UAE.',
             'order': 1,
         })
         FAQ.objects.get_or_create(question='Do you offer Cash on Delivery?', defaults={
-            'answer': 'Yes, COD is available on eligible orders across India. Online payment via Card, UPI, and Net Banking is also supported.',
+            'answer': 'Yes, COD is available on eligible orders across the UAE. Online payment via Card, Apple Pay, and Wallet is also supported.',
             'order': 3,
         })
-        FAQ.objects.get_or_create(question='What is the GST rate?', defaults={
-            'answer': '18% GST is applied on all orders as per Indian tax regulations.',
+        FAQ.objects.get_or_create(question='What is the VAT rate?', defaults={
+            'answer': '5% VAT is applied on all orders as per UAE tax regulations.',
             'order': 4,
         })
 
@@ -147,7 +147,7 @@ class Command(BaseCommand):
             ('terms', 'Terms & Conditions',
              'By accessing and using the Elvessora website, you agree to comply with our terms. All products are subject to availability. Prices are inclusive of applicable taxes unless stated otherwise.'),
             ('shipping', 'Shipping Policy',
-             'We deliver across India via our courier partner BlueDart Express. Standard shipping charge is ₹99. Free shipping on orders above ₹1999. Estimated delivery: 3-5 business days.'),
+             'We deliver across the UAE via our courier partner BlueDart Express. Standard shipping charge is AED 99. Free shipping on orders above AED 1,999. Estimated delivery: 3-5 business days.'),
             ('returns', 'Return & Refund Policy',
              'Unopened and unused products may be returned within 7 days of delivery. Refunds are processed within 5-7 business days after inspection. Opened perfumes cannot be returned due to hygiene reasons.'),
             ('cancellation', 'Cancellation Policy',

@@ -17,10 +17,10 @@
 
     <div class="elv-stats-grid">
         <div class="elv-stat-card elv-stat-primary">
-            <div class="elv-stat-icon"><i class="bi bi-currency-rupee"></i></div>
+            <div class="elv-stat-icon"><i class="bi bi-cash-stack"></i></div>
             <div>
                 <h3>Total Revenue</h3>
-                <p class="elv-stat-value">₹{{ total_revenue|floatformat:0|intcomma|default:"0" }}</p>
+                <p class="elv-stat-value">AED {{ total_revenue|floatformat:0|intcomma|default:"0" }}</p>
             </div>
         </div>
         <div class="elv-stat-card">
@@ -87,19 +87,19 @@
                 <tbody>
                     <tr>
                         <td>Today</td>
-                        <td>₹{{ sales_today|floatformat:0|intcomma|default:"0" }}</td>
+                        <td>AED {{ sales_today|floatformat:0|intcomma|default:"0" }}</td>
                     </tr>
                     <tr>
                         <td>Last 7 days</td>
-                        <td>₹{{ sales_week|floatformat:0|intcomma|default:"0" }}</td>
+                        <td>AED {{ sales_week|floatformat:0|intcomma|default:"0" }}</td>
                     </tr>
                     <tr>
                         <td>Last 30 days</td>
-                        <td>₹{{ sales_month|floatformat:0|intcomma|default:"0" }}</td>
+                        <td>AED {{ sales_month|floatformat:0|intcomma|default:"0" }}</td>
                     </tr>
                     <tr>
                         <td>Last 12 months</td>
-                        <td>₹{{ sales_year|floatformat:0|intcomma|default:"0" }}</td>
+                        <td>AED {{ sales_year|floatformat:0|intcomma|default:"0" }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -169,7 +169,7 @@
                     <tr>
                         <td><a href="{% url 'admin:orders_order_change' order.id %}">{{ order.order_number }}</a></td>
                         <td>{{ order.shipping_name }}</td>
-                        <td>₹{{ order.total|floatformat:0|intcomma }}</td>
+                        <td>AED {{ order.total|floatformat:0|intcomma }}</td>
                         <td><span class="elv-badge">{{ order.get_status_display }}</span></td>
                         <td>{{ order.get_payment_status_display }}</td>
                         <td>{{ order.created_at|date:"M d, Y" }}</td>

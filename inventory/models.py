@@ -17,7 +17,7 @@ class Warehouse(models.Model):
     code = models.CharField(max_length=20, unique=True)
     address = models.TextField(blank=True)
     city = models.CharField(max_length=100, blank=True)
-    country = models.CharField(max_length=100, default='India')
+    country = models.CharField(max_length=100, default='United Arab Emirates')
     is_active = models.BooleanField(default=True)
     is_default = models.BooleanField(default=False)
 

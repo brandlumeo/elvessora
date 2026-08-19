@@ -27,7 +27,10 @@ def add_to_cart(request):
     product_id = request.POST.get('product_id')
     variant_id = request.POST.get('variant_id')
     gift_set_id = request.POST.get('gift_set_id')
-    quantity = int(request.POST.get('quantity', 1))
+    try:
+        quantity = max(1, int(request.POST.get('quantity', 1)))
+    except (TypeError, ValueError):
+        quantity = 1
     gift_wrapping = request.POST.get('gift_wrapping') == 'on'
     gift_message = request.POST.get('gift_message', '')
 
@@ -51,16 +54,19 @@ def add_to_cart(request):
         variant = None
         if variant_id:
             variant = get_object_or_404(ProductVariant, id=variant_id, product=product)
-        cart_service.add_product(product, variant, quantity, gift_wrapping, gift_message)
-        request.session['open_drawer'] = 'cart'
-        notify_product_action(
-            request,
-            product_name=product.name,
-            action='added to cart',
-            product_url=product.get_absolute_url(),
-            secondary_label='View cart',
-            secondary_url=reverse('cart:cart'),
-        )
+        try:
+            cart_service.add_product(product, variant, quantity, gift_wrapping, gift_message)
+            request.session['open_drawer'] = 'cart'
+            notify_product_action(
+                request,
+                product_name=product.name,
+                action='added to cart',
+                product_url=product.get_absolute_url(),
+                secondary_label='View cart',
+                secondary_url=reverse('cart:cart'),
+            )
+        except ValueError as exc:
+            messages.error(request, str(exc))
 
     if request.POST.get('buy_now'):
         return redirect('orders:checkout')
@@ -69,14 +75,21 @@ def add_to_cart(request):
 
 def update_cart(request, item_id):
     if request.method == 'POST':
-        quantity = int(request.POST.get('quantity', 1))
-        CartService(request).update_quantity(item_id, quantity)
-        messages.success(request, 'Cart updated.')
+        try:
+            quantity = max(0, int(request.POST.get('quantity', 1)))
+        except (TypeError, ValueError):
+            messages.error(request, 'Invalid quantity.')
+            return redirect('cart:cart')
+        try:
+            CartService(request).update_quantity(item_id, quantity)
+            messages.success(request, 'Cart updated.')
+        except ValueError as exc:
+            messages.error(request, str(exc))
     return redirect('cart:cart')
 
 
 def remove_from_cart(request, item_id):
-    if request.method not in ('POST', 'GET'):
+    if request.method != 'POST':
         return redirect('cart:cart')
     CartService(request).remove_item(item_id)
     messages.info(request, 'Item removed from cart.')

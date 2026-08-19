@@ -54,7 +54,7 @@ class Address(models.Model):
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
     pincode = models.CharField(max_length=10)
-    country = models.CharField(max_length=100, default='India')
+    country = models.CharField(max_length=100, default='United Arab Emirates')
     is_default = models.BooleanField(default=False)
 
     class Meta:

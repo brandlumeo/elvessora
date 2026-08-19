@@ -6,6 +6,7 @@ import urllib.parse
 import urllib.request
 
 from django.conf import settings
+from django.core.cache import cache
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
@@ -84,6 +85,19 @@ def _safe_next_url(candidate):
     return reverse('core:home')
 
 
+def _client_ip(request):
+    return request.META.get('REMOTE_ADDR', 'unknown')
+
+
+def _rate_limited(key, limit, window_seconds):
+    """Lightweight cache-based throttle: True once `limit` hits land within `window_seconds`."""
+    count = cache.get(key, 0)
+    if count >= limit:
+        return True
+    cache.set(key, count + 1, window_seconds)
+    return False
+
+
 def _exchange_google_code(code, redirect_uri):
     """Exchange auth code for tokens. Returns (token_data, error_message)."""
     token_payload = urllib.parse.urlencode({
@@ -149,6 +163,10 @@ def google_start(request):
 
 def google_callback(request):
     """Handle Google OAuth redirect and log the user in."""
+    if _rate_limited(f'google-callback:{_client_ip(request)}', limit=20, window_seconds=300):
+        messages.error(request, 'Too many sign-in attempts. Please try again shortly.')
+        return redirect('accounts:login')
+
     if request.GET.get('error'):
         messages.error(request, 'Google Sign-In was cancelled or denied.')
         return redirect('accounts:login')
@@ -246,13 +264,17 @@ def register(request):
 def user_login(request):
     if request.user.is_authenticated:
         return redirect('core:home')
+    if request.method == 'POST' and _rate_limited(f'login-attempts:{_client_ip(request)}', limit=10, window_seconds=300):
+        messages.error(request, 'Too many login attempts. Please try again in a few minutes.')
+        form = LoginForm(request, next_url=request.GET.get('next', ''))
+        return render(request, 'accounts/login.html', {'form': form})
     form = LoginForm(request, data=request.POST or None, next_url=request.GET.get('next', ''))
     if request.method == 'POST' and form.is_valid():
         user = form.get_user()
         login(request, user)
         merge_session_wishlist(request, user)
         messages.success(request, 'Welcome back!')
-        next_url = request.GET.get('next') or request.POST.get('next') or reverse('core:home')
+        next_url = _safe_next_url(request.GET.get('next') or request.POST.get('next'))
         return redirect(next_url)
     return render(request, 'accounts/login.html', {'form': form})
 
@@ -347,6 +369,13 @@ class CustomPasswordResetView(PasswordResetView):
     form_class = ElvessoraPasswordResetForm
     success_url = reverse_lazy('accounts:password_reset_done')
 
+    def post(self, request, *args, **kwargs):
+        if _rate_limited(f'pwreset-attempts:{_client_ip(request)}', limit=5, window_seconds=3600):
+            # Redirect to the same "done" page regardless — don't reveal whether the throttle
+            # or a real send is why no new email arrives (matches Django's no-enumeration design).
+            return redirect(self.success_url)
+        return super().post(request, *args, **kwargs)
+
 
 class CustomPasswordResetDoneView(PasswordResetDoneView):
     template_name = 'accounts/password_reset_done.html'
@@ -355,7 +384,6 @@ class CustomPasswordResetDoneView(PasswordResetDoneView):
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'accounts/password_reset_confirm.html'
     success_url = reverse_lazy('accounts:password_reset_complete')
-    form_class = None
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)

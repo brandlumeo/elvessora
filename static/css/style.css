@@ -342,9 +342,6 @@ h1, h2, h3, h4, h5, h6, .brand-logo {
 }
 
 .badge-discount {
-    position: absolute;
-    top: 12px;
-    left: 12px;
     background: #dc3545;
     color: #fff;
     padding: 4px 10px;
@@ -353,9 +350,6 @@ h1, h2, h3, h4, h5, h6, .brand-logo {
 }
 
 .badge-new {
-    position: absolute;
-    top: 12px;
-    right: 12px;
     background: var(--royal-blue);
     color: #fff;
     padding: 4px 10px;
@@ -614,7 +608,7 @@ h1, h2, h3, h4, h5, h6, .brand-logo {
 @media (max-width: 575.98px) {
     .scroll-top-btn {
         right: 14px;
-        bottom: 90px;
+        bottom: calc(90px + 58px + env(safe-area-inset-bottom, 0));
         width: 42px;
         height: 42px;
     }
@@ -1201,7 +1195,7 @@ h1, h2, h3, h4, h5, h6, .brand-logo {
     }
 
     .whatsapp-float {
-        bottom: 20px;
+        bottom: calc(24px + 58px + env(safe-area-inset-bottom, 0));
         right: 16px;
         padding: 14px;
         border-radius: 50%;

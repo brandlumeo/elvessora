@@ -116,7 +116,7 @@ class ProductAdmin(admin.ModelAdmin):
     )
 
     def current_price_display(self, obj):
-        return f'₹{obj.current_price}'
+        return f'AED {obj.current_price}'
     current_price_display.short_description = 'Price'
 
     def total_stock_display(self, obj):

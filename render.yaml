@@ -24,3 +24,11 @@ services:
         value: "2"
       - key: ALLOWED_HOSTS
         value: ".onrender.com"
+      # Set these in the Render dashboard (not committed here) for real payments/email/Google
+      # sign-in to work in production — see .env.example for what each one does:
+      #   RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET
+      #   EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
+      #   GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI
+      # Without RAZORPAY_KEY_ID/SECRET, "Pay Online" checkout is blocked (COD still works).
+      # Without EMAIL_HOST_USER, order/contact emails silently go to the console log only.
+      # Without GOOGLE_CLIENT_ID/SECRET, Google Sign-In shows a "not configured" message.

@@ -420,7 +420,8 @@
         root.querySelector('[data-compare-modal]').hidden = true;
     });
 
-    /* --- Help float: only while finder is in view (avoids covering Favorites) --- */
+    /* --- Help float: only while finder is in view (avoids covering Favorites),
+       and hidden while the filter cards themselves are in view (avoids covering them) --- */
     var helpBtn = root.querySelector('[data-pf-help]');
     if (helpBtn) {
         helpBtn.addEventListener('click', function () {
@@ -429,12 +430,29 @@
         });
         if ('IntersectionObserver' in window) {
             helpBtn.hidden = true;
+            var sectionInView = false;
+            var filtersGridInView = false;
+            var updateHelpVisibility = function () {
+                helpBtn.hidden = !sectionInView || filtersGridInView;
+            };
             var helpObs = new IntersectionObserver(function (entries) {
                 entries.forEach(function (entry) {
-                    helpBtn.hidden = !entry.isIntersecting;
+                    sectionInView = entry.isIntersecting;
                 });
+                updateHelpVisibility();
             }, { root: null, threshold: 0.12 });
             helpObs.observe(root);
+
+            var filtersGrid = root.querySelector('.pf-filters-grid');
+            if (filtersGrid) {
+                var filtersGridObs = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        filtersGridInView = entry.isIntersecting;
+                    });
+                    updateHelpVisibility();
+                }, { root: null, threshold: 0.12 });
+                filtersGridObs.observe(filtersGrid);
+            }
         }
     }
 

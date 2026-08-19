@@ -214,7 +214,7 @@ class Country(models.Model):
 class Currency(models.Model):
     code = models.CharField(max_length=3, unique=True)
     name = models.CharField(max_length=60)
-    symbol = models.CharField(max_length=8, default='₹')
+    symbol = models.CharField(max_length=8, default='AED')
     exchange_rate = models.DecimalField(
         max_digits=12, decimal_places=6, default=1,
         help_text='Rate vs store base currency',

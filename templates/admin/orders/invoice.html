@@ -71,19 +71,19 @@
                 <td>{{ item.product_name }}</td>
                 <td>{{ item.variant_size|default:"—" }}</td>
                 <td class="right">{{ item.quantity }}</td>
-                <td class="right">₹{{ item.unit_price }}</td>
-                <td class="right">₹{{ item.line_total }}</td>
+                <td class="right">AED {{ item.unit_price }}</td>
+                <td class="right">AED {{ item.line_total }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
     <table class="totals" style="width: 320px; margin-left: auto;">
-        <tr><td class="label">Subtotal</td><td class="right">₹{{ order.subtotal }}</td></tr>
-        <tr><td class="label">Shipping</td><td class="right">₹{{ order.shipping_charge }}</td></tr>
-        <tr><td class="label">Tax</td><td class="right">₹{{ order.tax_amount }}</td></tr>
-        {% if order.discount_amount %}<tr><td class="label">Discount</td><td class="right">-₹{{ order.discount_amount }}</td></tr>{% endif %}
-        <tr class="grand"><td class="label">Total</td><td class="right">₹{{ order.total }}</td></tr>
+        <tr><td class="label">Subtotal</td><td class="right">AED {{ order.subtotal }}</td></tr>
+        <tr><td class="label">Shipping</td><td class="right">AED {{ order.shipping_charge }}</td></tr>
+        <tr><td class="label">Tax</td><td class="right">AED {{ order.tax_amount }}</td></tr>
+        {% if order.discount_amount %}<tr><td class="label">Discount</td><td class="right">-AED {{ order.discount_amount }}</td></tr>{% endif %}
+        <tr class="grand"><td class="label">Total</td><td class="right">AED {{ order.total }}</td></tr>
     </table>
 
     {% if order.notes %}

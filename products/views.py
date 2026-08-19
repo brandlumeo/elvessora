@@ -5,7 +5,6 @@ from .models import (
     Product, Collection, FragranceFamily, Occasion, GiftSet, RecentlyViewed,
 )
 from .filters import ProductFilter
-from .fragrance_utils import SIGNATURE_SKUS
 
 
 def collection_landing(request):
@@ -15,7 +14,7 @@ def collection_landing(request):
 
 
 def shop(request):
-    products = Product.objects.filter(is_active=True, sku__in=SIGNATURE_SKUS).distinct()
+    products = Product.objects.filter(is_active=True).distinct()
     product_filter = ProductFilter(request.GET, queryset=products)
     products = product_filter.qs
 

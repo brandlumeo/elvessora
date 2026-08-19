@@ -14,12 +14,15 @@ def add_review(request, product_slug):
         return redirect('products:product_detail', slug=product_slug)
 
     form = ReviewForm(request.POST or None)
-    if request.method == 'POST' and form.is_valid():
-        review = form.save(commit=False)
-        review.user = request.user
-        review.product = product
-        review.save()
-        messages.success(request, 'Thank you! Your review has been submitted for approval.')
-        return redirect('products:product_detail', slug=product_slug)
+    if request.method == 'POST':
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.product = product
+            review.save()
+            messages.success(request, 'Thank you! Your review has been submitted for approval.')
+        else:
+            errors = ' '.join(e for field_errors in form.errors.values() for e in field_errors)
+            messages.error(request, errors or 'Please correct the errors in your review and try again.')
 
     return redirect('products:product_detail', slug=product_slug)

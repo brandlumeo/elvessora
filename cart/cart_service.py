@@ -24,23 +24,27 @@ class CartService:
 
     def add_product(self, product, variant=None, quantity=1, gift_wrapping=False, gift_message=''):
         cart = self.cart
-        item, created = CartItem.objects.get_or_create(
+        existing = CartItem.objects.filter(cart=cart, product=product, variant=variant, gift_set=None).first()
+        new_quantity = (existing.quantity if existing else 0) + quantity
+        if variant is not None and new_quantity > variant.stock_quantity:
+            raise ValueError(f'Only {variant.stock_quantity} left in stock for {product.name} ({variant.size}).')
+
+        if existing:
+            existing.quantity = new_quantity
+            existing.gift_wrapping = gift_wrapping
+            existing.gift_message = gift_message
+            existing.save()
+            return existing
+
+        return CartItem.objects.create(
             cart=cart,
             product=product,
             variant=variant,
             gift_set=None,
-            defaults={
-                'quantity': quantity,
-                'gift_wrapping': gift_wrapping,
-                'gift_message': gift_message,
-            },
+            quantity=quantity,
+            gift_wrapping=gift_wrapping,
+            gift_message=gift_message,
         )
-        if not created:
-            item.quantity += quantity
-            item.gift_wrapping = gift_wrapping
-            item.gift_message = gift_message
-            item.save()
-        return item
 
     def add_gift_set(self, gift_set, quantity=1, gift_wrapping=False, gift_message=''):
         cart = self.cart
@@ -69,14 +73,16 @@ class CartService:
     def update_quantity(self, item_id, quantity):
         try:
             item = CartItem.objects.get(id=item_id, cart=self.cart)
-            if quantity <= 0:
-                item.delete()
-            else:
-                item.quantity = quantity
-                item.save()
-            return True
         except CartItem.DoesNotExist:
             return False
+        if quantity <= 0:
+            item.delete()
+            return True
+        if item.variant is not None and quantity > item.variant.stock_quantity:
+            raise ValueError(f'Only {item.variant.stock_quantity} left in stock.')
+        item.quantity = quantity
+        item.save()
+        return True
 
     def remove_item(self, item_id):
         CartItem.objects.filter(id=item_id, cart=self.cart).delete()

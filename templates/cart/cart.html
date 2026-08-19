@@ -5,13 +5,16 @@
 {% block extra_css %}<link href="{% static 'css/auth-shop.css' %}" rel="stylesheet">{% endblock %}
 
 {% block content %}
+<div class="page-header">
+  <div class="container">
+    <span class="section-label">Your Bag</span>
+    <h1>Shopping Cart</h1>
+    <p class="text-muted">{% if cart_items %}{{ cart_items|length }} item{{ cart_items|length|pluralize }} in your bag{% else %}Your bag is empty{% endif %}</p>
+  </div>
+</div>
+
 <div class="shop-page">
   <div class="container">
-    <div class="shop-page-header">
-      <h1>Shopping Cart</h1>
-      <p>{% if cart_items %}{{ cart_items|length }} item{{ cart_items|length|pluralize }} in your bag{% else %}Your bag is empty{% endif %}</p>
-    </div>
-
     <div class="row g-4">
       <div class="col-lg-8">
         {% if cart_items %}
@@ -43,7 +46,10 @@
               <button type="submit" class="btn btn-sm btn-outline-gold" title="Update"><i class="bi bi-arrow-repeat"></i></button>
             </form>
             <strong style="color:#fff; min-width:70px; text-align:right;">{{ item.line_total|format_price }}</strong>
-            <a href="{% url 'cart:remove' item.id %}" class="text-danger ms-2" title="Remove"><i class="bi bi-trash"></i></a>
+            <form action="{% url 'cart:remove' item.id %}" method="post" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-link cart-remove-btn ms-2 p-0" title="Remove" style="border:none;background:none;"><i class="bi bi-trash"></i></button>
+            </form>
           </div>
           {% endfor %}
         </div>
@@ -57,7 +63,7 @@
         <div class="empty-state-lux">
           <i class="bi bi-bag"></i>
           <p>Your cart is empty.</p>
-          <a href="{% url 'products:shop' %}" class="btn btn-gold">Shop Our 5 Signature Scents</a>
+          <a href="{% url 'products:shop' %}" class="btn btn-gold">Shop Our Signature Scents</a>
         </div>
         {% endif %}
       </div>
