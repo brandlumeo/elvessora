@@ -1,5 +1,5 @@
 {% extends "admin/base.html" %}
-{% load i18n static %}
+{% load i18n static admin_extras %}
 
 {% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | Elvessora Admin{% endblock %}
 
@@ -15,66 +15,129 @@
 {% block header %}
 <header id="header" class="elv-admin-header">
     {% if has_permission %}
-    <div class="elv-adm-bar">
-        <div class="elv-adm-inner">
-            <a href="{% url 'admin:index' %}" class="elv-adm-brand">
-                <span class="elv-adm-logo">Elvessora</span>
+    <aside class="elv-sidebar" id="elv-sidebar">
+        <a href="{% url 'admin:index' %}" class="elv-sidebar-brand">
+            <span class="elv-sidebar-logo">Elvessora</span>
+            <span class="elv-sidebar-sub">Perfumes</span>
+        </a>
+        <nav class="elv-sidebar-nav" aria-label="Admin navigation">
+            <a href="{% url 'admin:index' %}" class="elv-side-link{% if request.path == '/admin/' %} active{% endif %}">
+                <i class="bi bi-grid-1x2"></i><span>Dashboard</span>
             </a>
+            <a href="{% url 'admin:orders_order_changelist' %}" class="elv-side-link{% if '/admin/orders/order' in request.path %} active{% endif %}">
+                <i class="bi bi-bag-check"></i><span>Orders</span>
+            </a>
+            <a href="{% url 'admin:products_product_changelist' %}" class="elv-side-link{% if '/admin/products/product/' in request.path or request.path == '/admin/products/product' %} active{% endif %}">
+                <i class="bi bi-droplet"></i><span>Products</span>
+            </a>
+            <a href="{% url 'admin:products_collection_changelist' %}" class="elv-side-link{% if '/admin/products/collection' in request.path %} active{% endif %}">
+                <i class="bi bi-collection"></i><span>Collections</span>
+            </a>
+            <a href="{% url 'admin:products_category_changelist' %}" class="elv-side-link{% if '/admin/products/category' in request.path %} active{% endif %}">
+                <i class="bi bi-folder"></i><span>Categories</span>
+            </a>
+            <a href="{% url 'admin:accounts_customer_changelist' %}" class="elv-side-link{% if '/admin/accounts/customer' in request.path %} active{% endif %}">
+                <i class="bi bi-people"></i><span>Customers</span>
+            </a>
+            <a href="{% url 'admin:reviews_review_changelist' %}" class="elv-side-link{% if '/admin/reviews/' in request.path %} active{% endif %}">
+                <i class="bi bi-star"></i><span>Reviews</span>
+            </a>
+            <a href="{% url 'admin:inventory_inventory_changelist' %}" class="elv-side-link{% if '/admin/inventory/' in request.path %} active{% endif %}">
+                <i class="bi bi-boxes"></i><span>Inventory</span>
+            </a>
+            <a href="{% url 'admin:orders_coupon_changelist' %}" class="elv-side-link{% if '/admin/orders/coupon' in request.path %} active{% endif %}">
+                <i class="bi bi-tag"></i><span>Coupons &amp; Offers</span>
+            </a>
+            <a href="{% url 'admin:app_list' app_label='marketing' %}" class="elv-side-link{% if '/admin/marketing/' in request.path %} active{% endif %}">
+                <i class="bi bi-megaphone"></i><span>Marketing</span>
+            </a>
+            <a href="{% url 'admin:core_legalpage_changelist' %}" class="elv-side-link{% if '/admin/core/legalpage' in request.path or '/admin/core/faq' in request.path or '/admin/core/homepagecontent' in request.path or '/admin/core/homepagehighlight' in request.path %} active{% endif %}">
+                <i class="bi bi-file-earmark-text"></i><span>CMS</span>
+            </a>
+            <a href="{% url 'admin:elvassora_reports' %}" class="elv-side-link{% if '/admin/reports/' in request.path %} active{% endif %}">
+                <i class="bi bi-graph-up"></i><span>Reports &amp; Analytics</span>
+            </a>
+            <a href="{% url 'admin:core_sitesettings_change' 1 %}" class="elv-side-link{% if '/admin/core/sitesettings' in request.path %} active{% endif %}">
+                <i class="bi bi-gear"></i><span>Settings</span>
+            </a>
+            <a href="{% url 'admin:auth_user_changelist' %}" class="elv-side-link{% if '/admin/auth/' in request.path %} active{% endif %}">
+                <i class="bi bi-shield-lock"></i><span>Users &amp; Roles</span>
+            </a>
+            <a href="{% url 'admin:core_activitylog_changelist' %}" class="elv-side-link{% if '/admin/core/activitylog' in request.path %} active{% endif %}">
+                <i class="bi bi-clock-history"></i><span>Activity Logs</span>
+            </a>
+        </nav>
+        <a href="/" class="elv-sidebar-view-store" target="_blank" rel="noopener">
+            <i class="bi bi-box-arrow-up-right"></i><span>View Store</span>
+        </a>
+    </aside>
 
-            <nav class="elv-adm-nav" aria-label="Admin navigation">
-                <a href="{% url 'admin:index' %}" class="elv-adm-nav-item{% if request.path == '/admin/' %} active{% endif %}">
-                    <i class="bi bi-grid-1x2"></i><span>Dashboard</span>
-                </a>
-                <a href="{% url 'admin:products_product_changelist' %}" class="elv-adm-nav-item{% if '/admin/products/product' in request.path %} active{% endif %}">
-                    <i class="bi bi-droplet"></i><span>Products</span>
-                </a>
-                <a href="{% url 'admin:inventory_inventory_changelist' %}" class="elv-adm-nav-item{% if '/admin/inventory/' in request.path %} active{% endif %}">
-                    <i class="bi bi-boxes"></i><span>Inventory</span>
-                </a>
-                <a href="{% url 'admin:orders_order_changelist' %}" class="elv-adm-nav-item{% if '/admin/orders/order' in request.path %} active{% endif %}">
-                    <i class="bi bi-bag-check"></i><span>Orders</span>
-                </a>
-                <a href="{% url 'admin:accounts_customer_changelist' %}" class="elv-adm-nav-item{% if '/admin/accounts/customer' in request.path %} active{% endif %}">
-                    <i class="bi bi-people"></i><span>Customers</span>
-                </a>
-                <div class="elv-adm-more{% if '/admin/products/category' in request.path or '/admin/products/collection' in request.path or '/admin/orders/coupon' in request.path or '/admin/reviews/' in request.path or '/admin/core/legalpage' in request.path or '/admin/core/sitesettings' in request.path %} active{% endif %}">
-                    <button type="button" class="elv-adm-nav-item elv-adm-more-toggle" aria-haspopup="true">
-                        <i class="bi bi-three-dots"></i><span>More</span>
-                    </button>
-                    <div class="elv-adm-more-menu">
-                        <a href="{% url 'admin:core_sitesettings_change' 1 %}"><i class="bi bi-gear"></i> Settings</a>
-                        <a href="{% url 'admin:products_category_changelist' %}"><i class="bi bi-folder"></i> Categories</a>
-                        <a href="{% url 'admin:products_collection_changelist' %}"><i class="bi bi-collection"></i> Collections</a>
-                        <a href="{% url 'admin:orders_coupon_changelist' %}"><i class="bi bi-tag"></i> Coupons</a>
-                        <a href="{% url 'admin:reviews_review_changelist' %}"><i class="bi bi-star"></i> Reviews</a>
-                        <a href="{% url 'admin:core_legalpage_changelist' %}"><i class="bi bi-file-text"></i> Legal Pages</a>
-                    </div>
-                </div>
-            </nav>
-
-            <div class="elv-adm-actions">
-                <a href="/" class="elv-adm-btn-outline" target="_blank" rel="noopener" title="View Store">
-                    <i class="bi bi-box-arrow-up-right"></i>
-                </a>
-                <div class="elv-adm-user">
+    <div class="elv-topbar">
+        <button type="button" class="elv-topbar-burger" id="elv-sidebar-toggle" aria-label="Toggle navigation">
+            <i class="bi bi-list"></i>
+        </button>
+        <div class="elv-topbar-spacer"></div>
+        <div class="elv-topbar-actions">
+            {% include "admin/color_theme_toggle.html" %}
+            <a href="{% url 'admin:orders_order_changelist' %}" class="elv-topbar-bell" title="Pending orders &amp; low stock">
+                <i class="bi bi-bell"></i>
+                {% admin_alert_count as elv_alerts %}
+                {% if elv_alerts %}<span class="elv-topbar-badge">{{ elv_alerts }}</span>{% endif %}
+            </a>
+            <div class="elv-topbar-user">
+                <button type="button" class="elv-topbar-user-toggle" aria-haspopup="true">
+                    <span class="elv-topbar-avatar">
+                        {% if user.profile.avatar %}<img src="{{ user.profile.avatar.url }}" alt="">{% else %}<i class="bi bi-person-fill"></i>{% endif %}
+                    </span>
+                    <span class="elv-topbar-username">{% firstof user.get_full_name user.get_username %}</span>
+                    <i class="bi bi-chevron-down"></i>
+                </button>
+                <div class="elv-topbar-user-menu">
                     {% block userlinks %}
                     {% if user.has_usable_password %}
-                    <a href="{% url 'admin:password_change' %}" class="elv-adm-icon-btn" title="Change password">
-                        <i class="bi bi-key"></i>
-                    </a>
+                    <a href="{% url 'admin:password_change' %}"><i class="bi bi-key"></i> Change password</a>
                     {% endif %}
                     <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
                         {% csrf_token %}
-                        <button type="submit" class="elv-adm-icon-btn" title="Log out">
-                            <i class="bi bi-box-arrow-right"></i>
-                        </button>
+                        <button type="submit"><i class="bi bi-box-arrow-right"></i> Log out</button>
                     </form>
-                    {% include "admin/color_theme_toggle.html" %}
                     {% endblock %}
                 </div>
             </div>
         </div>
     </div>
+
+    <script>document.body.classList.add('elv-has-sidebar');</script>
     {% endif %}
 </header>
+{% endblock %}
+
+{% block extrabody %}
+{{ block.super }}
+{% if has_permission %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+(function () {
+    var toggle = document.getElementById('elv-sidebar-toggle');
+    var sidebar = document.getElementById('elv-sidebar');
+    if (toggle && sidebar) {
+        toggle.addEventListener('click', function () {
+            document.body.classList.toggle('elv-sidebar-collapsed');
+        });
+    }
+    document.querySelectorAll('.elv-topbar-user').forEach(function (el) {
+        var btn = el.querySelector('.elv-topbar-user-toggle');
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            el.classList.toggle('open');
+        });
+    });
+    document.addEventListener('click', function () {
+        document.querySelectorAll('.elv-topbar-user.open').forEach(function (el) {
+            el.classList.remove('open');
+        });
+    });
+})();
+</script>
+{% endif %}
 {% endblock %}
