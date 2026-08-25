@@ -156,7 +156,7 @@
                             <td><span class="elv-country-flag">{{ row.country_flag }}</span>{{ row.country_label }}</td>
                             <td>AED {{ row.order.total|floatformat:0|intcomma }}</td>
                             <td>{{ row.payment_label }}</td>
-                            <td><span class="elv-badge">{{ row.order.get_status_display }}</span></td>
+                            <td><span class="elv-badge elv-badge-{{ row.status_color }}">{{ row.order.get_status_display }}</span></td>
                             <td>{{ row.order.created_at|date:"M d, Y" }}</td>
                         </tr>
                         {% endfor %}

@@ -56,6 +56,17 @@ PAYMENT_LABELS = {
     'cod': 'Cash on Delivery',
 }
 
+STATUS_COLORS = {
+    'pending': 'grey',
+    'confirmed': 'blue',
+    'processing': 'amber',
+    'shipped': 'blue',
+    'out_for_delivery': 'amber',
+    'delivered': 'green',
+    'cancelled': 'red',
+    'refunded': 'red',
+}
+
 RANGE_CHOICES = {
     '7d': ('This Week', 7),
     '30d': ('This Month', 30),
@@ -226,6 +237,7 @@ def admin_dashboard_context(request):
             'country_label': label,
             'country_flag': flag,
             'payment_label': PAYMENT_LABELS.get(order.payment_method, order.get_payment_method_display()),
+            'status_color': STATUS_COLORS.get(order.status, 'grey'),
         })
 
     low_stock_items = ProductVariant.objects.filter(stock_quantity__lte=threshold).select_related('product')[:10]

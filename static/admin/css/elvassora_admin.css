@@ -1368,6 +1368,12 @@ a:hover {
 
 }
 
+.elv-badge-blue { background: var(--elv-royal-pale); color: var(--elv-royal); }
+.elv-badge-green { background: #E3F3E9; color: #1a7a3a; }
+.elv-badge-amber { background: #FBF0DC; color: #966617; }
+.elv-badge-red { background: #FBE7E5; color: #c0392b; }
+.elv-badge-grey { background: #EEF0F3; color: #64748b; }
+
 
 
 .elv-admin-modules .module table th {
