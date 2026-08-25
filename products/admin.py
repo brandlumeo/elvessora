@@ -1,9 +1,33 @@
 from django.contrib import admin
+from django.http import HttpResponse
 from django.utils.html import format_html
+from . import marketplace_feeds
 from .models import (
     Brand, Category, Collection, FragranceFamily, Occasion, Product,
     ProductVariant, ProductImage, ProductVideo, ProductImage360, GiftSet, RecentlyViewed,
 )
+
+
+@admin.action(description='Export selected as Amazon listing feed (CSV)')
+def export_amazon_feed(modeladmin, request, queryset):
+    csv_content = marketplace_feeds.write_csv(
+        marketplace_feeds.AMAZON_COLUMNS,
+        marketplace_feeds.amazon_feed_rows(queryset),
+    )
+    response = HttpResponse(csv_content, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="elvessora-amazon-feed.csv"'
+    return response
+
+
+@admin.action(description='Export selected as Noon listing feed (CSV)')
+def export_noon_feed(modeladmin, request, queryset):
+    csv_content = marketplace_feeds.write_csv(
+        marketplace_feeds.NOON_COLUMNS,
+        marketplace_feeds.noon_feed_rows(queryset),
+    )
+    response = HttpResponse(csv_content, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="elvessora-noon-feed.csv"'
+    return response
 
 
 class ProductVariantInline(admin.TabularInline):
@@ -90,6 +114,7 @@ class ProductAdmin(admin.ModelAdmin):
     filter_horizontal = ['fragrance_families', 'occasions']
     inlines = [ProductVariantInline, ProductImageInline, ProductVideoInline, ProductImage360Inline]
     list_editable = ['is_active', 'is_best_seller', 'is_new_arrival']
+    actions = [export_amazon_feed, export_noon_feed]
 
     fieldsets = (
         ('Basic Info', {
