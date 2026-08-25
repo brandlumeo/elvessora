@@ -772,201 +772,212 @@
     }
 }
 
-/* ===== Gender selector — modern icon cards (shared by Quick Filters + Quiz mode) ===== */
-.pf-gender-row {
+/* =====================================================================
+   Premium photo cards — Gender / Occasion / Season / Scent Family /
+   Intensity. Shared by Quick Filters + Quiz Mode. Selection state and
+   values are driven entirely by perfume-finder.js via the .pf-chip /
+   .pf-quiz-opt classes and data-value attributes — this block is purely
+   presentational.
+   ===================================================================== */
+.pf-photo-row {
     display: grid;
-    grid-template-columns: repeat(3, minmax(96px, 1fr));
-    gap: 0.75rem;
-    max-width: 420px;
+    gap: 0.85rem;
 }
 
-.pf-quiz-options--gender {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(96px, 1fr));
-    gap: 0.75rem;
+.pf-photo-row--gender {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 620px;
+    gap: 1rem;
 }
 
-.pf-gender-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.pf-photo-row--occasion,
+.pf-photo-row--season,
+.pf-photo-row--intensity {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+}
+
+.pf-photo-row--scent {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 0.6rem;
-    padding: 1.1rem 0.75rem;
-    border-radius: 16px;
-    border: 1px solid rgba(6, 16, 34, 0.1);
-    background: #fff;
-    text-align: center;
-    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
 
-.pf-gender-icon {
+.pf-photo-card {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    background: var(--pf-navy);
+    padding: 0;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(6, 16, 34, 0.14);
+    transition: transform 0.3s cubic-bezier(0.22, 0.8, 0.24, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.pf-photo-row--gender .pf-photo-card {
+    aspect-ratio: 3 / 4;
+}
+
+.pf-photo-card-media {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+.pf-photo-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.pf-photo-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(6, 16, 34, 0) 40%, rgba(5, 9, 17, 0.88) 100%);
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.pf-photo-card-label {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: 0.65rem 0.4rem;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.015em;
+    text-align: center;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+.pf-photo-row--gender .pf-photo-card-label {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    padding: 0.85rem 0.5rem;
+}
+
+.pf-photo-row--scent .pf-photo-card-label {
+    font-size: 0.72rem;
+    padding: 0.5rem 0.3rem;
+}
+
+.pf-photo-card-check {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 3;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: var(--pf-beige-soft);
-    border: 1.5px solid rgba(200, 169, 106, 0.4);
-    color: var(--pf-navy-mid);
-    font-size: 1.4rem;
-    transition: all 0.25s ease;
-}
-
-.pf-gender-label {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    color: var(--pf-navy);
-}
-
-.pf-gender-card:hover {
-    transform: translateY(-3px);
-    border-color: var(--pf-gold);
-    background: #fff;
-    box-shadow: 0 10px 24px rgba(6, 16, 34, 0.1);
-}
-
-.pf-gender-card:hover .pf-gender-icon {
-    border-color: var(--pf-gold);
-    color: var(--pf-gold);
-}
-
-.pf-gender-card.is-active,
-.pf-gender-card.is-selected {
-    border-color: var(--pf-gold);
-    background: linear-gradient(180deg, rgba(200, 169, 106, 0.12) 0%, #fff 100%);
-    box-shadow: 0 10px 26px rgba(200, 169, 106, 0.28);
-    transform: translateY(-2px);
-    animation: pf-gender-pop 0.3s ease;
-}
-
-.pf-gender-card.is-active .pf-gender-icon,
-.pf-gender-card.is-selected .pf-gender-icon {
-    background: linear-gradient(145deg, #e8d4a8 0%, var(--pf-gold) 60%, #9a7844 100%);
-    border-color: var(--pf-gold);
+    background: var(--pf-gold);
     color: #fff;
-    box-shadow: 0 4px 14px rgba(200, 169, 106, 0.45);
+    font-size: 0.72rem;
+    opacity: 0;
+    transform: scale(0.4);
+    box-shadow: 0 2px 10px rgba(200, 169, 106, 0.55);
+    transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-.pf-gender-card.is-active .pf-gender-label,
-.pf-gender-card.is-selected .pf-gender-label {
-    color: var(--pf-navy-mid);
+.pf-photo-card:hover {
+    transform: translateY(-4px) scale(1.015);
+    box-shadow: 0 18px 34px rgba(6, 16, 34, 0.22);
 }
 
-@keyframes pf-gender-pop {
-    0% { transform: translateY(-2px) scale(0.94); }
-    60% { transform: translateY(-2px) scale(1.05); }
-    100% { transform: translateY(-2px) scale(1); }
+.pf-photo-card:hover .pf-photo-card-media img {
+    transform: scale(1.08);
 }
 
-@media (max-width: 480px) {
-    .pf-gender-row,
-    .pf-quiz-options--gender {
+.pf-photo-card:focus-visible {
+    outline: 2px solid var(--pf-gold);
+    outline-offset: 3px;
+}
+
+.pf-photo-card.is-active,
+.pf-photo-card.is-selected {
+    border-color: var(--pf-gold);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 0 0 4px rgba(200, 169, 106, 0.2), 0 18px 36px rgba(200, 169, 106, 0.38);
+    animation: pf-photo-pop 0.3s ease;
+}
+
+.pf-photo-card.is-active .pf-photo-card-check,
+.pf-photo-card.is-selected .pf-photo-card-check {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.pf-photo-card.is-active::after,
+.pf-photo-card.is-selected::after {
+    background: linear-gradient(180deg, rgba(6, 16, 34, 0) 30%, rgba(5, 9, 17, 0.82) 100%);
+}
+
+@keyframes pf-photo-pop {
+    0% { transform: translateY(-4px) scale(0.96); }
+    60% { transform: translateY(-4px) scale(1.04); }
+    100% { transform: translateY(-4px) scale(1.02); }
+}
+
+@media (max-width: 767px) {
+    .pf-photo-row--occasion,
+    .pf-photo-row--season,
+    .pf-photo-row--intensity {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .pf-photo-row--scent {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 420px) {
+    .pf-photo-row--gender {
+        gap: 0.6rem;
+    }
+
+    .pf-photo-row--gender .pf-photo-card-label {
+        font-size: 0.85rem;
+        padding: 0.6rem 0.3rem;
+    }
+
+    .pf-photo-card-label {
+        font-size: 0.72rem;
+    }
+
+    .pf-photo-row--scent {
+        grid-template-columns: repeat(3, 1fr);
         gap: 0.5rem;
     }
 
-    .pf-gender-card {
-        padding: 0.85rem 0.5rem;
+    .pf-photo-row--scent .pf-photo-card-label {
+        font-size: 0.62rem;
+        padding: 0.4rem 0.2rem;
     }
 
-    .pf-gender-icon {
-        width: 46px;
-        height: 46px;
-        font-size: 1.15rem;
-    }
-
-    .pf-gender-label {
-        font-size: 0.8rem;
+    .pf-photo-card-check {
+        width: 20px;
+        height: 20px;
+        font-size: 0.62rem;
     }
 }
 
-/* ===== Compact icon cards — Occasion / Season / Scent Family / Intensity ===== */
-.pf-icon-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.45rem;
-    padding: 0.85rem 0.6rem;
-    min-width: 92px;
-    border-radius: 14px;
-    border: 1px solid rgba(6, 16, 34, 0.1);
-    background: #fff;
-    text-align: center;
-    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-}
-
-.pf-icon-badge {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background: var(--pf-beige-soft);
-    border: 1.5px solid rgba(200, 169, 106, 0.35);
-    color: var(--pf-navy-mid);
-    font-size: 1.05rem;
-    transition: all 0.25s ease;
-}
-
-.pf-icon-card-label {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--pf-navy);
-    letter-spacing: 0.01em;
-}
-
-.pf-icon-card:hover {
-    transform: translateY(-2px);
-    border-color: var(--pf-gold);
-    background: #fff;
-    box-shadow: 0 8px 18px rgba(6, 16, 34, 0.08);
-}
-
-.pf-icon-card:hover .pf-icon-badge {
-    border-color: var(--pf-gold);
-    color: var(--pf-gold);
-}
-
-.pf-icon-card.is-active,
-.pf-icon-card.is-selected {
-    border-color: var(--pf-gold);
-    background: linear-gradient(180deg, rgba(200, 169, 106, 0.12) 0%, #fff 100%);
-    box-shadow: 0 8px 20px rgba(200, 169, 106, 0.25);
-    animation: pf-gender-pop 0.3s ease;
-}
-
-.pf-icon-card.is-active .pf-icon-badge,
-.pf-icon-card.is-selected .pf-icon-badge {
-    background: linear-gradient(145deg, #e8d4a8 0%, var(--pf-gold) 60%, #9a7844 100%);
-    border-color: var(--pf-gold);
-    color: #fff;
-    box-shadow: 0 3px 10px rgba(200, 169, 106, 0.4);
-}
-
-.pf-icon-card.is-active .pf-icon-card-label,
-.pf-icon-card.is-selected .pf-icon-card-label {
-    color: var(--pf-navy-mid);
-}
-
-@media (max-width: 480px) {
-    .pf-icon-card {
-        min-width: 78px;
-        padding: 0.7rem 0.45rem;
-    }
-
-    .pf-icon-badge {
-        width: 36px;
-        height: 36px;
-        font-size: 0.95rem;
-    }
-
-    .pf-icon-card-label {
-        font-size: 0.72rem;
+@media (prefers-reduced-motion: reduce) {
+    .pf-photo-card,
+    .pf-photo-card-media img {
+        transition: none;
+        animation: none;
     }
 }
+

@@ -82,8 +82,9 @@
                         </ul>
                     </div>
                     {% else %}
-                    <a href="{% url 'accounts:login' %}" class="nav-icon-btn d-none d-md-flex" title="{% trans 'Sign In' %}" aria-label="{% trans 'Sign In' %}">
+                    <a href="{% url 'accounts:login' %}" class="nav-signin-btn d-none d-md-flex" title="{% trans 'Sign In' %}" aria-label="{% trans 'Sign In' %}">
                         <i class="bi bi-person"></i>
+                        <span>{% trans "Sign In" %}</span>
                     </a>
                     {% endif %}
 
@@ -116,6 +117,7 @@
                     <li><a href="{% url 'products:best_sellers' %}">{% trans "Best Sellers" %}</a></li>
                     {% if not user.is_authenticated %}
                     <li><a href="{% url 'accounts:login' %}">{% trans "Sign In" %}</a></li>
+                    <li><a href="{% url 'accounts:register' %}">{% trans "Create Account" %}</a></li>
                     {% endif %}
                 </ul>
                 <div class="mobile-nav-lang">

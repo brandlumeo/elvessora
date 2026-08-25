@@ -1,37 +1,85 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Track Order — {{ site_settings.brand_name }}{% endblock %}
+{% block extra_css %}<link href="{% static 'css/marketplace-checkout.css' %}" rel="stylesheet">{% endblock %}
 
 {% block content %}
-<div class="page-header"><div class="container"><h1>Track Your Order</h1></div></div>
-<div class="container pb-5">
-    <form method="get" class="row g-3 justify-content-center mb-5">
-        <div class="col-md-4"><input type="text" name="order_number" class="form-control" placeholder="Order Number" value="{{ order_number }}" required></div>
-        <div class="col-md-4"><input type="email" name="email" class="form-control" placeholder="Email Address" required></div>
-        <div class="col-md-2"><button type="submit" class="btn btn-gold w-100">Track</button></div>
-    </form>
+<div class="mkt-topbar">
+    <div class="container">
+        <span class="mkt-topbar-brand">{{ site_settings.brand_name|default:"Elvessora" }}</span>
+        <span class="mkt-secure"><i class="bi bi-shield-check"></i> 100% Secure Checkout</span>
+    </div>
+</div>
+<div class="mkt-wrap">
+<div class="container">
+    <div class="mkt-card mb-4">
+        <h2 class="mkt-section-title">Track Your Order</h2>
+        <form method="get" class="mkt-track-form">
+            <div class="mkt-track-form-group">
+                <label for="mkt-order-number">Order Number</label>
+                <input type="text" id="mkt-order-number" name="order_number" placeholder="e.g. ELV-000123" value="{{ order_number }}" required>
+            </div>
+            <div class="mkt-track-form-group">
+                <label for="mkt-order-email">Email Address</label>
+                <input type="email" id="mkt-order-email" name="email" placeholder="you@example.com" required>
+            </div>
+            <div class="mkt-track-form-group" style="flex:0 0 auto;">
+                <button type="submit" class="mkt-btn-primary"><i class="bi bi-search"></i> Track</button>
+            </div>
+        </form>
+    </div>
+
     {% if order_number and not order %}
-    <div class="alert alert-warning text-center">Order not found. Please check your order number and email.</div>
-    {% endif %}
-    {% if order %}
-    <div class="order-summary mx-auto" style="max-width:600px">
-        <h5>Order {{ order.order_number }}</h5>
-        <p class="text-muted">Placed on {{ order.created_at|date:"F d, Y" }}</p>
-        <div class="progress mb-4" style="height:8px">
-            {% if order.status == 'delivered' %}<div class="progress-bar bg-success" style="width:100%"></div>
-            {% elif order.status == 'out_for_delivery' %}<div class="progress-bar bg-info" style="width:90%"></div>
-            {% elif order.status == 'shipped' %}<div class="progress-bar bg-info" style="width:75%"></div>
-            {% elif order.status == 'processing' %}<div class="progress-bar bg-warning" style="width:50%"></div>
-            {% else %}<div class="progress-bar bg-secondary" style="width:25%"></div>{% endif %}
-        </div>
-        <table class="table table-sm">
-            <tr><td>Status</td><td><span class="badge bg-primary">{{ order.get_status_display }}</span></td></tr>
-            <tr><td>Payment</td><td>{{ order.get_payment_status_display }} ({{ order.get_payment_method_display }})</td></tr>
-            {% if order.tracking_number %}<tr><td>Tracking #</td><td>{{ order.tracking_number }}</td></tr>{% endif %}
-            {% if order.courier_name %}<tr><td>Courier</td><td>{{ order.courier_name }}</td></tr>{% endif %}
-            <tr><td>Estimated Delivery</td><td>{{ order.estimated_delivery }}</td></tr>
-        </table>
+    <div class="mkt-alert">
+        <i class="bi bi-exclamation-triangle"></i>
+        <span>Order not found. Please check your order number and email.</span>
     </div>
     {% endif %}
+
+    {% if order %}
+    <div class="mkt-track-result-banner">
+        <div>
+            <h2>Order {{ order.order_number }}</h2>
+            <p>Placed on {{ order.created_at|date:"F d, Y" }}</p>
+        </div>
+        <span class="mkt-track-status-chip{% if order.status == 'cancelled' or order.status == 'refunded' %} is-cancelled{% endif %}">{{ order.get_status_display }}</span>
+    </div>
+
+    <div class="mkt-card">
+        {% if order.status == 'cancelled' or order.status == 'refunded' %}
+        <div class="mkt-track-cancelled">
+            <i class="bi bi-x-circle"></i> This order was {{ order.get_status_display|lower }}.
+        </div>
+        {% else %}
+        <div class="mkt-track-timeline">
+            <div class="mkt-track-tstep done">
+                <span class="mkt-track-tstep-icon"><i class="bi bi-bag-check"></i></span>
+                <span class="mkt-track-tstep-label">Placed</span>
+            </div>
+            <div class="mkt-track-tstep{% if order.status == 'processing' or order.status == 'shipped' or order.status == 'out_for_delivery' or order.status == 'delivered' %} done{% endif %}">
+                <span class="mkt-track-tstep-icon"><i class="bi bi-box-seam"></i></span>
+                <span class="mkt-track-tstep-label">Processing</span>
+            </div>
+            <div class="mkt-track-tstep{% if order.status == 'shipped' or order.status == 'out_for_delivery' or order.status == 'delivered' %} done{% endif %}">
+                <span class="mkt-track-tstep-icon"><i class="bi bi-truck"></i></span>
+                <span class="mkt-track-tstep-label">Shipped</span>
+            </div>
+            <div class="mkt-track-tstep{% if order.status == 'delivered' %} done{% endif %}">
+                <span class="mkt-track-tstep-icon"><i class="bi bi-house-check"></i></span>
+                <span class="mkt-track-tstep-label">Delivered</span>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="mkt-track-details">
+            <div class="mkt-track-detail-row"><span>Payment</span><span>{{ order.get_payment_status_display }} ({{ order.get_payment_method_display }})</span></div>
+            {% if order.tracking_number %}<div class="mkt-track-detail-row"><span>Tracking #</span><span>{{ order.tracking_number }}</span></div>{% endif %}
+            {% if order.courier_name %}<div class="mkt-track-detail-row"><span>Courier</span><span>{{ order.courier_name }}</span></div>{% endif %}
+            <div class="mkt-track-detail-row"><span>Estimated Delivery</span><span>{{ order.estimated_delivery }}</span></div>
+        </div>
+    </div>
+    {% endif %}
+</div>
 </div>
 {% endblock %}

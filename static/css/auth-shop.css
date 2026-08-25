@@ -455,6 +455,187 @@
     border-color: #C8A96A;
 }
 
+/* Order status pill — used on the order detail page */
+.status-pill {
+    flex-shrink: 0;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: rgba(10, 33, 99, 0.08);
+    color: var(--primary-blue, #0A2163);
+}
+
+.status-pill.status-processing { background: rgba(200, 169, 106, 0.18); color: #8a6a2f; }
+.status-pill.status-shipped,
+.status-pill.status-out_for_delivery { background: rgba(10, 33, 99, 0.12); color: var(--primary-blue, #0A2163); }
+.status-pill.status-delivered { background: rgba(56, 161, 105, 0.15); color: #2f7d54; }
+.status-pill.status-cancelled,
+.status-pill.status-refunded { background: rgba(192, 57, 43, 0.12); color: #c0392b; }
+
+/* Order detail */
+.order-detail-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: rgba(6, 16, 34, 0.6);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.order-detail-back:hover {
+    color: #C8A96A;
+}
+
+.order-items-card {
+    padding: 1.75rem;
+}
+
+.order-items-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.order-items-card-header h5 {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--primary-blue, #0A2163);
+    margin: 0;
+}
+
+.order-items-table {
+    width: 100%;
+}
+
+.order-items-table th {
+    border-top: none;
+    border-bottom: 1px solid rgba(6, 16, 34, 0.1);
+    color: rgba(6, 16, 34, 0.5);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 0 0.5rem 0.75rem 0;
+    white-space: nowrap;
+}
+
+.order-items-table td {
+    padding: 0.9rem 0.5rem 0.9rem 0;
+    border-bottom: 1px solid rgba(6, 16, 34, 0.06);
+    color: rgba(6, 16, 34, 0.8);
+    vertical-align: middle;
+}
+
+.order-items-table th:last-child,
+.order-items-table td:last-child {
+    padding-right: 0;
+    text-align: right;
+}
+
+.order-items-table th:nth-child(2),
+.order-items-table td:nth-child(2),
+.order-items-table th:nth-child(3),
+.order-items-table td:nth-child(3) {
+    text-align: right;
+}
+
+.order-items-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Notifications */
+.notif-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}
+
+.notif-list-card {
+    padding: 0;
+}
+
+.notif-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(6, 16, 34, 0.06);
+}
+
+.notif-row:last-child {
+    border-bottom: none;
+}
+
+.notif-row-unread {
+    background: rgba(200, 169, 106, 0.06);
+}
+
+.notif-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--royal-blue-pale, #eef1fa);
+    color: var(--primary-blue, #0A2163);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.notif-icon-alert {
+    background: rgba(192, 57, 43, 0.12);
+    color: #c0392b;
+}
+
+.notif-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.notif-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary-blue, #0A2163);
+}
+
+.notif-new-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #C8A96A;
+    flex-shrink: 0;
+}
+
+.notif-timestamp {
+    color: rgba(6, 16, 34, 0.45);
+    font-size: 0.78rem;
+    margin: 0.15rem 0 0.35rem;
+}
+
+.notif-message {
+    color: rgba(6, 16, 34, 0.75);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.notif-view-btn {
+    flex-shrink: 0;
+    align-self: center;
+}
+
+@media (max-width: 576px) {
+    .notif-row { flex-wrap: wrap; padding: 1rem; }
+    .notif-view-btn { margin-left: calc(42px + 1rem); }
+}
+
 .wishlist-lux-grid .lux-product-card {
     flex: unset;
     min-width: 0;

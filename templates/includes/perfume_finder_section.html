@@ -44,134 +44,160 @@
 
         <div class="pf-filter-group">
           <label class="pf-filter-label">For Whom</label>
-          <div class="pf-gender-row" data-filter="gender">
-            <button type="button" class="pf-chip pf-gender-card" data-value="men">
-              <span class="pf-gender-icon"><i class="bi bi-gender-male"></i></span>
-              <span class="pf-gender-label">Men</span>
+          <div class="pf-photo-row pf-photo-row--gender" data-filter="gender">
+            <button type="button" class="pf-chip pf-photo-card" data-value="men">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/gender/men.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Men</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-gender-card" data-value="women">
-              <span class="pf-gender-icon"><i class="bi bi-gender-female"></i></span>
-              <span class="pf-gender-label">Women</span>
+            <button type="button" class="pf-chip pf-photo-card" data-value="women">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/gender/women.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Women</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-gender-card is-active" data-value="unisex">
-              <span class="pf-gender-icon"><i class="bi bi-gender-ambiguous"></i></span>
-              <span class="pf-gender-label">Unisex</span>
+            <button type="button" class="pf-chip pf-photo-card is-active" data-value="unisex">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/gender/unisex.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Unisex</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
           </div>
         </div>
 
         <div class="pf-filter-group pf-filter-group--wide">
           <label class="pf-filter-label">Occasion <small>(multi-select)</small></label>
-          <div class="pf-chip-row" data-filter="occasions" data-multi="true">
-            <button type="button" class="pf-chip pf-icon-card" data-value="daily">
-              <span class="pf-icon-badge"><i class="bi bi-brightness-high"></i></span>
-              <span class="pf-icon-card-label">Daily</span>
+          <div class="pf-photo-row pf-photo-row--occasion" data-filter="occasions" data-multi="true">
+            <button type="button" class="pf-chip pf-photo-card" data-value="daily">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/occasion/daily.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Daily</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-icon-card" data-value="office">
-              <span class="pf-icon-badge"><i class="bi bi-briefcase"></i></span>
-              <span class="pf-icon-card-label">Office</span>
+            <button type="button" class="pf-chip pf-photo-card" data-value="office">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/occasion/office.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Office</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-icon-card" data-value="date">
-              <span class="pf-icon-badge"><i class="bi bi-heart"></i></span>
-              <span class="pf-icon-card-label">Date Night</span>
+            <button type="button" class="pf-chip pf-photo-card" data-value="date">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/occasion/date-night.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Date Night</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-icon-card" data-value="party">
-              <span class="pf-icon-badge"><i class="bi bi-music-note-beamed"></i></span>
-              <span class="pf-icon-card-label">Party</span>
+            <button type="button" class="pf-chip pf-photo-card" data-value="party">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/occasion/party.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Party</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-icon-card" data-value="wedding">
-              <span class="pf-icon-badge"><i class="bi bi-gem"></i></span>
-              <span class="pf-icon-card-label">Wedding</span>
+            <button type="button" class="pf-chip pf-photo-card" data-value="wedding">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/occasion/wedding.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Wedding</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-icon-card" data-value="gift">
-              <span class="pf-icon-badge"><i class="bi bi-gift"></i></span>
-              <span class="pf-icon-card-label">Gift</span>
+            <button type="button" class="pf-chip pf-photo-card" data-value="gift">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/occasion/gift.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Gift</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
           </div>
         </div>
 
         <div class="pf-filter-group pf-filter-group--wide">
           <label class="pf-filter-label">Season <small>(multi-select)</small></label>
-          <div class="pf-chip-row" data-filter="seasons" data-multi="true">
-            <button type="button" class="pf-chip pf-icon-card" data-value="spring">
-              <span class="pf-icon-badge"><i class="bi bi-flower1"></i></span>
-              <span class="pf-icon-card-label">Spring</span>
+          <div class="pf-photo-row pf-photo-row--season" data-filter="seasons" data-multi="true">
+            <button type="button" class="pf-chip pf-photo-card" data-value="spring">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/season/spring.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Spring</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-icon-card" data-value="summer">
-              <span class="pf-icon-badge"><i class="bi bi-sun"></i></span>
-              <span class="pf-icon-card-label">Summer</span>
+            <button type="button" class="pf-chip pf-photo-card" data-value="summer">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/season/summer.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Summer</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-icon-card" data-value="autumn">
-              <span class="pf-icon-badge"><i class="bi bi-cloud-sun"></i></span>
-              <span class="pf-icon-card-label">Autumn</span>
+            <button type="button" class="pf-chip pf-photo-card" data-value="autumn">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/season/autumn.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Autumn</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-icon-card" data-value="winter">
-              <span class="pf-icon-badge"><i class="bi bi-snow2"></i></span>
-              <span class="pf-icon-card-label">Winter</span>
+            <button type="button" class="pf-chip pf-photo-card" data-value="winter">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/season/winter.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Winter</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-icon-card is-active" data-value="all">
-              <span class="pf-icon-badge"><i class="bi bi-arrow-repeat"></i></span>
-              <span class="pf-icon-card-label">All Seasons</span>
+            <button type="button" class="pf-chip pf-photo-card is-active" data-value="all">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/season/all-seasons.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">All Seasons</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
           </div>
         </div>
 
         <div class="pf-filter-group pf-filter-group--wide">
           <label class="pf-filter-label">Scent Family <small>(multi-select)</small></label>
-          <div class="pf-chip-row" data-filter="scent_families" data-multi="true">
-            <button type="button" class="pf-chip pf-icon-card" data-value="fresh">
-              <span class="pf-icon-badge"><i class="bi bi-wind"></i></span>
-              <span class="pf-icon-card-label">Fresh</span>
+          <div class="pf-photo-row pf-photo-row--scent" data-filter="scent_families" data-multi="true">
+            <button type="button" class="pf-chip pf-photo-card" data-value="fresh">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/scent-family/fresh.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Fresh</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-icon-card" data-value="woody">
-              <span class="pf-icon-badge"><i class="bi bi-tree"></i></span>
-              <span class="pf-icon-card-label">Woody</span>
+            <button type="button" class="pf-chip pf-photo-card" data-value="woody">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/scent-family/woody.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Woody</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-icon-card" data-value="floral">
-              <span class="pf-icon-badge"><i class="bi bi-flower1"></i></span>
-              <span class="pf-icon-card-label">Floral</span>
+            <button type="button" class="pf-chip pf-photo-card" data-value="floral">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/scent-family/floral.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Floral</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-icon-card" data-value="oriental">
-              <span class="pf-icon-badge"><i class="bi bi-gem"></i></span>
-              <span class="pf-icon-card-label">Oriental</span>
+            <button type="button" class="pf-chip pf-photo-card" data-value="oriental">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/scent-family/oriental.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Oriental</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-icon-card" data-value="citrus">
-              <span class="pf-icon-badge"><i class="bi bi-brightness-high"></i></span>
-              <span class="pf-icon-card-label">Citrus</span>
+            <button type="button" class="pf-chip pf-photo-card" data-value="citrus">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/scent-family/citrus.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Citrus</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-icon-card" data-value="spicy">
-              <span class="pf-icon-badge"><i class="bi bi-fire"></i></span>
-              <span class="pf-icon-card-label">Spicy</span>
+            <button type="button" class="pf-chip pf-photo-card" data-value="spicy">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/scent-family/spicy.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Spicy</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-icon-card" data-value="sweet">
-              <span class="pf-icon-badge"><i class="bi bi-cake2"></i></span>
-              <span class="pf-icon-card-label">Sweet</span>
+            <button type="button" class="pf-chip pf-photo-card" data-value="sweet">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/scent-family/sweet.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Sweet</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-icon-card" data-value="aquatic">
-              <span class="pf-icon-badge"><i class="bi bi-water"></i></span>
-              <span class="pf-icon-card-label">Aquatic</span>
+            <button type="button" class="pf-chip pf-photo-card" data-value="aquatic">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/scent-family/aquatic.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Aquatic</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
           </div>
         </div>
 
         <div class="pf-filter-group">
           <label class="pf-filter-label">Intensity</label>
-          <div class="pf-btn-group" data-filter="intensity">
-            <button type="button" class="pf-chip pf-icon-card" data-value="light">
-              <span class="pf-icon-badge"><i class="bi bi-brightness-low"></i></span>
-              <span class="pf-icon-card-label">Light</span>
+          <div class="pf-photo-row pf-photo-row--intensity" data-filter="intensity">
+            <button type="button" class="pf-chip pf-photo-card" data-value="light">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/intensity/light.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Light</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-icon-card is-active" data-value="moderate">
-              <span class="pf-icon-badge"><i class="bi bi-droplet"></i></span>
-              <span class="pf-icon-card-label">Moderate</span>
+            <button type="button" class="pf-chip pf-photo-card is-active" data-value="moderate">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/intensity/moderate.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Moderate</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-icon-card" data-value="strong">
-              <span class="pf-icon-badge"><i class="bi bi-lightning-charge"></i></span>
-              <span class="pf-icon-card-label">Strong</span>
+            <button type="button" class="pf-chip pf-photo-card" data-value="strong">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/intensity/strong.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Strong</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-chip pf-icon-card" data-value="long-lasting">
-              <span class="pf-icon-badge"><i class="bi bi-infinity"></i></span>
-              <span class="pf-icon-card-label">Long-lasting</span>
+            <button type="button" class="pf-chip pf-photo-card" data-value="long-lasting">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/intensity/long-lasting.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Long-lasting</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
           </div>
         </div>
@@ -202,122 +228,146 @@
       <div class="pf-quiz-steps" data-quiz-steps>
         <div class="pf-quiz-step is-active" data-step="0">
           <h3 class="pf-quiz-q">Who is this fragrance for?</h3>
-          <div class="pf-quiz-options pf-quiz-options--gender">
-            <button type="button" class="pf-quiz-opt pf-gender-card" data-quiz-key="gender" data-value="women">
-              <span class="pf-gender-icon"><i class="bi bi-gender-female"></i></span>
-              <span class="pf-gender-label">For Her</span>
+          <div class="pf-photo-row pf-photo-row--gender">
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="gender" data-value="women">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/gender/women.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">For Her</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-quiz-opt pf-gender-card" data-quiz-key="gender" data-value="men">
-              <span class="pf-gender-icon"><i class="bi bi-gender-male"></i></span>
-              <span class="pf-gender-label">For Him</span>
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="gender" data-value="men">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/gender/men.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">For Him</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-quiz-opt pf-gender-card" data-quiz-key="gender" data-value="unisex">
-              <span class="pf-gender-icon"><i class="bi bi-gender-ambiguous"></i></span>
-              <span class="pf-gender-label">For Everyone</span>
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="gender" data-value="unisex">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/gender/unisex.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">For Everyone</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
           </div>
         </div>
         <div class="pf-quiz-step" data-step="1">
           <h3 class="pf-quiz-q">When will you wear it most?</h3>
-          <div class="pf-quiz-options pf-quiz-options--grid">
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="occasion" data-value="daily">
-              <span class="pf-icon-badge"><i class="bi bi-brightness-high"></i></span>
-              <span class="pf-icon-card-label">Daily Wear</span>
+          <div class="pf-photo-row pf-photo-row--occasion">
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="occasion" data-value="daily">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/occasion/daily.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Daily Wear</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="occasion" data-value="office">
-              <span class="pf-icon-badge"><i class="bi bi-briefcase"></i></span>
-              <span class="pf-icon-card-label">Office</span>
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="occasion" data-value="office">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/occasion/office.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Office</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="occasion" data-value="date">
-              <span class="pf-icon-badge"><i class="bi bi-heart"></i></span>
-              <span class="pf-icon-card-label">Date Night</span>
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="occasion" data-value="date">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/occasion/date-night.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Date Night</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="occasion" data-value="party">
-              <span class="pf-icon-badge"><i class="bi bi-music-note-beamed"></i></span>
-              <span class="pf-icon-card-label">Party</span>
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="occasion" data-value="party">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/occasion/party.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Party</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="occasion" data-value="wedding">
-              <span class="pf-icon-badge"><i class="bi bi-gem"></i></span>
-              <span class="pf-icon-card-label">Wedding</span>
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="occasion" data-value="wedding">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/occasion/wedding.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Wedding</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="occasion" data-value="gift">
-              <span class="pf-icon-badge"><i class="bi bi-gift"></i></span>
-              <span class="pf-icon-card-label">As a Gift</span>
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="occasion" data-value="gift">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/occasion/gift.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">As a Gift</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
           </div>
         </div>
         <div class="pf-quiz-step" data-step="2">
           <h3 class="pf-quiz-q">Which season feels right?</h3>
-          <div class="pf-quiz-options pf-quiz-options--grid">
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="season" data-value="spring">
-              <span class="pf-icon-badge"><i class="bi bi-flower1"></i></span>
-              <span class="pf-icon-card-label">Spring</span>
+          <div class="pf-photo-row pf-photo-row--season">
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="season" data-value="spring">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/season/spring.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Spring</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="season" data-value="summer">
-              <span class="pf-icon-badge"><i class="bi bi-sun"></i></span>
-              <span class="pf-icon-card-label">Summer</span>
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="season" data-value="summer">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/season/summer.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Summer</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="season" data-value="autumn">
-              <span class="pf-icon-badge"><i class="bi bi-cloud-sun"></i></span>
-              <span class="pf-icon-card-label">Autumn</span>
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="season" data-value="autumn">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/season/autumn.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Autumn</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="season" data-value="winter">
-              <span class="pf-icon-badge"><i class="bi bi-snow2"></i></span>
-              <span class="pf-icon-card-label">Winter</span>
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="season" data-value="winter">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/season/winter.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Winter</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="season" data-value="all">
-              <span class="pf-icon-badge"><i class="bi bi-arrow-repeat"></i></span>
-              <span class="pf-icon-card-label">All Seasons</span>
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="season" data-value="all">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/season/all-seasons.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">All Seasons</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
           </div>
         </div>
         <div class="pf-quiz-step" data-step="3">
           <h3 class="pf-quiz-q">What scent family do you love?</h3>
-          <div class="pf-quiz-options pf-quiz-options--grid">
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="scent_family" data-value="fresh">
-              <span class="pf-icon-badge"><i class="bi bi-wind"></i></span>
-              <span class="pf-icon-card-label">Fresh</span>
+          <div class="pf-photo-row pf-photo-row--occasion">
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="scent_family" data-value="fresh">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/scent-family/fresh.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Fresh</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="scent_family" data-value="floral">
-              <span class="pf-icon-badge"><i class="bi bi-flower1"></i></span>
-              <span class="pf-icon-card-label">Floral</span>
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="scent_family" data-value="floral">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/scent-family/floral.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Floral</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="scent_family" data-value="fruity">
-              <span class="pf-icon-badge"><i class="bi bi-apple"></i></span>
-              <span class="pf-icon-card-label">Fruity</span>
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="scent_family" data-value="fruity">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/scent-family/fruity.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Fruity</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="scent_family" data-value="oriental">
-              <span class="pf-icon-badge"><i class="bi bi-gem"></i></span>
-              <span class="pf-icon-card-label">Oriental</span>
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="scent_family" data-value="oriental">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/scent-family/oriental.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Oriental</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="scent_family" data-value="woody">
-              <span class="pf-icon-badge"><i class="bi bi-tree"></i></span>
-              <span class="pf-icon-card-label">Woody</span>
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="scent_family" data-value="woody">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/scent-family/woody.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Woody</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="scent_family" data-value="aquatic">
-              <span class="pf-icon-badge"><i class="bi bi-water"></i></span>
-              <span class="pf-icon-card-label">Aquatic</span>
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="scent_family" data-value="aquatic">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/scent-family/aquatic.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Aquatic</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
           </div>
         </div>
         <div class="pf-quiz-step" data-step="4">
           <h3 class="pf-quiz-q">How strong should your fragrance be?</h3>
-          <div class="pf-quiz-options pf-quiz-options--grid">
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="intensity" data-value="light">
-              <span class="pf-icon-badge"><i class="bi bi-brightness-low"></i></span>
-              <span class="pf-icon-card-label">Light &amp; Subtle</span>
+          <div class="pf-photo-row pf-photo-row--intensity">
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="intensity" data-value="light">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/intensity/light.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Light &amp; Subtle</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="intensity" data-value="moderate">
-              <span class="pf-icon-badge"><i class="bi bi-droplet"></i></span>
-              <span class="pf-icon-card-label">Moderate</span>
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="intensity" data-value="moderate">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/intensity/moderate.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Moderate</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="intensity" data-value="strong">
-              <span class="pf-icon-badge"><i class="bi bi-lightning-charge"></i></span>
-              <span class="pf-icon-card-label">Strong</span>
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="intensity" data-value="strong">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/intensity/strong.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Strong</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
-            <button type="button" class="pf-quiz-opt pf-icon-card" data-quiz-key="intensity" data-value="long-lasting">
-              <span class="pf-icon-badge"><i class="bi bi-infinity"></i></span>
-              <span class="pf-icon-card-label">Long-lasting</span>
+            <button type="button" class="pf-quiz-opt pf-photo-card" data-quiz-key="intensity" data-value="long-lasting">
+              <span class="pf-photo-card-media"><img src="{% static 'images/fragrance_filters/intensity/long-lasting.webp' %}" alt="" loading="lazy"></span>
+              <span class="pf-photo-card-label">Long-lasting</span>
+              <span class="pf-photo-card-check"><i class="bi bi-check-lg"></i></span>
             </button>
           </div>
         </div>

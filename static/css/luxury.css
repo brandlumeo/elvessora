@@ -878,6 +878,34 @@
     background: #c0392b;
 }
 
+.nav-signin-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px;
+    padding: 0 16px 0 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(200, 169, 106, 0.35);
+    color: var(--champagne-gold);
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    background: rgba(200, 169, 106, 0.08);
+    transition: all 0.2s;
+}
+
+.nav-signin-btn i {
+    font-size: 1.05rem;
+}
+
+.nav-signin-btn:hover {
+    background: var(--champagne-gold);
+    border-color: var(--champagne-gold);
+    color: var(--primary-bg);
+}
+
 .nav-text-btn {
     font-size: 0.72rem;
     font-weight: 600;

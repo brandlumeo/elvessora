@@ -2,28 +2,66 @@
 {% load static fragrance_extras %}
 
 {% block title %}Order Confirmed — {{ site_settings.brand_name }}{% endblock %}
-{% block extra_css %}<link href="{% static 'css/auth-shop.css' %}" rel="stylesheet">{% endblock %}
+{% block extra_css %}<link href="{% static 'css/marketplace-checkout.css' %}" rel="stylesheet">{% endblock %}
 
 {% block content %}
-<div class="shop-page">
-  <div class="container py-5 text-center">
-    <i class="bi bi-check-circle display-1" style="color:#4ade80;"></i>
-    <h1 class="mt-3" style="font-family:'Cormorant Garamond',serif;color:#fff;">Thank You!</h1>
-    <p class="lead" style="color:rgba(255,255,255,0.75);">Your order <strong style="color:#C8A96A;">{{ order.order_number }}</strong> has been placed successfully.</p>
-    <p style="color:rgba(255,255,255,0.5);">Estimated delivery: {{ order.estimated_delivery }}</p>
-    <div class="order-summary-lux d-inline-block text-start mt-4" style="min-width:350px;">
-      <h5>Order Details</h5>
-      {% for item in order.items.all %}
-      <div class="summary-row small">
-        <span>{{ item.product_name }} × {{ item.quantity }}</span>
-        <span>{{ item.line_total|format_price }}</span>
-      </div>
-      {% endfor %}
-      <div class="summary-row total"><span>Total</span><span>{{ order.total|format_price }}</span></div>
+<div class="mkt-topbar">
+    <div class="container">
+        <span class="mkt-topbar-brand">{{ site_settings.brand_name|default:"Elvessora" }}</span>
+        <span class="mkt-secure"><i class="bi bi-shield-check"></i> 100% Secure Checkout</span>
     </div>
-    <div class="mt-4 d-flex gap-2 justify-content-center flex-wrap">
-      <a href="{% url 'orders:tracking' %}?order_number={{ order.order_number }}" class="btn btn-outline-gold">Track Order</a>
-      <a href="{% url 'products:shop' %}" class="btn btn-gold">Continue Shopping</a>
+</div>
+<div class="mkt-wrap">
+  <div class="container">
+    <div class="mkt-steps">
+        <div class="mkt-step done"><span class="mkt-step-num"><i class="bi bi-check-lg"></i></span><span>Bag</span></div>
+        <div class="mkt-step-line done"></div>
+        <div class="mkt-step done"><span class="mkt-step-num"><i class="bi bi-check-lg"></i></span><span>Address &amp; Payment</span></div>
+        <div class="mkt-step-line done"></div>
+        <div class="mkt-step done"><span class="mkt-step-num"><i class="bi bi-check-lg"></i></span><span>Order Placed</span></div>
+    </div>
+
+    <div class="mkt-confirm-header">
+        <div class="mkt-confirm-check"><i class="bi bi-check-lg"></i></div>
+        <div>
+            <h1>Order placed, thank you!</h1>
+            <p>A confirmation has been sent to your email. Your order number is <strong>{{ order.order_number }}</strong>.</p>
+        </div>
+    </div>
+
+    <div class="mkt-confirm-meta-bar">
+        <div>
+            <span class="mkt-meta-label">Order Number</span>
+            <span class="mkt-meta-value">{{ order.order_number }}</span>
+        </div>
+        <div>
+            <span class="mkt-meta-label">Order Date</span>
+            <span class="mkt-meta-value">{{ order.created_at|date:"M d, Y" }}</span>
+        </div>
+        <div>
+            <span class="mkt-meta-label">Estimated Delivery</span>
+            <span class="mkt-meta-value">{{ order.estimated_delivery }}</span>
+        </div>
+        <div>
+            <span class="mkt-meta-label">Order Total</span>
+            <span class="mkt-meta-value mkt-meta-total">{{ order.total|format_price }}</span>
+        </div>
+    </div>
+
+    <div class="mkt-confirm-actions">
+        <a href="{% url 'orders:tracking' %}?order_number={{ order.order_number }}" class="mkt-btn-primary"><i class="bi bi-truck"></i> Track Your Order</a>
+        <a href="{% url 'products:shop' %}" class="mkt-btn-secondary">Continue Shopping</a>
+    </div>
+
+    <div class="mkt-card mkt-confirm-items">
+        <h2 class="mkt-section-title">Order Details</h2>
+        {% for item in order.items.all %}
+        <div class="mkt-item-row">
+            <span>{{ item.product_name }}{% if item.variant_size %} <span class="mkt-item-variant">({{ item.variant_size }})</span>{% endif %} <span class="mkt-item-qty">× {{ item.quantity }}</span></span>
+            <span>{{ item.line_total|format_price }}</span>
+        </div>
+        {% endfor %}
+        <div class="mkt-item-row mkt-item-total"><span>Total</span><span>{{ order.total|format_price }}</span></div>
     </div>
   </div>
 </div>
