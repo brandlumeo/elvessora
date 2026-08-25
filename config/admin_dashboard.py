@@ -496,6 +496,22 @@ def _compulsory_sections():
                 'Shipping Policy', 'Return & Refund Policy',
             ],
         },
+        {
+            'num': 23,
+            'title': 'Known Logins',
+            'priority': 'Medium',
+            'icon': 'bi-shield-check',
+            'url': _admin_url('admin:accounts_knownlogin_changelist'),
+            'items': ['Devices/locations already alerted per customer'],
+        },
+        {
+            'num': 24,
+            'title': 'Payments & Refunds',
+            'priority': 'Medium',
+            'icon': 'bi-credit-card',
+            'url': _admin_url('admin:orders_payment_changelist'),
+            'items': ['Razorpay/Tamara payment records', 'Refund records'],
+        },
     ]
 
 
@@ -513,3 +529,6 @@ admin.site.index = custom_admin_index
 admin.site.site_header = 'Elvessora Admin Dashboard'
 admin.site.site_title = 'Elvessora Admin'
 admin.site.index_title = 'Store Management'
+# The custom left sidebar (base_site.html) replaces Django's own built-in
+# per-app nav sidebar — having both on screen at once is redundant.
+admin.site.enable_nav_sidebar = False
