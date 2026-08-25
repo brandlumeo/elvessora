@@ -3,15 +3,18 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.db.models import Q
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
 from decimal import Decimal
 import razorpay
 import hmac
 import hashlib
+import json
 
 from cart.cart_service import CartService
 from core.models import SiteSettings
+from . import tamara
 from .forms import CheckoutForm
 from .models import Order, OrderItem, Coupon, Payment
 
@@ -81,8 +84,9 @@ def checkout(request):
 
         payment_method = form.cleaned_data['payment_method']
         razorpay_configured = bool(settings.RAZORPAY_KEY_ID and settings.RAZORPAY_KEY_SECRET)
-        if payment_method != 'cod' and not razorpay_configured and not settings.DEBUG:
-            messages.error(request, 'Online payment is currently unavailable. Please choose Cash on Delivery.')
+        online_configured = {'razorpay': razorpay_configured, 'tamara': tamara.is_configured()}.get(payment_method, True)
+        if payment_method != 'cod' and not online_configured and not settings.DEBUG:
+            messages.error(request, 'That payment method is currently unavailable. Please choose another.')
             return render(request, 'orders/checkout.html', {'form': form, 'totals': totals, 'cart_items': cart.items.all()})
 
         post_coupon = cart_service.apply_coupon(form.cleaned_data.get('coupon_code', ''))
@@ -144,7 +148,7 @@ def checkout(request):
             messages.success(request, f'Order {order.order_number} placed successfully!')
             return redirect('orders:order_confirmation', order_number=order.order_number)
 
-        if razorpay_configured:
+        if payment_method == 'razorpay' and razorpay_configured:
             client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
             razorpay_order = client.order.create({
                 'amount': int(order.total * 100),
@@ -166,8 +170,28 @@ def checkout(request):
                 'amount': int(order.total * 100),
             })
 
-        # DEBUG-only fallback: no Razorpay keys configured, but this is a dev/demo
-        # environment (see README) — auto-confirm so the flow is testable end-to-end.
+        if payment_method == 'tamara' and tamara.is_configured():
+            try:
+                session = tamara.create_checkout_session(
+                    order,
+                    success_url=request.build_absolute_uri(reverse('orders:tamara_success')),
+                    failure_url=request.build_absolute_uri(reverse('orders:tamara_failure')),
+                    cancel_url=request.build_absolute_uri(reverse('orders:tamara_cancel')),
+                )
+            except tamara.TamaraError:
+                order.delete()
+                messages.error(request, "We couldn't start your Tamara checkout. Please try another payment method.")
+                return redirect('orders:checkout')
+
+            order.tamara_checkout_id = session['checkout_id']
+            order.tamara_order_id = session['order_id']
+            order.save()
+            # Stock is decremented in tamara_success() once the payment is captured,
+            # so an abandoned/failed Tamara checkout never permanently reduces stock.
+            return redirect(session['checkout_url'])
+
+        # DEBUG-only fallback: no online payment provider configured, but this is a
+        # dev/demo environment (see README) — auto-confirm so the flow is testable end-to-end.
         _decrement_stock(order)
         order.payment_status = 'paid'
         order.status = 'confirmed'
@@ -229,6 +253,116 @@ def payment_verify(request):
         return redirect('orders:payment_failed', order_number=order.order_number)
 
     return redirect('cart:cart')
+
+
+def _find_tamara_order(request):
+    tamara_order_id = request.GET.get('order_id') or request.GET.get('orderId')
+    order = None
+    if tamara_order_id:
+        order = Order.objects.filter(tamara_order_id=tamara_order_id).order_by('-id').first()
+    if order is None:
+        # Fallback: the most recent Tamara order this browser session created,
+        # in case Tamara's redirect doesn't carry the order_id query param.
+        granted = request.session.get(ORDER_ACCESS_SESSION_KEY, [])
+        order = Order.objects.filter(
+            order_number__in=granted, payment_method='tamara',
+        ).order_by('-id').first()
+    return order
+
+
+def tamara_success(request):
+    order = _find_tamara_order(request)
+    if order is None:
+        messages.error(request, 'Order not found.')
+        return redirect('cart:cart')
+
+    if order.payment_status == 'paid':
+        return redirect('orders:order_confirmation', order_number=order.order_number)
+
+    try:
+        tamara_order = tamara.get_order(order.tamara_order_id)
+        if tamara_order.get('status') == 'approved':
+            tamara.authorise_order(order.tamara_order_id)
+        tamara.capture_order(order.tamara_order_id, order.total)
+    except tamara.TamaraError:
+        order.payment_status = 'failed'
+        order.save()
+        _grant_order_access(request, order.order_number)
+        messages.error(request, "We couldn't confirm your Tamara payment. Please contact support.")
+        return redirect('orders:payment_failed', order_number=order.order_number)
+
+    order.payment_status = 'paid'
+    order.status = 'confirmed'
+    order.save()
+    _decrement_stock(order)
+    _grant_order_access(request, order.order_number)
+    CartService(request).clear()
+    return redirect('orders:order_confirmation', order_number=order.order_number)
+
+
+def tamara_failure(request):
+    order = _find_tamara_order(request)
+    if order is not None:
+        order.payment_status = 'failed'
+        order.save()
+        _grant_order_access(request, order.order_number)
+        messages.error(request, 'Your Tamara payment was declined. Please try another payment method.')
+        return redirect('orders:payment_failed', order_number=order.order_number)
+    messages.error(request, 'Your Tamara payment was declined.')
+    return redirect('cart:cart')
+
+
+def tamara_cancel(request):
+    order = _find_tamara_order(request)
+    if order is not None:
+        order.delete()
+    messages.info(request, 'Checkout cancelled. Your cart is still saved.')
+    return redirect('cart:cart')
+
+
+@csrf_exempt
+def tamara_webhook(request):
+    """Safety-net webhook: keeps order status correct even if the shopper
+    closes the tab before the success/failure redirect completes.
+    """
+    if request.method != 'POST':
+        return HttpResponse(status=405)
+
+    token = request.GET.get('tamaraToken') or request.META.get('HTTP_AUTHORIZATION', '').replace('Bearer ', '')
+    payload = tamara.verify_notification_token(token)
+    if payload is None:
+        return HttpResponse(status=401)
+
+    try:
+        body = json.loads(request.body)
+    except ValueError:
+        return HttpResponse(status=400)
+
+    tamara_order_id = body.get('order_id')
+    event_type = body.get('event_type')
+    order = Order.objects.filter(tamara_order_id=tamara_order_id).order_by('-id').first()
+    if order is None:
+        return HttpResponse(status=404)
+
+    if event_type in ('order_captured', 'order_approved', 'order_authorised'):
+        if order.payment_status != 'paid':
+            order.payment_status = 'paid'
+            order.status = 'confirmed'
+            order.save()
+            _decrement_stock(order)
+    elif event_type in ('order_declined', 'order_expired'):
+        order.payment_status = 'failed'
+        order.save()
+    elif event_type == 'order_canceled':
+        order.payment_status = 'failed'
+        order.status = 'cancelled'
+        order.save()
+    elif event_type == 'order_refunded':
+        order.payment_status = 'refunded'
+        order.status = 'refunded'
+        order.save()
+
+    return HttpResponse(status=200)
 
 
 def order_confirmation(request, order_number):

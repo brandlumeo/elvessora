@@ -182,7 +182,27 @@ SITE_URL = os.environ.get('SITE_URL', 'https://www.elvessora.ae')
 RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', '')
 RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', '')
 
+# Tamara (Buy Now, Pay Later) — leave unset to disable; checkout falls back to
+# the other payment methods. Get these from the Tamara Partners Portal after
+# your merchant application is approved. Start with the sandbox base URL.
+TAMARA_API_TOKEN = os.environ.get('TAMARA_API_TOKEN', '')
+TAMARA_NOTIFICATION_TOKEN = os.environ.get('TAMARA_NOTIFICATION_TOKEN', '')
+TAMARA_PUBLIC_KEY = os.environ.get('TAMARA_PUBLIC_KEY', '')
+TAMARA_API_BASE_URL = os.environ.get('TAMARA_API_BASE_URL', 'https://api-sandbox.tamara.co')
+TAMARA_COUNTRY_CODE = os.environ.get('TAMARA_COUNTRY_CODE', 'AE')
+
 WHATSAPP_NUMBER = os.environ.get('WHATSAPP_NUMBER', '919876543210')
+
+# Meta WhatsApp Cloud API — for sending automated order/account notifications.
+# Leave unset to disable outbound WhatsApp sending (it becomes a safe no-op).
+# Business-initiated messages (i.e. anything not a reply within a live 24h
+# customer chat) must use a pre-approved message template — create one in
+# Meta Business Manager and set its name below once ready.
+WHATSAPP_ACCESS_TOKEN = os.environ.get('WHATSAPP_ACCESS_TOKEN', '')
+WHATSAPP_PHONE_NUMBER_ID = os.environ.get('WHATSAPP_PHONE_NUMBER_ID', '')
+WHATSAPP_API_VERSION = os.environ.get('WHATSAPP_API_VERSION', 'v20.0')
+WHATSAPP_TEMPLATE_LANGUAGE = os.environ.get('WHATSAPP_TEMPLATE_LANGUAGE', 'en_US')
+WHATSAPP_NOTIFICATION_TEMPLATE = os.environ.get('WHATSAPP_NOTIFICATION_TEMPLATE', '')
 
 # Google Sign-In (OAuth Web client from Google Cloud Console)
 GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID', '').strip()

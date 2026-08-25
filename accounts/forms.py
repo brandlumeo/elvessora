@@ -8,7 +8,7 @@ from .models import Address, UserProfile
 
 def _style_auth_fields(form):
     for name, field in form.fields.items():
-        if isinstance(field.widget, forms.HiddenInput):
+        if isinstance(field.widget, (forms.HiddenInput, forms.CheckboxInput)):
             continue
         css = field.widget.attrs.get('class', '')
         field.widget.attrs['class'] = f'{css} form-control'.strip()
@@ -21,6 +21,12 @@ class RegisterForm(UserCreationForm):
     first_name = forms.CharField(max_length=100, required=True)
     last_name = forms.CharField(max_length=100, required=True)
     phone = forms.CharField(max_length=20, required=False, label='Phone (optional)')
+    email_notifications = forms.BooleanField(
+        required=False, initial=True, label='Email me about my orders and account'
+    )
+    whatsapp_notifications = forms.BooleanField(
+        required=False, initial=False, label='Send order updates to my WhatsApp'
+    )
 
     class Meta:
         model = User
@@ -36,8 +42,15 @@ class RegisterForm(UserCreationForm):
             Row(Column('first_name', css_class='col-md-6'), Column('last_name', css_class='col-md-6')),
             'username', 'email', 'phone',
             'password1', 'password2',
+            'email_notifications', 'whatsapp_notifications',
             Submit('submit', 'Create Account', css_class='btn btn-gold'),
         )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get('whatsapp_notifications') and not cleaned_data.get('phone'):
+            self.add_error('phone', 'Add a phone number to receive WhatsApp updates.')
+        return cleaned_data
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -47,6 +60,8 @@ class RegisterForm(UserCreationForm):
         if commit:
             user.save()
             user.profile.phone = self.cleaned_data.get('phone', '')
+            user.profile.email_notifications = self.cleaned_data.get('email_notifications', True)
+            user.profile.whatsapp_notifications = self.cleaned_data.get('whatsapp_notifications', False)
             user.profile.save()
         return user
 
@@ -82,7 +97,10 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ['phone', 'date_of_birth', 'newsletter_subscribed']
+        fields = [
+            'phone', 'date_of_birth', 'newsletter_subscribed',
+            'email_notifications', 'whatsapp_notifications',
+        ]
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
@@ -92,6 +110,12 @@ class ProfileForm(forms.ModelForm):
         self.fields['email'].initial = self.user.email
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Update Profile', css_class='btn btn-gold'))
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get('whatsapp_notifications') and not cleaned_data.get('phone'):
+            self.add_error('phone', 'Add a phone number to receive WhatsApp updates.')
+        return cleaned_data
 
     def save(self, commit=True):
         profile = super().save(commit=False)

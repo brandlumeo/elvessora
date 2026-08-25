@@ -81,6 +81,7 @@ class Order(models.Model):
     ]
     PAYMENT_METHODS = [
         ('razorpay', 'Online Payment'),
+        ('tamara', 'Pay in Installments (Tamara)'),
         ('cod', 'Cash on Delivery'),
     ]
     PAYMENT_STATUS = [
@@ -116,6 +117,8 @@ class Order(models.Model):
     payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS, default='pending')
     razorpay_order_id = models.CharField(max_length=100, blank=True)
     razorpay_payment_id = models.CharField(max_length=100, blank=True)
+    tamara_order_id = models.CharField(max_length=100, blank=True)
+    tamara_checkout_id = models.CharField(max_length=100, blank=True)
 
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     tracking_number = models.CharField(max_length=100, blank=True)

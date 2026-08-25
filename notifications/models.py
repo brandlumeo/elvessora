@@ -13,6 +13,7 @@ class Notification(models.Model):
         ('order_delivered', 'Order Delivered'),
         ('order_cancelled', 'Order Cancelled'),
         ('order_refunded', 'Order Refunded'),
+        ('login_alert', 'New Login Detected'),
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')

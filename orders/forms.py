@@ -6,6 +6,7 @@ from crispy_forms.layout import Submit
 class CheckoutForm(forms.Form):
     PAYMENT_CHOICES = [
         ('razorpay', 'Pay Online (Card / Apple Pay / Wallet)'),
+        ('tamara', 'Pay in Installments with Tamara'),
         ('cod', 'Cash on Delivery (UAE)'),
     ]
 

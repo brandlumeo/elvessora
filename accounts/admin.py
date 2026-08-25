@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import Customer, UserProfile, Address, Wishlist
+from .models import Customer, UserProfile, Address, Wishlist, KnownLogin
 
 
 @admin.register(Customer)
@@ -59,6 +59,18 @@ class AddressAdmin(admin.ModelAdmin):
     list_filter = ['is_default', 'state']
     search_fields = ['user__username', 'full_name', 'city', 'pincode']
     raw_id_fields = ['user']
+
+
+@admin.register(KnownLogin)
+class KnownLoginAdmin(admin.ModelAdmin):
+    list_display = ['user', 'ip_address', 'user_agent', 'first_seen', 'last_seen']
+    search_fields = ['user__username', 'user__email', 'ip_address']
+    raw_id_fields = ['user']
+    readonly_fields = ['user', 'fingerprint', 'ip_address', 'user_agent', 'first_seen', 'last_seen']
+    list_filter = ['first_seen']
+
+    def has_add_permission(self, request):
+        return False
 
 
 @admin.register(Wishlist)

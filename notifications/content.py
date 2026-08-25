@@ -61,6 +61,27 @@ def welcome_content(user):
     return title, message, subject, body
 
 
+def login_alert_content(user, ip_address, device, when):
+    """Returns (title, message, email_subject, email_body) for a new-device/location login."""
+    name = _display_name(user)
+    where = ip_address or 'an unknown location'
+    when_str = when.strftime('%b %d, %Y at %I:%M %p UTC')
+    title = 'New Login Detected'
+    message = f'New sign-in to your account from {where} on {device} — {when_str}.'
+    subject = 'New login to your Elvessora account'
+    body = (
+        f'Hi {name},\n\n'
+        f'We noticed a new sign-in to your Elvessora account.\n\n'
+        f'When: {when_str}\n'
+        f'Device: {device}\n'
+        f'IP address: {where}\n\n'
+        "If this was you, no action is needed. If you don't recognise this activity, "
+        f'reset your password immediately: {SITE_URL}/accounts/password-reset/\n\n'
+        '— Elvessora Team'
+    )
+    return title, message, subject, body
+
+
 def order_tracking_url(order):
     return f'{SITE_URL}/orders/tracking/?order_number={order.order_number}'
 

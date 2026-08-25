@@ -19,6 +19,12 @@ class UserProfile(models.Model):
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
     date_of_birth = models.DateField(null=True, blank=True)
     newsletter_subscribed = models.BooleanField(default=False)
+    email_notifications = models.BooleanField(
+        default=True, help_text='Order and account updates by email.'
+    )
+    whatsapp_notifications = models.BooleanField(
+        default=False, help_text='Order and account updates by WhatsApp.'
+    )
     loyalty_points = models.PositiveIntegerField(default=0)
     google_sub = models.CharField(max_length=255, blank=True, null=True, unique=True)
 
@@ -36,6 +42,26 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     if hasattr(instance, 'profile'):
         instance.profile.save()
+
+
+class KnownLogin(models.Model):
+    """A device/location we've already alerted the user about, so repeat
+    logins from the same place don't trigger a new security alert every time."""
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='known_logins')
+    fingerprint = models.CharField(max_length=64, db_index=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    user_agent = models.CharField(max_length=255, blank=True)
+    first_seen = models.DateTimeField(auto_now_add=True)
+    last_seen = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'fingerprint'], name='known_login_user_fingerprint_uniq'),
+        ]
+
+    def __str__(self):
+        return f'{self.user} — {self.ip_address or "unknown IP"}'
 
 
 class Address(models.Model):

@@ -45,7 +45,11 @@ class OrderAdmin(admin.ModelAdmin):
         ('Order Info', {'fields': ('order_number', 'user', 'is_guest', 'guest_email', 'status', 'created_at', 'print_documents')}),
         ('Shipping', {'fields': ('shipping_name', 'shipping_phone', 'shipping_address', 'shipping_city', 'shipping_state', 'shipping_pincode', 'shipping_country')}),
         ('Pricing', {'fields': ('subtotal', 'shipping_charge', 'tax_amount', 'discount_amount', 'total', 'coupon', 'coupon_code')}),
-        ('Payment', {'fields': ('payment_method', 'payment_status', 'razorpay_order_id', 'razorpay_payment_id')}),
+        ('Payment', {'fields': (
+            'payment_method', 'payment_status',
+            'razorpay_order_id', 'razorpay_payment_id',
+            'tamara_order_id', 'tamara_checkout_id',
+        )}),
         ('Delivery', {'fields': ('tracking_number', 'courier_name', 'estimated_delivery', 'notes')}),
     )
 
