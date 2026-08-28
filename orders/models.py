@@ -82,6 +82,7 @@ class Order(models.Model):
     PAYMENT_METHODS = [
         ('razorpay', 'Online Payment'),
         ('tamara', 'Pay in Installments (Tamara)'),
+        ('tabby', 'Pay in 4 (Tabby)'),
         ('cod', 'Cash on Delivery'),
     ]
     PAYMENT_STATUS = [
@@ -119,6 +120,8 @@ class Order(models.Model):
     razorpay_payment_id = models.CharField(max_length=100, blank=True)
     tamara_order_id = models.CharField(max_length=100, blank=True)
     tamara_checkout_id = models.CharField(max_length=100, blank=True)
+    tabby_payment_id = models.CharField(max_length=100, blank=True)
+    amazon_fulfillment_status = models.CharField(max_length=50, blank=True)
 
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     tracking_number = models.CharField(max_length=100, blank=True)
@@ -135,7 +138,29 @@ class Order(models.Model):
     def save(self, *args, **kwargs):
         if not self.order_number:
             self.order_number = f'ELV{uuid.uuid4().hex[:8].upper()}'
+            
+        trigger_mcf = False
+        if self.pk:
+            try:
+                old = Order.objects.get(pk=self.pk)
+                if old.status != 'confirmed' and self.status == 'confirmed':
+                    trigger_mcf = True
+            except Order.DoesNotExist:
+                if self.status == 'confirmed':
+                    trigger_mcf = True
+        else:
+            if self.status == 'confirmed':
+                trigger_mcf = True
+                
         super().save(*args, **kwargs)
+        
+        if trigger_mcf:
+            try:
+                from . import amazon_mcf
+                amazon_mcf.create_fulfillment_order(self)
+            except Exception as e:
+                import logging
+                logging.getLogger(__name__).error('Failed to trigger MCF: %s', e)
 
     def __str__(self):
         return self.order_number

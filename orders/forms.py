@@ -7,6 +7,7 @@ class CheckoutForm(forms.Form):
     PAYMENT_CHOICES = [
         ('razorpay', 'Pay Online (Card / Apple Pay / Wallet)'),
         ('tamara', 'Pay in Installments with Tamara'),
+        ('tabby', 'Pay in 4 with Tabby'),
         ('cod', 'Cash on Delivery (UAE)'),
     ]
 

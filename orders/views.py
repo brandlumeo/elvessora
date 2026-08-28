@@ -14,7 +14,7 @@ import json
 
 from cart.cart_service import CartService
 from core.models import SiteSettings
-from . import tamara
+from . import tamara, tabby
 from .forms import CheckoutForm
 from .models import Order, OrderItem, Coupon, Payment
 
@@ -84,7 +84,7 @@ def checkout(request):
 
         payment_method = form.cleaned_data['payment_method']
         razorpay_configured = bool(settings.RAZORPAY_KEY_ID and settings.RAZORPAY_KEY_SECRET)
-        online_configured = {'razorpay': razorpay_configured, 'tamara': tamara.is_configured()}.get(payment_method, True)
+        online_configured = {'razorpay': razorpay_configured, 'tamara': tamara.is_configured(), 'tabby': tabby.is_configured()}.get(payment_method, True)
         if payment_method != 'cod' and not online_configured and not settings.DEBUG:
             messages.error(request, 'That payment method is currently unavailable. Please choose another.')
             return render(request, 'orders/checkout.html', {'form': form, 'totals': totals, 'cart_items': cart.items.all()})
@@ -188,6 +188,23 @@ def checkout(request):
             order.save()
             # Stock is decremented in tamara_success() once the payment is captured,
             # so an abandoned/failed Tamara checkout never permanently reduces stock.
+            return redirect(session['checkout_url'])
+
+        if payment_method == 'tabby' and tabby.is_configured():
+            try:
+                session = tabby.create_checkout_session(
+                    order,
+                    success_url=request.build_absolute_uri(reverse('orders:tabby_success')),
+                    failure_url=request.build_absolute_uri(reverse('orders:tabby_failure')),
+                    cancel_url=request.build_absolute_uri(reverse('orders:tabby_cancel')),
+                )
+            except tabby.TabbyError:
+                order.delete()
+                messages.error(request, "We couldn't start your Tabby checkout. Please try another payment method.")
+                return redirect('orders:checkout')
+
+            order.tabby_payment_id = session['payment_id']
+            order.save()
             return redirect(session['checkout_url'])
 
         # DEBUG-only fallback: no online payment provider configured, but this is a
@@ -413,3 +430,109 @@ def reorder(request, order_number):
             cart_service.add_product(item.product, item.variant, item.quantity)
     messages.success(request, 'Items added to cart for reorder.')
     return redirect('cart:cart')
+
+
+def _find_tabby_order(request):
+    tabby_payment_id = request.GET.get('payment_id')
+    order = None
+    if tabby_payment_id:
+        order = Order.objects.filter(tabby_payment_id=tabby_payment_id).order_by('-id').first()
+    if order is None:
+        granted = request.session.get(ORDER_ACCESS_SESSION_KEY, [])
+        order = Order.objects.filter(
+            order_number__in=granted, payment_method='tabby',
+        ).order_by('-id').first()
+    return order
+
+
+def tabby_success(request):
+    order = _find_tabby_order(request)
+    if order is None:
+        messages.error(request, 'Order not found.')
+        return redirect('cart:cart')
+
+    if order.payment_status == 'paid':
+        return redirect('orders:order_confirmation', order_number=order.order_number)
+
+    try:
+        payment = tabby.get_payment(order.tabby_payment_id)
+        if payment.get('status') == 'AUTHORIZED':
+            tabby.capture_payment(order.tabby_payment_id, order.total)
+        elif payment.get('status') == 'CLOSED':
+            pass
+        else:
+            raise tabby.TabbyError(f"Payment status is {payment.get('status')}, expected AUTHORIZED or CLOSED")
+    except tabby.TabbyError as e:
+        order.payment_status = 'failed'
+        order.save()
+        _grant_order_access(request, order.order_number)
+        messages.error(request, "We couldn't confirm your Tabby payment. Please contact support.")
+        return redirect('orders:payment_failed', order_number=order.order_number)
+
+    order.payment_status = 'paid'
+    order.status = 'confirmed'
+    order.save()
+    _decrement_stock(order)
+    _grant_order_access(request, order.order_number)
+    CartService(request).clear()
+    return redirect('orders:order_confirmation', order_number=order.order_number)
+
+
+def tabby_failure(request):
+    order = _find_tabby_order(request)
+    if order is not None:
+        order.payment_status = 'failed'
+        order.save()
+        _grant_order_access(request, order.order_number)
+        messages.error(request, 'Your Tabby payment was declined. Please try another payment method.')
+        return redirect('orders:payment_failed', order_number=order.order_number)
+    messages.error(request, 'Your Tabby payment was declined.')
+    return redirect('cart:cart')
+
+
+def tabby_cancel(request):
+    order = _find_tabby_order(request)
+    if order is not None:
+        order.delete()
+    messages.info(request, 'Checkout cancelled. Your cart is still saved.')
+    return redirect('cart:cart')
+
+
+@csrf_exempt
+def tabby_webhook(request):
+    """Fallback webhook for Tabby if the user drops off before redirecting."""
+    if request.method != 'POST':
+        return HttpResponse(status=405)
+
+    try:
+        body = json.loads(request.body)
+    except ValueError:
+        return HttpResponse(status=400)
+
+    payment_id = body.get('id')
+    status = body.get('status')
+    order = Order.objects.filter(tabby_payment_id=payment_id).order_by('-id').first()
+    if order is None:
+        return HttpResponse(status=404)
+
+    if status == 'AUTHORIZED':
+        if order.payment_status != 'paid':
+            try:
+                tabby.capture_payment(payment_id, order.total)
+                order.payment_status = 'paid'
+                order.status = 'confirmed'
+                order.save()
+                _decrement_stock(order)
+            except tabby.TabbyError:
+                pass
+    elif status == 'CLOSED':
+        if order.payment_status != 'paid':
+            order.payment_status = 'paid'
+            order.status = 'confirmed'
+            order.save()
+            _decrement_stock(order)
+    elif status in ('REJECTED', 'EXPIRED'):
+        order.payment_status = 'failed'
+        order.save()
+
+    return HttpResponse(status=200)
