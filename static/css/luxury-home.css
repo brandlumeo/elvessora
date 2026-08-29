@@ -159,7 +159,7 @@ body.page-luxury-home,
 /* ========== SCROLL CINEMA (frame sequence above hero) ========== */
 .lux-scroll-cinema {
     position: relative;
-    height: 480vh;
+    height: 1200vh;
     background: var(--lux-navy);
     isolation: isolate;
 }
