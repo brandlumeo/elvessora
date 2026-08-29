@@ -30,13 +30,13 @@
     function resizeCanvas() {
         var width = pin.clientWidth;
         var height = pin.clientHeight;
-        // Only the internal pixel buffer is set here — the on-screen box size
-        // always comes from the CSS width:100%/height:100% rule, so the canvas
-        // can never get stuck narrower than its container after a mobile
-        // browser toolbar show/hide or an early, pre-layout measurement.
         canvas.width = Math.floor(width * dpr);
         canvas.height = Math.floor(height * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        
         if (ready && currentFrame >= 0) {
             drawFrame(currentFrame, getProgress());
         }

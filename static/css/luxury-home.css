@@ -208,6 +208,7 @@ body.page-luxury-home,
 
 .lux-scroll-cinema__canvas {
     display: block;
+    image-rendering: high-quality;
 }
 
 .lux-scroll-cinema__loader {
@@ -265,7 +266,6 @@ body.page-luxury-home,
     right: 0;
     bottom: 0;
     height: min(22vh, 180px);
-    background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.88) 82%, #ffffff 100%);
     pointer-events: none;
     z-index: 3;
 }
