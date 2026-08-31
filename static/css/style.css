@@ -737,6 +737,14 @@ h1, h2, h3, h4, h5, h6, .brand-logo {
     letter-spacing: 3px;
     margin-top: 15px;
     border: 1px solid var(--silver);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.promo-code:hover {
+    background: var(--lux-gold);
+    color: var(--lux-navy);
+    border-color: var(--lux-gold);
 }
 
 .account-sidebar .nav-link {

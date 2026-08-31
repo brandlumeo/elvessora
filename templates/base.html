@@ -133,13 +133,44 @@
                     <h4>{{ promo_popup.title }}</h4>
                     <p>{{ promo_popup.content }}</p>
                     {% if promo_popup.coupon_code %}
-                    <code class="promo-code">{{ promo_popup.coupon_code }}</code>
+                    <button class="promo-code" onclick="applyPromoCode(this, '{{ promo_popup.coupon_code }}')">{{ promo_popup.coupon_code }}</button>
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
     {% endif %}
+
+    <script>
+    function applyPromoCode(btn, code) {
+        const formData = new FormData();
+        formData.append('coupon_code', code);
+        formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+        fetch('{% url "cart:apply_coupon" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        }).then(response => {
+            const originalText = btn.innerText;
+            btn.innerText = 'OFFER APPLIED!';
+            btn.style.backgroundColor = 'var(--lux-gold)';
+            btn.style.color = 'var(--lux-navy)';
+            
+            // Auto close modal after applying
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.backgroundColor = '';
+                btn.style.color = '';
+                const modalEl = document.getElementById('promoModal');
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                if (modal) modal.hide();
+            }, 1200);
+        });
+    }
+    </script>
 
     {% include 'includes/whatsapp_float.html' %}
     {% include 'includes/side_drawer.html' %}

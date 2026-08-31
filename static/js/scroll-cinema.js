@@ -50,13 +50,6 @@
         if (!iw || !ih) return;
 
         var coverScale = Math.max(width / iw, height / ih) * scale;
-        // Cap how far "cover" is allowed to zoom past "contain": on narrow/portrait
-        // viewports a wide frame (e.g. storefront signage) otherwise gets cropped
-        // illegibly on both sides. A small letterbox is preferable to losing edge
-        // content — this only kicks in when the container/image aspect ratios are
-        // far apart, so frames already close to the container's shape are unaffected.
-        var containScale = Math.min(width / iw, height / ih) * scale;
-        coverScale = Math.min(coverScale, containScale * 1.35);
         var drawW = iw * coverScale;
         var drawH = ih * coverScale;
         var x = (width - drawW) / 2;
