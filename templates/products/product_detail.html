@@ -87,7 +87,6 @@
 
             <div class="product-specs">
                 <dl>
-                    <dt>Gender</dt><dd>{{ product.get_gender_display }}</dd>
                     <dt>Concentration</dt><dd>{{ product.get_concentration_display }}</dd>
                     {% if product.fragrance_families.exists %}
                     <dt>Fragrance Family</dt>
@@ -98,7 +97,9 @@
                     <dd>{% for o in product.occasions.all %}{{ o.get_name_display }}{% if not forloop.last %}, {% endif %}{% endfor %}</dd>
                     {% endif %}
                     {% if product.country_of_origin %}<dt>Origin</dt><dd>{{ product.country_of_origin }}</dd>{% endif %}
+                    {% if request.user.is_staff %}
                     <dt>Stock</dt><dd>{% if product.in_stock %}{{ product.total_stock }} units available{% else %}Out of Stock{% endif %}</dd>
+                    {% endif %}
                 </dl>
             </div>
 
@@ -114,7 +115,7 @@
                         {% for variant in product.variants.all %}
                         <option value="{{ variant.id }}" {% if not variant.in_stock %}disabled{% endif %}>
                             {{ variant.size }} — {{ variant.current_price|format_price }}
-                            (Stock: {{ variant.stock_quantity }})
+                            {% if request.user.is_staff %}(Stock: {{ variant.stock_quantity }}){% endif %}
                             {% if not variant.in_stock %}(Out of Stock){% endif %}
                         </option>
                         {% endfor %}
@@ -126,8 +127,12 @@
                     <input type="number" name="quantity" value="1" min="1" max="10" class="form-control w-auto">
                 </div>
                 <div class="d-flex gap-2 mb-4 flex-wrap">
-                    <button type="submit" class="btn btn-gold flex-grow-1" {% if not product.in_stock %}disabled{% endif %}>Add to Cart</button>
-                    <button type="submit" name="buy_now" value="1" class="btn btn-outline-gold flex-grow-1" {% if not product.in_stock %}disabled{% endif %}>Buy Now</button>
+                    {% if product.in_stock %}
+                        <button type="submit" class="btn btn-gold flex-grow-1">Add to Cart</button>
+                        <button type="submit" name="buy_now" value="1" class="btn btn-outline-gold flex-grow-1">Buy Now</button>
+                    {% else %}
+                        <button type="button" class="btn btn-danger flex-grow-1" disabled style="font-weight: 600; letter-spacing: 2px;">SOLD OUT</button>
+                    {% endif %}
                     <button type="submit" formaction="{% url 'accounts:wishlist_toggle' product.id %}" class="btn btn-silver" title="Wishlist"><i class="bi bi-heart{% if product.id in wishlist_product_ids %}-fill{% endif %}"></i></button>
                     <button type="button" class="btn btn-silver" data-share><i class="bi bi-share"></i></button>
                 </div>
@@ -142,9 +147,224 @@
             <h6>Usage Instructions</h6>
             <p class="small text-muted">{{ product.usage_instructions }}</p>
             {% endif %}
+            
+            {% if product.faqs.exists %}
+            <div class="accordion mt-4" id="faqAccordion">
+                <h6 class="mb-3">Frequently Asked Questions</h6>
+                {% for faq in product.faqs.all %}
+                <div class="accordion-item bg-transparent border-start-0 border-end-0 border-top-0 border-bottom border-secondary">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed bg-transparent text-white px-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ faq.id }}">
+                            {{ faq.question }}
+                        </button>
+                    </h2>
+                    <div id="faq{{ faq.id }}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body px-0 text-muted small">
+                            {{ faq.answer }}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
     </div>
-</div>
+    <div class="how-to-use-section mt-5">
+
+        <!-- Header -->
+        <div class="htu-header text-center py-5">
+            <p class="htu-eyebrow">RITUAL GUIDE</p>
+            <h2 class="htu-heading">The Art of Application</h2>
+            <div class="htu-heading-line"></div>
+        </div>
+
+        <!-- Step 1 -->
+        <div class="htu-panel">
+            <div class="htu-panel-img">
+                <img src="{% load static %}{% static 'images/how_to_use_spray.png' %}" alt="Apply on Pulse Points">
+                <div class="htu-num">01</div>
+            </div>
+            <div class="htu-panel-text">
+                <div class="htu-text-body">
+                    <span class="htu-step-label">Step One</span>
+                    <h3 class="htu-step-title">Apply on<br>Pulse Points</h3>
+                    <div class="htu-line"></div>
+                    <p class="htu-step-desc">Spray on your wrists, neck, and behind the ears. The natural warmth of these areas blooms the fragrance and makes it last beautifully all day long.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="htu-panel htu-panel-flip">
+            <div class="htu-panel-text">
+                <div class="htu-text-body">
+                    <span class="htu-step-label">Step Two</span>
+                    <h3 class="htu-step-title">Don't Rub<br>After Spraying</h3>
+                    <div class="htu-line"></div>
+                    <p class="htu-step-desc">Let the perfume dry naturally on your skin. Rubbing breaks the delicate top notes and alters the true character of the fragrance.</p>
+                </div>
+            </div>
+            <div class="htu-panel-img">
+                <img src="{% static 'images/how_to_use_rub.png' %}" alt="Don't Rub After Spraying">
+                <div class="htu-num" style="left:auto;right:32px;">02</div>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="htu-panel">
+            <div class="htu-panel-img">
+                <img src="{% static 'images/how_to_use_moment.png' %}" alt="Choose the Right Moment">
+                <div class="htu-num">03</div>
+            </div>
+            <div class="htu-panel-text">
+                <div class="htu-text-body">
+                    <span class="htu-step-label">Step Three</span>
+                    <h3 class="htu-step-title">Choose the<br>Right Moment</h3>
+                    <div class="htu-line"></div>
+                    <p class="htu-step-desc">Use 2–4 sprays for evenings and special occasions. For daily wear, 1–2 sprays is refined and long-lasting throughout the day.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+    /* ── How To Use Section ────────────────────────────── */
+    .how-to-use-section {
+        width: 100%;
+        overflow: hidden;
+    }
+    .htu-header {
+        border-top: 1px solid rgba(255,255,255,0.08);
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .htu-eyebrow {
+        font-size: 0.65rem; font-weight: 700; letter-spacing: 6px;
+        text-transform: uppercase; color: var(--lux-gold);
+        margin-bottom: 0.8rem;
+    }
+    .htu-heading {
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 200; letter-spacing: 3px;
+        color: #fff; margin-bottom: 0;
+    }
+    .htu-heading-line {
+        width: 50px; height: 1px;
+        background: var(--lux-gold);
+        margin: 1.4rem auto 0;
+    }
+
+    /* ── Panel ───────────────────────────────────────── */
+    .htu-panel {
+        display: flex;
+        min-height: 90vh;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .htu-panel:last-child { border-bottom: none; }
+    .htu-panel-img {
+        flex: 0 0 58%;
+        position: relative;
+        overflow: hidden;
+    }
+    .htu-panel-img img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        object-position: center top;
+        display: block;
+        transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .htu-panel:hover .htu-panel-img img { transform: scale(1.05); }
+    .htu-num {
+        position: absolute; top: 32px; left: 32px;
+        width: 52px; height: 52px;
+        border: 1px solid rgba(212,175,55,0.7);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.6rem; font-weight: 900; letter-spacing: 3px;
+        color: var(--lux-gold);
+        background: rgba(0,0,0,0.55);
+        backdrop-filter: blur(12px);
+        z-index: 2;
+    }
+    /* subtle gradient on right edge of image */
+    .htu-panel-img::after {
+        content: '';
+        position: absolute; top: 0; right: 0;
+        width: 120px; height: 100%;
+        background: linear-gradient(to right, transparent, rgba(6,8,20,0.85));
+        pointer-events: none;
+        z-index: 1;
+    }
+    .htu-panel-flip .htu-panel-img::after {
+        left: 0; right: auto;
+        background: linear-gradient(to left, transparent, rgba(6,8,20,0.85));
+    }
+
+    /* ── Text Panel ──────────────────────────────────── */
+    .htu-panel-text {
+        flex: 0 0 42%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 4rem 4rem 5rem;
+        background: rgba(6,8,20,0.6);
+    }
+    .htu-panel-flip .htu-panel-text {
+        padding: 4rem 5rem 4rem 4rem;
+    }
+    .htu-text-body { max-width: 380px; }
+    .htu-step-label {
+        display: block;
+        font-size: 0.58rem; font-weight: 700; letter-spacing: 6px;
+        text-transform: uppercase; color: var(--lux-gold);
+        margin-bottom: 1.2rem; opacity: 0.9;
+    }
+    .htu-step-title {
+        font-size: clamp(2rem, 3.5vw, 2.8rem);
+        font-weight: 200;
+        letter-spacing: 1.5px;
+        line-height: 1.15;
+        color: #fff;
+        margin-bottom: 1.4rem;
+    }
+    .htu-line {
+        width: 36px; height: 1px;
+        background: var(--lux-gold);
+        margin-bottom: 1.6rem;
+        transition: width 0.6s ease;
+    }
+    .htu-panel:hover .htu-line { width: 70px; }
+    .htu-step-desc {
+        font-size: 1rem;
+        color: rgba(255,255,255,0.5);
+        line-height: 1.95;
+        margin: 0;
+    }
+
+    /* ── Mobile ──────────────────────────────────────── */
+    @media (max-width: 767px) {
+        .htu-panel, .htu-panel-flip {
+            flex-direction: column;
+            min-height: unset;
+        }
+        .htu-panel-img { flex: 0 0 auto; min-height: 320px; }
+        .htu-panel-img::after,
+        .htu-panel-flip .htu-panel-img::after {
+            width: 100%; height: 80px; top: auto; bottom: 0; right: 0; left: 0;
+            background: linear-gradient(to top, rgba(6,8,20,0.9), transparent);
+        }
+        .htu-panel-text,
+        .htu-panel-flip .htu-panel-text {
+            flex: 0 0 auto;
+            padding: 2.5rem 1.8rem;
+            justify-content: flex-start;
+        }
+        .htu-text-body { max-width: 100%; }
+        .htu-step-title { font-size: 1.9rem; }
+        .htu-panel-flip .htu-panel-img { order: 1; }
+        .htu-panel-flip .htu-panel-text { order: 2; }
+    }
+    </style>
+
+
 
 {% if product.top_notes or product.heart_notes or product.base_notes %}
 {% include 'includes/fragrance_profile.html' %}

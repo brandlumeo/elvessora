@@ -1,36 +1,464 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Blog — {{ site_settings.brand_name }}{% endblock %}
+{% block title %}The Art of Fragrance - Blog | {{ site_settings.brand_name }}{% endblock %}
 
 {% block content %}
-<div class="page-header">
+<!-- CSS specific for blog list -->
+<style>
+/* Blog variables — dark-theme aligned */
+:root {
+    --blog-gold: #d4af37;
+    --blog-gold-dark: #b8962c;
+    --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* no body override — inherit global dark theme */
+
+/* HERO SECTION */
+.blog-hero {
+    padding: 100px 0 80px;
+    background: linear-gradient(180deg, var(--blog-navy) 0%, #101426 100%);
+    color: #fff;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.blog-hero::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: url('{% static "images/hero-perfume-bg.jpg" %}') center/cover no-repeat;
+    opacity: 0.15;
+    z-index: 0;
+}
+.blog-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    animation: fadeUp 1s ease-out forwards;
+}
+.blog-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--blog-gold);
+    margin-bottom: 1.5rem;
+    display: inline-block;
+}
+.blog-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 6vw, 4.5rem);
+    font-weight: 400;
+    letter-spacing: 2px;
+    margin-bottom: 1.5rem;
+}
+.blog-hero p {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.blog-nav-wrapper {
+    background: transparent;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.blog-categories {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 1rem 0;
+    gap: 2rem;
+    scrollbar-width: none; /* Firefox */
+}
+.blog-categories::-webkit-scrollbar {
+    display: none; /* Safari/Chrome */
+}
+.blog-category-link {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    transition: var(--transition);
+    position: relative;
+}
+.blog-category-link:hover {
+    color: rgba(255,255,255,0.9);
+}
+.blog-category-link.active {
+    color: var(--blog-gold);
+}
+.blog-category-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1.2rem;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--blog-gold);
+}
+
+/* SEARCH */
+.blog-search-container {
+    max-width: 600px;
+    margin: 3rem auto;
+}
+.blog-search-form {
+    position: relative;
+}
+.blog-search-input {
+    width: 100%;
+    padding: 1rem 1.5rem 1rem 3rem;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 30px;
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+.blog-search-input::placeholder { color: rgba(255,255,255,0.35); }
+.blog-search-input:focus {
+    outline: none;
+    border-color: var(--blog-gold);
+    background: rgba(255,255,255,0.08);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.blog-search-icon {
+    position: absolute;
+    left: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255,255,255,0.4);
+}
+
+/* FEATURED ARTICLE */
+.featured-article {
+    margin: 4rem 0;
+}
+.featured-img-wrap {
+    overflow: hidden;
+    position: relative;
+    padding-top: 60%;
+    background: rgba(255,255,255,0.05);
+}
+.featured-img {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s ease;
+}
+.featured-article:hover .featured-img {
+    transform: scale(1.03);
+}
+.featured-content {
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+.article-cat {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--blog-gold);
+    margin-bottom: 1rem;
+}
+.featured-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    color: #fff;
+    text-decoration: none;
+}
+.featured-title:hover { color: var(--blog-gold); }
+.featured-desc {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+.article-meta {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.45);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.article-meta span { display: flex; align-items: center; gap: 5px; }
+
+/* ARTICLE GRID */
+.article-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem 2rem;
+    margin-bottom: 4rem;
+}
+@media (max-width: 991px) { .article-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 767px) { .article-grid { grid-template-columns: 1fr; } }
+
+.article-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    group: hover;
+}
+.card-img-wrap {
+    overflow: hidden;
+    position: relative;
+    padding-top: 75%;
+    margin-bottom: 1.5rem;
+    background: rgba(255,255,255,0.05);
+}
+.card-img {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+}
+.article-card:hover .card-img { transform: scale(1.05); }
+.card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    line-height: 1.3;
+    color: #fff;
+    margin-bottom: 1rem;
+    transition: color 0.3s;
+}
+.article-card:hover .card-title { color: var(--blog-gold); }
+.card-desc {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+/* NEWSLETTER */
+.blog-newsletter {
+    background: rgba(255,255,255,0.03);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    color: #fff;
+    padding: 5rem 0;
+    text-align: center;
+    margin-top: 4rem;
+}
+.newsletter-inner {
+    max-width: 600px;
+    margin: 0 auto;
+}
+.blog-newsletter h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+}
+.blog-newsletter p {
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 2rem;
+}
+.nl-form {
+    display: flex;
+    gap: 10px;
+}
+.nl-input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
+}
+.nl-input:focus {
+    outline: none;
+    border-color: var(--blog-gold);
+}
+.nl-btn {
+    padding: 1rem 2rem;
+    background: var(--blog-gold);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: background 0.3s;
+}
+.nl-btn:hover { background: #b8962c; }
+@media (max-width: 576px) {
+    .nl-form { flex-direction: column; }
+    .nl-btn { width: 100%; }
+}
+</style>
+
+<!-- Hero Section -->
+<section class="blog-hero">
     <div class="container">
-        <span class="section-label">Elvessora</span>
-        <h1>Journal</h1>
-        <p class="text-muted">Stories, guides, and news from the world of fragrance</p>
-    </div>
-</div>
-<div class="container py-5">
-    <div class="mb-4">
-        <a href="{% url 'blog:post_list' %}" class="btn btn-sm {% if not active_category %}btn-dark{% else %}btn-outline-dark{% endif %}">All</a>
-        {% for cat in categories %}
-        <a href="?category={{ cat.slug }}" class="btn btn-sm {% if active_category == cat.slug %}btn-dark{% else %}btn-outline-dark{% endif %}">{{ cat.name }}</a>
-        {% endfor %}
-    </div>
-    <div class="row g-4">
-        {% for post in posts %}
-        <div class="col-md-6 col-lg-4">
-            <a href="{{ post.get_absolute_url }}" class="text-decoration-none text-dark">
-                {% if post.featured_image %}
-                <img src="{{ post.featured_image.url }}" alt="" class="img-fluid mb-3" style="height:200px;width:100%;object-fit:cover;">
-                {% endif %}
-                <h3 style="font-size:1.2rem;font-family:var(--font-serif, Georgia, serif);">{{ post.title }}</h3>
-                <p class="text-muted small">{{ post.excerpt|truncatewords:22 }}</p>
-            </a>
+        <div class="blog-hero-content">
+            <span class="blog-eyebrow">Elvessora Editorial</span>
+            <h1>The Art of Fragrance</h1>
+            <p>Discover the world of fine fragrance through expert guides, perfume tips, inspiration, and stories from Elvessora.</p>
+            {% if not search_query and not active_category or active_category == 'all' %}
+                <a href="#articles" class="btn btn-outline-light px-4 py-2" style="border-radius: 0; letter-spacing: 2px; font-size: 0.8rem; text-transform: uppercase;">Explore Stories</a>
+            {% endif %}
         </div>
-        {% empty %}
-        <p class="text-muted">No posts published yet.</p>
-        {% endfor %}
+    </div>
+</section>
+
+<!-- Categories Nav -->
+<div class="blog-nav-wrapper">
+    <div class="container">
+        <nav class="blog-categories">
+            <a href="{% url 'blog:post_list' %}" class="blog-category-link {% if active_category == 'all' %}active{% endif %}">All</a>
+            {% for cat in categories %}
+                <a href="?category={{ cat.slug }}" class="blog-category-link {% if active_category == cat.slug %}active{% endif %}">{{ cat.name }}</a>
+            {% endfor %}
+        </nav>
     </div>
 </div>
+
+<div class="container" id="articles">
+    
+    <!-- Search -->
+    <div class="blog-search-container">
+        <form method="GET" action="{% url 'blog:post_list' %}" class="blog-search-form">
+            {% if active_category and active_category != 'all' %}
+                <input type="hidden" name="category" value="{{ active_category }}">
+            {% endif %}
+            <i class="bi bi-search blog-search-icon"></i>
+            <input type="text" name="q" value="{{ search_query }}" class="blog-search-input" placeholder="Search fragrance stories...">
+        </form>
+    </div>
+
+    {% if search_query %}
+        <div class="mb-5 text-center">
+            <h4 class="mb-2">Search Results for "{{ search_query }}"</h4>
+            <p style="color: rgba(255,255,255,0.5);">{{ page_obj.paginator.count }} article(s) found</p>
+        </div>
+    {% endif %}
+
+    <!-- Featured Article (Only show on page 1 without search/category filters if one exists) -->
+    {% if featured_post and not page_obj.has_previous %}
+        <div class="featured-article">
+            <div class="row g-0 align-items-center">
+                <div class="col-lg-7">
+                    <a href="{{ featured_post.get_absolute_url }}" class="d-block featured-img-wrap">
+                        {% if featured_post.featured_image %}
+                            <img src="{{ featured_post.featured_image.url }}" alt="{{ featured_post.title }}" class="featured-img">
+                        {% else %}
+                            <img src="{% static 'images/placeholder-perfume.jpg' %}" alt="{{ featured_post.title }}" class="featured-img">
+                        {% endif %}
+                    </a>
+                </div>
+                <div class="col-lg-5">
+                    <div class="featured-content">
+                        {% if featured_post.category %}
+                            <span class="article-cat">{{ featured_post.category.name }}</span>
+                        {% endif %}
+                        <a href="{{ featured_post.get_absolute_url }}" class="text-decoration-none">
+                            <h2 class="featured-title">{{ featured_post.title }}</h2>
+                        </a>
+                        <p class="featured-desc">{{ featured_post.excerpt }}</p>
+                        
+                        <div class="article-meta mb-4">
+                            {% if featured_post.author %}
+                                <span><i class="bi bi-person"></i> {{ featured_post.author.get_full_name|default:featured_post.author.username }}</span>
+                            {% endif %}
+                            <span><i class="bi bi-clock"></i> {{ featured_post.reading_time }} min read</span>
+                            <span><i class="bi bi-calendar3"></i> {{ featured_post.published_at|date:"M d, Y" }}</span>
+                        </div>
+                        
+                        <div>
+                            <a href="{{ featured_post.get_absolute_url }}" class="btn" style="border-radius: 0; padding: 12px 30px; letter-spacing: 1px; text-transform: uppercase; font-size: 0.8rem; background: var(--blog-gold); color: #fff;">Read Article &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Article Grid -->
+    {% if page_obj.object_list %}
+        <div class="article-grid">
+            {% for post in page_obj %}
+                <a href="{{ post.get_absolute_url }}" class="article-card">
+                    <div class="card-img-wrap">
+                        {% if post.featured_image %}
+                            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="card-img" loading="lazy">
+                        {% else %}
+                            <img src="{% static 'images/placeholder-perfume.jpg' %}" alt="{{ post.title }}" class="card-img" loading="lazy">
+                        {% endif %}
+                    </div>
+                    {% if post.category %}
+                        <span class="article-cat">{{ post.category.name }}</span>
+                    {% endif %}
+                    <h3 class="card-title">{{ post.title }}</h3>
+                    <p class="card-desc">{{ post.excerpt }}</p>
+                    <div class="article-meta">
+                        <span>{{ post.reading_time }} min read</span>
+                        <span>Read Article →</span>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+            <nav aria-label="Blog pagination" class="mt-5 pt-3 border-top">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link" style="background:transparent; border-color:rgba(255,255,255,0.15); color:#fff;" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if active_category and active_category != 'all' %}&category={{ active_category }}{% endif %}">Previous</a></li>
+                    {% endif %}
+                    
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active"><span class="page-link" style="background:var(--blog-gold); border-color:var(--blog-gold); color:#fff;">{{ num }}</span></li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item"><a class="page-link" style="background:transparent; border-color:rgba(255,255,255,0.15); color:#fff;" href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}{% if active_category and active_category != 'all' %}&category={{ active_category }}{% endif %}">{{ num }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link" style="background:transparent; border-color:rgba(255,255,255,0.15); color:#fff;" href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if active_category and active_category != 'all' %}&category={{ active_category }}{% endif %}">Next</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    {% else %}
+        <!-- Empty State -->
+        {% if search_query or active_category != 'all' %}
+            <div class="text-center py-5">
+                <i class="bi bi-journal-x display-1 mb-3" style="color:rgba(255,255,255,0.3);"></i>
+                <h3 style="color:#fff;">No articles found</h3>
+                <p style="color:rgba(255,255,255,0.5);">Try adjusting your search or category filters.</p>
+                <a href="{% url 'blog:post_list' %}" class="btn mt-3" style="border:1px solid rgba(255,255,255,0.3); color:#fff; border-radius:0; letter-spacing:1px;">View All Articles</a>
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+
+<!-- Newsletter -->
+<section class="blog-newsletter">
+    <div class="container">
+        <div class="newsletter-inner">
+            <h3>Stay Close to the World of Fragrance</h3>
+            <p>Receive fragrance inspiration, new stories, exclusive launches, and special offers from Elvessora.</p>
+            <form action="#" method="POST" class="nl-form" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
+                <input type="email" name="email" class="nl-input" placeholder="Enter your email address" required>
+                <button type="submit" class="nl-btn">Subscribe</button>
+            </form>
+        </div>
+    </div>
+</section>
+
 {% endblock %}

@@ -1,30 +1,417 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{{ post.meta_title|default:post.title }} — {{ site_settings.brand_name }}{% endblock %}
+{% block title %}{{ post.meta_title|default:post.title }} | {{ site_settings.brand_name }}{% endblock %}
 {% block meta_description %}{{ post.meta_description|default:post.excerpt }}{% endblock %}
 
 {% block content %}
-<article class="container py-5" style="max-width:860px;">
-    <p class="text-muted small mb-2">
-        {% if post.category %}<a href="{% url 'blog:post_list' %}?category={{ post.category.slug }}">{{ post.category.name }}</a> · {% endif %}
-        {{ post.published_at|date:"M d, Y"|default:post.created_at|date:"M d, Y" }}
-    </p>
-    <h1 class="mb-3" style="font-family:var(--font-serif, Georgia, serif);">{{ post.title }}</h1>
-    {% if post.featured_image %}
-    <img src="{{ post.featured_image.url }}" alt="" class="img-fluid mb-4 rounded" style="width:100%;max-height:420px;object-fit:cover;">
-    {% endif %}
-    {% if post.excerpt %}<p class="lead">{{ post.excerpt }}</p>{% endif %}
-    <div class="blog-body" style="line-height:1.8;white-space:pre-wrap;">{{ post.content }}</div>
+<style>
+/* Base typography & variables */
+:root {
+    --blog-gold: #d4af37;
+    --blog-navy: #060814;
+    --blog-text-dark: #2a2a2a;
+    --blog-text-light: #555;
+    --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
 
-    {% if related_posts %}
-    <hr class="my-5">
-    <h3>Related</h3>
-    <ul>
-        {% for r in related_posts %}
-        <li><a href="{{ r.get_absolute_url }}">{{ r.title }}</a></li>
-        {% endfor %}
-    </ul>
+body {
+    background-color: #fdfdfd;
+}
+
+/* ARTICLE HERO */
+.article-hero {
+    padding: 6rem 0 3rem;
+    text-align: center;
+    background: #fff;
+    border-bottom: 1px solid #eaeaea;
+}
+.article-hero-inner {
+    max-width: 800px;
+    margin: 0 auto;
+}
+.breadcrumb {
+    justify-content: center;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+.breadcrumb a {
+    color: var(--blog-text-light);
+    text-decoration: none;
+    transition: var(--transition);
+}
+.breadcrumb a:hover { color: var(--blog-gold); }
+.breadcrumb-item.active { color: var(--blog-gold); }
+
+.article-category {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--blog-gold);
+    display: inline-block;
+    margin-bottom: 1.5rem;
+}
+.article-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1.15;
+    color: var(--blog-navy);
+    margin-bottom: 1.5rem;
+}
+.article-excerpt {
+    font-size: 1.25rem;
+    color: var(--blog-text-light);
+    line-height: 1.7;
+    margin-bottom: 3rem;
+    font-style: italic;
+}
+.article-meta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    font-size: 0.9rem;
+    color: #888;
+}
+.author-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.author-img {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* MAIN CONTENT */
+.article-featured-img {
+    width: 100%;
+    max-height: 70vh;
+    object-fit: cover;
+    margin-top: -3rem; /* overlap with hero slightly */
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.article-body-wrapper {
+    max-width: 760px;
+    margin: 4rem auto 6rem;
+    padding: 0 1rem;
+}
+.article-content {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: var(--blog-text-dark);
+}
+.article-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: var(--blog-navy);
+    margin: 3rem 0 1.5rem;
+}
+.article-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--blog-navy);
+    margin: 2rem 0 1rem;
+}
+.article-content p {
+    margin-bottom: 1.8rem;
+}
+.article-content img {
+    max-width: 100%;
+    height: auto;
+    margin: 2.5rem 0;
+}
+.article-content blockquote {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    color: var(--blog-gold);
+    text-align: center;
+    margin: 3rem auto;
+    padding: 0 2rem;
+    border-top: 1px solid var(--blog-gold);
+    border-bottom: 1px solid var(--blog-gold);
+    padding: 2rem 0;
+    font-style: italic;
+}
+.article-content ul, .article-content ol {
+    margin-bottom: 2rem;
+    padding-left: 1.5rem;
+}
+.article-content li {
+    margin-bottom: 0.8rem;
+}
+
+/* TAGS & SHARE */
+.article-footer {
+    border-top: 1px solid #eaeaea;
+    padding-top: 2rem;
+    margin-top: 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+.article-tags a {
+    display: inline-block;
+    padding: 6px 15px;
+    background: #f4f4f4;
+    color: var(--blog-text-light);
+    text-decoration: none;
+    font-size: 0.85rem;
+    border-radius: 20px;
+    margin-right: 8px;
+    transition: var(--transition);
+}
+.article-tags a:hover {
+    background: var(--blog-gold);
+    color: #fff;
+}
+.article-share {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.article-share a {
+    color: var(--blog-navy);
+    font-size: 1.2rem;
+    transition: color 0.3s;
+}
+.article-share a:hover { color: var(--blog-gold); }
+
+/* FAQS */
+.blog-faqs {
+    margin: 4rem 0;
+    padding: 3rem;
+    background: #f9f9f9;
+}
+.blog-faqs h3 {
+    font-family: 'Playfair Display', serif;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.faq-accordion .accordion-item {
+    border: none;
+    border-bottom: 1px solid #eaeaea;
+    background: transparent;
+}
+.faq-accordion .accordion-button {
+    background: transparent;
+    color: var(--blog-navy);
+    font-weight: 600;
+    padding: 1.5rem 0;
+    box-shadow: none !important;
+}
+.faq-accordion .accordion-button:not(.collapsed) {
+    color: var(--blog-gold);
+}
+.faq-accordion .accordion-body {
+    padding: 0 0 1.5rem 0;
+    color: var(--blog-text-light);
+    line-height: 1.7;
+}
+
+/* RELATED PRODUCTS */
+.related-products-section {
+    background: var(--blog-navy);
+    color: #fff;
+    padding: 6rem 0;
+}
+.related-products-section h2 {
+    font-family: 'Playfair Display', serif;
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 2.5rem;
+}
+
+/* RELATED ARTICLES */
+.related-articles {
+    padding: 5rem 0;
+    background: #fff;
+}
+.related-articles h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+.card-img-wrap {
+    overflow: hidden;
+    position: relative;
+    padding-top: 75%;
+    margin-bottom: 1rem;
+    background: #f4f4f4;
+}
+.card-img {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease;
+}
+.article-card:hover .card-img { transform: scale(1.05); }
+.card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--blog-navy);
+    transition: color 0.3s;
+}
+.article-card { text-decoration: none; }
+.article-card:hover .card-title { color: var(--blog-gold); }
+
+@media (max-width: 767px) {
+    .article-hero { padding: 4rem 0 2rem; }
+    .article-meta { flex-direction: column; gap: 10px; }
+    .article-featured-img { margin-top: 0; max-height: 40vh; }
+    .blog-faqs { padding: 2rem 1.5rem; }
+}
+</style>
+
+<!-- Hero -->
+<section class="article-hero">
+    <div class="container">
+        <div class="article-hero-inner">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'blog:post_list' %}">Blog</a></li>
+                    {% if post.category %}
+                        <li class="breadcrumb-item"><a href="{% url 'blog:post_list' %}?category={{ post.category.slug }}">{{ post.category.name }}</a></li>
+                    {% endif %}
+                    <li class="breadcrumb-item active" aria-current="page">Article</li>
+                </ol>
+            </nav>
+            
+            {% if post.category %}
+                <span class="article-category">{{ post.category.name }}</span>
+            {% endif %}
+            
+            <h1 class="article-title">{{ post.title }}</h1>
+            <p class="article-excerpt">{{ post.excerpt }}</p>
+            
+            <div class="article-meta">
+                {% if post.author %}
+                    <div class="author-info">
+                        {% if post.author_image %}
+                            <img src="{{ post.author_image.url }}" alt="{{ post.author.get_full_name|default:post.author.username }}" class="author-img">
+                        {% else %}
+                            <div class="author-img" style="background:#eaeaea; display:flex; align-items:center; justify-content:center; color:#999;"><i class="bi bi-person"></i></div>
+                        {% endif %}
+                        <span>{{ post.author.get_full_name|default:post.author.username }}</span>
+                    </div>
+                {% endif %}
+                <span><i class="bi bi-calendar3"></i> {{ post.published_at|date:"M d, Y" }}</span>
+                <span><i class="bi bi-clock"></i> {{ post.reading_time }} min read</span>
+                <span><i class="bi bi-eye"></i> {{ post.views }} views</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Image -->
+{% if post.featured_image %}
+    <div class="container">
+        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="article-featured-img">
+    </div>
+{% endif %}
+
+<!-- Main Content -->
+<article class="article-body-wrapper">
+    <div class="article-content">
+        {{ post.content|safe }}
+    </div>
+
+    <!-- FAQs -->
+    {% if post.faqs.all %}
+        <div class="blog-faqs">
+            <h3>Frequently Asked Questions</h3>
+            <div class="accordion faq-accordion" id="faqAccordion">
+                {% for faq in post.faqs.all %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading{{ faq.id }}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-toggle="collapse" data-bs-target="#collapse{{ faq.id }}" aria-expanded="false" aria-controls="collapse{{ faq.id }}">
+                                {{ faq.question }}
+                            </button>
+                        </h2>
+                        <div id="collapse{{ faq.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ faq.id }}" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                {{ faq.answer }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     {% endif %}
+
+    <!-- Footer Meta -->
+    <div class="article-footer">
+        {% if post.tags.all %}
+            <div class="article-tags">
+                {% for tag in post.tags.all %}
+                    <a href="{% url 'blog:post_list' %}?q={{ tag.name }}">#{{ tag.name }}</a>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <div class="article-share">
+            Share:
+            <a href="#"><i class="bi bi-facebook"></i></a>
+            <a href="#"><i class="bi bi-twitter-x"></i></a>
+            <a href="#"><i class="bi bi-pinterest"></i></a>
+        </div>
+    </div>
+    
+    <div class="text-center mt-5">
+        <a href="{% url 'blog:post_list' %}" class="btn btn-outline-dark px-4 py-2" style="border-radius:0; letter-spacing:1px; text-transform:uppercase; font-size:0.8rem;">← Back to Journal</a>
+    </div>
 </article>
+
+<!-- Related Products (Ecommerce connection) -->
+{% if post.related_products.all %}
+    <section class="related-products-section">
+        <div class="container">
+            <h2>Discover the Fragrance</h2>
+            <div class="row justify-content-center g-4">
+                {% for product in post.related_products.all %}
+                    <div class="col-6 col-md-4 col-lg-3">
+                        {% include 'includes/product_card.html' with product=product dark_mode=True %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endif %}
+
+<!-- Related Articles -->
+{% if related_posts %}
+    <section class="related-articles">
+        <div class="container">
+            <h3>More to Explore</h3>
+            <div class="row g-4 justify-content-center">
+                {% for related in related_posts %}
+                    <div class="col-md-4">
+                        <a href="{{ related.get_absolute_url }}" class="article-card">
+                            <div class="card-img-wrap">
+                                {% if related.featured_image %}
+                                    <img src="{{ related.featured_image.url }}" alt="{{ related.title }}" class="card-img">
+                                {% else %}
+                                    <img src="{% static 'images/placeholder-perfume.jpg' %}" alt="{{ related.title }}" class="card-img">
+                                {% endif %}
+                            </div>
+                            <h4 class="card-title">{{ related.title }}</h4>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endif %}
+
 {% endblock %}

@@ -5,6 +5,7 @@ from . import marketplace_feeds
 from .models import (
     Brand, Category, Collection, FragranceFamily, Occasion, Product,
     ProductVariant, ProductImage, ProductVideo, ProductImage360, GiftSet, RecentlyViewed,
+    ProductFAQ,
 )
 
 
@@ -32,6 +33,11 @@ def export_noon_feed(modeladmin, request, queryset):
 
 class ProductVariantInline(admin.TabularInline):
     model = ProductVariant
+    extra = 1
+
+
+class ProductFAQInline(admin.TabularInline):
+    model = ProductFAQ
     extra = 1
 
 
@@ -112,7 +118,7 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ['name', 'sku', 'barcode', 'description', 'short_description', 'tags']
     prepopulated_fields = {'slug': ('name',)}
     filter_horizontal = ['fragrance_families', 'occasions']
-    inlines = [ProductVariantInline, ProductImageInline, ProductVideoInline, ProductImage360Inline]
+    inlines = [ProductVariantInline, ProductImageInline, ProductVideoInline, ProductImage360Inline, ProductFAQInline]
     list_editable = ['is_active', 'is_best_seller', 'is_new_arrival']
     actions = [export_amazon_feed, export_noon_feed]
 
