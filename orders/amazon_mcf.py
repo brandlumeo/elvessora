@@ -52,6 +52,7 @@ def create_fulfillment_order(order):
             })
 
         payload = {
+            'marketplaceId': Marketplaces.AE.marketplace_id,
             'sellerFulfillmentOrderId': order.order_number,
             'displayableOrderId': order.order_number,
             'displayableOrderDate': order.created_at.isoformat(),
