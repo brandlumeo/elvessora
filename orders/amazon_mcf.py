@@ -12,12 +12,12 @@ logger = logging.getLogger(__name__)
 
 
 def is_configured():
+    # AWS IAM credentials are no longer required by SP-API (retired Oct 2023);
+    # only the LWA refresh token and app credentials are needed.
     return bool(
         settings.AMAZON_SP_API_REFRESH_TOKEN and
         settings.AMAZON_SP_API_LWA_CLIENT_ID and
-        settings.AMAZON_SP_API_LWA_CLIENT_SECRET and
-        settings.AMAZON_SP_API_AWS_ACCESS_KEY and
-        settings.AMAZON_SP_API_AWS_SECRET_KEY
+        settings.AMAZON_SP_API_LWA_CLIENT_SECRET
     )
 
 
@@ -26,9 +26,6 @@ def _get_credentials():
         'refresh_token': settings.AMAZON_SP_API_REFRESH_TOKEN,
         'lwa_app_id': settings.AMAZON_SP_API_LWA_CLIENT_ID,
         'lwa_client_secret': settings.AMAZON_SP_API_LWA_CLIENT_SECRET,
-        'aws_access_key': settings.AMAZON_SP_API_AWS_ACCESS_KEY,
-        'aws_secret_key': settings.AMAZON_SP_API_AWS_SECRET_KEY,
-        'role_arn': settings.AMAZON_SP_API_ROLE_ARN,
     }
 
 
@@ -48,30 +45,28 @@ def create_fulfillment_order(order):
         items = []
         for item in order.items.all():
             items.append({
-                'SellerSKU': item.variant.sku if item.variant else 'N/A',
-                'SellerFulfillmentOrderItemId': str(item.id),
-                'Quantity': item.quantity,
-                'DisplayableComment': 'Elvessora Perfumes Order'
+                'sellerSku': item.variant.sku if item.variant else 'N/A',
+                'sellerFulfillmentOrderItemId': str(item.id),
+                'quantity': item.quantity,
+                'displayableComment': 'Elvessora Perfumes Order'
             })
 
-        shipping_name_parts = (order.shipping_name or 'Customer').split(' ', 1)
-        
         payload = {
-            'SellerFulfillmentOrderId': order.order_number,
-            'DisplayableOrderId': order.order_number,
-            'DisplayableOrderDate': order.created_at.isoformat(),
-            'DisplayableOrderComment': 'Thank you for your order with Elvessora Perfumes',
-            'ShippingSpeedCategory': 'Standard',
-            'DestinationAddress': {
-                'Name': order.shipping_name,
-                'AddressLine1': order.shipping_address[:50],
-                'City': order.shipping_city,
-                'StateOrRegion': order.shipping_state,
-                'PostalCode': order.shipping_pincode or '00000',
-                'CountryCode': 'AE',
-                'PhoneNumber': order.shipping_phone or '0000000000'
+            'sellerFulfillmentOrderId': order.order_number,
+            'displayableOrderId': order.order_number,
+            'displayableOrderDate': order.created_at.isoformat(),
+            'displayableOrderComment': 'Thank you for your order with Elvessora Perfumes',
+            'shippingSpeedCategory': 'Standard',
+            'destinationAddress': {
+                'name': order.shipping_name,
+                'addressLine1': order.shipping_address[:50],
+                'city': order.shipping_city,
+                'stateOrRegion': order.shipping_state,
+                'postalCode': order.shipping_pincode or '00000',
+                'countryCode': 'AE',
+                'phone': order.shipping_phone or '0000000000'
             },
-            'Items': items
+            'items': items
         }
 
         response = api.create_fulfillment_order(**payload)

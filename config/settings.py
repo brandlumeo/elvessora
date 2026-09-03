@@ -197,14 +197,12 @@ TABBY_SECRET_KEY = os.environ.get('TABBY_SECRET_KEY', '')
 TABBY_MERCHANT_CODE = os.environ.get('TABBY_MERCHANT_CODE', 'AE')
 TABBY_API_BASE_URL = os.environ.get('TABBY_API_BASE_URL', 'https://api.tabby.ai')
 
-# Amazon Multi-Channel Fulfillment (SP-API)
+# Amazon Multi-Channel Fulfillment (SP-API). AWS IAM credentials and region
+# are not needed — SP-API authenticates with LWA alone, and the AE
+# marketplace's endpoint/region are hardcoded via Marketplaces.AE.
 AMAZON_SP_API_REFRESH_TOKEN = os.environ.get('AMAZON_SP_API_REFRESH_TOKEN', '')
 AMAZON_SP_API_LWA_CLIENT_ID = os.environ.get('AMAZON_SP_API_LWA_CLIENT_ID', '')
 AMAZON_SP_API_LWA_CLIENT_SECRET = os.environ.get('AMAZON_SP_API_LWA_CLIENT_SECRET', '')
-AMAZON_SP_API_AWS_ACCESS_KEY = os.environ.get('AMAZON_SP_API_AWS_ACCESS_KEY', '')
-AMAZON_SP_API_AWS_SECRET_KEY = os.environ.get('AMAZON_SP_API_AWS_SECRET_KEY', '')
-AMAZON_SP_API_ROLE_ARN = os.environ.get('AMAZON_SP_API_ROLE_ARN', '')
-AMAZON_SP_API_REGION = os.environ.get('AMAZON_SP_API_REGION', 'eu-west-1')  # Europe/UAE region
 
 WHATSAPP_NUMBER = os.environ.get('WHATSAPP_NUMBER', '919876543210')
 
