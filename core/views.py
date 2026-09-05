@@ -73,7 +73,10 @@ def contact(request):
 
 def faq(request):
     faqs = FAQ.objects.filter(is_active=True)
-    return render(request, 'core/faq.html', {'faqs': faqs})
+    products = Product.objects.filter(is_active=True, is_featured=True).prefetch_related('images')[:4]
+    if not products:
+        products = Product.objects.filter(is_active=True).prefetch_related('images')[:4]
+    return render(request, 'core/faq.html', {'faqs': faqs, 'faq_products': products})
 
 
 def legal_page(request, page_type):

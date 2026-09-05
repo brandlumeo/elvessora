@@ -3,7 +3,18 @@
 {% block title %}FAQ — {{ site_settings.brand_name }}{% endblock %}
 {% block content %}
 <div class="page-header"><div class="container"><h1>Frequently Asked Questions</h1></div></div>
-<div class="container pb-5"><div class="col-lg-8 mx-auto">
+
+{% if faq_products %}
+<div class="container pt-4">
+    <div class="row g-4 justify-content-center">
+        {% for product in faq_products %}
+        {% include 'includes/product_card.html' with product=product %}
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<div class="container py-5"><div class="col-lg-8 mx-auto">
     <div class="accordion" id="faqAccordion">
         {% for faq in faqs %}
         <div class="accordion-item">
