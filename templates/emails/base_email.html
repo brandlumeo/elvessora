@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}{{ site.brand_name|default:"Elvessora" }}{% endblock %}</title>
+</head>
+<body style="margin:0; padding:0; background-color:#F7F8FA; font-family:Arial, Helvetica, sans-serif;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F8FA; padding:32px 0;">
+<tr>
+<td align="center">
+
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px; width:100%; background-color:#ffffff; border-radius:4px; overflow:hidden;">
+
+<!-- Header -->
+<tr>
+<td style="background:linear-gradient(135deg,#061022 0%,#0A2163 45%,#163A8A 100%); background-color:#0A2163; padding:28px 24px; text-align:center;">
+<img src="{{ logo_url }}" width="180" alt="{{ site.brand_name|default:'Elvessora' }}" style="display:inline-block; max-width:180px; height:auto; border:0;">
+</td>
+</tr>
+
+<!-- Body -->
+<tr>
+<td style="padding:36px 32px;">
+{% block content %}{% endblock %}
+</td>
+</tr>
+
+<!-- Footer -->
+<tr>
+<td style="background-color:#061022; padding:26px 32px; text-align:center;">
+<p style="margin:0 0 8px; font-family:Georgia, 'Times New Roman', serif; color:#C8A96A; font-size:16px; letter-spacing:1px;">{{ site.brand_name|default:"Elvessora" }}</p>
+<p style="margin:0 0 12px; color:#E0DFE3; font-size:12px; line-height:1.7;">
+{% if site.email %}{{ site.email }}{% endif %}{% if site.email and site.phone %} &nbsp;|&nbsp; {% endif %}{% if site.phone %}{{ site.phone }}{% endif %}
+</p>
+<p style="margin:0; color:#526694; font-size:11px;">&copy; {% now "Y" %} {{ site.brand_name|default:"Elvessora" }}. All rights reserved.</p>
+</td>
+</tr>
+
+</table>
+
+</td>
+</tr>
+</table>
+</body>
+</html>

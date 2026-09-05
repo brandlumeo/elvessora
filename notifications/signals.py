@@ -25,11 +25,11 @@ ORDER_STATUS_TYPE_MAP = {
 }
 
 
-def _dispatch(user, subject, body, whatsapp_message):
+def _dispatch(user, subject, body, whatsapp_message, html_body=None):
     """Send a notification's email/WhatsApp legs per the user's saved channel preferences."""
     profile = getattr(user, 'profile', None)
     if user.email and (not profile or profile.email_notifications):
-        send_notification_email(user.email, subject, body)
+        send_notification_email(user.email, subject, body, html_body)
     if profile and profile.whatsapp_notifications and profile.phone:
         send_whatsapp_message(profile.phone, whatsapp_message)
 
@@ -38,9 +38,9 @@ def _dispatch(user, subject, body, whatsapp_message):
 def send_welcome_notification(sender, instance, created, **kwargs):
     if not created:
         return
-    title, message, subject, body = welcome_content(instance)
+    title, message, subject, body, html_body = welcome_content(instance)
     Notification.objects.create(user=instance, notification_type='welcome', title=title, message=message)
-    _dispatch(instance, subject, body, message)
+    _dispatch(instance, subject, body, message, html_body)
 
 
 @receiver(pre_save, sender=Order)
@@ -65,7 +65,7 @@ def notify_order_event(sender, instance, created, **kwargs):
         if not notification_type:
             return
 
-    title, message, subject, body = order_content(notification_type, order)
+    title, message, subject, body, html_body = order_content(notification_type, order)
 
     if order.user_id:
         link = reverse('orders:order_detail', args=[order.order_number])
@@ -77,9 +77,9 @@ def notify_order_event(sender, instance, created, **kwargs):
             link=link,
             order=order,
         )
-        _dispatch(order.user, subject, body, message)
+        _dispatch(order.user, subject, body, message, html_body)
     elif order.is_guest and order.guest_email:
-        send_notification_email(order.guest_email, subject, body)
+        send_notification_email(order.guest_email, subject, body, html_body)
 
 
 def _client_ip(request):
@@ -136,6 +136,6 @@ def alert_new_login(sender, request, user, **kwargs):
         return
 
     device = _describe_device(user_agent)
-    title, message, subject, body = login_alert_content(user, ip, device, timezone.now())
+    title, message, subject, body, html_body = login_alert_content(user, ip, device, timezone.now())
     Notification.objects.create(user=user, notification_type='login_alert', title=title, message=message)
-    _dispatch(user, subject, body, message)
+    _dispatch(user, subject, body, message, html_body)

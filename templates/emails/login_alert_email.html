@@ -1,0 +1,32 @@
+{% extends 'emails/base_email.html' %}
+{% block title %}New login to your {{ site.brand_name|default:"Elvessora" }} account{% endblock %}
+{% block content %}
+
+<p style="margin:0 0 4px; color:#C8A96A; font-size:11px; letter-spacing:2px; text-transform:uppercase; font-weight:bold;">Security Alert</p>
+<h1 style="margin:0 0 18px; color:#0B1830; font-family:Georgia, 'Times New Roman', serif; font-size:26px; font-weight:normal;">New Login Detected</h1>
+
+<p style="margin:0 0 20px; color:#526694; font-size:15px; line-height:1.6;">Hi {{ name }}, we noticed a new sign-in to your {{ site.brand_name|default:"Elvessora" }} account.</p>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F8FA; border-left:3px solid #C8A96A; margin-bottom:24px;">
+<tr><td style="padding:16px 20px;">
+    <p style="margin:0 0 6px; color:#0B1830; font-size:13px;"><strong>When:</strong> {{ when_str }}</p>
+    <p style="margin:0 0 6px; color:#0B1830; font-size:13px;"><strong>Device:</strong> {{ device }}</p>
+    <p style="margin:0; color:#0B1830; font-size:13px;"><strong>IP address:</strong> {{ where }}</p>
+</td></tr>
+</table>
+
+<p style="margin:0 0 24px; color:#526694; font-size:14px; line-height:1.6;">
+If this was you, no action is needed. If you don't recognise this activity, secure your account immediately.
+</p>
+
+<table role="presentation" cellpadding="0" cellspacing="0">
+<tr>
+<td style="border-radius:2px; background-color:#C8A96A;">
+    <a href="{{ site_url }}/accounts/password-reset/" style="display:inline-block; padding:13px 32px; color:#061022; font-size:13px; font-weight:bold; letter-spacing:1px; text-transform:uppercase; text-decoration:none;">Reset Password</a>
+</td>
+</tr>
+</table>
+
+<p style="margin:28px 0 0; color:#526694; font-size:13px; line-height:1.6;">— {{ site.brand_name|default:"Elvessora" }} Team</p>
+
+{% endblock %}

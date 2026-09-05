@@ -1,5 +1,7 @@
 """Single source of truth for notification/email copy, keyed by notification_type."""
 from django.conf import settings
+from django.template.loader import render_to_string
+from django.templatetags.static import static
 
 SITE_URL = getattr(settings, 'SITE_URL', 'https://www.elvessora.ae').rstrip('/')
 
@@ -43,8 +45,21 @@ def _display_name(user):
     return user.first_name or user.username
 
 
+def _site_context():
+    """Common template context shared by every email: brand/contact info and
+    an absolute (not relative) logo URL, since email clients have no notion
+    of 'the current site' to resolve a relative path against."""
+    from core.models import SiteSettings
+    site = SiteSettings.get()
+    return {
+        'site': site,
+        'site_url': SITE_URL,
+        'logo_url': f'{SITE_URL}{static("images/elvessora-logo-horizontal.png")}',
+    }
+
+
 def welcome_content(user):
-    """Returns (title, message, email_subject, email_body) for a new-account welcome."""
+    """Returns (title, message, email_subject, email_body, email_html) for a new-account welcome."""
     name = _display_name(user)
     title = 'Welcome to Elvessora!'
     message = (
@@ -58,11 +73,12 @@ def welcome_content(user):
         f'Start exploring our fragrances: {SITE_URL}/\n\n'
         '— Elvessora Team'
     )
-    return title, message, subject, body
+    html = render_to_string('emails/welcome_email.html', {**_site_context(), 'name': name})
+    return title, message, subject, body, html
 
 
 def login_alert_content(user, ip_address, device, when):
-    """Returns (title, message, email_subject, email_body) for a new-device/location login."""
+    """Returns (title, message, email_subject, email_body, email_html) for a new-device/location login."""
     name = _display_name(user)
     where = ip_address or 'an unknown location'
     when_str = when.strftime('%b %d, %Y at %I:%M %p UTC')
@@ -79,7 +95,11 @@ def login_alert_content(user, ip_address, device, when):
         f'reset your password immediately: {SITE_URL}/accounts/password-reset/\n\n'
         '— Elvessora Team'
     )
-    return title, message, subject, body
+    html = render_to_string('emails/login_alert_email.html', {
+        **_site_context(),
+        'name': name, 'where': where, 'device': device, 'when_str': when_str,
+    })
+    return title, message, subject, body, html
 
 
 def order_tracking_url(order):
@@ -87,7 +107,7 @@ def order_tracking_url(order):
 
 
 def order_content(notification_type, order):
-    """Returns (title, message, email_subject, email_body) for an order lifecycle event."""
+    """Returns (title, message, email_subject, email_body, email_html) for an order lifecycle event."""
     title, message_template = ORDER_EVENT_COPY[notification_type]
 
     tracking_suffix = ''
@@ -101,8 +121,16 @@ def order_content(notification_type, order):
     body = (
         f'Hi {order.shipping_name},\n\n'
         f'{message}\n\n'
-        f'Order total: AED {order.total}\n'
+        f'Order total: AED {order.total:.2f}\n'
         f'Track your order: {order_tracking_url(order)}\n\n'
         '— Elvessora Team'
     )
-    return title, message, subject, body
+    html = render_to_string('emails/order_notification.html', {
+        **_site_context(),
+        'title': title,
+        'message': message,
+        'order': order,
+        'items': order.items.all(),
+        'tracking_url': order_tracking_url(order),
+    })
+    return title, message, subject, body, html
