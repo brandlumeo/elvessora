@@ -1,7 +1,8 @@
 """Single source of truth for notification/email copy, keyed by notification_type."""
 from django.conf import settings
 from django.template.loader import render_to_string
-from django.templatetags.static import static
+
+from .emailer import LOGO_CID
 
 SITE_URL = getattr(settings, 'SITE_URL', 'https://www.elvessora.ae').rstrip('/')
 
@@ -47,14 +48,15 @@ def _display_name(user):
 
 def _site_context():
     """Common template context shared by every email: brand/contact info and
-    an absolute (not relative) logo URL, since email clients have no notion
-    of 'the current site' to resolve a relative path against."""
+    the Content-ID the logo is embedded under (see emailer.py) — inline
+    cid: references always render, unlike a remote image URL some email
+    clients' image proxies may fail to fetch."""
     from core.models import SiteSettings
     site = SiteSettings.get()
     return {
         'site': site,
         'site_url': SITE_URL,
-        'logo_url': f'{SITE_URL}{static("images/elvessora-logo-horizontal.png")}',
+        'logo_cid': LOGO_CID,
     }
 
 
