@@ -73,10 +73,17 @@ def contact(request):
 
 def faq(request):
     faqs = FAQ.objects.filter(is_active=True)
-    products = Product.objects.filter(is_active=True, is_featured=True).prefetch_related('images')[:4]
-    if not products:
-        products = Product.objects.filter(is_active=True).prefetch_related('images')[:4]
-    return render(request, 'core/faq.html', {'faqs': faqs, 'faq_products': products})
+    category_labels = dict(FAQ.CATEGORY_CHOICES)
+    categories = []
+    for key, label in FAQ.CATEGORY_CHOICES:
+        count = sum(1 for f in faqs if f.category == key)
+        if count:
+            categories.append({'key': key, 'label': label, 'count': count})
+    return render(request, 'core/faq.html', {
+        'faqs': faqs,
+        'faq_categories': categories,
+        'category_labels': category_labels,
+    })
 
 
 def legal_page(request, page_type):

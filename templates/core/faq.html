@@ -1,33 +1,388 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}FAQ — {{ site_settings.brand_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .faq-hero {
+        background: linear-gradient(135deg, var(--primary-bg) 0%, var(--primary-blue) 45%, var(--royal-blue) 100%);
+        color: #fff;
+        padding: 90px 0 70px;
+        position: relative;
+        overflow: hidden;
+    }
+    .faq-hero .container { position: relative; z-index: 1; }
+    .faq-hero-kicker {
+        color: var(--champagne-gold);
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+    .faq-hero h1 {
+        color: #fff;
+        font-size: 3rem;
+        font-weight: 600;
+        line-height: 1.15;
+        margin: 14px 0 18px;
+    }
+    .faq-hero h1 .accent { color: var(--champagne-gold); }
+    .faq-hero p.lead {
+        color: var(--silver);
+        font-size: 1.05rem;
+        max-width: 480px;
+    }
+    .faq-search {
+        max-width: 460px;
+        margin-top: 24px;
+    }
+    .faq-search .input-group {
+        border: 1px solid rgba(224, 223, 227, 0.25);
+        background: rgba(255, 255, 255, 0.06);
+    }
+    .faq-search input.form-control {
+        background: transparent;
+        border: none;
+        color: #fff;
+        padding: 14px 18px;
+    }
+    .faq-search input.form-control::placeholder { color: var(--silver); opacity: 0.7; }
+    .faq-search input.form-control:focus { box-shadow: none; background: transparent; color: #fff; }
+    .faq-search button {
+        background: var(--champagne-gold);
+        border: none;
+        color: var(--primary-bg);
+        width: 48px;
+        border-radius: 50%;
+        margin: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .faq-hero-badges {
+        display: flex;
+        gap: 28px;
+        margin-top: 34px;
+        flex-wrap: wrap;
+    }
+    .faq-hero-badges .badge-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.82rem;
+        color: var(--silver);
+    }
+    .faq-hero-badges i {
+        color: var(--champagne-gold);
+        font-size: 1.3rem;
+    }
+    .faq-hero-image {
+        text-align: center;
+        position: relative;
+    }
+    .faq-hero-image img {
+        max-height: 420px;
+        width: auto;
+        filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.45));
+    }
+    .faq-hero-tagline {
+        position: absolute;
+        top: 0;
+        right: 0;
+        text-align: right;
+        color: var(--champagne-gold);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.72rem;
+        line-height: 1.8;
+    }
+
+    .faq-body { background: var(--light); padding: 80px 0; }
+    .faq-body .section-title h2 { color: var(--royal-blue-dark); }
+
+    .faq-sidebar {
+        background: #fff;
+        border: 1px solid var(--silver-light);
+    }
+    .faq-category {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--silver-light);
+        cursor: pointer;
+        color: var(--text);
+        text-decoration: none;
+        font-size: 0.92rem;
+        transition: background 0.2s, color 0.2s;
+    }
+    .faq-category:last-of-type { border-bottom: none; }
+    .faq-category i { color: var(--royal-blue); margin-right: 10px; }
+    .faq-category .count { color: var(--text-muted); font-size: 0.85rem; }
+    .faq-category:hover { background: var(--royal-blue-pale); color: var(--royal-blue-dark); }
+    .faq-category.active {
+        background: var(--primary-bg);
+        color: #fff;
+    }
+    .faq-category.active i,
+    .faq-category.active .count { color: var(--champagne-gold); }
+
+    .faq-contact-card {
+        background: var(--royal-blue-pale);
+        padding: 24px 20px;
+        text-align: left;
+    }
+    .faq-contact-card p.kicker {
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        font-size: 0.7rem;
+        color: var(--royal-blue);
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+    .faq-contact-card p.desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px; }
+
+    .faq-questions .accordion-item {
+        border: 1px solid var(--silver-light);
+        margin-bottom: 12px;
+    }
+    .faq-questions .accordion-button {
+        font-weight: 600;
+        color: var(--royal-blue-dark);
+    }
+    .faq-questions .accordion-button:not(.collapsed) {
+        background: var(--royal-blue-pale);
+        color: var(--royal-blue-dark);
+        box-shadow: none;
+    }
+    .faq-questions .accordion-button::after { filter: none; }
+
+    .faq-cta {
+        background: linear-gradient(135deg, var(--primary-bg) 0%, var(--primary-blue) 100%);
+        color: #fff;
+        padding: 70px 0;
+    }
+    .faq-cta-image { position: relative; }
+    .faq-cta-image img {
+        max-height: 320px;
+        width: auto;
+        filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.5));
+    }
+    .faq-cta-kicker {
+        color: var(--champagne-gold);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.72rem;
+    }
+    .faq-cta h2 { color: #fff; font-size: 2.2rem; }
+    .faq-cta p { color: var(--silver); }
+    .faq-contact-method {
+        border: 1px solid rgba(200, 169, 106, 0.4);
+        padding: 16px 18px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #fff;
+        text-decoration: none;
+        transition: background 0.2s;
+        height: 100%;
+    }
+    .faq-contact-method:hover { background: rgba(200, 169, 106, 0.12); color: #fff; }
+    .faq-contact-method i { color: var(--champagne-gold); font-size: 1.4rem; }
+    .faq-contact-method .label { font-size: 0.9rem; font-weight: 600; display: block; }
+    .faq-contact-method .value { font-size: 0.78rem; color: var(--silver); display: block; }
+
+    @media (max-width: 991px) {
+        .faq-hero-tagline { display: none; }
+        .faq-hero { text-align: center; }
+        .faq-hero-badges { justify-content: center; }
+        .faq-hero p.lead, .faq-search { margin-left: auto; margin-right: auto; }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="page-header"><div class="container"><h1>Frequently Asked Questions</h1></div></div>
 
-{% if faq_products %}
-<div class="container pt-4">
-    <div class="row g-4 justify-content-center">
-        {% for product in faq_products %}
-        {% include 'includes/product_card.html' with product=product %}
-        {% endfor %}
+<section class="faq-hero">
+    <div class="faq-hero-tagline d-none d-lg-block" style="position:absolute; top:90px; right:60px;">
+        More than a<br>fragrance,<br>a feeling
     </div>
-</div>
-{% endif %}
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <p class="faq-hero-kicker">Have Questions?</p>
+                <h1>We're Here to <span class="accent">Help</span></h1>
+                <p class="lead">Find quick answers to common questions about our perfumes, orders, shipping and more.</p>
 
-<div class="container py-5"><div class="col-lg-8 mx-auto">
-    <div class="accordion" id="faqAccordion">
-        {% for faq in faqs %}
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ faq.id }}">{{ faq.question }}</button>
-            </h2>
-            <div id="faq{{ faq.id }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" data-bs-parent="#faqAccordion">
-                <div class="accordion-body">{{ faq.answer|linebreaks }}</div>
+                <form class="faq-search" id="faqSearchForm">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="faqSearchInput" placeholder="Search your question...">
+                        <button type="submit"><i class="bi bi-arrow-right"></i></button>
+                    </div>
+                </form>
+
+                <div class="faq-hero-badges">
+                    <div class="badge-item"><i class="bi bi-truck"></i> Fast &amp; Secure Delivery</div>
+                    <div class="badge-item"><i class="bi bi-patch-check"></i> 100% Authentic Fragrances</div>
+                    <div class="badge-item"><i class="bi bi-headset"></i> Dedicated Support</div>
+                </div>
+            </div>
+            <div class="col-lg-6 faq-hero-image">
+                <img src="{% static 'images/hero/elvessora-divine-aura-hero.png' %}" alt="Elvessora perfume bottle">
             </div>
         </div>
-        {% empty %}
-        <p class="text-muted text-center">No FAQs available yet.</p>
-        {% endfor %}
     </div>
-</div></div>
+</section>
+
+<section class="faq-body">
+    <div class="container">
+        <div class="section-title">
+            <p class="faq-hero-kicker" style="color: var(--champagne-gold);">Frequently Asked Questions</p>
+            <h2>Everything You Need to Know</h2>
+            <p>Quick answers to help you with your shopping experience.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-3">
+                <div class="faq-sidebar mb-4">
+                    <a href="#" class="faq-category active" data-filter="all">
+                        <span><i class="bi bi-grid"></i> All Questions</span>
+                        <span class="count">{{ faqs|length }}</span>
+                    </a>
+                    {% for cat in faq_categories %}
+                    <a href="#" class="faq-category" data-filter="{{ cat.key }}">
+                        <span>{{ cat.label }}</span>
+                        <span class="count">{{ cat.count }}</span>
+                    </a>
+                    {% endfor %}
+                </div>
+                <div class="faq-contact-card">
+                    <p class="kicker">Still have a question?</p>
+                    <p class="desc">Our team is always ready to help you.</p>
+                    <a href="{% url 'core:contact' %}" class="btn btn-gold btn-sm">Contact Us <i class="bi bi-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="accordion faq-questions" id="faqAccordion">
+                    {% for faq in faqs %}
+                    <div class="accordion-item" data-category="{{ faq.category }}">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ faq.id }}">{{ faq.question }}</button>
+                        </h2>
+                        <div id="faq{{ faq.id }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">{{ faq.answer|linebreaks }}</div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted text-center">No FAQs available yet.</p>
+                    {% endfor %}
+                </div>
+                <p class="text-muted text-center mt-3 d-none" id="faqNoResults">No questions match your search.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="faq-cta">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-4 faq-cta-image text-center">
+                <img src="{% static 'images/hero/elvessora-collection-hero-bottle.png' %}" alt="Elvessora perfume bottle">
+            </div>
+            <div class="col-lg-8">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-5">
+                        <h2>Still Need Help?</h2>
+                        <p>Can't find what you're looking for? Our support team is ready to assist you.</p>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="row g-3">
+                            {% if site_settings.whatsapp_chat_url %}
+                            <div class="col-12">
+                                <a href="{{ site_settings.whatsapp_chat_url }}" class="faq-contact-method" target="_blank" rel="noopener noreferrer">
+                                    <i class="bi bi-chat-dots"></i>
+                                    <span>
+                                        <span class="label">Live Chat</span>
+                                        <span class="value">Chat with our team</span>
+                                    </span>
+                                </a>
+                            </div>
+                            {% endif %}
+                            {% if site_settings.email %}
+                            <div class="col-12">
+                                <a href="mailto:{{ site_settings.email }}" class="faq-contact-method">
+                                    <i class="bi bi-envelope"></i>
+                                    <span>
+                                        <span class="label">Email Us</span>
+                                        <span class="value">{{ site_settings.email }}</span>
+                                    </span>
+                                </a>
+                            </div>
+                            {% endif %}
+                            {% if site_settings.phone %}
+                            <div class="col-12">
+                                <a href="tel:{{ site_settings.phone }}" class="faq-contact-method">
+                                    <i class="bi bi-telephone"></i>
+                                    <span>
+                                        <span class="label">Call Us</span>
+                                        <span class="value">{{ site_settings.phone }}</span>
+                                    </span>
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var categoryLinks = document.querySelectorAll('.faq-category');
+    var items = document.querySelectorAll('.faq-questions .accordion-item');
+    var searchInput = document.getElementById('faqSearchInput');
+    var searchForm = document.getElementById('faqSearchForm');
+    var noResults = document.getElementById('faqNoResults');
+
+    function applyFilters() {
+        var activeCategory = document.querySelector('.faq-category.active').dataset.filter;
+        var query = (searchInput.value || '').trim().toLowerCase();
+        var visibleCount = 0;
+
+        items.forEach(function (item) {
+            var matchesCategory = activeCategory === 'all' || item.dataset.category === activeCategory;
+            var questionText = item.querySelector('.accordion-button').textContent.toLowerCase();
+            var matchesSearch = !query || questionText.indexOf(query) !== -1;
+            var visible = matchesCategory && matchesSearch;
+            item.style.display = visible ? '' : 'none';
+            if (visible) visibleCount++;
+        });
+
+        noResults.classList.toggle('d-none', visibleCount !== 0);
+    }
+
+    categoryLinks.forEach(function (link) {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            categoryLinks.forEach(function (l) { l.classList.remove('active'); });
+            link.classList.add('active');
+            applyFilters();
+        });
+    });
+
+    searchInput.addEventListener('input', applyFilters);
+    searchForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        document.getElementById('faqAccordion').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+});
+</script>
 {% endblock %}

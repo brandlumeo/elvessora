@@ -156,8 +156,20 @@ class HomePageHighlight(models.Model):
 
 
 class FAQ(models.Model):
+    CATEGORY_CHOICES = [
+        ('orders_shipping', 'Orders & Shipping'),
+        ('products_ingredients', 'Products & Ingredients'),
+        ('payments_offers', 'Payments & Offers'),
+        ('returns_refunds', 'Returns & Refunds'),
+        ('fragrance_guide', 'Fragrance Guide'),
+        ('account_support', 'Account & Support'),
+    ]
+
     question = models.CharField(max_length=500)
     answer = models.TextField()
+    category = models.CharField(
+        max_length=30, choices=CATEGORY_CHOICES, default='account_support'
+    )
     order = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)
 
