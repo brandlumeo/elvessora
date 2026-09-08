@@ -6,10 +6,13 @@
 {% block content %}
 <!-- CSS specific for blog list -->
 <style>
-/* Blog variables — dark-theme aligned */
+/* Blog variables — use the site's real brand tokens (style.css :root),
+   not the previous ad-hoc gold/navy that didn't quite match the rest of
+   the site, plus --blog-navy was referenced here but never defined,
+   silently breaking the hero's background entirely. */
 :root {
-    --blog-gold: #d4af37;
-    --blog-gold-dark: #b8962c;
+    --blog-gold: var(--champagne-gold);
+    --blog-gold-dark: #b89458;
     --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
@@ -18,7 +21,7 @@
 /* HERO SECTION */
 .blog-hero {
     padding: 100px 0 80px;
-    background: linear-gradient(180deg, var(--blog-navy) 0%, #101426 100%);
+    background: linear-gradient(135deg, var(--primary-bg) 0%, var(--primary-blue) 45%, var(--royal-blue) 100%);
     color: #fff;
     text-align: center;
     position: relative;
@@ -26,9 +29,9 @@
 }
 .blog-hero::before {
     content: '';
-    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-    background: url('{% static "images/hero-perfume-bg.jpg" %}') center/cover no-repeat;
-    opacity: 0.15;
+    position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c0c0c0' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.5;
     z-index: 0;
 }
 .blog-hero-content {
@@ -48,7 +51,7 @@
     display: inline-block;
 }
 .blog-hero h1 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: clamp(3rem, 6vw, 4.5rem);
     font-weight: 400;
     letter-spacing: 2px;
@@ -178,7 +181,7 @@
     margin-bottom: 1rem;
 }
 .featured-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: clamp(2rem, 4vw, 3rem);
     line-height: 1.2;
     margin-bottom: 1.5rem;
@@ -232,7 +235,7 @@
 }
 .article-card:hover .card-img { transform: scale(1.05); }
 .card-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 1.4rem;
     line-height: 1.3;
     color: #fff;
@@ -261,7 +264,7 @@
     margin: 0 auto;
 }
 .blog-newsletter h3 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 2.2rem;
     margin-bottom: 1rem;
 }
@@ -356,7 +359,7 @@
                         {% if featured_post.featured_image %}
                             <img src="{{ featured_post.featured_image.url }}" alt="{{ featured_post.title }}" class="featured-img">
                         {% else %}
-                            <img src="{% static 'images/placeholder-perfume.jpg' %}" alt="{{ featured_post.title }}" class="featured-img">
+                            <img src="{% static 'images/hero/elvessora-divine-aura-hero.png' %}" alt="{{ featured_post.title }}" class="featured-img">
                         {% endif %}
                     </a>
                 </div>
@@ -396,7 +399,7 @@
                         {% if post.featured_image %}
                             <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="card-img" loading="lazy">
                         {% else %}
-                            <img src="{% static 'images/placeholder-perfume.jpg' %}" alt="{{ post.title }}" class="card-img" loading="lazy">
+                            <img src="{% static 'images/hero/elvessora-divine-aura-hero.png' %}" alt="{{ post.title }}" class="card-img" loading="lazy">
                         {% endif %}
                     </div>
                     {% if post.category %}

@@ -8,8 +8,8 @@
 <style>
 /* Base typography & variables */
 :root {
-    --blog-gold: #d4af37;
-    --blog-navy: #060814;
+    --blog-gold: var(--champagne-gold);
+    --blog-navy: var(--primary-bg);
     --blog-text-dark: #2a2a2a;
     --blog-text-light: #555;
     --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -55,7 +55,7 @@ body {
     margin-bottom: 1.5rem;
 }
 .article-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: clamp(2.5rem, 5vw, 4rem);
     line-height: 1.15;
     color: var(--blog-navy);
@@ -107,13 +107,13 @@ body {
     color: var(--blog-text-dark);
 }
 .article-content h2 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 2.2rem;
     color: var(--blog-navy);
     margin: 3rem 0 1.5rem;
 }
 .article-content h3 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 1.6rem;
     color: var(--blog-navy);
     margin: 2rem 0 1rem;
@@ -127,7 +127,7 @@ body {
     margin: 2.5rem 0;
 }
 .article-content blockquote {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 1.6rem;
     line-height: 1.5;
     color: var(--blog-gold);
@@ -196,7 +196,7 @@ body {
     background: #f9f9f9;
 }
 .blog-faqs h3 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cormorant Garamond', serif;
     text-align: center;
     margin-bottom: 2rem;
 }
@@ -228,7 +228,7 @@ body {
     padding: 6rem 0;
 }
 .related-products-section h2 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cormorant Garamond', serif;
     text-align: center;
     margin-bottom: 3rem;
     font-size: 2.5rem;
@@ -240,7 +240,7 @@ body {
     background: #fff;
 }
 .related-articles h3 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 2.2rem;
     text-align: center;
     margin-bottom: 3rem;
@@ -257,7 +257,7 @@ body {
 }
 .article-card:hover .card-img { transform: scale(1.05); }
 .card-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 1.2rem;
     color: var(--blog-navy);
     transition: color 0.3s;
@@ -402,7 +402,7 @@ body {
                                 {% if related.featured_image %}
                                     <img src="{{ related.featured_image.url }}" alt="{{ related.title }}" class="card-img">
                                 {% else %}
-                                    <img src="{% static 'images/placeholder-perfume.jpg' %}" alt="{{ related.title }}" class="card-img">
+                                    <img src="{% static 'images/hero/elvessora-divine-aura-hero.png' %}" alt="{{ related.title }}" class="card-img">
                                 {% endif %}
                             </div>
                             <h4 class="card-title">{{ related.title }}</h4>
