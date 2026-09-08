@@ -470,6 +470,19 @@ h1, h2, h3, h4, h5, h6, .brand-logo {
 
 .footer-links a:hover { color: #fff; }
 
+/* Bootstrap's .text-muted is !important-styled for light backgrounds (a dark
+   gray) — on the footer's dark navy background it was nearly invisible.
+   Higher specificity here wins over Bootstrap's !important regardless of
+   stylesheet order. */
+.site-footer .text-muted {
+    color: var(--silver) !important;
+}
+
+.site-footer .form-control::placeholder {
+    color: var(--highlight-blue);
+    opacity: 1;
+}
+
 .social-links a {
     color: var(--silver);
     font-size: 1.3rem;
