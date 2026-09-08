@@ -174,6 +174,13 @@ class Command(BaseCommand):
         products = list(Product.objects.all()[:3])
 
         for data in articles_data:
+            # SEO fields derived from the article's own real content/category/
+            # tags rather than hand-written per article — meta_title is
+            # auto-filled from the title by BlogPost.save() if left blank.
+            meta_description = data['excerpt'][:160]
+            keyword_parts = [data['category']] + data.get('tags', []) + ['Elvessora', 'perfume', 'fragrance']
+            meta_keywords = ', '.join(dict.fromkeys(keyword_parts))  # de-duped, order preserved
+
             post, created = BlogPost.objects.get_or_create(
                 title=data['title'],
                 defaults={
@@ -182,6 +189,8 @@ class Command(BaseCommand):
                     'excerpt': data['excerpt'],
                     'content': data['content'],
                     'featured_image': data['featured_image'],
+                    'meta_description': meta_description,
+                    'meta_keywords': meta_keywords,
                     'is_published': True,
                     'is_featured': data['is_featured'],
                     'reading_time': data['reading_time'],
@@ -194,6 +203,8 @@ class Command(BaseCommand):
                 post.excerpt = data['excerpt']
                 post.content = data['content']
                 post.featured_image = data['featured_image']
+                post.meta_description = meta_description
+                post.meta_keywords = meta_keywords
                 post.is_published = True
                 post.is_featured = data['is_featured']
                 post.reading_time = data['reading_time']
@@ -203,7 +214,7 @@ class Command(BaseCommand):
             for tag_name in data.get('tags', []):
                 tag, _ = BlogTag.objects.get_or_create(name=tag_name)
                 post.tags.add(tag)
-                
+
             # Assign products
             if products:
                 post.related_products.set(products)

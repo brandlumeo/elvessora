@@ -3,6 +3,7 @@
 
 {% block title %}{{ post.meta_title|default:post.title }} | {{ site_settings.brand_name }}{% endblock %}
 {% block meta_description %}{{ post.meta_description|default:post.excerpt }}{% endblock %}
+{% block meta_keywords %}{% if post.meta_keywords %}<meta name="keywords" content="{{ post.meta_keywords }}">{% endif %}{% endblock %}
 
 {% block content %}
 <style>
@@ -19,31 +20,48 @@ body {
     background-color: #fdfdfd;
 }
 
-/* ARTICLE HERO */
+/* ARTICLE HERO — full-width image banner with a dark gradient overlay,
+   matching the brand treatment used on the FAQ and blog-list pages,
+   instead of the old plain white text block + separate image below it. */
 .article-hero {
-    padding: 6rem 0 3rem;
-    text-align: center;
-    background: #fff;
-    border-bottom: 1px solid #eaeaea;
+    position: relative;
+    min-height: 56vh;
+    display: flex;
+    align-items: flex-end;
+    color: #fff;
+    background-color: var(--blog-navy);
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+.article-hero::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(0deg, rgba(6,16,34,0.92) 0%, rgba(6,16,34,0.55) 45%, rgba(6,16,34,0.25) 100%);
 }
 .article-hero-inner {
     max-width: 800px;
     margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    padding: 4rem 1rem 3rem;
 }
 .breadcrumb {
     justify-content: center;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     letter-spacing: 1px;
     text-transform: uppercase;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 .breadcrumb a {
-    color: var(--blog-text-light);
+    color: rgba(255,255,255,0.65);
     text-decoration: none;
     transition: var(--transition);
 }
 .breadcrumb a:hover { color: var(--blog-gold); }
 .breadcrumb-item.active { color: var(--blog-gold); }
+.breadcrumb-item + .breadcrumb-item::before { color: rgba(255,255,255,0.4); }
 
 .article-category {
     font-size: 0.85rem;
@@ -58,12 +76,12 @@ body {
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(2.5rem, 5vw, 4rem);
     line-height: 1.15;
-    color: var(--blog-navy);
+    color: #fff;
     margin-bottom: 1.5rem;
 }
 .article-excerpt {
     font-size: 1.25rem;
-    color: var(--blog-text-light);
+    color: rgba(255,255,255,0.8);
     line-height: 1.7;
     margin-bottom: 3rem;
     font-style: italic;
@@ -74,7 +92,7 @@ body {
     align-items: center;
     gap: 2rem;
     font-size: 0.9rem;
-    color: #888;
+    color: rgba(255,255,255,0.75);
 }
 .author-info {
     display: flex;
@@ -85,15 +103,6 @@ body {
     width: 40px; height: 40px;
     border-radius: 50%;
     object-fit: cover;
-}
-
-/* MAIN CONTENT */
-.article-featured-img {
-    width: 100%;
-    max-height: 70vh;
-    object-fit: cover;
-    margin-top: -3rem; /* overlap with hero slightly */
-    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
 }
 
 .article-body-wrapper {
@@ -274,7 +283,7 @@ body {
 </style>
 
 <!-- Hero -->
-<section class="article-hero">
+<section class="article-hero" style="background-image: url('{% if post.featured_image %}{{ post.featured_image.url }}{% else %}{% static 'images/hero/elvessora-divine-aura-hero.png' %}{% endif %}');">
     <div class="container">
         <div class="article-hero-inner">
             <nav aria-label="breadcrumb">
@@ -313,13 +322,6 @@ body {
         </div>
     </div>
 </section>
-
-<!-- Featured Image -->
-{% if post.featured_image %}
-    <div class="container">
-        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="article-featured-img">
-    </div>
-{% endif %}
 
 <!-- Main Content -->
 <article class="article-body-wrapper">

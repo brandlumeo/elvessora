@@ -57,6 +57,7 @@ class BlogPost(models.Model):
     views = models.PositiveIntegerField(default=0)
     meta_title = models.CharField(max_length=70, blank=True)
     meta_description = models.CharField(max_length=160, blank=True)
+    meta_keywords = models.CharField(max_length=250, blank=True, help_text='Comma-separated keywords')
     og_image = models.ImageField(upload_to='blog/og/', blank=True, null=True)
     
     # Status
