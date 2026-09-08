@@ -290,7 +290,11 @@
     <div class="container">
         <div class="row align-items-center g-5">
             <div class="col-lg-4 faq-cta-image text-center">
+                {% if cta_product.primary_image %}
+                <img src="{{ cta_product.primary_image.image.url }}" alt="{{ cta_product.name }}">
+                {% else %}
                 <img src="{% static 'images/hero/elvessora-collection-hero-bottle.png' %}" alt="Elvessora perfume bottle">
+                {% endif %}
             </div>
             <div class="col-lg-8">
                 <div class="row align-items-center g-4">

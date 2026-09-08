@@ -79,10 +79,16 @@ def faq(request):
         count = sum(1 for f in faqs if f.category == key)
         if count:
             categories.append({'key': key, 'label': label, 'count': count})
+
+    cta_product = Product.objects.filter(is_active=True, name__icontains='Amber Petals').first()
+    if not cta_product:
+        cta_product = Product.objects.filter(is_active=True).exclude(sku='ELV-DIVINE-005').first()
+
     return render(request, 'core/faq.html', {
         'faqs': faqs,
         'faq_categories': categories,
         'category_labels': category_labels,
+        'cta_product': cta_product,
     })
 
 
