@@ -44,6 +44,7 @@ class Command(BaseCommand):
             {
                 'title': "The Art of Choosing Your Signature Scent",
                 'category': 'Perfume Guides',
+                'featured_image': 'products/ChatGPT_Image_Aug_4_2026_06_56_44_PM.png',
                 'excerpt': "Discover how fragrance notes, personality, and occasion come together to help you find a scent that feels uniquely yours.",
                 'content': """<p>Finding a signature scent is a deeply personal journey. Your fragrance is an invisible accessory that introduces you before you speak and lingers after you leave.</p>
                 <h2>1. Understand the Fragrance Families</h2>
@@ -62,6 +63,7 @@ class Command(BaseCommand):
             {
                 'title': "How to Make Your Perfume Last All Day",
                 'category': 'Perfume Tips',
+                'featured_image': 'products/ChatGPT_Image_Aug_4_2026_06_57_01_PM_jo1zGVj.png',
                 'excerpt': "Discover simple techniques to improve fragrance longevity and make your signature scent stay with you throughout the day.",
                 'content': """<p>We all want our favorite fragrance to last from morning until night. Here are the expert secrets to ensuring maximum longevity.</p>
                 <h3>Moisturize First</h3>
@@ -77,6 +79,7 @@ class Command(BaseCommand):
             {
                 'title': "Understanding Top, Middle & Base Notes",
                 'category': 'Fragrance Notes',
+                'featured_image': 'products/ChatGPT_Image_Aug_4_2026_06_56_56_PM.png',
                 'excerpt': "A guide to the olfactory pyramid and how perfumes evolve on your skin over time.",
                 'content': """<p>A fine fragrance tells a story in three parts. Understanding this structure will change how you experience perfume.</p>
                 <h2>The Top Notes</h2>
@@ -94,6 +97,7 @@ class Command(BaseCommand):
             {
                 'title': "Oud, Amber & Musk: The Essence of Arabian Fragrance",
                 'category': 'Fragrance Notes',
+                'featured_image': 'products/ChatGPT_Image_Aug_4_2026_06_56_56_PM.png',
                 'excerpt': "Explore the rich, captivating ingredients that have defined Middle Eastern perfumery for centuries.",
                 'content': """<p>Middle Eastern perfumery is renowned for its depth, intensity, and opulent ingredients. The "holy trinity" of this olfactory world consists of Oud, Amber, and Musk.</p>
                 <h3>The Liquid Gold: Oud</h3>
@@ -107,6 +111,7 @@ class Command(BaseCommand):
             {
                 'title': "How to Store Your Perfume the Right Way",
                 'category': 'Perfume Care',
+                'featured_image': 'products/ChatGPT_Image_Aug_4_2026_06_57_01_PM.png',
                 'excerpt': "Protect your investment. Learn the biggest mistakes people make when storing fine fragrances.",
                 'content': """<p>Perfume is delicate. Exposure to the wrong elements can break down the oils and completely alter the scent.</p>
                 <ul>
@@ -123,6 +128,7 @@ class Command(BaseCommand):
             {
                 'title': "The Perfect Fragrance for Every Occasion",
                 'category': 'Lifestyle',
+                'featured_image': 'products/ChatGPT_Image_Aug_4_2026_06_56_44_PM.png',
                 'excerpt': "From boardrooms to date nights, learn how to select the right scent profile for the moment.",
                 'content': """<p>Just as you wouldn't wear a tuxedo to the beach, certain fragrances are better suited for specific settings.</p>
                 <h2>Office & Professional</h2>
@@ -138,6 +144,7 @@ class Command(BaseCommand):
             {
                 'title': "How to Apply Perfume for Maximum Longevity",
                 'category': 'Perfume Tips',
+                'featured_image': 'products/ChatGPT_Image_Aug_4_2026_06_57_01_PM_jo1zGVj.png',
                 'excerpt': "Stop rubbing your wrists together. Learn the proper ritual for applying luxury fragrances.",
                 'content': """<p>Application is an art. Many of us have been taught incorrectly.</p>
                 <blockquote>"Never rub your wrists together after spraying."</blockquote>
@@ -151,6 +158,7 @@ class Command(BaseCommand):
             {
                 'title': "The Story Behind Elvessora Divine Aura",
                 'category': 'Elvessora Stories',
+                'featured_image': 'products/ChatGPT_Image_Aug_4_2026_06_57_06_PM.png',
                 'excerpt': "Take a behind-the-scenes look at the inspiration and craftsmanship that went into creating our signature scent.",
                 'content': """<p>Creating Divine Aura was a journey that took our master perfumers over two years to perfect.</p>
                 <p>The vision was to capture the golden hour in the desert—that brief, magical moment when the harsh sun softens, and the sand glows with an inner warmth.</p>
@@ -173,17 +181,19 @@ class Command(BaseCommand):
                     'author': user,
                     'excerpt': data['excerpt'],
                     'content': data['content'],
+                    'featured_image': data['featured_image'],
                     'is_published': True,
                     'is_featured': data['is_featured'],
                     'reading_time': data['reading_time'],
                     'published_at': timezone.now(),
                 }
             )
-            
+
             if not created:
                 post.category = categories[data['category']]
                 post.excerpt = data['excerpt']
                 post.content = data['content']
+                post.featured_image = data['featured_image']
                 post.is_published = True
                 post.is_featured = data['is_featured']
                 post.reading_time = data['reading_time']
