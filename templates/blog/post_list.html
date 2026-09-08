@@ -4,26 +4,11 @@
 {% block title %}The Art of Fragrance - Blog | {{ site_settings.brand_name }}{% endblock %}
 
 {% block content %}
-<!-- CSS specific for blog list -->
 <style>
-/* Blog variables — use the site's real brand tokens (style.css :root),
-   not the previous ad-hoc gold/navy that didn't quite match the rest of
-   the site, plus --blog-navy was referenced here but never defined,
-   silently breaking the hero's background entirely. */
-:root {
-    --blog-gold: var(--champagne-gold);
-    --blog-gold-dark: #b89458;
-    --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-/* no body override — inherit global dark theme */
-
-/* HERO SECTION */
 .blog-hero {
-    padding: 100px 0 80px;
+    padding: 90px 0 70px;
     background: linear-gradient(135deg, var(--primary-bg) 0%, var(--primary-blue) 45%, var(--royal-blue) 100%);
     color: #fff;
-    text-align: center;
     position: relative;
     overflow: hidden;
 }
@@ -32,434 +17,282 @@
     position: absolute; top: 0; right: 0; bottom: 0; left: 0;
     background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c0c0c0' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     opacity: 0.5;
-    z-index: 0;
 }
-.blog-hero-content {
-    position: relative;
-    z-index: 1;
-    max-width: 800px;
-    margin: 0 auto;
-    animation: fadeUp 1s ease-out forwards;
+.blog-hero .container { position: relative; z-index: 1; }
+.blog-hero-tagline {
+    position: absolute; top: 90px; right: 60px; text-align: right;
+    color: var(--champagne-gold); text-transform: uppercase; letter-spacing: 2px;
+    font-size: 0.72rem; line-height: 1.8;
 }
 .blog-eyebrow {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    color: var(--blog-gold);
-    margin-bottom: 1.5rem;
-    display: inline-block;
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--champagne-gold); margin-bottom: 14px; display: block;
 }
 .blog-hero h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3rem, 6vw, 4.5rem);
-    font-weight: 400;
-    letter-spacing: 2px;
-    margin-bottom: 1.5rem;
+    font-family: 'Cormorant Garamond', serif; font-size: clamp(2.4rem, 4.5vw, 3.5rem);
+    font-weight: 600; line-height: 1.15; color: #fff; margin-bottom: 18px;
 }
-.blog-hero p {
-    font-size: 1.1rem;
-    color: rgba(255,255,255,0.7);
-    line-height: 1.8;
-    margin-bottom: 2.5rem;
+.blog-hero p { font-size: 1.05rem; color: var(--silver); max-width: 480px; margin-bottom: 0; }
+.blog-hero-image img {
+    max-height: 380px; width: auto; filter: drop-shadow(0 30px 40px rgba(0,0,0,0.45));
 }
 
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+/* CATEGORY PILLS + SEARCH */
+.blog-filter-bar {
+    background: var(--light); border-bottom: 1px solid var(--silver-light);
+    padding: 22px 0; position: sticky; top: 0; z-index: 100;
 }
-
-.blog-nav-wrapper {
-    background: transparent;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    position: sticky;
-    top: 0;
-    z-index: 100;
+.blog-pills { display: flex; gap: 10px; flex-wrap: wrap; overflow-x: auto; }
+.blog-pill {
+    display: inline-block; padding: 9px 20px; border-radius: 30px;
+    border: 1px solid var(--silver); color: var(--text); text-decoration: none;
+    font-size: 0.85rem; white-space: nowrap; transition: all 0.2s;
 }
-.blog-categories {
-    display: flex;
-    overflow-x: auto;
-    white-space: nowrap;
-    padding: 1rem 0;
-    gap: 2rem;
-    scrollbar-width: none; /* Firefox */
-}
-.blog-categories::-webkit-scrollbar {
-    display: none; /* Safari/Chrome */
-}
-.blog-category-link {
-    color: rgba(255,255,255,0.5);
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    text-decoration: none;
-    transition: var(--transition);
-    position: relative;
-}
-.blog-category-link:hover {
-    color: rgba(255,255,255,0.9);
-}
-.blog-category-link.active {
-    color: var(--blog-gold);
-}
-.blog-category-link.active::after {
-    content: '';
-    position: absolute;
-    bottom: -1.2rem;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: var(--blog-gold);
-}
-
-/* SEARCH */
-.blog-search-container {
-    max-width: 600px;
-    margin: 3rem auto;
-}
-.blog-search-form {
-    position: relative;
-}
+.blog-pill:hover { border-color: var(--champagne-gold); color: var(--royal-blue-dark); }
+.blog-pill.active { background: var(--primary-bg); border-color: var(--primary-bg); color: #fff; }
 .blog-search-input {
-    width: 100%;
-    padding: 1rem 1.5rem 1rem 3rem;
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 30px;
-    background: rgba(255,255,255,0.05);
-    color: #fff;
-    font-size: 1rem;
-    transition: var(--transition);
+    border: 1px solid var(--silver); border-radius: 30px; padding: 9px 20px;
+    font-size: 0.85rem; min-width: 220px;
 }
-.blog-search-input::placeholder { color: rgba(255,255,255,0.35); }
-.blog-search-input:focus {
-    outline: none;
-    border-color: var(--blog-gold);
-    background: rgba(255,255,255,0.08);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-}
-.blog-search-icon {
-    position: absolute;
-    left: 1.2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: rgba(255,255,255,0.4);
-}
+.blog-search-input:focus { outline: none; border-color: var(--champagne-gold); }
 
-/* FEATURED ARTICLE */
-.featured-article {
-    margin: 4rem 0;
-}
+.blog-body { background: var(--light); padding: 60px 0 20px; }
+
+/* FEATURED */
+.featured-article { margin-bottom: 70px; }
 .featured-img-wrap {
-    overflow: hidden;
-    position: relative;
-    padding-top: 60%;
-    background: rgba(255,255,255,0.05);
+    position: relative; overflow: hidden; border-radius: 4px;
+    aspect-ratio: 4/3; background: var(--silver-light);
 }
-.featured-img {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    object-fit: cover;
-    transition: transform 1.2s ease;
+.featured-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+.featured-article:hover .featured-img { transform: scale(1.04); }
+.featured-badge {
+    position: absolute; top: 16px; left: 16px; background: #fff; color: var(--royal-blue-dark);
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 20px;
 }
-.featured-article:hover .featured-img {
-    transform: scale(1.03);
-}
-.featured-content {
-    padding: 3rem 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
-}
+.featured-content { padding: 0 0 0 10px; display: flex; flex-direction: column; justify-content: center; height: 100%; }
 .article-cat {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--blog-gold);
-    margin-bottom: 1rem;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--champagne-gold); margin-bottom: 12px; display: block;
 }
 .featured-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, 4vw, 3rem);
-    line-height: 1.2;
-    margin-bottom: 1.5rem;
-    color: #fff;
-    text-decoration: none;
+    font-family: 'Cormorant Garamond', serif; font-size: clamp(1.7rem, 3vw, 2.4rem);
+    line-height: 1.2; margin-bottom: 16px; color: var(--royal-blue-dark); text-decoration: none; display: block;
 }
-.featured-title:hover { color: var(--blog-gold); }
-.featured-desc {
-    font-size: 1.1rem;
-    color: rgba(255,255,255,0.6);
-    line-height: 1.7;
-    margin-bottom: 2rem;
+.featured-title:hover { color: var(--royal-blue); }
+.featured-desc { font-size: 1rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 22px; }
+.article-byline { display: flex; align-items: center; gap: 12px; }
+.author-avatar {
+    width: 38px; height: 38px; border-radius: 50%; background: var(--royal-blue-pale);
+    display: flex; align-items: center; justify-content: center; color: var(--royal-blue);
+    font-weight: 600; flex-shrink: 0;
 }
-.article-meta {
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.45);
-    display: flex;
-    align-items: center;
-    gap: 15px;
+.article-byline-text { font-size: 0.85rem; color: var(--text-muted); }
+.article-byline-text strong { color: var(--text); display: block; font-size: 0.9rem; }
+.read-more-link {
+    margin-left: auto; color: var(--royal-blue-dark); font-weight: 600; font-size: 0.85rem;
+    text-decoration: none; white-space: nowrap;
 }
-.article-meta span { display: flex; align-items: center; gap: 5px; }
+.read-more-link:hover { color: var(--champagne-gold); }
 
-/* ARTICLE GRID */
-.article-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3rem 2rem;
-    margin-bottom: 4rem;
-}
+/* LATEST ARTICLES GRID */
+.latest-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 30px; }
+.latest-head h2 { font-family: 'Cormorant Garamond', serif; color: var(--royal-blue-dark); font-size: 2rem; margin: 0; }
+.latest-head a { color: var(--royal-blue-dark); font-size: 0.85rem; font-weight: 600; text-decoration: none; }
+.latest-head a:hover { color: var(--champagne-gold); }
+
+.article-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; margin-bottom: 20px; }
 @media (max-width: 991px) { .article-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 767px) { .article-grid { grid-template-columns: 1fr; } }
+@media (max-width: 575px) { .article-grid { grid-template-columns: 1fr; } }
 
-.article-card {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    group: hover;
-}
+.article-card { text-decoration: none; color: inherit; display: block; }
 .card-img-wrap {
-    overflow: hidden;
-    position: relative;
-    padding-top: 75%;
-    margin-bottom: 1.5rem;
-    background: rgba(255,255,255,0.05);
+    overflow: hidden; position: relative; aspect-ratio: 4/3; margin-bottom: 16px;
+    background: var(--silver-light); border-radius: 4px;
 }
-.card-img {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    object-fit: cover;
-    transition: transform 0.8s ease;
-}
-.article-card:hover .card-img { transform: scale(1.05); }
+.card-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+.article-card:hover .card-img { transform: scale(1.06); }
 .card-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.4rem;
-    line-height: 1.3;
-    color: #fff;
-    margin-bottom: 1rem;
-    transition: color 0.3s;
+    font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; line-height: 1.3;
+    color: var(--royal-blue-dark); margin-bottom: 8px; transition: color 0.2s;
 }
-.article-card:hover .card-title { color: var(--blog-gold); }
-.card-desc {
-    font-size: 0.95rem;
-    color: rgba(255,255,255,0.55);
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-}
+.article-card:hover .card-title { color: var(--champagne-gold); }
+.card-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px; }
+.card-meta { font-size: 0.78rem; color: var(--text-muted); }
 
-/* NEWSLETTER */
+/* NEWSLETTER CTA */
 .blog-newsletter {
-    background: rgba(255,255,255,0.03);
-    border-top: 1px solid rgba(255,255,255,0.08);
-    color: #fff;
-    padding: 5rem 0;
-    text-align: center;
-    margin-top: 4rem;
+    background: linear-gradient(135deg, var(--primary-bg) 0%, var(--primary-blue) 100%);
+    color: #fff; padding: 60px 0; margin-top: 40px;
 }
-.newsletter-inner {
-    max-width: 600px;
-    margin: 0 auto;
+.blog-newsletter .kicker {
+    color: var(--champagne-gold); text-transform: uppercase; letter-spacing: 2px; font-size: 0.72rem;
 }
-.blog-newsletter h3 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.2rem;
-    margin-bottom: 1rem;
-}
-.blog-newsletter p {
-    color: rgba(255,255,255,0.7);
-    margin-bottom: 2rem;
-}
-.nl-form {
-    display: flex;
-    gap: 10px;
-}
+.blog-newsletter h3 { font-family: 'Cormorant Garamond', serif; font-size: 2.1rem; margin: 8px 0 10px; }
+.blog-newsletter p { color: var(--silver); margin-bottom: 0; }
+.nl-form { display: flex; gap: 10px; }
 .nl-input {
-    flex: 1;
-    padding: 1rem 1.5rem;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: #fff;
+    flex: 1; padding: 13px 18px; background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(224,223,227,0.3); color: #fff; border-radius: 2px;
 }
-.nl-input:focus {
-    outline: none;
-    border-color: var(--blog-gold);
-}
+.nl-input::placeholder { color: var(--silver); opacity: 0.8; }
+.nl-input:focus { outline: none; border-color: var(--champagne-gold); background: rgba(255,255,255,0.12); }
 .nl-btn {
-    padding: 1rem 2rem;
-    background: var(--blog-gold);
-    color: #fff;
-    border: none;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: background 0.3s;
+    padding: 13px 28px; background: var(--champagne-gold); color: var(--primary-bg);
+    border: none; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; font-size: 0.8rem;
 }
-.nl-btn:hover { background: #b8962c; }
-@media (max-width: 576px) {
-    .nl-form { flex-direction: column; }
-    .nl-btn { width: 100%; }
-}
+.nl-btn:hover { background: #b89458; }
+@media (max-width: 576px) { .nl-form { flex-direction: column; } }
+
+.blog-empty { text-align: center; padding: 80px 0; color: var(--text-muted); }
 </style>
 
-<!-- Hero Section -->
 <section class="blog-hero">
+    <div class="blog-hero-tagline d-none d-lg-block">Stories<br>Scents<br>Lifestyle</div>
     <div class="container">
-        <div class="blog-hero-content">
-            <span class="blog-eyebrow">Elvessora Editorial</span>
-            <h1>The Art of Fragrance</h1>
-            <p>Discover the world of fine fragrance through expert guides, perfume tips, inspiration, and stories from Elvessora.</p>
-            {% if not search_query and not active_category or active_category == 'all' %}
-                <a href="#articles" class="btn btn-outline-light px-4 py-2" style="border-radius: 0; letter-spacing: 2px; font-size: 0.8rem; text-transform: uppercase;">Explore Stories</a>
-            {% endif %}
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <span class="blog-eyebrow">Our Blog</span>
+                <h1>The Art of Fragrance</h1>
+                <p>Discover stories, tips, and inspiration from the world of perfumes. Explore the art, ingredients, and lifestyle behind every scent.</p>
+            </div>
+            <div class="col-lg-6 text-center blog-hero-image">
+                <img src="{% static 'images/hero/elvessora-divine-aura-hero.png' %}" alt="Elvessora perfume bottle">
+            </div>
         </div>
     </div>
 </section>
 
-<!-- Categories Nav -->
-<div class="blog-nav-wrapper">
-    <div class="container">
-        <nav class="blog-categories">
-            <a href="{% url 'blog:post_list' %}" class="blog-category-link {% if active_category == 'all' %}active{% endif %}">All</a>
+<div class="blog-filter-bar">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <nav class="blog-pills">
+            <a href="{% url 'blog:post_list' %}" class="blog-pill {% if active_category == 'all' %}active{% endif %}">All</a>
             {% for cat in categories %}
-                <a href="?category={{ cat.slug }}" class="blog-category-link {% if active_category == cat.slug %}active{% endif %}">{{ cat.name }}</a>
+            <a href="?category={{ cat.slug }}" class="blog-pill {% if active_category == cat.slug %}active{% endif %}">{{ cat.name }}</a>
             {% endfor %}
         </nav>
+        <form method="GET" action="{% url 'blog:post_list' %}" class="d-flex">
+            {% if active_category and active_category != 'all' %}
+            <input type="hidden" name="category" value="{{ active_category }}">
+            {% endif %}
+            <input type="text" name="q" value="{{ search_query }}" class="blog-search-input" placeholder="Search articles...">
+        </form>
     </div>
 </div>
 
-<div class="container" id="articles">
-    
-    <!-- Search -->
-    <div class="blog-search-container">
-        <form method="GET" action="{% url 'blog:post_list' %}" class="blog-search-form">
-            {% if active_category and active_category != 'all' %}
-                <input type="hidden" name="category" value="{{ active_category }}">
-            {% endif %}
-            <i class="bi bi-search blog-search-icon"></i>
-            <input type="text" name="q" value="{{ search_query }}" class="blog-search-input" placeholder="Search fragrance stories...">
-        </form>
-    </div>
+<div class="blog-body">
+    <div class="container">
 
-    {% if search_query %}
-        <div class="mb-5 text-center">
-            <h4 class="mb-2">Search Results for "{{ search_query }}"</h4>
-            <p style="color: rgba(255,255,255,0.5);">{{ page_obj.paginator.count }} article(s) found</p>
+        {% if search_query %}
+        <div class="mb-5">
+            <h4 class="mb-1">Search Results for &ldquo;{{ search_query }}&rdquo;</h4>
+            <p class="text-muted mb-0">{{ page_obj.paginator.count }} article(s) found</p>
         </div>
-    {% endif %}
+        {% endif %}
 
-    <!-- Featured Article (Only show on page 1 without search/category filters if one exists) -->
-    {% if featured_post and not page_obj.has_previous %}
+        {% if featured_post and not page_obj.has_previous %}
         <div class="featured-article">
-            <div class="row g-0 align-items-center">
-                <div class="col-lg-7">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6">
                     <a href="{{ featured_post.get_absolute_url }}" class="d-block featured-img-wrap">
+                        <span class="featured-badge">Featured</span>
                         {% if featured_post.featured_image %}
-                            <img src="{{ featured_post.featured_image.url }}" alt="{{ featured_post.title }}" class="featured-img">
+                        <img src="{{ featured_post.featured_image.url }}" alt="{{ featured_post.title }}" class="featured-img">
                         {% else %}
-                            <img src="{% static 'images/hero/elvessora-divine-aura-hero.png' %}" alt="{{ featured_post.title }}" class="featured-img">
+                        <img src="{% static 'images/hero/elvessora-divine-aura-hero.png' %}" alt="{{ featured_post.title }}" class="featured-img">
                         {% endif %}
                     </a>
                 </div>
-                <div class="col-lg-5">
+                <div class="col-lg-6">
                     <div class="featured-content">
-                        {% if featured_post.category %}
-                            <span class="article-cat">{{ featured_post.category.name }}</span>
-                        {% endif %}
-                        <a href="{{ featured_post.get_absolute_url }}" class="text-decoration-none">
-                            <h2 class="featured-title">{{ featured_post.title }}</h2>
-                        </a>
+                        {% if featured_post.category %}<span class="article-cat">{{ featured_post.category.name }}</span>{% endif %}
+                        <a href="{{ featured_post.get_absolute_url }}" class="featured-title">{{ featured_post.title }}</a>
                         <p class="featured-desc">{{ featured_post.excerpt }}</p>
-                        
-                        <div class="article-meta mb-4">
-                            {% if featured_post.author %}
-                                <span><i class="bi bi-person"></i> {{ featured_post.author.get_full_name|default:featured_post.author.username }}</span>
-                            {% endif %}
-                            <span><i class="bi bi-clock"></i> {{ featured_post.reading_time }} min read</span>
-                            <span><i class="bi bi-calendar3"></i> {{ featured_post.published_at|date:"M d, Y" }}</span>
-                        </div>
-                        
-                        <div>
-                            <a href="{{ featured_post.get_absolute_url }}" class="btn" style="border-radius: 0; padding: 12px 30px; letter-spacing: 1px; text-transform: uppercase; font-size: 0.8rem; background: var(--blog-gold); color: #fff;">Read Article &rarr;</a>
+                        <div class="article-byline">
+                            <div class="author-avatar">{{ featured_post.author.first_name|default:featured_post.author.username|slice:":1" }}</div>
+                            <div class="article-byline-text">
+                                <strong>By {{ featured_post.author.get_full_name|default:featured_post.author.username }}</strong>
+                                {{ featured_post.published_at|date:"M d, Y" }} &middot; {{ featured_post.reading_time }} min read
+                            </div>
+                            <a href="{{ featured_post.get_absolute_url }}" class="read-more-link">Read More &rarr;</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    {% endif %}
+        {% endif %}
 
-    <!-- Article Grid -->
-    {% if page_obj.object_list %}
+        {% if page_obj.object_list %}
+        <div class="latest-head">
+            <h2>Latest Articles</h2>
+            {% if active_category != 'all' or search_query %}<a href="{% url 'blog:post_list' %}">View All Articles &rarr;</a>{% endif %}
+        </div>
         <div class="article-grid">
             {% for post in page_obj %}
-                <a href="{{ post.get_absolute_url }}" class="article-card">
-                    <div class="card-img-wrap">
-                        {% if post.featured_image %}
-                            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="card-img" loading="lazy">
-                        {% else %}
-                            <img src="{% static 'images/hero/elvessora-divine-aura-hero.png' %}" alt="{{ post.title }}" class="card-img" loading="lazy">
-                        {% endif %}
-                    </div>
-                    {% if post.category %}
-                        <span class="article-cat">{{ post.category.name }}</span>
+            <a href="{{ post.get_absolute_url }}" class="article-card">
+                <div class="card-img-wrap">
+                    {% if post.featured_image %}
+                    <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="card-img" loading="lazy">
+                    {% else %}
+                    <img src="{% static 'images/hero/elvessora-divine-aura-hero.png' %}" alt="{{ post.title }}" class="card-img" loading="lazy">
                     {% endif %}
-                    <h3 class="card-title">{{ post.title }}</h3>
-                    <p class="card-desc">{{ post.excerpt }}</p>
-                    <div class="article-meta">
-                        <span>{{ post.reading_time }} min read</span>
-                        <span>Read Article →</span>
-                    </div>
-                </a>
+                </div>
+                {% if post.category %}<span class="article-cat">{{ post.category.name }}</span>{% endif %}
+                <h3 class="card-title">{{ post.title }}</h3>
+                <p class="card-desc">{{ post.excerpt|truncatewords:16 }}</p>
+                <div class="card-meta">{{ post.published_at|date:"M d, Y" }} &middot; {{ post.reading_time }} min read</div>
+            </a>
             {% endfor %}
         </div>
-        
-        <!-- Pagination -->
+
         {% if page_obj.has_other_pages %}
-            <nav aria-label="Blog pagination" class="mt-5 pt-3 border-top">
-                <ul class="pagination justify-content-center">
-                    {% if page_obj.has_previous %}
-                        <li class="page-item"><a class="page-link" style="background:transparent; border-color:rgba(255,255,255,0.15); color:#fff;" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if active_category and active_category != 'all' %}&category={{ active_category }}{% endif %}">Previous</a></li>
+        <nav aria-label="Blog pagination" class="mt-4 pt-4 border-top">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if active_category and active_category != 'all' %}&category={{ active_category }}{% endif %}">Previous</a></li>
+                {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <li class="page-item active"><span class="page-link" style="background:var(--champagne-gold); border-color:var(--champagne-gold); color:var(--primary-bg);">{{ num }}</span></li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}{% if active_category and active_category != 'all' %}&category={{ active_category }}{% endif %}">{{ num }}</a></li>
                     {% endif %}
-                    
-                    {% for num in page_obj.paginator.page_range %}
-                        {% if page_obj.number == num %}
-                            <li class="page-item active"><span class="page-link" style="background:var(--blog-gold); border-color:var(--blog-gold); color:#fff;">{{ num }}</span></li>
-                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                            <li class="page-item"><a class="page-link" style="background:transparent; border-color:rgba(255,255,255,0.15); color:#fff;" href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}{% if active_category and active_category != 'all' %}&category={{ active_category }}{% endif %}">{{ num }}</a></li>
-                        {% endif %}
-                    {% endfor %}
-                    
-                    {% if page_obj.has_next %}
-                        <li class="page-item"><a class="page-link" style="background:transparent; border-color:rgba(255,255,255,0.15); color:#fff;" href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if active_category and active_category != 'all' %}&category={{ active_category }}{% endif %}">Next</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if active_category and active_category != 'all' %}&category={{ active_category }}{% endif %}">Next</a></li>
+                {% endif %}
+            </ul>
+        </nav>
         {% endif %}
-    {% else %}
-        <!-- Empty State -->
-        {% if search_query or active_category != 'all' %}
-            <div class="text-center py-5">
-                <i class="bi bi-journal-x display-1 mb-3" style="color:rgba(255,255,255,0.3);"></i>
-                <h3 style="color:#fff;">No articles found</h3>
-                <p style="color:rgba(255,255,255,0.5);">Try adjusting your search or category filters.</p>
-                <a href="{% url 'blog:post_list' %}" class="btn mt-3" style="border:1px solid rgba(255,255,255,0.3); color:#fff; border-radius:0; letter-spacing:1px;">View All Articles</a>
-            </div>
+
+        {% else %}
+        <div class="blog-empty">
+            <i class="bi bi-journal-x display-1 mb-3 d-block" style="color: var(--silver);"></i>
+            <h3 style="color: var(--royal-blue-dark);">No articles found</h3>
+            <p>Try adjusting your search or category filters.</p>
+            <a href="{% url 'blog:post_list' %}" class="btn btn-outline-gold mt-2">View All Articles</a>
+        </div>
         {% endif %}
-    {% endif %}
+
+    </div>
 </div>
 
-<!-- Newsletter -->
 <section class="blog-newsletter">
     <div class="container">
-        <div class="newsletter-inner">
-            <h3>Stay Close to the World of Fragrance</h3>
-            <p>Receive fragrance inspiration, new stories, exclusive launches, and special offers from Elvessora.</p>
-            <form action="#" method="POST" class="nl-form" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
-                <input type="email" name="email" class="nl-input" placeholder="Enter your email address" required>
-                <button type="submit" class="nl-btn">Subscribe</button>
-            </form>
+        <div class="row align-items-center g-4">
+            <div class="col-lg-6">
+                <span class="kicker">Stay Inspired</span>
+                <h3>Join Our Fragrance Journal</h3>
+                <p>Get the latest stories, tips, and exclusive updates straight to your inbox.</p>
+            </div>
+            <div class="col-lg-6">
+                <form action="{% url 'core:newsletter_subscribe' %}" method="post" class="nl-form">
+                    {% csrf_token %}
+                    <input type="email" name="email" class="nl-input" placeholder="Your email address" required>
+                    <button type="submit" class="nl-btn">Subscribe</button>
+                </form>
+            </div>
         </div>
     </div>
 </section>
