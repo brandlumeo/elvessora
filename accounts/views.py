@@ -370,7 +370,7 @@ class CustomPasswordResetView(PasswordResetView):
     success_url = reverse_lazy('accounts:password_reset_done')
 
     def post(self, request, *args, **kwargs):
-        if _rate_limited(f'pwreset-attempts:{_client_ip(request)}', limit=5, window_seconds=3600):
+        if _rate_limited(f'pwreset-attempts:{_client_ip(request)}', limit=10, window_seconds=3600):
             # Redirect to the same "done" page regardless — don't reveal whether the throttle
             # or a real send is why no new email arrives (matches Django's no-enumeration design).
             return redirect(self.success_url)
