@@ -1,6 +1,12 @@
 (function () {
     'use strict';
 
+    // Scroll-scrubbed hero animation. Previously loaded 300 individual PNG
+    // frames eagerly on page load (~63MB, 300 requests) — every new visitor
+    // paid that cost before the section became interactive. Now drives the
+    // same canvas draw-cover logic from a single small MP4 (~1.6MB, 1
+    // request), seeking video.currentTime to match scroll progress instead
+    // of swapping <img> elements.
     var section = document.getElementById('luxScrollCinema');
     if (!section) return;
 
@@ -9,23 +15,19 @@
     var poster = section.querySelector('.lux-scroll-cinema__poster');
     var loader = section.querySelector('.lux-scroll-cinema__loader');
     var hint = section.querySelector('.lux-scroll-cinema__hint');
-    var frameBase = section.dataset.frameBase;
-    var frameCount = parseInt(section.dataset.frameCount, 10) || 105;
+    var videoSrc = section.dataset.videoSrc;
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var ctx = canvas.getContext('2d');
-    var frames = [];
-    var currentFrame = -1;
+    var currentProgress = -1;
     var ready = false;
     var ticking = false;
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    function padFrame(index) {
-        return String(index).padStart(3, '0');
-    }
-
-    function frameSrc(index) {
-        return frameBase + padFrame(index) + '.png';
-    }
+    var video = document.createElement('video');
+    video.muted = true;
+    video.playsInline = true;
+    video.preload = 'auto';
+    video.src = videoSrc;
 
     function resizeCanvas() {
         var width = pin.clientWidth;
@@ -33,20 +35,20 @@
         canvas.width = Math.floor(width * dpr);
         canvas.height = Math.floor(height * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        
+
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = 'high';
-        
-        if (ready && currentFrame >= 0) {
-            drawFrame(currentFrame, getProgress());
+
+        if (ready && currentProgress >= 0) {
+            drawCurrent(currentProgress);
         }
     }
 
-    function drawCover(image, scale) {
+    function drawCover(source, scale) {
         var width = pin.clientWidth;
         var height = pin.clientHeight;
-        var iw = image.naturalWidth;
-        var ih = image.naturalHeight;
+        var iw = source.videoWidth || source.naturalWidth;
+        var ih = source.videoHeight || source.naturalHeight;
         if (!iw || !ih) return;
 
         var coverScale = Math.max(width / iw, height / ih) * scale;
@@ -56,7 +58,7 @@
         var y = (height - drawH) / 2;
 
         ctx.clearRect(0, 0, width, height);
-        ctx.drawImage(image, x, y, drawW, drawH);
+        ctx.drawImage(source, x, y, drawW, drawH);
     }
 
     function getProgress() {
@@ -66,20 +68,20 @@
         return Math.max(0, Math.min(1, -rect.top / scrollRange));
     }
 
-    function getFrameIndex(progress) {
-        return Math.min(
-            frameCount - 1,
-            Math.max(0, Math.floor(progress * (frameCount - 1)))
-        );
+    function drawCurrent(progress) {
+        var scale = 1.02 - progress * 0.02;
+        drawCover(video, scale);
+        currentProgress = progress;
     }
 
-    function drawFrame(index, progress) {
-        var image = frames[index];
-        if (!image) return;
-
-        var scale = 1.02 - progress * 0.02;
-        drawCover(image, scale);
-        currentFrame = index;
+    function seekAndDraw(progress) {
+        if (!video.duration) return;
+        // Seeking is async (the frame isn't guaranteed ready until the
+        // browser fires 'seeked'), but for fast scroll-scrubbing most
+        // implementations draw on the next available frame rather than
+        // waiting — any single-frame lag is imperceptible during scroll.
+        video.currentTime = progress * video.duration;
+        drawCurrent(progress);
     }
 
     function updatePinState() {
@@ -103,8 +105,7 @@
         if (!ready) return;
 
         var progress = getProgress();
-        var frameIndex = getFrameIndex(progress);
-        drawFrame(frameIndex, progress);
+        seekAndDraw(progress);
 
         if (hint) {
             hint.style.opacity = String(Math.max(0, 1 - progress * 4));
@@ -122,41 +123,6 @@
         }
     }
 
-    function setLoaderProgress(value) {
-        if (!loader) return;
-        loader.style.setProperty('--load', String(Math.round(value * 100)));
-        loader.setAttribute('aria-valuenow', String(Math.round(value * 100)));
-    }
-
-    function preloadFrames() {
-        var loaded = 0;
-
-        return new Promise(function (resolve) {
-            for (var i = 0; i < frameCount; i += 1) {
-                (function (index) {
-                    var image = new Image();
-                    image.decoding = 'async';
-                    image.onload = function () {
-                        loaded += 1;
-                        setLoaderProgress(loaded / frameCount);
-                        if (loaded === frameCount) {
-                            resolve();
-                        }
-                    };
-                    image.onerror = function () {
-                        loaded += 1;
-                        setLoaderProgress(loaded / frameCount);
-                        if (loaded === frameCount) {
-                            resolve();
-                        }
-                    };
-                    image.src = frameSrc(index + 1);
-                    frames[index] = image;
-                })(i);
-            }
-        });
-    }
-
     function init() {
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas, { passive: true });
@@ -166,27 +132,44 @@
         }
         window.addEventListener('scroll', onScroll, { passive: true });
 
-        preloadFrames().then(function () {
+        video.addEventListener('loadedmetadata', function () {
+            // iOS Safari can refuse to seek a video that has never played;
+            // a muted play()/pause() immediately after metadata loads
+            // "warms up" the decoder so currentTime seeks work reliably.
+            var warmup = video.play();
+            if (warmup && warmup.then) {
+                warmup.then(function () { video.pause(); }).catch(function () {});
+            } else {
+                video.pause();
+            }
+
             ready = true;
             section.classList.add('is-ready');
             if (loader) loader.hidden = true;
             update();
         });
 
+        video.addEventListener('error', function () {
+            // If the video fails to load, drop the loader and leave the
+            // poster image showing rather than block the page.
+            if (loader) loader.hidden = true;
+        });
+
         update();
     }
 
     if (reducedMotion) {
-        var still = new Image();
-        still.onload = function () {
-            frames[0] = still;
+        video.addEventListener('loadedmetadata', function () {
+            video.currentTime = video.duration * 0.55;
+        });
+        video.addEventListener('seeked', function () {
             ready = true;
             section.classList.add('is-ready');
             if (loader) loader.hidden = true;
             if (poster) poster.style.opacity = '0';
-            drawFrame(0, 0);
-        };
-        still.src = frameSrc(Math.round(frameCount * 0.55));
+            resizeCanvas();
+            drawCurrent(0);
+        }, { once: true });
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas, { passive: true });
         return;
