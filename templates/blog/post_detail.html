@@ -230,18 +230,40 @@ body {
     line-height: 1.7;
 }
 
-/* RELATED PRODUCTS */
+/* RELATED PRODUCTS — a purpose-built card for this dark strip. The shop
+   page's product_card.html include is designed for wide grid columns
+   with hover overlays and absolute-positioned badges; squeezed into a
+   narrow 4-up row here it overlapped and clipped text, so this is a
+   simpler card built for the space instead. */
 .related-products-section {
     background: var(--blog-navy);
     color: #fff;
     padding: 6rem 0;
+}
+.related-products-section .kicker {
+    color: var(--blog-gold); text-transform: uppercase; letter-spacing: 2px;
+    font-size: 0.75rem; text-align: center; display: block; margin-bottom: 10px;
 }
 .related-products-section h2 {
     font-family: 'Cormorant Garamond', serif;
     text-align: center;
     margin-bottom: 3rem;
     font-size: 2.5rem;
+    color: #fff;
 }
+.rp-card { text-decoration: none; color: inherit; display: block; }
+.rp-img-wrap {
+    position: relative; overflow: hidden; aspect-ratio: 3/4; border-radius: 4px;
+    background: rgba(255,255,255,0.05); margin-bottom: 16px;
+}
+.rp-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+.rp-card:hover .rp-img { transform: scale(1.05); }
+.rp-name {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: #fff;
+    margin-bottom: 4px; transition: color 0.2s;
+}
+.rp-card:hover .rp-name { color: var(--blog-gold); }
+.rp-price { font-size: 0.9rem; color: var(--blog-gold); font-weight: 600; }
 
 /* RELATED ARTICLES */
 .related-articles {
@@ -257,20 +279,28 @@ body {
 .card-img-wrap {
     overflow: hidden;
     position: relative;
-    padding-top: 75%;
+    aspect-ratio: 4/3;
     margin-bottom: 1rem;
     background: #f4f4f4;
+    border-radius: 4px;
 }
 .card-img {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease;
 }
 .article-card:hover .card-img { transform: scale(1.05); }
+.card-category {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--blog-gold); display: block; margin-bottom: 8px;
+}
 .card-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
+    line-height: 1.3;
     color: var(--blog-navy);
+    margin-bottom: 8px;
     transition: color 0.3s;
 }
+.card-meta { font-size: 0.78rem; color: #999; }
 .article-card { text-decoration: none; }
 .article-card:hover .card-title { color: var(--blog-gold); }
 
@@ -379,11 +409,20 @@ body {
 {% if post.related_products.all %}
     <section class="related-products-section">
         <div class="container">
+            <span class="kicker">Shop The Story</span>
             <h2>Discover the Fragrance</h2>
             <div class="row justify-content-center g-4">
                 {% for product in post.related_products.all %}
-                    <div class="col-6 col-md-4 col-lg-3">
-                        {% include 'includes/product_card.html' with product=product dark_mode=True %}
+                    <div class="col-6 col-md-3">
+                        <a href="{{ product.get_absolute_url }}" class="rp-card">
+                            <div class="rp-img-wrap">
+                                {% if product.primary_image %}
+                                <img src="{{ product.primary_image.image.url }}" alt="{{ product.name }}" class="rp-img">
+                                {% endif %}
+                            </div>
+                            <h5 class="rp-name">{{ product.name }}</h5>
+                            <span class="rp-price">{{ product.current_price|floatformat:2 }} AED</span>
+                        </a>
                     </div>
                 {% endfor %}
             </div>
@@ -407,7 +446,9 @@ body {
                                     <img src="{% static 'images/hero/elvessora-divine-aura-hero.png' %}" alt="{{ related.title }}" class="card-img">
                                 {% endif %}
                             </div>
+                            {% if related.category %}<span class="card-category">{{ related.category.name }}</span>{% endif %}
                             <h4 class="card-title">{{ related.title }}</h4>
+                            <div class="card-meta">{{ related.published_at|date:"M d, Y" }} &middot; {{ related.reading_time }} min read</div>
                         </a>
                     </div>
                 {% endfor %}
