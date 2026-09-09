@@ -1,0 +1,21 @@
+{# Shared newsletter CTA used by both the blog list and article detail
+   pages, so the two stay visually identical without duplicating markup. #}
+<section class="blog-newsletter" style="background-image: url('/media/products/ChatGPT_Image_Aug_4_2026_06_56_56_PM.png');">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-6">
+                <span class="kicker">Stay Close to the Scent</span>
+                <h3>Receive Fragrance Stories &amp; Offers</h3>
+                <p>Fragrance stories, new launches, expert tips, and exclusive offers — straight to your inbox.</p>
+            </div>
+            <div class="col-lg-6">
+                <form action="{% url 'core:newsletter_subscribe' %}" method="post" class="nl-form">
+                    {% csrf_token %}
+                    <label for="blog-newsletter-email" class="visually-hidden">Email address</label>
+                    <input type="email" id="blog-newsletter-email" name="email" class="nl-input" placeholder="Your email address" required>
+                    <button type="submit" class="nl-btn">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
