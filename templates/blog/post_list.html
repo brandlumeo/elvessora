@@ -5,22 +5,30 @@
 
 {% block content %}
 <style>
+/* Full-bleed photographic hero — a real product scene as the background
+   with a dark gradient (strong on the left, where the text sits, fading
+   out toward the right so the photo itself reads through) rather than a
+   flat brand-gradient with a separate floating bottle cutout. */
 .blog-hero {
-    padding: 90px 0 70px;
-    background: linear-gradient(135deg, var(--primary-bg) 0%, var(--primary-blue) 45%, var(--royal-blue) 100%);
-    color: #fff;
     position: relative;
+    min-height: 460px;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    background-color: var(--primary-bg);
+    background-image: url('/media/products/ChatGPT_Image_Aug_4_2026_06_57_01_PM.png');
+    background-size: cover;
+    background-position: center 30%;
     overflow: hidden;
 }
 .blog-hero::before {
     content: '';
-    position: absolute; top: 0; right: 0; bottom: 0; left: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c0c0c0' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    opacity: 0.5;
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(6,16,34,0.94) 0%, rgba(6,16,34,0.78) 35%, rgba(6,16,34,0.35) 65%, rgba(6,16,34,0.15) 100%);
 }
 .blog-hero .container { position: relative; z-index: 1; }
 .blog-hero-tagline {
-    position: absolute; top: 90px; right: 60px; text-align: right;
+    position: absolute; top: 40px; right: 60px; text-align: right; z-index: 1;
     color: var(--champagne-gold); text-transform: uppercase; letter-spacing: 2px;
     font-size: 0.72rem; line-height: 1.8;
 }
@@ -32,10 +40,7 @@
     font-family: 'Cormorant Garamond', serif; font-size: clamp(2.4rem, 4.5vw, 3.5rem);
     font-weight: 600; line-height: 1.15; color: #fff; margin-bottom: 18px;
 }
-.blog-hero p { font-size: 1.05rem; color: var(--silver); max-width: 480px; margin-bottom: 0; }
-.blog-hero-image img {
-    max-height: 380px; width: auto; filter: drop-shadow(0 30px 40px rgba(0,0,0,0.45));
-}
+.blog-hero p { font-size: 1.05rem; color: var(--silver); max-width: 480px; margin-bottom: 0; text-shadow: 0 1px 4px rgba(0,0,0,0.4); }
 
 /* CATEGORY PILLS + SEARCH */
 .blog-filter-bar {
@@ -121,11 +126,23 @@
 .card-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px; }
 .card-meta { font-size: 0.78rem; color: var(--text-muted); }
 
-/* NEWSLETTER CTA */
+/* NEWSLETTER CTA — full-bleed photo (right-weighted) with a dark overlay
+   fading from solid on the left (form/heading sit here) toward the photo
+   on the right, mirroring the hero's treatment. */
 .blog-newsletter {
-    background: linear-gradient(135deg, var(--primary-bg) 0%, var(--primary-blue) 100%);
+    position: relative;
     color: #fff; padding: 60px 0; margin-top: 40px;
+    background-color: var(--primary-bg);
+    background-image: url('/media/products/ChatGPT_Image_Aug_4_2026_06_56_56_PM.png');
+    background-size: cover;
+    background-position: center 25%;
 }
+.blog-newsletter::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(6,16,34,0.95) 0%, rgba(6,16,34,0.85) 45%, rgba(6,16,34,0.55) 75%, rgba(6,16,34,0.3) 100%);
+}
+.blog-newsletter .container { position: relative; z-index: 1; }
 .blog-newsletter .kicker {
     color: var(--champagne-gold); text-transform: uppercase; letter-spacing: 2px; font-size: 0.72rem;
 }
@@ -151,14 +168,11 @@
 <section class="blog-hero">
     <div class="blog-hero-tagline d-none d-lg-block">Stories<br>Scents<br>Lifestyle</div>
     <div class="container">
-        <div class="row align-items-center g-5">
+        <div class="row">
             <div class="col-lg-6">
                 <span class="blog-eyebrow">Our Blog</span>
                 <h1>The Art of Fragrance</h1>
                 <p>Discover stories, tips, and inspiration from the world of perfumes. Explore the art, ingredients, and lifestyle behind every scent.</p>
-            </div>
-            <div class="col-lg-6 text-center blog-hero-image">
-                <img src="{% static 'images/hero/elvessora-divine-aura-hero.png' %}" alt="Elvessora perfume bottle">
             </div>
         </div>
     </div>
