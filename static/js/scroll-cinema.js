@@ -74,15 +74,32 @@
         currentProgress = progress;
     }
 
+    var pendingProgress = null;
+    var seeking = false;
+
     function seekAndDraw(progress) {
         if (!video.duration) return;
-        // Seeking is async (the frame isn't guaranteed ready until the
-        // browser fires 'seeked'), but for fast scroll-scrubbing most
-        // implementations draw on the next available frame rather than
-        // waiting — any single-frame lag is imperceptible during scroll.
+        pendingProgress = progress;
+        if (seeking) return; // a seek is already in flight — 'seeked' below will pick up the latest pendingProgress
+        seeking = true;
         video.currentTime = progress * video.duration;
-        drawCurrent(progress);
     }
+
+    video.addEventListener('seeked', function () {
+        // The frame is now actually decoded and ready to draw. If more
+        // scroll happened while this seek was in flight, immediately
+        // re-seek to the latest requested position instead of drawing a
+        // now-stale frame.
+        seeking = false;
+        if (pendingProgress === null) return;
+        var progress = pendingProgress;
+        if (Math.abs(video.currentTime - progress * video.duration) > 1 / 30) {
+            seeking = true;
+            video.currentTime = progress * video.duration;
+            return;
+        }
+        drawCurrent(progress);
+    });
 
     function updatePinState() {
         var rect = section.getBoundingClientRect();
