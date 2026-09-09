@@ -67,7 +67,7 @@ class Command(BaseCommand):
             {
                 'title': "How to Make Your Perfume Last All Day",
                 'category': 'Perfume Tips',
-                'featured_image': 'products/ChatGPT_Image_Aug_4_2026_06_57_01_PM_jo1zGVj.png',
+                'featured_image': 'products/secret-romance-lifestyle-rub.jpg',
                 'excerpt': "Discover simple techniques to improve fragrance longevity and make your signature scent stay with you throughout the day.",
                 'content': """<p>We all want our favorite fragrance to last from morning until night. Here are the expert secrets to ensuring maximum longevity.</p>
                 <h3>Moisturize First</h3>
@@ -109,7 +109,7 @@ class Command(BaseCommand):
             {
                 'title': "Oud, Amber & Musk: The Essence of Arabian Fragrance",
                 'category': 'Fragrance Notes',
-                'featured_image': 'products/ChatGPT_Image_Aug_4_2026_06_56_56_PM.png',
+                'featured_image': 'products/ChatGPT_Image_Aug_4_2026_06_57_01_PM_jo1zGVj.png',
                 'excerpt': "Explore the rich, captivating ingredients that have defined Middle Eastern perfumery for centuries.",
                 'content': """<p>Middle Eastern perfumery is renowned for its depth, intensity, and opulent ingredients. The "holy trinity" of this olfactory world consists of Oud, Amber, and Musk.</p>
                 <h3>The Liquid Gold: Oud</h3>
@@ -148,7 +148,7 @@ class Command(BaseCommand):
             {
                 'title': "The Perfect Fragrance for Every Occasion",
                 'category': 'Lifestyle',
-                'featured_image': 'products/ChatGPT_Image_Aug_4_2026_06_56_44_PM.png',
+                'featured_image': 'products/secret-romance-lifestyle-moment.jpg',
                 'excerpt': "From boardrooms to date nights, learn how to select the right scent profile for the moment.",
                 'content': """<p>Just as you wouldn't wear a tuxedo to the beach, certain fragrances are better suited for specific settings.</p>
                 <h2>Office & Professional</h2>
@@ -168,7 +168,7 @@ class Command(BaseCommand):
             {
                 'title': "How to Apply Perfume for Maximum Longevity",
                 'category': 'Perfume Tips',
-                'featured_image': 'products/ChatGPT_Image_Aug_4_2026_06_57_01_PM_jo1zGVj.png',
+                'featured_image': 'products/secret-romance-lifestyle-spray.jpg',
                 'excerpt': "Stop rubbing your wrists together. Learn the proper ritual for applying luxury fragrances.",
                 'content': """<p>Application is an art. Many of us have been taught incorrectly.</p>
                 <blockquote>"Never rub your wrists together after spraying."</blockquote>
@@ -191,8 +191,8 @@ class Command(BaseCommand):
                 'content': """<p>Creating Divine Aura was a journey that took our master perfumers over two years to perfect.</p>
                 <p>The vision was to capture the golden hour in the desert—that brief, magical moment when the harsh sun softens, and the sand glows with an inner warmth.</p>
                 <figure>
-                    <img src="/media/products/ChatGPT_Image_Aug_4_2026_06_57_06_PM.png" alt="Elvessora Divine Aura">
-                    <figcaption>Elvessora Divine Aura — two years in the making.</figcaption>
+                    <img src="/media/products/ChatGPT_Image_Aug_4_2026_06_56_56_PM.png" alt="Elvessora Amber Petals">
+                    <figcaption>The same golden-hour warmth carries through our Amber Petals.</figcaption>
                 </figure>
                 <p>We achieved this by blending bright citrus top notes with a deeply resonant base of aged Oud and creamy Sandalwood.</p>
                 """,
