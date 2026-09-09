@@ -15,12 +15,16 @@ LOGO_STATIC_PATH = 'images/elvessora-logo-horizontal.png'
 LOGO_CID = 'elvessora-logo'
 
 
-def send_notification_email(to_email, subject, body, html_body=None):
+def send_notification_email(to_email, subject, body, html_body=None, attachments=None):
     """Best-effort send — never lets an email failure break the caller (checkout, admin save, etc.).
 
     Sends a proper HTML email (with the plain-text body as the fallback
     alternative for clients that don't render HTML) when html_body is given;
     falls back to a plain-text-only send otherwise.
+
+    attachments: optional list of (filename, content_bytes, mimetype) tuples
+    — e.g. an invoice PDF — attached as real downloadable files alongside
+    the inline logo.
     """
     if not to_email:
         return
@@ -32,6 +36,10 @@ def send_notification_email(to_email, subject, body, html_body=None):
             email.attach_alternative(html_body, 'text/html')
             # 'related' lets the inline logo travel alongside the HTML
             # alternative instead of showing up as a separate attachment.
+            # Real file attachments (e.g. an invoice PDF) added via
+            # .attach() below still show up as normal downloadable
+            # attachments in every mainstream email client despite sharing
+            # this container with the inline image.
             email.mixed_subtype = 'related'
 
             logo_path = find_static(LOGO_STATIC_PATH)
@@ -43,6 +51,9 @@ def send_notification_email(to_email, subject, body, html_body=None):
                 email.attach(logo_image)
             else:
                 logger.warning('Logo static file not found at %s; sending email without it', LOGO_STATIC_PATH)
+
+            for filename, content, mimetype in (attachments or []):
+                email.attach(filename, content, mimetype)
 
             email.send(fail_silently=True)
         else:

@@ -420,6 +420,24 @@ def order_detail(request, order_number):
 
 
 @login_required
+def invoice_download(request, order_number):
+    order = get_object_or_404(Order, order_number=order_number, user=request.user)
+    if order.payment_status != 'paid':
+        messages.error(request, 'An invoice is only available for paid orders.')
+        return redirect('orders:order_detail', order_number=order.order_number)
+
+    from .invoicing import render_invoice_pdf
+    pdf_bytes = render_invoice_pdf(order)
+    if pdf_bytes is None:
+        messages.error(request, "We couldn't generate your invoice right now. Please try again shortly.")
+        return redirect('orders:order_detail', order_number=order.order_number)
+
+    response = HttpResponse(pdf_bytes, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="Invoice-{order.order_number}.pdf"'
+    return response
+
+
+@login_required
 def reorder(request, order_number):
     order = get_object_or_404(Order, order_number=order_number, user=request.user)
     cart_service = CartService(request)

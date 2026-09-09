@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+    @page { size: A4; margin: 2cm 1.8cm; }
+    body { font-family: Helvetica, Arial, sans-serif; font-size: 10pt; color: #1a1a1a; }
+    .header { width: 100%; }
+    .header td { vertical-align: top; }
+    .brand-name { font-size: 20pt; color: #0A2163; font-weight: bold; }
+    .brand-meta { font-size: 8.5pt; color: #555; line-height: 1.5; margin-top: 4px; }
+    .invoice-title { font-size: 16pt; color: #061022; font-weight: bold; text-align: right; }
+    .invoice-meta { font-size: 9pt; color: #555; text-align: right; line-height: 2; margin-top: 6px; }
+    .section-title {
+        font-size: 8pt; text-transform: uppercase; letter-spacing: 1px; color: #C8A96A;
+        font-weight: bold; margin-bottom: 4px;
+    }
+    .bill-to { font-size: 9.5pt; line-height: 1.6; color: #1a1a1a; }
+    .divider { border-top: 1px solid #ddd; margin: 18px 0; }
+    table.items { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    table.items th {
+        text-align: left; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.5px;
+        color: #555; border-bottom: 1.5px solid #0A2163; padding: 6px 4px;
+    }
+    table.items td { font-size: 9.5pt; padding: 8px 4px; border-bottom: 0.5px solid #eee; }
+    .text-right { text-align: right; }
+    table.totals { width: 260px; margin-left: auto; margin-top: 14px; border-collapse: collapse; }
+    table.totals td { font-size: 9.5pt; padding: 4px 6px; }
+    table.totals td.label { color: #555; }
+    table.totals tr.grand-total td { font-size: 12pt; font-weight: bold; color: #0A2163; border-top: 1.5px solid #0A2163; padding-top: 8px; }
+    .footer { margin-top: 40px; font-size: 8pt; color: #999; text-align: center; }
+    .status-badge {
+        display: inline-block; font-size: 8pt; font-weight: bold; letter-spacing: 0.5px;
+        color: #fff; background-color: #0A2163; padding: 3px 10px; border-radius: 10px;
+    }
+</style>
+</head>
+<body>
+
+<table class="header">
+<tr>
+    <td width="50%">
+        <div class="brand-name">{{ site.brand_name|default:"Elvessora" }}</div>
+        <div class="brand-meta">
+            {% if site.business_address %}{{ site.business_address }}<br>{% endif %}
+            {% if site.email %}{{ site.email }}{% endif %}{% if site.email and site.phone %} &middot; {% endif %}{% if site.phone %}{{ site.phone }}{% endif %}
+        </div>
+    </td>
+    <td width="50%">
+        <div class="invoice-title">INVOICE</div>
+        <div class="invoice-meta">
+            Order {{ order.order_number }}<br>
+            {{ order.created_at|date:"F d, Y" }}<br>
+            <span class="status-badge">PAID</span>
+        </div>
+    </td>
+</tr>
+</table>
+
+<div class="divider"></div>
+
+<table width="100%">
+<tr>
+    <td width="50%">
+        <div class="section-title">Bill To</div>
+        <div class="bill-to">
+            {{ order.shipping_name }}<br>
+            {{ order.shipping_address }}<br>
+            {{ order.shipping_city }}, {{ order.shipping_state }} {{ order.shipping_pincode }}<br>
+            {{ order.shipping_country }}<br>
+            {{ order.shipping_phone }}
+        </div>
+    </td>
+    <td width="50%">
+        <div class="section-title">Payment</div>
+        <div class="bill-to">
+            Method: {{ order.get_payment_method_display }}<br>
+            Status: Paid
+        </div>
+    </td>
+</tr>
+</table>
+
+<table class="items">
+<thead>
+<tr>
+    <th>Item</th>
+    <th class="text-right">Qty</th>
+    <th class="text-right">Unit Price</th>
+    <th class="text-right">Total</th>
+</tr>
+</thead>
+<tbody>
+{% for item in order.items.all %}
+<tr>
+    <td>{{ item.product_name }}{% if item.variant_size %} ({{ item.variant_size }}){% endif %}{% if item.gift_wrapping %}<br><span style="color:#999; font-size:8pt;">+ Gift wrapping</span>{% endif %}</td>
+    <td class="text-right">{{ item.quantity }}</td>
+    <td class="text-right">AED {{ item.unit_price|floatformat:2 }}</td>
+    <td class="text-right">AED {{ item.line_total|floatformat:2 }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<table class="totals">
+<tr><td class="label">Subtotal</td><td class="text-right">AED {{ order.subtotal|floatformat:2 }}</td></tr>
+{% if order.discount_amount %}<tr><td class="label">Discount{% if order.coupon_code %} ({{ order.coupon_code }}){% endif %}</td><td class="text-right">-AED {{ order.discount_amount|floatformat:2 }}</td></tr>{% endif %}
+<tr><td class="label">Shipping</td><td class="text-right">AED {{ order.shipping_charge|floatformat:2 }}</td></tr>
+{% if order.tax_amount %}<tr><td class="label">Tax</td><td class="text-right">AED {{ order.tax_amount|floatformat:2 }}</td></tr>{% endif %}
+<tr class="grand-total"><td>Total Paid</td><td class="text-right">AED {{ order.total|floatformat:2 }}</td></tr>
+</table>
+
+<div class="footer">
+    Thank you for shopping with {{ site.brand_name|default:"Elvessora" }}.<br>
+    This is a computer-generated invoice and does not require a signature.
+</div>
+
+</body>
+</html>

@@ -47,8 +47,22 @@ def send_welcome_notification(sender, instance, created, **kwargs):
 def stash_old_order_status(sender, instance, **kwargs):
     if not instance.pk:
         instance._old_status = None
+        instance._old_payment_status = None
         return
-    instance._old_status = Order.objects.filter(pk=instance.pk).values_list('status', flat=True).first()
+    old = Order.objects.filter(pk=instance.pk).values_list('status', 'payment_status').first()
+    instance._old_status, instance._old_payment_status = old or (None, None)
+
+
+@receiver(post_save, sender=Order)
+def send_invoice_on_payment(sender, instance, **kwargs):
+    """Emails the invoice the moment payment_status first becomes 'paid' —
+    independent of the status-change notification below, so it fires even
+    in the (currently unused, but possible) case where payment_status
+    changes without status changing in the same save()."""
+    old_payment_status = getattr(instance, '_old_payment_status', None)
+    if old_payment_status != 'paid' and instance.payment_status == 'paid':
+        from orders.invoicing import send_invoice_email
+        send_invoice_email(instance)
 
 
 @receiver(post_save, sender=Order)

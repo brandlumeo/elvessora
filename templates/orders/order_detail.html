@@ -48,6 +48,9 @@
                 {% if order.discount_amount %}<div class="summary-row" style="color:#2f7d54;"><span>Discount</span><span>-{{ order.discount_amount|format_price }}</span></div>{% endif %}
                 <div class="summary-row total"><span>Total</span><span>{{ order.total|format_price }}</span></div>
                 <p class="small text-muted mt-3 mb-0">Payment: {{ order.get_payment_status_display }}</p>
+                {% if order.payment_status == 'paid' %}
+                <a href="{% url 'orders:invoice_download' order.order_number %}" class="btn btn-outline-gold btn-sm w-100 mt-3">Download Invoice</a>
+                {% endif %}
                 <a href="{% url 'orders:reorder' order.order_number %}" class="btn btn-gold btn-sm w-100 mt-3">Reorder</a>
             </div>
         </div>
