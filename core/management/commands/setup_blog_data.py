@@ -50,6 +50,10 @@ class Command(BaseCommand):
                 <h2>1. Understand the Fragrance Families</h2>
                 <p>Before you begin sampling, it helps to know what you gravitate towards. Are you drawn to fresh, citrusy notes, or do you prefer deep, woody aromas like Oud and Sandalwood?</p>
                 <blockquote>"A signature scent is the silent language of your soul."</blockquote>
+                <figure>
+                    <img src="/media/products/ChatGPT_Image_Aug_4_2026_06_57_06_PM.png" alt="Elvessora Divine Aura">
+                    <figcaption>Elvessora Divine Aura — a warm, resonant base built for a signature scent.</figcaption>
+                </figure>
                 <h2>2. Test on Your Skin</h2>
                 <p>Never judge a perfume entirely by smelling it on a paper strip. The true magic of a fragrance reveals itself when it mixes with your body's natural chemistry.</p>
                 """,
@@ -68,6 +72,10 @@ class Command(BaseCommand):
                 'content': """<p>We all want our favorite fragrance to last from morning until night. Here are the expert secrets to ensuring maximum longevity.</p>
                 <h3>Moisturize First</h3>
                 <p>Perfume evaporates quickly on dry skin. Applying an unscented lotion or matching body oil before spraying creates a base for the fragrance oils to cling to.</p>
+                <figure>
+                    <img src="/media/products/ChatGPT_Image_Aug_4_2026_06_56_44_PM.png" alt="Elvessora Moon Blossom">
+                    <figcaption>Elvessora Moon Blossom — built to stay close to the skin for hours.</figcaption>
+                </figure>
                 <h3>Target Pulse Points</h3>
                 <p>Apply to your wrists, neck, inner elbows, and behind the knees. These areas generate body heat, which helps project the fragrance.</p>
                 """,
@@ -86,6 +94,10 @@ class Command(BaseCommand):
                 <p>The immediate scent. Usually fresh, light, and citrusy. They evaporate within the first 15-30 minutes.</p>
                 <h2>The Heart (Middle) Notes</h2>
                 <p>The core of the fragrance. Often floral or spicy, they emerge as the top notes fade and form the character of the scent.</p>
+                <figure>
+                    <img src="/media/products/ChatGPT_Image_Aug_4_2026_06_57_01_PM.png" alt="Elvessora Enchante Bloom">
+                    <figcaption>Elvessora Enchanté Bloom — a floral heart note in full bloom.</figcaption>
+                </figure>
                 <h2>The Base Notes</h2>
                 <p>The foundation. Deep, rich notes like Oud, Amber, and Vanilla that linger for hours and anchor the entire composition.</p>
                 """,
@@ -102,6 +114,10 @@ class Command(BaseCommand):
                 'content': """<p>Middle Eastern perfumery is renowned for its depth, intensity, and opulent ingredients. The "holy trinity" of this olfactory world consists of Oud, Amber, and Musk.</p>
                 <h3>The Liquid Gold: Oud</h3>
                 <p>Derived from the agarwood tree, Oud is one of the most expensive raw materials in the world, prized for its complex woody, smoky, and slightly sweet profile.</p>
+                <figure>
+                    <img src="/media/products/ChatGPT_Image_Aug_4_2026_06_57_06_PM.png" alt="Elvessora Divine Aura">
+                    <figcaption>Elvessora Divine Aura — anchored in aged Oud and warm Amber.</figcaption>
+                </figure>
                 """,
                 'is_featured': False,
                 'reading_time': 7,
@@ -119,6 +135,10 @@ class Command(BaseCommand):
                     <li><strong>Avoid direct sunlight:</strong> UV rays break down the chemical bonds. Store in a dark drawer or closet.</li>
                     <li><strong>Keep the original box:</strong> If possible, keeping the bottle in its box provides excellent protection against light.</li>
                 </ul>
+                <figure>
+                    <img src="/media/products/ChatGPT_Image_Aug_4_2026_06_56_56_PM.png" alt="Elvessora Amber Petals">
+                    <figcaption>Elvessora Amber Petals — kept away from light and heat to preserve its character.</figcaption>
+                </figure>
                 """,
                 'is_featured': False,
                 'reading_time': 3,
@@ -133,6 +153,10 @@ class Command(BaseCommand):
                 'content': """<p>Just as you wouldn't wear a tuxedo to the beach, certain fragrances are better suited for specific settings.</p>
                 <h2>Office & Professional</h2>
                 <p>Opt for clean, subtle, and fresh scents. You want to be discovered, not announced.</p>
+                <figure>
+                    <img src="/media/products/ChatGPT_Image_Aug_4_2026_06_57_01_PM_jo1zGVj.png" alt="Elvessora Enchante Bloom">
+                    <figcaption>A lighter application for daytime — save the deeper notes for evening.</figcaption>
+                </figure>
                 <h2>Evening & Date Night</h2>
                 <p>This is where you can unleash deep, seductive notes like Vanilla, Amber, or a sophisticated Oud.</p>
                 """,
@@ -148,6 +172,10 @@ class Command(BaseCommand):
                 'excerpt': "Stop rubbing your wrists together. Learn the proper ritual for applying luxury fragrances.",
                 'content': """<p>Application is an art. Many of us have been taught incorrectly.</p>
                 <blockquote>"Never rub your wrists together after spraying."</blockquote>
+                <figure>
+                    <img src="/media/products/ChatGPT_Image_Aug_4_2026_06_56_44_PM.png" alt="Elvessora Moon Blossom">
+                    <figcaption>Spray, then let it settle — never rub it in.</figcaption>
+                </figure>
                 <p>Friction heats up the skin and breaks down the delicate top notes of the perfume, rushing the evaporation process.</p>
                 """,
                 'is_featured': False,
@@ -162,6 +190,10 @@ class Command(BaseCommand):
                 'excerpt': "Take a behind-the-scenes look at the inspiration and craftsmanship that went into creating our signature scent.",
                 'content': """<p>Creating Divine Aura was a journey that took our master perfumers over two years to perfect.</p>
                 <p>The vision was to capture the golden hour in the desert—that brief, magical moment when the harsh sun softens, and the sand glows with an inner warmth.</p>
+                <figure>
+                    <img src="/media/products/ChatGPT_Image_Aug_4_2026_06_57_06_PM.png" alt="Elvessora Divine Aura">
+                    <figcaption>Elvessora Divine Aura — two years in the making.</figcaption>
+                </figure>
                 <p>We achieved this by blending bright citrus top notes with a deeply resonant base of aged Oud and creamy Sandalwood.</p>
                 """,
                 'is_featured': False,

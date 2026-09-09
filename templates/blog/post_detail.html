@@ -131,9 +131,20 @@ body {
     margin-bottom: 1.8rem;
 }
 .article-content img {
+    display: block;
     max-width: 100%;
     height: auto;
-    margin: 2.5rem 0;
+    margin: 2.5rem auto;
+    border-radius: 4px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+.article-content figure { margin: 2.5rem 0; }
+.article-content figure img { margin: 0 auto 1rem; }
+.article-content figcaption {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--blog-text-light);
+    font-style: italic;
 }
 .article-content blockquote {
     font-family: 'Cormorant Garamond', serif;
