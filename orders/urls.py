@@ -5,7 +5,6 @@ app_name = 'orders'
 
 urlpatterns = [
     path('checkout/', views.checkout, name='checkout'),
-    path('payment/verify/', views.payment_verify, name='payment_verify'),
     path('payment/tamara/success/', views.tamara_success, name='tamara_success'),
     path('payment/tamara/failure/', views.tamara_failure, name='tamara_failure'),
     path('payment/tamara/cancel/', views.tamara_cancel, name='tamara_cancel'),

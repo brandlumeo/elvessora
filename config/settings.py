@@ -179,9 +179,6 @@ if not DEBUG and EMAIL_HOST_USER:
 # Used to build absolute links (order tracking, etc.) inside notification emails
 SITE_URL = os.environ.get('SITE_URL', 'https://www.elvessora.ae')
 
-RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', '')
-RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', '')
-
 # Tamara (Buy Now, Pay Later) — leave unset to disable; checkout falls back to
 # the other payment methods. Get these from the Tamara Partners Portal after
 # your merchant application is approved. Start with the sandbox base URL.

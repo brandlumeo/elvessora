@@ -7,9 +7,6 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
 from decimal import Decimal
-import razorpay
-import hmac
-import hashlib
 import json
 
 from cart.cart_service import CartService
@@ -83,8 +80,7 @@ def checkout(request):
             return render(request, 'orders/checkout.html', {'form': form, 'totals': totals, 'cart_items': cart.items.all()})
 
         payment_method = form.cleaned_data['payment_method']
-        razorpay_configured = bool(settings.RAZORPAY_KEY_ID and settings.RAZORPAY_KEY_SECRET)
-        online_configured = {'razorpay': razorpay_configured, 'tamara': tamara.is_configured(), 'tabby': tabby.is_configured()}.get(payment_method, True)
+        online_configured = {'tamara': tamara.is_configured(), 'tabby': tabby.is_configured()}.get(payment_method, True)
         if payment_method != 'cod' and not online_configured and not settings.DEBUG:
             messages.error(request, 'That payment method is currently unavailable. Please choose another.')
             return render(request, 'orders/checkout.html', {'form': form, 'totals': totals, 'cart_items': cart.items.all()})
@@ -148,28 +144,6 @@ def checkout(request):
             messages.success(request, f'Order {order.order_number} placed successfully!')
             return redirect('orders:order_confirmation', order_number=order.order_number)
 
-        if payment_method == 'razorpay' and razorpay_configured:
-            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-            razorpay_order = client.order.create({
-                'amount': int(order.total * 100),
-                'currency': 'AED',
-                'receipt': order.order_number,
-            })
-            order.razorpay_order_id = razorpay_order['id']
-            order.save()
-            Payment.objects.create(
-                order=order,
-                razorpay_order_id=razorpay_order['id'],
-                amount=order.total,
-            )
-            # Stock is decremented in payment_verify() once the signature is confirmed,
-            # so an abandoned/failed online payment never permanently reduces stock.
-            return render(request, 'orders/payment.html', {
-                'order': order,
-                'razorpay_key': settings.RAZORPAY_KEY_ID,
-                'amount': int(order.total * 100),
-            })
-
         if payment_method == 'tamara' and tamara.is_configured():
             try:
                 session = tamara.create_checkout_session(
@@ -222,54 +196,6 @@ def checkout(request):
         'totals': totals,
         'cart_items': cart.items.all(),
     })
-
-
-@csrf_exempt
-def payment_verify(request):
-    if request.method == 'POST':
-        payment_id = request.POST.get('razorpay_payment_id')
-        order_id = request.POST.get('razorpay_order_id')
-        signature = request.POST.get('razorpay_signature')
-
-        if not order_id or not payment_id:
-            messages.error(request, 'Invalid payment verification request.')
-            return redirect('cart:cart')
-
-        order = Order.objects.filter(razorpay_order_id=order_id).order_by('-id').first()
-        if order is None:
-            messages.error(request, 'Order not found.')
-            return redirect('cart:cart')
-
-        generated = hmac.new(
-            settings.RAZORPAY_KEY_SECRET.encode(),
-            f'{order_id}|{payment_id}'.encode(),
-            hashlib.sha256,
-        ).hexdigest()
-
-        if hmac.compare_digest(generated, signature or ''):
-            already_paid = order.payment_status == 'paid'
-            order.payment_status = 'paid'
-            order.status = 'confirmed'
-            order.razorpay_payment_id = payment_id
-            order.save()
-            if not already_paid:
-                _decrement_stock(order)
-            payment = order.payment
-            payment.razorpay_payment_id = payment_id
-            payment.razorpay_signature = signature
-            payment.status = 'paid'
-            payment.save()
-            _grant_order_access(request, order.order_number)
-            CartService(request).clear()
-            return redirect('orders:order_confirmation', order_number=order.order_number)
-
-        order.payment_status = 'failed'
-        order.save()
-        _grant_order_access(request, order.order_number)
-        messages.error(request, 'Payment verification failed.')
-        return redirect('orders:payment_failed', order_number=order.order_number)
-
-    return redirect('cart:cart')
 
 
 def _find_tamara_order(request):

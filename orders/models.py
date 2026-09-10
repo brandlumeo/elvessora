@@ -80,7 +80,9 @@ class Order(models.Model):
         ('refunded', 'Refunded'),
     ]
     PAYMENT_METHODS = [
-        ('razorpay', 'Online Payment'),
+        # 'razorpay' ('Online Payment') removed — India-only gateway, kept
+        # in git history for when the India store is built. The
+        # razorpay_* fields below stay so nothing breaks and re-adding is easy.
         ('tamara', 'Pay in Installments (Tamara)'),
         ('tabby', 'Pay in 4 (Tabby)'),
         ('cod', 'Cash on Delivery'),
