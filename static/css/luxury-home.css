@@ -1355,9 +1355,12 @@ body.page-luxury-home .nav-menu--home .nav-menu-link {
 
     .lux-hero-visual { order: -1; }
 
+    /* height-driven so a tall portrait bottle photo stays compact
+       instead of eating the viewport */
     .lux-hero-feature-img {
-        width: min(72%, 300px);
-        max-height: 44vh;
+        width: auto;
+        height: 36vh;
+        max-width: 72%;
         object-fit: contain;
         animation: none;
     }
@@ -1413,8 +1416,8 @@ body.page-luxury-home .nav-menu--home .nav-menu-link {
     .lux-hero-btns .lux-btn { width: 100%; }
 
     .lux-hero-feature-img {
-        width: min(62%, 230px);
-        max-height: 34vh;
+        height: 30vh;
+        max-width: 66%;
     }
 
     .lux-hero-features {
