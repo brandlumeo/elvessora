@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm
+from django.contrib.auth.forms import _unicode_ci_compare
 from django.contrib.auth.models import User
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Row, Column
@@ -88,6 +89,18 @@ class ElvessoraPasswordResetForm(PasswordResetForm):
         })
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Send Reset Link', css_class='btn btn-gold'))
+
+    def get_users(self, email):
+        """Django's default only emails accounts that already have a usable
+        password, which silently excludes Google-only accounts. We include
+        them too so a Google user can use this flow to SET a password for
+        the first time — e.g. to sign in on a device without Google."""
+        email_field_name = User.get_email_field_name()
+        active_users = User._default_manager.filter(**{
+            f'{email_field_name}__iexact': email,
+            'is_active': True,
+        })
+        return (u for u in active_users if _unicode_ci_compare(email, getattr(u, email_field_name)))
 
 
 class ProfileForm(forms.ModelForm):
