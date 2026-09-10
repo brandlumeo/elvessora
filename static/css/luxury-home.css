@@ -1334,7 +1334,7 @@ body.page-luxury-home .nav-menu--home .nav-menu-link {
 
     .lux-hero {
         min-height: auto;
-        padding: 44px 0 52px;
+        padding: 24px 0 48px;
     }
 
     .lux-hero-grid {
@@ -1395,7 +1395,7 @@ body.page-luxury-home .nav-menu--home .nav-menu-link {
 }
 
 @media (max-width: 575px) {
-    .lux-hero { padding: 34px 0 42px; }
+    .lux-hero { padding: 16px 0 40px; }
 
     .lux-hero-title { font-size: clamp(2.1rem, 8.5vw, 2.9rem); margin-bottom: 1rem; }
 
