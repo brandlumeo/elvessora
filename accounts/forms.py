@@ -47,6 +47,15 @@ class RegisterForm(UserCreationForm):
             Submit('submit', 'Create Account', css_class='btn btn-gold'),
         )
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email', '').strip()
+        if email and User.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError(
+                'An account with this email already exists. '
+                'Try signing in instead, or use "Forgot password?" to reset it.'
+            )
+        return email
+
     def clean(self):
         cleaned_data = super().clean()
         if cleaned_data.get('whatsapp_notifications') and not cleaned_data.get('phone'):
@@ -123,6 +132,12 @@ class ProfileForm(forms.ModelForm):
         self.fields['email'].initial = self.user.email
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Update Profile', css_class='btn btn-gold'))
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email', '').strip()
+        if email and User.objects.filter(email__iexact=email).exclude(pk=self.user.pk).exists():
+            raise forms.ValidationError('That email is already used by another account.')
+        return email
 
     def clean(self):
         cleaned_data = super().clean()
