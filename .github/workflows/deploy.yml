@@ -10,14 +10,14 @@ jobs:
     steps:
       - name: Write SSH key
         run: |
-          echo "${{ secrets.VPS_SSH_KEY_B64 }}" | base64 -d > /tmp/deploy_key
-          chmod 600 /tmp/deploy_key
+          echo "${{ secrets.VPS_SSH_KEY_B64 }}" | base64 -d > "$GITHUB_WORKSPACE/deploy_key"
+          chmod 600 "$GITHUB_WORKSPACE/deploy_key"
       - name: SSH and deploy
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          key_path: /tmp/deploy_key
+          key_path: /github/workspace/deploy_key
           script: |
             cd /home/elvessora/web/elvessora.ae/private/elvessora
             bash deploy.sh
