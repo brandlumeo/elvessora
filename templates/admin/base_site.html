@@ -12,6 +12,8 @@
 <link rel="stylesheet" href="{% static 'admin/css/elvassora_admin.css' %}">
 {% endblock %}
 
+{% block dark-mode-vars %}{% endblock %}
+
 {% block header %}
 <header id="header" class="elv-admin-header">
     {% if has_permission %}
@@ -78,7 +80,6 @@
         </button>
         <div class="elv-topbar-spacer"></div>
         <div class="elv-topbar-actions">
-            {% include "admin/color_theme_toggle.html" %}
             <a href="{% url 'admin:orders_order_changelist' %}" class="elv-topbar-bell" title="Pending orders &amp; low stock">
                 <i class="bi bi-bell"></i>
                 {% admin_alert_count as elv_alerts %}
@@ -93,13 +94,23 @@
                     <i class="bi bi-chevron-down"></i>
                 </button>
                 <div class="elv-topbar-user-menu">
+                    <div class="elv-topbar-user-menu-header">
+                        <span class="elv-topbar-avatar elv-topbar-avatar--lg">
+                            {% if user.profile.avatar %}<img src="{{ user.profile.avatar.url }}" alt="">{% else %}<i class="bi bi-person-fill"></i>{% endif %}
+                        </span>
+                        <div class="elv-topbar-user-menu-identity">
+                            <span class="elv-topbar-user-menu-name">{% firstof user.get_full_name user.get_username %}</span>
+                            <span class="elv-topbar-user-menu-email">{{ user.email|default:"Administrator" }}</span>
+                        </div>
+                    </div>
                     {% block userlinks %}
                     {% if user.has_usable_password %}
                     <a href="{% url 'admin:password_change' %}"><i class="bi bi-key"></i> Change password</a>
                     {% endif %}
+                    <div class="elv-topbar-user-menu-divider"></div>
                     <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
                         {% csrf_token %}
-                        <button type="submit"><i class="bi bi-box-arrow-right"></i> Log out</button>
+                        <button type="submit" class="elv-topbar-user-menu-logout"><i class="bi bi-box-arrow-right"></i> Log out</button>
                     </form>
                     {% endblock %}
                 </div>
