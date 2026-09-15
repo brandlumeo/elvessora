@@ -56,12 +56,8 @@
                     {% endif %}
                     {% if site_settings.email %}<p class="small" style="color: var(--silver);"><i class="bi bi-envelope"></i> {{ site_settings.email }}</p>{% endif %}
                     {% if site_settings.phone %}<p class="small" style="color: var(--silver);"><i class="bi bi-telephone"></i> {{ site_settings.phone }}</p>{% endif %}
-                    {% if site_settings.whatsapp_chat_url %}
-                    <a href="{{ site_settings.whatsapp_chat_url }}" class="btn btn-whatsapp btn-sm mt-2" target="_blank" rel="noopener noreferrer">
-                        <i class="bi bi-whatsapp"></i> {% trans "Chat on WhatsApp" %}
-                    </a>
-                    {% endif %}
                     <div class="social-links mt-3">
+                        {% if site_settings.whatsapp_chat_url %}<a href="{{ site_settings.whatsapp_chat_url }}" target="_blank" rel="noopener noreferrer" aria-label="{% trans 'Chat on WhatsApp' %}" title="{% trans 'Chat on WhatsApp' %}"><i class="bi bi-whatsapp"></i></a>{% endif %}
                         <a href="{{ site_settings.instagram_url|default:'https://www.instagram.com/elvessoraperfumes/' }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
                         <a href="{{ site_settings.twitter_url|default:'https://x.com/elvessora' }}" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="bi bi-twitter-x"></i></a>
                         <a href="{{ site_settings.facebook_url|default:'https://www.facebook.com/profile.php?id=61592052402320' }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
