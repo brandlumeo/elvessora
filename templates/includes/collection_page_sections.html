@@ -100,28 +100,6 @@
   </section>
   {% endif %}
 
-  <!-- SHOP BY FRAGRANCE -->
-  {% if fragrance_families %}
-  <section class="lux-section lux-discover col-page-families" id="luxDiscover">
-    <div class="container">
-      <div class="lux-section-head">
-        <div>
-          <span class="lux-label">Browse by Profile</span>
-          <h2 class="lux-heading">Shop by Fragrance Family</h2>
-        </div>
-      </div>
-      <div class="lux-family-row">
-        {% for family in fragrance_families|slice:":8" %}
-        <a href="{% url 'products:fragrance_family' family.slug %}" class="lux-family-chip">
-          <i class="bi bi-flower1"></i>
-          <span>{{ family.get_name_display }}</span>
-        </a>
-        {% endfor %}
-      </div>
-    </div>
-  </section>
-  {% endif %}
-
   <!-- GIFT SETS -->
   {% if gift_sets %}
   <section class="lux-section lux-gifts col-page-gifts" id="luxGifts">

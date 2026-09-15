@@ -27,7 +27,7 @@
     var railLinks = document.querySelectorAll('.lux-scroll-rail a');
     var sectionIds = home
         ? ['luxHero', 'luxCollection', 'luxPerfumeFinder', 'luxSpotlight']
-        : ['luxCollection', 'luxCompare', 'luxDiscover', 'luxGifts'];
+        : ['luxCollection', 'luxCompare', 'luxGifts'];
     var sections = sectionIds.map(function (id) {
         return document.getElementById(id);
     }).filter(Boolean);
