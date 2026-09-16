@@ -168,9 +168,11 @@
             if (!wasOpen) el.classList.add('open');
         });
     });
-    document.addEventListener('click', function () {
+    document.addEventListener('click', function (e) {
         document.querySelectorAll('.elv-topbar-user.open, .elv-topbar-notif.open').forEach(function (el) {
-            el.classList.remove('open');
+            if (!el.contains(e.target)) {
+                el.classList.remove('open');
+            }
         });
     });
 })();
