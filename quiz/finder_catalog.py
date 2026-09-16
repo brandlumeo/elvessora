@@ -183,26 +183,4 @@ def build_finder_catalog():
         hint = 'duo' if 'duo' in gift_set.slug else 'discovery'
         catalog.append(_gift_entry(gift_set, hint))
 
-    # Pad catalog toward 8 entries with logical aliases if fewer gift sets exist
-    if len(catalog) < 8 and products.exists():
-        extras = [
-            ('Elvessora Hair & Body Mist — FA', 'ELV-ENCHANT-004', ['daily', 'gift', 'summer'], ['fresh', 'floral', 'fruity']),
-            ('Elvessora 1991 Edition', 'ELV-MOON-001', ['date', 'night', 'party'], ['oriental', 'floral', 'woody']),
-            ('Elvessora Summer Bloom', 'ELV-DIVINE-005', ['daily', 'office', 'summer'], ['fresh', 'aquatic', 'citrus']),
-        ]
-        base_by_sku = {p.sku: p for p in products}
-        for idx, (label, sku, occasions, families) in enumerate(extras):
-            if len(catalog) >= 8:
-                break
-            base = base_by_sku.get(sku)
-            if not base:
-                continue
-            entry = _product_entry(base)
-            entry['id'] = f'variant-{idx + 1}'
-            entry['name'] = label.replace('Elvessora ', '')
-            entry['full_name'] = label
-            entry['occasions'] = list(set(entry['occasions'] + occasions))
-            entry['scent_families'] = list(set(entry['scent_families'] + families))
-            catalog.append(entry)
-
     return catalog
