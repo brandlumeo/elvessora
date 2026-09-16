@@ -32,8 +32,8 @@ def shop(request):
         'products': products,
         'filter': product_filter,
         'sort': sort,
-        'fragrance_families': FragranceFamily.objects.all(),
-        'occasions': Occasion.objects.all(),
+        'fragrance_families': FragranceFamily.objects.filter(products__is_active=True).distinct(),
+        'occasions': Occasion.objects.filter(products__is_active=True).distinct(),
         'collections': Collection.objects.filter(is_active=True),
     })
 
