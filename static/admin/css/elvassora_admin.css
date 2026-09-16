@@ -300,6 +300,7 @@ body {
     top: calc(100% + 12px);
     right: 0;
     min-width: 240px;
+    box-sizing: border-box;
     background: #fff;
     border: 1px solid var(--elv-silver-light);
     border-radius: 12px;
@@ -384,6 +385,7 @@ body {
     align-items: center;
     gap: 10px;
     width: 100%;
+    box-sizing: border-box;
     padding: 10px 12px;
     font-size: 0.8rem;
     font-weight: 500;
@@ -433,6 +435,7 @@ body {
     top: calc(100% + 12px);
     right: 0;
     width: 320px;
+    box-sizing: border-box;
     background: #fff;
     border: 1px solid var(--elv-silver-light);
     border-radius: 12px;
@@ -474,6 +477,25 @@ body {
 .elv-topbar-notif-list {
     max-height: 320px;
     overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--elv-silver-light) transparent;
+}
+
+.elv-topbar-notif-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.elv-topbar-notif-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.elv-topbar-notif-list::-webkit-scrollbar-thumb {
+    background: var(--elv-silver-light);
+    border-radius: 6px;
 }
 
 .elv-topbar-notif-item {
@@ -481,8 +503,9 @@ body {
     align-items: flex-start;
     gap: 10px;
     width: 100%;
+    box-sizing: border-box;
     padding: 10px;
-    border-radius: 6px;
+    border-radius: 8px;
     text-decoration: none !important;
     transition: background 0.12s ease;
 }
