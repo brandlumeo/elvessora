@@ -199,6 +199,10 @@ body {
     gap: 14px;
 }
 
+.elv-topbar-notif {
+    position: relative;
+}
+
 .elv-topbar-bell {
     position: relative;
     display: inline-flex;
@@ -206,11 +210,14 @@ body {
     justify-content: center;
     width: 38px;
     height: 38px;
+    border: none;
     border-radius: 50%;
     background: var(--elv-royal-pale);
     color: var(--elv-royal) !important;
     text-decoration: none !important;
     font-size: 1.05rem;
+    font-family: inherit;
+    cursor: pointer;
     transition: all 0.15s ease;
 }
 
@@ -418,6 +425,144 @@ body {
 
 .elv-topbar-user-menu-logout:hover i {
     color: #c0392b !important;
+}
+
+.elv-topbar-notif-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    width: 320px;
+    background: #fff;
+    border: 1px solid var(--elv-silver-light);
+    border-radius: 12px;
+    box-shadow: 0 16px 40px rgba(6, 16, 34, 0.18);
+    padding: 8px;
+    z-index: 1200;
+}
+
+.elv-topbar-notif-menu::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    right: 14px;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-left: 1px solid var(--elv-silver-light);
+    border-top: 1px solid var(--elv-silver-light);
+    transform: rotate(45deg);
+    border-radius: 2px 0 0 0;
+}
+
+.elv-topbar-notif.open .elv-topbar-notif-menu {
+    display: block;
+    animation: elv-menu-pop 0.14s ease;
+}
+
+.elv-topbar-notif-menu-header {
+    padding: 8px 10px 10px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--elv-silver-light);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--elv-royal-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.elv-topbar-notif-list {
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.elv-topbar-notif-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    text-decoration: none !important;
+    transition: background 0.12s ease;
+}
+
+.elv-topbar-notif-item:hover {
+    background: var(--elv-royal-pale);
+}
+
+.elv-topbar-notif-item i {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--elv-royal-pale);
+    color: var(--elv-royal);
+    font-size: 0.85rem;
+    margin-top: 1px;
+}
+
+.elv-topbar-notif-item .bi-exclamation-triangle {
+    background: #fdecea;
+    color: #c0392b;
+}
+
+.elv-topbar-notif-item-text {
+    min-width: 0;
+}
+
+.elv-topbar-notif-item-title {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--elv-royal-dark);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.elv-topbar-notif-item-sub {
+    display: block;
+    font-size: 0.72rem;
+    color: #64748b;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 1px;
+}
+
+.elv-topbar-notif-empty {
+    padding: 20px 10px;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.elv-topbar-notif-viewall {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 4px;
+    padding: 10px;
+    border-top: 1px solid var(--elv-silver-light);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--elv-royal) !important;
+    text-decoration: none !important;
+}
+
+.elv-topbar-notif-viewall:hover {
+    color: var(--elv-royal-dark) !important;
+}
+
+@media (max-width: 600px) {
+    .elv-topbar-notif-menu {
+        width: 280px;
+    }
 }
 
 /* Push everything after the header (breadcrumbs + main content) right of the fixed sidebar */
