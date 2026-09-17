@@ -1,5 +1,5 @@
 {% extends "admin/base_site.html" %}
-{% load i18n %}
+{% load i18n admin_extras %}
 
 {% block bodyclass %}{{ block.super }} app-{{ app_label }}{% endblock %}
 
@@ -18,5 +18,31 @@
 {% endif %}
 
 {% block content %}
-  {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+  {% for app in app_list %}
+  <div class="elv-applist-grid">
+    {% for model in app.models %}
+    <div class="elv-applist-card">
+      <span class="elv-applist-icon"><i class="bi {{ model|admin_model_icon }}"></i></span>
+      <div class="elv-applist-body">
+        <h3>{% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}</a>{% else %}{{ model.name }}{% endif %}</h3>
+        {% with desc=model|admin_model_description %}
+        {% if desc %}<p>{{ desc }}</p>{% endif %}
+        {% endwith %}
+      </div>
+      <div class="elv-applist-actions">
+        {% if model.add_url %}<a href="{{ model.add_url }}" class="elv-btn-sm elv-btn-sm-outline">{% translate "Add" %}</a>{% endif %}
+        {% if model.admin_url %}
+          {% if model.view_only %}
+            <a href="{{ model.admin_url }}" class="elv-btn-sm elv-btn-sm-outline">{% translate "View" %}</a>
+          {% else %}
+            <a href="{{ model.admin_url }}" class="elv-btn-sm elv-btn-sm-gold">{% translate "Manage" %}</a>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% empty %}
+  <p>{% translate "You don't have permission to view or edit anything." %}</p>
+  {% endfor %}
 {% endblock %}

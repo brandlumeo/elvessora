@@ -2301,3 +2301,103 @@ a:hover {
 }
 
 
+
+/* ── App-index page (e.g. /admin/marketing/) model cards ── */
+.elv-applist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+}
+
+.elv-applist-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid var(--elv-silver-light);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(26, 58, 122, 0.04);
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.elv-applist-card:hover {
+    box-shadow: 0 8px 24px rgba(26, 58, 122, 0.1);
+    transform: translateY(-2px);
+}
+
+.elv-applist-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--elv-royal-pale);
+    color: var(--elv-royal);
+    font-size: 1.2rem;
+}
+
+.elv-applist-body {
+    flex: 1;
+}
+
+.elv-applist-body h3 {
+    margin: 0 0 6px;
+    font-family: var(--elv-font-serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.elv-applist-body h3 a {
+    color: var(--elv-royal-dark);
+    text-decoration: none !important;
+}
+
+.elv-applist-body h3 a:hover {
+    color: var(--elv-royal);
+}
+
+.elv-applist-body p {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    color: #64748b;
+}
+
+.elv-applist-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.elv-btn-sm {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: all 0.15s ease;
+}
+
+.elv-btn-sm-gold {
+    background: var(--elv-gold);
+    color: var(--elv-royal-dark) !important;
+}
+
+.elv-btn-sm-gold:hover {
+    background: #b6934f;
+}
+
+.elv-btn-sm-outline {
+    background: transparent;
+    border: 1px solid var(--elv-silver-light);
+    color: var(--elv-royal-dark) !important;
+}
+
+.elv-btn-sm-outline:hover {
+    background: var(--elv-royal-pale);
+    border-color: var(--elv-royal-pale);
+}

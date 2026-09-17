@@ -44,3 +44,56 @@ def admin_alert_items(limit=6):
         })
 
     return items[:limit]
+
+
+# (app_label, object_name) -> (bootstrap icon class, short description)
+MODEL_META = {
+    ('marketing', 'Banner'): ('bi-image', 'Hero, secondary, and promo-strip images shown across the site.'),
+    ('marketing', 'ContactEnquiry'): ('bi-envelope-open', 'Messages submitted through the site’s Contact form.'),
+    ('marketing', 'EmailCampaign'): ('bi-send', 'Draft, scheduled, and sent emails to your newsletter list.'),
+    ('marketing', 'FlashSale'): ('bi-lightning-charge', 'Time-limited discounts on selected products.'),
+    ('marketing', 'HomepageSection'): ('bi-layout-text-window', 'Show/hide and reorder the homepage’s built-in blocks.'),
+    ('marketing', 'NewsletterSubscriber'): ('bi-people', 'Everyone who signed up for the newsletter on the storefront.'),
+    ('marketing', 'PromoPopup'): ('bi-megaphone', 'On-site popup offers shown to visitors, with an optional coupon code.'),
+    ('orders', 'Order'): ('bi-bag-check', 'Customer orders, statuses, and shipping details.'),
+    ('orders', 'Coupon'): ('bi-tag', 'Discount codes customers can apply at checkout.'),
+    ('orders', 'Payment'): ('bi-credit-card', 'Payment records for orders.'),
+    ('orders', 'Refund'): ('bi-arrow-counterclockwise', 'Refunds issued against orders.'),
+    ('products', 'Product'): ('bi-droplet', 'Your perfumes — pricing, notes, images, and variants.'),
+    ('products', 'Collection'): ('bi-collection', 'Curated product groupings shown on the site.'),
+    ('products', 'Category'): ('bi-folder', 'Top-level product categories.'),
+    ('products', 'Brand'): ('bi-award', 'Brand records linked to products.'),
+    ('products', 'FragranceFamily'): ('bi-flower1', 'Scent family tags (Woody, Floral, Citrus, etc.).'),
+    ('products', 'Occasion'): ('bi-calendar-event', 'Occasion tags (Daily, Office, Wedding, etc.).'),
+    ('products', 'GiftSet'): ('bi-gift', 'Bundled gift sets combining multiple products.'),
+    ('accounts', 'Customer'): ('bi-people', 'Registered storefront customers.'),
+    ('accounts', 'Address'): ('bi-geo-alt', 'Saved shipping addresses.'),
+    ('reviews', 'Review'): ('bi-star', 'Customer product reviews and ratings.'),
+    ('inventory', 'Inventory'): ('bi-boxes', 'Stock levels per product variant.'),
+    ('core', 'FAQ'): ('bi-question-circle', 'Frequently asked questions shown on the FAQ page.'),
+    ('core', 'LegalPage'): ('bi-file-earmark-text', 'Privacy Policy, Terms, Shipping, Returns, and other legal pages.'),
+    ('core', 'HomePageContent'): ('bi-house', 'Editable text/images for the homepage’s built-in sections.'),
+    ('core', 'HomePageHighlight'): ('bi-stars', 'Small highlight items (hero features, ingredients, value props).'),
+    ('core', 'SiteSettings'): ('bi-gear', 'Global store settings — brand info, contact details, thresholds.'),
+    ('auth', 'User'): ('bi-shield-lock', 'Admin/staff accounts and their permissions.'),
+    ('auth', 'Group'): ('bi-people-fill', 'Reusable permission bundles you can assign to staff accounts.'),
+}
+
+DEFAULT_ICON = 'bi-folder2'
+
+
+def _model_app_label(model):
+    m = model.get('model')
+    return m._meta.app_label if m else ''
+
+
+@register.filter
+def admin_model_icon(model):
+    meta = MODEL_META.get((_model_app_label(model), model.get('object_name', '')))
+    return meta[0] if meta else DEFAULT_ICON
+
+
+@register.filter
+def admin_model_description(model):
+    meta = MODEL_META.get((_model_app_label(model), model.get('object_name', '')))
+    return meta[1] if meta else ''
