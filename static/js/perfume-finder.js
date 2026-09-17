@@ -45,8 +45,16 @@
         if (key === 'budget_max') {
             var slider = group;
             var display = root.querySelector('[data-budget-display]');
+            var updateFill = function () {
+                var min = parseInt(slider.min, 10) || 0;
+                var max = parseInt(slider.max, 10) || 100;
+                var pct = ((parseInt(slider.value, 10) - min) / (max - min)) * 100;
+                slider.style.setProperty('--pf-fill', pct + '%');
+            };
+            updateFill();
             slider.addEventListener('input', function () {
                 filters.budget_max = parseInt(slider.value, 10);
+                updateFill();
                 if (display) {
                     display.textContent = filters.budget_max >= 1000
                         ? 'AED 100 – 1,000+'
@@ -280,6 +288,7 @@
             var key = group.getAttribute('data-filter');
             if (key === 'budget_max') {
                 group.value = 1000;
+                group.style.setProperty('--pf-fill', '100%');
                 return;
             }
             group.querySelectorAll('.pf-chip').forEach(function (chip) {

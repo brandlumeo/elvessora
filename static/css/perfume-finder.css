@@ -219,12 +219,12 @@
 .pf-filters-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem 1.5rem;
-    padding: 1.5rem;
-    background: #fff;
-    border-radius: 16px;
-    border: 1px solid rgba(6, 16, 34, 0.08);
-    box-shadow: 0 8px 24px rgba(6, 16, 34, 0.04);
+    gap: 2rem 2.5rem;
+    padding: 2rem clamp(1.5rem, 3vw, 2.5rem);
+    background: linear-gradient(165deg, #ffffff 0%, var(--pf-beige-soft) 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(200, 169, 106, 0.18);
+    box-shadow: 0 12px 32px rgba(6, 16, 34, 0.06);
 }
 
 .pf-filter-group--wide {
@@ -232,13 +232,25 @@
 }
 
 .pf-filter-label {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--pf-navy-mid);
-    margin-bottom: 0.65rem;
+    margin-bottom: 1rem;
+}
+
+.pf-filter-label::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--pf-gold), transparent);
+    flex-shrink: 0;
 }
 
 .pf-filter-label small {
@@ -283,13 +295,60 @@
     width: 100%;
     accent-color: var(--pf-gold);
     margin: 0.5rem 0;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--pf-gold) 0%, var(--pf-gold) var(--pf-fill, 50%), rgba(6, 16, 34, 0.1) var(--pf-fill, 50%), rgba(6, 16, 34, 0.1) 100%);
+    cursor: pointer;
+}
+
+.pf-budget-slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid var(--pf-gold);
+    box-shadow: 0 3px 10px rgba(200, 169, 106, 0.5);
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+.pf-budget-slider input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+}
+
+.pf-budget-slider input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid var(--pf-gold);
+    box-shadow: 0 3px 10px rgba(200, 169, 106, 0.5);
+    cursor: pointer;
+}
+
+.pf-budget-slider input[type="range"]::-moz-range-track {
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(6, 16, 34, 0.1);
+}
+
+.pf-budget-slider input[type="range"]::-moz-range-progress {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--pf-gold);
 }
 
 .pf-budget-labels {
     display: flex;
     justify-content: space-between;
     font-size: 0.75rem;
+    font-weight: 600;
     color: var(--pf-muted);
+    margin-top: 0.35rem;
 }
 
 .pf-actions {
