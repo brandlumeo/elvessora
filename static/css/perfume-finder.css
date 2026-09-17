@@ -217,18 +217,17 @@
 }
 
 .pf-filters-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.pf-filter-group {
     padding: 1.5rem;
     background: #fff;
     border-radius: 16px;
     border: 1px solid rgba(6, 16, 34, 0.08);
     box-shadow: 0 8px 24px rgba(6, 16, 34, 0.04);
-}
-
-.pf-filter-group--wide {
-    grid-column: 1 / -1;
 }
 
 .pf-filter-label {
