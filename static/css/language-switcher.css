@@ -150,20 +150,15 @@ body.page-luxury-home .top-bar-mobile .lang-switcher-toggle .bi-globe2 {
     flex-shrink: 0;
 }
 
-/* Nav (light homepage header) */
-body.page-luxury-home .nav-actions .lang-switcher-toggle,
+/* Nav (.luxury-nav always has a dark background, homepage included) */
 .nav-actions .lang-switcher-toggle {
-    color: #0A2163;
-    border-color: rgba(10, 33, 99, 0.18);
-    background: rgba(10, 33, 99, 0.04);
-}
-
-body.page-luxury-home .nav-actions .lang-switcher-toggle .bi-globe2 {
-    color: #C8A96A;
-}
-
-.luxury-nav:not(body.page-luxury-home .luxury-nav) .lang-switcher-toggle {
     color: #fff;
+    border-color: rgba(200, 169, 106, 0.65);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.nav-actions .lang-switcher-toggle .bi-globe2 {
+    color: #C8A96A;
 }
 
 .mobile-nav-lang {
