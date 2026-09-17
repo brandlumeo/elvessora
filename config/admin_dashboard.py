@@ -9,7 +9,10 @@ from django.utils import timezone
 from accounts.models import Customer
 from cart.models import Cart
 from core.models import SiteSettings, FAQ
-from marketing.models import AbandonedCartReminder
+from marketing.models import (
+    AbandonedCartReminder, Banner, ContactEnquiry, EmailCampaign,
+    FlashSale, NewsletterSubscriber, PromoPopup,
+)
 from orders.models import Order, OrderItem
 from products.models import Product, ProductVariant, RecentlyViewed
 
@@ -525,6 +528,120 @@ def custom_admin_index(request, extra_context=None):
 
 
 admin.site.index = custom_admin_index
+
+
+def marketing_dashboard_context():
+    """Real (not fabricated) stats for the Marketing app-index page."""
+    now = timezone.now()
+    period_start = now - timedelta(days=30)
+    prev_period_start = period_start - timedelta(days=30)
+
+    subs_qs = NewsletterSubscriber.objects.filter(is_active=True)
+    subs_total = subs_qs.count()
+    subs_period = NewsletterSubscriber.objects.filter(subscribed_at__gte=period_start).count()
+    subs_prev = NewsletterSubscriber.objects.filter(
+        subscribed_at__gte=prev_period_start, subscribed_at__lt=period_start,
+    ).count()
+
+    active_banners = Banner.objects.filter(is_active=True).count()
+    active_flash_sales_qs = FlashSale.objects.filter(is_active=True, ends_at__gte=now)
+    active_flash_sales = active_flash_sales_qs.count()
+    active_popups = PromoPopup.objects.filter(is_active=True).count()
+    unread_enquiries = ContactEnquiry.objects.filter(is_read=False).count()
+    campaigns_pending = EmailCampaign.objects.filter(status__in=['draft', 'scheduled']).count()
+    campaigns_sent = EmailCampaign.objects.filter(status='sent').count()
+
+    stats = [
+        {
+            'label': 'Newsletter Subscribers', 'value': subs_total,
+            'icon': 'bi-people', 'trend': _trend(_pct_change(subs_period, subs_prev)),
+            'url': _admin_url('admin:marketing_newslettersubscriber_changelist'),
+        },
+        {
+            'label': 'Active Banners', 'value': active_banners,
+            'icon': 'bi-image', 'trend': None,
+            'url': _admin_url('admin:marketing_banner_changelist'),
+        },
+        {
+            'label': 'Active Flash Sales', 'value': active_flash_sales,
+            'icon': 'bi-lightning-charge', 'trend': None,
+            'url': _admin_url('admin:marketing_flashsale_changelist'),
+        },
+        {
+            'label': 'Unread Enquiries', 'value': unread_enquiries,
+            'icon': 'bi-envelope-open', 'trend': None,
+            'url': _admin_url('admin:marketing_contactenquiry_changelist'),
+        },
+        {
+            'label': 'Email Campaigns Pending', 'value': campaigns_pending,
+            'icon': 'bi-send', 'trend': None,
+            'url': _admin_url('admin:marketing_emailcampaign_changelist'),
+        },
+        {
+            'label': 'Active Popups', 'value': active_popups,
+            'icon': 'bi-megaphone', 'trend': None,
+            'url': _admin_url('admin:marketing_promopopup_changelist'),
+        },
+    ]
+
+    needs_attention = []
+    if unread_enquiries:
+        needs_attention.append({
+            'icon': 'bi-envelope-exclamation',
+            'title': f'{unread_enquiries} unread enquir{"y" if unread_enquiries == 1 else "ies"}',
+            'subtitle': 'From the Contact form',
+            'url': _admin_url('admin:marketing_contactenquiry_changelist'),
+        })
+    ending_soon = active_flash_sales_qs.filter(ends_at__lte=now + timedelta(hours=48)).order_by('ends_at')
+    for fs in ending_soon:
+        hours_left = max(int((fs.ends_at - now).total_seconds() // 3600), 0)
+        needs_attention.append({
+            'icon': 'bi-hourglass-split',
+            'title': f'"{fs.name}" ends in {hours_left}h',
+            'subtitle': f'{fs.discount_percent}% off',
+            'url': _admin_url('admin:marketing_flashsale_change', fs.pk),
+        })
+    if campaigns_sent == 0 and campaigns_pending == 0:
+        needs_attention.append({
+            'icon': 'bi-send',
+            'title': 'No email campaigns yet',
+            'subtitle': 'Create one to reach your newsletter list',
+            'url': _admin_url('admin:marketing_emailcampaign_add'),
+        })
+
+    active_flash_sale_cards = []
+    for fs in active_flash_sales_qs.order_by('ends_at')[:4]:
+        total_seconds = max((fs.ends_at - fs.starts_at).total_seconds(), 1)
+        elapsed_seconds = min(max((now - fs.starts_at).total_seconds(), 0), total_seconds)
+        active_flash_sale_cards.append({
+            'name': fs.name,
+            'discount_percent': fs.discount_percent,
+            'starts_at': fs.starts_at,
+            'ends_at': fs.ends_at,
+            'product_count': fs.products.count(),
+            'pct_elapsed': round(elapsed_seconds / total_seconds * 100, 1),
+            'url': _admin_url('admin:marketing_flashsale_change', fs.pk),
+        })
+
+    return {
+        'marketing_stats': stats,
+        'marketing_needs_attention': needs_attention,
+        'marketing_active_flash_sales': active_flash_sale_cards,
+        'marketing_now': now,
+    }
+
+
+_original_app_index = admin.site.app_index
+
+
+def custom_app_index(request, app_label, extra_context=None):
+    extra_context = extra_context or {}
+    if app_label == 'marketing':
+        extra_context.update(marketing_dashboard_context())
+    return _original_app_index(request, app_label, extra_context)
+
+
+admin.site.app_index = custom_app_index
 
 admin.site.site_header = 'Elvessora Admin Dashboard'
 admin.site.site_title = 'Elvessora Admin'
