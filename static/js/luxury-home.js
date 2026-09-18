@@ -218,4 +218,56 @@
             });
         });
     }
+
+    /* --- Hero carousel --- */
+    var heroCarousel = document.querySelector('[data-hero-carousel]');
+    if (heroCarousel) {
+        var heroSlides = Array.prototype.slice.call(heroCarousel.querySelectorAll('[data-hero-slide]'));
+        var heroPrev = heroCarousel.querySelector('[data-hero-prev]');
+        var heroNext = heroCarousel.querySelector('[data-hero-next]');
+        var heroPagination = heroCarousel.querySelector('[data-hero-pagination]');
+        var heroIndex = 0;
+        var heroTimer = null;
+
+        if (heroSlides.length > 1) {
+            heroSlides.forEach(function (slide, i) {
+                if (!heroPagination) return;
+                var btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'lux-hero-pagination-item';
+                btn.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+                btn.textContent = (i + 1 < 10 ? '0' : '') + (i + 1);
+                btn.addEventListener('click', function () {
+                    goToHeroSlide(i);
+                    restartHeroAutoplay();
+                });
+                heroPagination.appendChild(btn);
+            });
+
+            function goToHeroSlide(i) {
+                heroSlides[heroIndex].classList.remove('is-active');
+                heroIndex = (i + heroSlides.length) % heroSlides.length;
+                heroSlides[heroIndex].classList.add('is-active');
+                if (heroPagination) {
+                    heroPagination.querySelectorAll('.lux-hero-pagination-item').forEach(function (btn, idx) {
+                        btn.classList.toggle('is-active', idx === heroIndex);
+                    });
+                }
+            }
+
+            function restartHeroAutoplay() {
+                if (heroTimer) clearInterval(heroTimer);
+                heroTimer = setInterval(function () { goToHeroSlide(heroIndex + 1); }, 6000);
+            }
+
+            if (heroPrev) heroPrev.addEventListener('click', function () { goToHeroSlide(heroIndex - 1); restartHeroAutoplay(); });
+            if (heroNext) heroNext.addEventListener('click', function () { goToHeroSlide(heroIndex + 1); restartHeroAutoplay(); });
+
+            goToHeroSlide(0);
+            restartHeroAutoplay();
+
+            heroCarousel.addEventListener('mouseenter', function () { if (heroTimer) clearInterval(heroTimer); });
+            heroCarousel.addEventListener('mouseleave', restartHeroAutoplay);
+        }
+    }
 })();

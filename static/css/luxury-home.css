@@ -493,6 +493,121 @@ body.page-luxury-home,
     color: var(--lux-gold);
 }
 
+/* ========== HERO CAROUSEL ========== */
+.lux-hero-slides {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+}
+
+.lux-hero-slide {
+    display: none;
+}
+
+.lux-hero-slide.is-active {
+    display: block;
+    animation: lux-hero-fade 0.5s ease;
+}
+
+@keyframes lux-hero-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.lux-hero-tagline-vertical {
+    position: absolute;
+    right: clamp(1rem, 3vw, 2.5rem);
+    top: 90px;
+    z-index: 3;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1.6;
+    color: rgba(6, 16, 34, 0.4);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    pointer-events: none;
+}
+
+.lux-hero-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 4;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(6, 16, 34, 0.12);
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--lux-navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.lux-hero-nav:hover {
+    background: var(--lux-gold);
+    color: #fff;
+    border-color: var(--lux-gold);
+}
+
+.lux-hero-nav-prev { left: clamp(0.5rem, 2vw, 1.5rem); }
+.lux-hero-nav-next { right: clamp(0.5rem, 2vw, 1.5rem); }
+
+.lux-hero-pagination {
+    position: absolute;
+    left: clamp(1rem, 4vw, 3rem);
+    bottom: 28px;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+}
+
+.lux-hero-pagination-item {
+    position: relative;
+    padding: 0 0 6px;
+    border: none;
+    background: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: rgba(6, 16, 34, 0.35);
+    cursor: pointer;
+    transition: color 0.25s ease;
+}
+
+.lux-hero-pagination-item::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background: var(--lux-gold);
+    transition: width 0.25s ease;
+}
+
+.lux-hero-pagination-item.is-active {
+    color: var(--lux-navy);
+}
+
+.lux-hero-pagination-item.is-active::after {
+    width: 28px;
+}
+
+@media (max-width: 767.98px) {
+    .lux-hero-tagline-vertical { display: none; }
+    .lux-hero-nav { width: 36px; height: 36px; font-size: 0.85rem; }
+    .lux-hero-pagination { bottom: 16px; gap: 0.75rem; }
+}
+
 /* ========== COLLECTION CAROUSEL ========== */
 .lux-collection {
     background: var(--lux-bg-soft);
