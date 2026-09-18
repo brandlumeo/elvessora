@@ -1,6 +1,5 @@
 from django.db import migrations
 from django.utils import timezone
-from django.utils.text import slugify
 
 CONTENT = """
 <p>Choosing a fragrance is a more personal decision for men than the shelves at most stores let on. Where womenswear perfumery leans into a wide spectrum of florals and gourmands, men are often steered toward the same handful of "safe" woody-aromatic blends — leaving plenty of genuinely great options overlooked simply because they were never marketed as "for him."</p>
@@ -50,7 +49,7 @@ def add_post(apps, schema_editor):
     )
 
     title = "A Guide to Men's Fragrance: How to Choose Your Signature Scent"
-    slug = slugify(title)
+    slug = 'mens-fragrance-guide'
     if BlogPost.objects.filter(slug=slug).exists():
         return
 
@@ -85,9 +84,7 @@ def add_post(apps, schema_editor):
 
 def remove_post(apps, schema_editor):
     BlogPost = apps.get_model('blog', 'BlogPost')
-    BlogPost.objects.filter(
-        slug='a-guide-to-mens-fragrance-how-to-choose-your-signature-scent'
-    ).delete()
+    BlogPost.objects.filter(slug='mens-fragrance-guide').delete()
 
 
 class Migration(migrations.Migration):
