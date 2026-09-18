@@ -4,7 +4,15 @@ from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 
 from .models import BlogCategory, BlogPost
+from products.fragrance_utils import resolve_product_image_url
 from products.models import Product
+
+
+def _signature_image(sku):
+    """Real (admin-uploaded, or branded fallback) photo for a signature SKU —
+    used instead of hardcoded stock art so these always show the live product."""
+    product = Product.objects.filter(sku=sku).prefetch_related('images').first()
+    return resolve_product_image_url(product) if product else ''
 
 
 def _category_link(name):
@@ -66,26 +74,26 @@ def post_list(request):
         {
             'title': 'Fragrance Families',
             'description': 'Floral, woody, oriental, fresh — find the family that matches your taste.',
-            'image': '/media/products/ChatGPT_Image_Aug_4_2026_06_56_44_PM.png',
+            'image': _signature_image('ELV-MOON-001'),
             'url': None,
             'url_name': 'quiz:finder',
         },
         {
             'title': 'Understanding Fragrance Notes',
             'description': 'How top, heart, and base notes unfold on your skin over time.',
-            'image': '/media/products/ChatGPT_Image_Aug_4_2026_06_56_56_PM.png',
+            'image': _signature_image('ELV-AMBER-003'),
             'category_slug': _category_link('Fragrance Notes'),
         },
         {
             'title': 'The Art of Perfume',
             'description': 'Behind the craftsmanship, ingredients, and stories of fine perfumery.',
-            'image': '/media/products/ChatGPT_Image_Aug_4_2026_06_57_01_PM.png',
+            'image': _signature_image('ELV-ENCHANT-004'),
             'category_slug': _category_link('Perfume Guides'),
         },
         {
             'title': 'Choosing Your Signature Scent',
             'description': 'A personal journey — how fragrance, personality, and occasion come together.',
-            'image': '/media/products/ChatGPT_Image_Aug_4_2026_06_57_06_PM.png',
+            'image': _signature_image('ELV-DIVINE-005'),
             'post_slug': BlogPost.objects.filter(
                 is_published=True, title__icontains='Signature Scent'
             ).values_list('slug', flat=True).first(),
