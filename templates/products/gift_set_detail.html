@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
-{% load humanize %}
+{% load static humanize fragrance_extras %}
 
 {% block title %}{{ gift_set.name }} — {{ site_settings.brand_name }}{% endblock %}
+{% block extra_css %}<link href="{% static 'css/luxury-home.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
 <div class="container py-5">
     <div class="row g-5">
@@ -18,13 +19,11 @@
             <span class="product-collection">{{ gift_set.get_gift_type_display }}</span>
             <h1>{{ gift_set.name }}</h1>
             <div class="product-price mb-3">
-                <span class="price-offer fs-3">₹{{ gift_set.current_price|floatformat:0|intcomma }}</span>
+                <span class="price-offer fs-3">{{ gift_set.current_price|format_price }}</span>
             </div>
             <p>{{ gift_set.description }}</p>
             {% if gift_set.custom_wrapping_available %}<p><i class="bi bi-check-circle text-success"></i> Custom gift wrapping available</p>{% endif %}
             {% if gift_set.personalized_message_available %}<p><i class="bi bi-check-circle text-success"></i> Personalized gift message available</p>{% endif %}
-            <h6 class="mt-4">Includes:</h6>
-            <ul>{% for p in gift_set.products.all %}<li><a href="{% url 'products:product_detail' p.slug %}">{{ p.name }}</a></li>{% endfor %}</ul>
             <form action="{% url 'cart:add' %}" method="post" class="mt-4">
                 {% csrf_token %}
                 <input type="hidden" name="gift_set_id" value="{{ gift_set.id }}">
@@ -34,5 +33,19 @@
             </form>
         </div>
     </div>
+
+    {% if gift_set.products.exists %}
+    <div class="mt-5 pt-4">
+        <span class="lux-label">This Set Includes</span>
+        <h2 class="lux-heading mb-4">{{ gift_set.products.count }} Fragrance{{ gift_set.products.count|pluralize }}</h2>
+        <div class="row g-4">
+            {% for product in gift_set.products.all %}
+            <div class="col-6 col-lg-3">
+                {% include 'includes/lux_product_card.html' %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
