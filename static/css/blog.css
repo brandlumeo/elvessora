@@ -268,7 +268,7 @@
 .blog-newsletter .kicker {
     color: var(--blog-gold); text-transform: uppercase; letter-spacing: 2px; font-size: 0.72rem;
 }
-.blog-newsletter h3 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; margin: 8px 0 10px; }
+.blog-newsletter h3 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; margin: 8px 0 10px; color: #fff; }
 .blog-newsletter p { color: var(--silver); margin-bottom: 0; }
 .nl-form { display: flex; gap: 10px; }
 .nl-input {
