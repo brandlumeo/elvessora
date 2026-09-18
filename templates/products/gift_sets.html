@@ -2,29 +2,29 @@
 {% load humanize static fragrance_extras %}
 
 {% block title %}Gift Sets — {{ site_settings.brand_name }}{% endblock %}
+{% block extra_css %}<link href="{% static 'css/luxury-home.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
 <div class="page-header"><div class="container"><h1>Gift Sets</h1><p class="text-muted">Perfect presents with custom wrapping & personalized messages</p></div></div>
 <div class="container pb-5">
-    <div class="row">
+    <div class="row g-4">
         {% for gift_set in gift_sets %}
-        <div class="col-md-3">
-            <div class="product-card">
-                <div class="product-image">
+        <div class="col-6 col-lg-3">
+            <article class="lux-gift-card">
+                <a href="{% url 'products:gift_set_detail' gift_set.slug %}" class="lux-gift-image">
                     {% if gift_set.display_image_url %}
-                    <img src="{{ gift_set.display_image_url }}" alt="{{ gift_set.name }}">
+                    <img src="{{ gift_set.display_image_url }}" alt="{{ gift_set.name }}" loading="lazy">
                     {% else %}
                     <div class="lux-gift-image-empty" aria-hidden="true">
                         <i class="bi bi-gift"></i>
                         <span>Gift Set</span>
                     </div>
                     {% endif %}
-                </div>
-                <div class="product-info">
-                    <h5><a href="{% url 'products:gift_set_detail' gift_set.slug %}">{{ gift_set.name }}</a></h5>
-                    <span class="product-collection">{{ gift_set.get_gift_type_display }}</span>
-                    <div class="product-price"><span class="price-offer">{{ gift_set.current_price|format_price }}</span></div>
-                </div>
-            </div>
+                </a>
+                <h3><a href="{% url 'products:gift_set_detail' gift_set.slug %}">{{ gift_set.name }}</a></h3>
+                <p class="lux-product-tag">{{ gift_set.get_gift_type_display }}</p>
+                <p class="lux-product-price">{{ gift_set.current_price|format_price }}</p>
+                <a href="{% url 'products:gift_set_detail' gift_set.slug %}" class="lux-link-arrow">View Gift Set <i class="bi bi-arrow-right"></i></a>
+            </article>
         </div>
         {% empty %}
         <p class="text-muted text-center">No gift sets available yet.</p>
