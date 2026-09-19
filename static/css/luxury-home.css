@@ -539,7 +539,7 @@ body.page-luxury-home,
 
 @media (max-width: 767.98px) {
     .lux-signature-banner {
-        min-height: 520px;
+        min-height: 620px;
     }
     .lux-signature-img {
         position: absolute;
@@ -560,7 +560,7 @@ body.page-luxury-home,
 
 @media (max-width: 575px) {
     .lux-signature-banner {
-        min-height: 460px;
+        min-height: 560px;
     }
 }
 
