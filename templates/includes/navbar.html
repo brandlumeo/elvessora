@@ -24,6 +24,12 @@
                         <a href="{% url 'products:shop' %}" class="nav-menu-link{% if request.resolver_match.namespace == 'products' and request.resolver_match.url_name == 'shop' %} is-active{% endif %}">{% trans "Shop" %}</a>
                     </li>
                     <li class="nav-menu-item">
+                        <a href="{% url 'products:best_sellers' %}" class="nav-menu-link{% if request.resolver_match.url_name == 'best_sellers' %} is-active{% endif %}">{% trans "Best Sellers" %}</a>
+                    </li>
+                    <li class="nav-menu-item">
+                        <a href="{% url 'products:gift_sets' %}" class="nav-menu-link{% if request.resolver_match.url_name == 'gift_sets' %} is-active{% endif %}">{% trans "Gift Sets" %}</a>
+                    </li>
+                    <li class="nav-menu-item">
                         <a href="{% url 'quiz:finder' %}" class="nav-menu-link{% if request.resolver_match.namespace == 'quiz' %} is-active{% endif %}">{% trans "Perfume Finder" %}</a>
                     </li>
                     <li class="nav-menu-item">
@@ -115,6 +121,7 @@
                     <li><a href="{% url 'core:contact' %}">{% trans "Contact" %}</a></li>
                     <li><a href="{% url 'orders:tracking' %}">{% trans "Track Order" %}</a></li>
                     <li><a href="{% url 'products:best_sellers' %}">{% trans "Best Sellers" %}</a></li>
+                    <li><a href="{% url 'products:gift_sets' %}">{% trans "Gift Sets" %}</a></li>
                     {% if not user.is_authenticated %}
                     <li><a href="{% url 'accounts:login' %}">{% trans "Sign In" %}</a></li>
                     <li><a href="{% url 'accounts:register' %}">{% trans "Create Account" %}</a></li>
