@@ -1548,7 +1548,7 @@ body.page-luxury-home .nav-menu--home .nav-menu-link {
     .lux-hero-feature-img {
         display: block;
         width: 100% !important;
-        height: 58vh !important;
+        height: 68vh !important;
         max-width: 100% !important;
         object-fit: cover !important;
         object-position: center 30%;
@@ -1608,7 +1608,7 @@ body.page-luxury-home .nav-menu--home .nav-menu-link {
     .lux-hero-btns .lux-btn { width: 100%; }
 
     .lux-hero-feature-img {
-        height: 52vh !important;
+        height: 62vh !important;
         max-width: 100% !important;
     }
 
