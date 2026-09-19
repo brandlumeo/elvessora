@@ -25,9 +25,6 @@ class RegisterForm(UserCreationForm):
     email_notifications = forms.BooleanField(
         required=False, initial=True, label='Email me about my orders and account'
     )
-    whatsapp_notifications = forms.BooleanField(
-        required=False, initial=False, label='Send order updates to my WhatsApp'
-    )
 
     class Meta:
         model = User
@@ -43,7 +40,7 @@ class RegisterForm(UserCreationForm):
             Row(Column('first_name', css_class='col-md-6'), Column('last_name', css_class='col-md-6')),
             'username', 'email', 'phone',
             'password1', 'password2',
-            'email_notifications', 'whatsapp_notifications',
+            'email_notifications',
             Submit('submit', 'Create Account', css_class='btn btn-gold'),
         )
 
@@ -56,12 +53,6 @@ class RegisterForm(UserCreationForm):
             )
         return email
 
-    def clean(self):
-        cleaned_data = super().clean()
-        if cleaned_data.get('whatsapp_notifications') and not cleaned_data.get('phone'):
-            self.add_error('phone', 'Add a phone number to receive WhatsApp updates.')
-        return cleaned_data
-
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data['email']
@@ -71,7 +62,6 @@ class RegisterForm(UserCreationForm):
             user.save()
             user.profile.phone = self.cleaned_data.get('phone', '')
             user.profile.email_notifications = self.cleaned_data.get('email_notifications', True)
-            user.profile.whatsapp_notifications = self.cleaned_data.get('whatsapp_notifications', False)
             user.profile.save()
         return user
 
