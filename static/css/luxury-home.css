@@ -542,7 +542,7 @@ body.page-luxury-home,
         background: linear-gradient(180deg, rgba(6, 16, 34, 0.25) 0%, rgba(6, 16, 34, 0.9) 70%);
     }
     .lux-signature-content {
-        padding: 1.5rem 0;
+        padding: 1.5rem 1.25rem;
         max-width: 100%;
     }
 }
@@ -1528,8 +1528,8 @@ body.page-luxury-home .nav-menu--home .nav-menu-link {
        instead of eating the viewport */
     .lux-hero-feature-img {
         width: auto;
-        height: 36vh;
-        max-width: 72%;
+        height: 42vh;
+        max-width: 88%;
         object-fit: contain;
         animation: none;
     }
@@ -1585,8 +1585,8 @@ body.page-luxury-home .nav-menu--home .nav-menu-link {
     .lux-hero-btns .lux-btn { width: 100%; }
 
     .lux-hero-feature-img {
-        height: 30vh;
-        max-width: 66%;
+        height: 36vh;
+        max-width: 82%;
     }
 
     .lux-hero-features {
