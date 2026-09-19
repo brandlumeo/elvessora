@@ -496,18 +496,13 @@ body.page-luxury-home,
 /* ========== SIGNATURE MOMENT BANNER ========== */
 .lux-signature-banner {
     position: relative;
-    min-height: 480px;
-    display: flex;
-    align-items: center;
     overflow: hidden;
 }
 
-.lux-signature-bg {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center 35%;
-    z-index: 0;
+.lux-signature-img {
+    display: block;
+    width: 100%;
+    height: auto;
 }
 
 .lux-signature-overlay {
@@ -518,13 +513,16 @@ body.page-luxury-home,
 }
 
 .lux-signature-inner {
-    position: relative;
+    position: absolute;
+    inset: 0;
     z-index: 2;
+    display: flex;
+    align-items: center;
 }
 
 .lux-signature-content {
     max-width: 32rem;
-    padding: 4.5rem 0;
+    padding: 2rem 0;
 }
 
 .lux-signature-content .lux-heading {
@@ -540,14 +538,11 @@ body.page-luxury-home,
 }
 
 @media (max-width: 767.98px) {
-    .lux-signature-banner {
-        min-height: 400px;
-    }
     .lux-signature-overlay {
-        background: linear-gradient(180deg, rgba(6, 16, 34, 0.35) 0%, rgba(6, 16, 34, 0.88) 65%);
+        background: linear-gradient(180deg, rgba(6, 16, 34, 0.25) 0%, rgba(6, 16, 34, 0.9) 70%);
     }
     .lux-signature-content {
-        padding: 2.5rem 0;
+        padding: 1.5rem 0;
         max-width: 100%;
     }
 }

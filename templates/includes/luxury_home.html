@@ -5,7 +5,10 @@
 
   <!-- SIGNATURE MOMENT (fixed, above the hero) -->
   <section class="lux-signature-banner">
-    <div class="lux-signature-bg" style="background-image: url('{% static 'images/hero/elvessora-divine-aura-dubai-hero.jpg' %}');"></div>
+    <img src="{% static 'images/hero/elvessora-divine-aura-dubai-hero.jpg' %}"
+         alt="{{ site_settings.brand_name }} Divine Aura — Dubai skyline"
+         class="lux-signature-img"
+         loading="eager">
     <div class="lux-signature-overlay"></div>
     <div class="container lux-signature-inner">
       <div class="lux-signature-content lux-reveal lux-reveal--instant">
