@@ -62,6 +62,9 @@ class RegisterForm(UserCreationForm):
             user.save()
             user.profile.phone = self.cleaned_data.get('phone', '')
             user.profile.email_notifications = self.cleaned_data.get('email_notifications', True)
+            # No opt-in checkbox for this anymore — send order updates to
+            # WhatsApp automatically whenever a phone number is on file.
+            user.profile.whatsapp_notifications = True
             user.profile.save()
         return user
 
