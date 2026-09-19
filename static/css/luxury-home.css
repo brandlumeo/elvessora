@@ -493,6 +493,65 @@ body.page-luxury-home,
     color: var(--lux-gold);
 }
 
+/* ========== SIGNATURE MOMENT BANNER ========== */
+.lux-signature-banner {
+    position: relative;
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.lux-signature-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center 35%;
+    z-index: 0;
+}
+
+.lux-signature-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(6, 16, 34, 0.9) 0%, rgba(6, 16, 34, 0.6) 45%, rgba(6, 16, 34, 0.15) 100%);
+    z-index: 1;
+}
+
+.lux-signature-inner {
+    position: relative;
+    z-index: 2;
+}
+
+.lux-signature-content {
+    max-width: 32rem;
+    padding: 4.5rem 0;
+}
+
+.lux-signature-content .lux-heading {
+    color: #fff;
+}
+
+.lux-signature-text {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 1rem;
+    line-height: 1.75;
+    margin-bottom: 2rem;
+    max-width: 30rem;
+}
+
+@media (max-width: 767.98px) {
+    .lux-signature-banner {
+        min-height: 400px;
+    }
+    .lux-signature-overlay {
+        background: linear-gradient(180deg, rgba(6, 16, 34, 0.35) 0%, rgba(6, 16, 34, 0.88) 65%);
+    }
+    .lux-signature-content {
+        padding: 2.5rem 0;
+        max-width: 100%;
+    }
+}
+
 /* ========== HERO CAROUSEL ========== */
 .lux-hero-slides {
     position: relative;
