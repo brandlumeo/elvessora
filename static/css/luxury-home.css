@@ -538,12 +538,29 @@ body.page-luxury-home,
 }
 
 @media (max-width: 767.98px) {
+    .lux-signature-banner {
+        min-height: 520px;
+    }
+    .lux-signature-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 30%;
+    }
     .lux-signature-overlay {
         background: linear-gradient(180deg, rgba(6, 16, 34, 0.25) 0%, rgba(6, 16, 34, 0.9) 70%);
     }
     .lux-signature-content {
         padding: 1.5rem 1.25rem;
         max-width: 100%;
+    }
+}
+
+@media (max-width: 575px) {
+    .lux-signature-banner {
+        min-height: 460px;
     }
 }
 
