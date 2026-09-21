@@ -7,6 +7,7 @@ class CheckoutForm(forms.Form):
     PAYMENT_CHOICES = [
         ('tamara', 'Pay in Installments with Tamara'),
         ('tabby', 'Pay in 4 with Tabby'),
+        ('tap', 'Credit / Debit Card'),
         ('cod', 'Cash on Delivery (UAE)'),
     ]
 

@@ -49,6 +49,7 @@ class OrderAdmin(admin.ModelAdmin):
             'payment_method', 'payment_status',
             'razorpay_order_id', 'razorpay_payment_id',
             'tamara_order_id', 'tamara_checkout_id',
+            'tabby_payment_id', 'tap_charge_id',
         )}),
         ('Delivery', {'fields': ('tracking_number', 'courier_name', 'estimated_delivery', 'notes')}),
     )

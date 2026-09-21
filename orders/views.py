@@ -11,7 +11,7 @@ import json
 
 from cart.cart_service import CartService
 from core.models import SiteSettings
-from . import tamara, tabby
+from . import tamara, tabby, tap
 from .forms import CheckoutForm
 from .models import Order, OrderItem, Coupon, Payment
 
@@ -80,7 +80,9 @@ def checkout(request):
             return render(request, 'orders/checkout.html', {'form': form, 'totals': totals, 'cart_items': cart.items.all()})
 
         payment_method = form.cleaned_data['payment_method']
-        online_configured = {'tamara': tamara.is_configured(), 'tabby': tabby.is_configured()}.get(payment_method, True)
+        online_configured = {
+            'tamara': tamara.is_configured(), 'tabby': tabby.is_configured(), 'tap': tap.is_configured(),
+        }.get(payment_method, True)
         if payment_method != 'cod' and not online_configured and not settings.DEBUG:
             messages.error(request, 'That payment method is currently unavailable. Please choose another.')
             return render(request, 'orders/checkout.html', {'form': form, 'totals': totals, 'cart_items': cart.items.all()})
@@ -180,6 +182,25 @@ def checkout(request):
             order.tabby_payment_id = session['payment_id']
             order.save()
             return redirect(session['checkout_url'])
+
+        if payment_method == 'tap' and tap.is_configured():
+            try:
+                charge = tap.create_charge(
+                    order,
+                    redirect_url=request.build_absolute_uri(reverse('orders:tap_return')),
+                    webhook_url=request.build_absolute_uri(reverse('orders:tap_webhook')),
+                )
+            except tap.TapError:
+                order.delete()
+                messages.error(request, "We couldn't start your card payment. Please try another payment method.")
+                return redirect('orders:checkout')
+
+            order.tap_charge_id = charge['charge_id']
+            order.save()
+            # Stock is decremented in tap_return() once the charge is confirmed
+            # CAPTURED, so an abandoned/failed Tap charge never permanently
+            # reduces stock.
+            return redirect(charge['checkout_url'])
 
         # DEBUG-only fallback: no online payment provider configured, but this is a
         # dev/demo environment (see README) — auto-confirm so the flow is testable end-to-end.
@@ -476,6 +497,104 @@ def tabby_webhook(request):
             order.save()
             _decrement_stock(order)
     elif status in ('REJECTED', 'EXPIRED'):
+        order.payment_status = 'failed'
+        order.save()
+
+    return HttpResponse(status=200)
+
+
+def _find_tap_order(request):
+    tap_charge_id = request.GET.get('tap_id')
+    order = None
+    if tap_charge_id:
+        order = Order.objects.filter(tap_charge_id=tap_charge_id).order_by('-id').first()
+    if order is None:
+        # Fallback: the most recent Tap order this browser session created,
+        # in case Tap's redirect doesn't carry the tap_id query param.
+        granted = request.session.get(ORDER_ACCESS_SESSION_KEY, [])
+        order = Order.objects.filter(
+            order_number__in=granted, payment_method='tap',
+        ).order_by('-id').first()
+    return order
+
+
+def tap_return(request):
+    """Tap uses a single redirect URL for every outcome (success, failure,
+    cancel) — we tell them apart by re-fetching the charge's status.
+    """
+    order = _find_tap_order(request)
+    if order is None:
+        messages.error(request, 'Order not found.')
+        return redirect('cart:cart')
+
+    if order.payment_status == 'paid':
+        return redirect('orders:order_confirmation', order_number=order.order_number)
+
+    try:
+        charge = tap.get_charge(order.tap_charge_id)
+        status = charge.get('status')
+    except tap.TapError:
+        status = None
+
+    if status == 'CAPTURED':
+        order.payment_status = 'paid'
+        order.status = 'confirmed'
+        order.save()
+        _decrement_stock(order)
+        _grant_order_access(request, order.order_number)
+        CartService(request).clear()
+        return redirect('orders:order_confirmation', order_number=order.order_number)
+
+    if status == 'CANCELLED':
+        order.delete()
+        messages.info(request, 'Checkout cancelled. Your cart is still saved.')
+        return redirect('cart:cart')
+
+    order.payment_status = 'failed'
+    order.save()
+    _grant_order_access(request, order.order_number)
+    messages.error(request, "We couldn't confirm your card payment. Please try another payment method.")
+    return redirect('orders:payment_failed', order_number=order.order_number)
+
+
+@csrf_exempt
+def tap_webhook(request):
+    """Safety-net webhook: keeps order status correct even if the shopper
+    closes the tab before the redirect back to tap_return() completes. The
+    status is always re-fetched from Tap rather than trusted from the POST
+    body, since this endpoint is unauthenticated.
+    """
+    if request.method != 'POST':
+        return HttpResponse(status=405)
+
+    try:
+        body = json.loads(request.body)
+    except ValueError:
+        return HttpResponse(status=400)
+
+    charge_id = body.get('id')
+    if not charge_id:
+        return HttpResponse(status=400)
+
+    order = Order.objects.filter(tap_charge_id=charge_id).order_by('-id').first()
+    if order is None:
+        return HttpResponse(status=404)
+
+    if order.payment_status == 'paid':
+        return HttpResponse(status=200)
+
+    try:
+        charge = tap.get_charge(charge_id)
+    except tap.TapError:
+        return HttpResponse(status=200)
+
+    status = charge.get('status')
+    if status == 'CAPTURED':
+        order.payment_status = 'paid'
+        order.status = 'confirmed'
+        order.save()
+        _decrement_stock(order)
+    elif status in ('FAILED', 'DECLINED', 'CANCELLED', 'ABANDONED'):
         order.payment_status = 'failed'
         order.save()
 

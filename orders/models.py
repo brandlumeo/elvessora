@@ -85,6 +85,7 @@ class Order(models.Model):
         # razorpay_* fields below stay so nothing breaks and re-adding is easy.
         ('tamara', 'Pay in Installments (Tamara)'),
         ('tabby', 'Pay in 4 (Tabby)'),
+        ('tap', 'Credit / Debit Card (Tap)'),
         ('cod', 'Cash on Delivery'),
     ]
     PAYMENT_STATUS = [
@@ -123,6 +124,7 @@ class Order(models.Model):
     tamara_order_id = models.CharField(max_length=100, blank=True)
     tamara_checkout_id = models.CharField(max_length=100, blank=True)
     tabby_payment_id = models.CharField(max_length=100, blank=True)
+    tap_charge_id = models.CharField(max_length=100, blank=True)
     amazon_fulfillment_status = models.CharField(max_length=50, blank=True)
 
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')

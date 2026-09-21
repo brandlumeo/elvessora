@@ -194,6 +194,14 @@ TABBY_SECRET_KEY = os.environ.get('TABBY_SECRET_KEY', '')
 TABBY_MERCHANT_CODE = os.environ.get('TABBY_MERCHANT_CODE', 'AE')
 TABBY_API_BASE_URL = os.environ.get('TABBY_API_BASE_URL', 'https://api.tabby.ai')
 
+# Tap Payments (cards, Apple Pay, mada, etc. via Tap's hosted checkout) —
+# leave unset to disable. Get these from the Tap Business Dashboard
+# (business.tap.company) under Developers > API Keys. Start with the
+# test secret/public keys (sk_test_/pk_test_) before going live.
+TAP_SECRET_KEY = os.environ.get('TAP_SECRET_KEY', '')
+TAP_PUBLIC_KEY = os.environ.get('TAP_PUBLIC_KEY', '')
+TAP_API_BASE_URL = os.environ.get('TAP_API_BASE_URL', 'https://api.tap.company/v2')
+
 # Amazon Multi-Channel Fulfillment (SP-API). AWS IAM credentials and region
 # are not needed — SP-API authenticates with LWA alone, and the AE
 # marketplace's endpoint/region are hardcoded via Marketplaces.AE.
