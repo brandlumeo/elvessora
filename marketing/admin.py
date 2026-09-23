@@ -9,6 +9,12 @@ from .models import (
     AbandonedCartReminder, ContactEnquiry, FlashSale, EmailCampaign,
 )
 
+# The Marketing section (and every model below) is intentionally not
+# registered with the admin site — removed from the sidebar/dashboard at
+# the store owner's request. The ModelAdmin classes are kept as-is so
+# re-adding the section later is just uncommenting the @admin.register
+# lines, not rebuilding them.
+
 
 @admin.action(description='Export selected subscribers to CSV')
 def export_subscribers_csv(modeladmin, request, queryset):
@@ -25,7 +31,7 @@ def export_subscribers_csv(modeladmin, request, queryset):
     return response
 
 
-@admin.register(NewsletterSubscriber)
+# @admin.register(NewsletterSubscriber)
 class NewsletterSubscriberAdmin(admin.ModelAdmin):
     list_display = ['email', 'is_active', 'subscribed_at']
     list_filter = ['is_active']
@@ -33,25 +39,25 @@ class NewsletterSubscriberAdmin(admin.ModelAdmin):
     actions = [export_subscribers_csv]
 
 
-@admin.register(Banner)
+# @admin.register(Banner)
 class BannerAdmin(admin.ModelAdmin):
     list_display = ['title', 'position', 'order', 'is_active']
     list_editable = ['order', 'is_active']
     list_filter = ['position']
 
 
-@admin.register(HomepageSection)
+# @admin.register(HomepageSection)
 class HomepageSectionAdmin(admin.ModelAdmin):
     list_display = ['title', 'section_type', 'order', 'is_active']
     list_editable = ['order', 'is_active']
 
 
-@admin.register(PromoPopup)
+# @admin.register(PromoPopup)
 class PromoPopupAdmin(admin.ModelAdmin):
     list_display = ['title', 'coupon_code', 'is_active']
 
 
-@admin.register(AbandonedCartReminder)
+# @admin.register(AbandonedCartReminder)
 class AbandonedCartReminderAdmin(admin.ModelAdmin):
     list_display = ['email', 'cart', 'sent_at', 'is_converted']
     list_filter = ['is_converted', 'sent_at']
@@ -67,7 +73,7 @@ def mark_enquiries_unread(modeladmin, request, queryset):
     queryset.update(is_read=False)
 
 
-@admin.register(ContactEnquiry)
+# @admin.register(ContactEnquiry)
 class ContactEnquiryAdmin(admin.ModelAdmin):
     list_display = ['subject', 'name', 'email', 'enquiry_type', 'is_read', 'created_at']
     list_filter = ['enquiry_type', 'is_read', 'created_at']
@@ -81,7 +87,7 @@ class ContactEnquiryAdmin(admin.ModelAdmin):
         return False
 
 
-@admin.register(FlashSale)
+# @admin.register(FlashSale)
 class FlashSaleAdmin(admin.ModelAdmin):
     list_display = ['name', 'discount_percent', 'starts_at', 'ends_at', 'is_active']
     list_filter = ['is_active']
@@ -108,7 +114,7 @@ def send_campaigns_now(modeladmin, request, queryset):
         )
 
 
-@admin.register(EmailCampaign)
+# @admin.register(EmailCampaign)
 class EmailCampaignAdmin(admin.ModelAdmin):
     list_display = ['subject', 'status', 'scheduled_at', 'sent_at', 'created_at']
     list_filter = ['status']

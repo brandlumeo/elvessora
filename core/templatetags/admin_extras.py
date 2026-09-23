@@ -48,13 +48,6 @@ def admin_alert_items(limit=6):
 
 # (app_label, object_name) -> (bootstrap icon class, short description)
 MODEL_META = {
-    ('marketing', 'Banner'): ('bi-image', 'Hero, secondary, and promo-strip images shown across the site.'),
-    ('marketing', 'ContactEnquiry'): ('bi-envelope-open', 'Messages submitted through the site’s Contact form.'),
-    ('marketing', 'EmailCampaign'): ('bi-send', 'Draft, scheduled, and sent emails to your newsletter list.'),
-    ('marketing', 'FlashSale'): ('bi-lightning-charge', 'Time-limited discounts on selected products.'),
-    ('marketing', 'HomepageSection'): ('bi-layout-text-window', 'Show/hide and reorder the homepage’s built-in blocks.'),
-    ('marketing', 'NewsletterSubscriber'): ('bi-people', 'Everyone who signed up for the newsletter on the storefront.'),
-    ('marketing', 'PromoPopup'): ('bi-megaphone', 'On-site popup offers shown to visitors, with an optional coupon code.'),
     ('orders', 'Order'): ('bi-bag-check', 'Customer orders, statuses, and shipping details.'),
     ('orders', 'Coupon'): ('bi-tag', 'Discount codes customers can apply at checkout.'),
     ('orders', 'Payment'): ('bi-credit-card', 'Payment records for orders.'),

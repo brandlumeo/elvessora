@@ -50,9 +50,6 @@
             <a href="{% url 'admin:orders_coupon_changelist' %}" class="elv-side-link{% if '/admin/orders/coupon' in request.path %} active{% endif %}">
                 <i class="bi bi-tag"></i><span>Coupons &amp; Offers</span>
             </a>
-            <a href="{% url 'admin:app_list' app_label='marketing' %}" class="elv-side-link{% if '/admin/marketing/' in request.path %} active{% endif %}">
-                <i class="bi bi-megaphone"></i><span>Marketing</span>
-            </a>
             <a href="{% url 'admin:core_legalpage_changelist' %}" class="elv-side-link{% if '/admin/core/legalpage' in request.path or '/admin/core/faq' in request.path or '/admin/core/homepagecontent' in request.path or '/admin/core/homepagehighlight' in request.path %} active{% endif %}">
                 <i class="bi bi-file-earmark-text"></i><span>CMS</span>
             </a>
