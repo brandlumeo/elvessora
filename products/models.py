@@ -1,6 +1,9 @@
+from decimal import Decimal
+
 from django.db import models
 from django.db.models import Avg
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.text import slugify
 
 
@@ -234,13 +237,24 @@ class Product(models.Model):
         super().save(*args, **kwargs)
 
     @property
+    def active_flash_sale(self):
+        now = timezone.now()
+        return self.flash_sales.filter(
+            is_active=True, starts_at__lte=now, ends_at__gte=now,
+        ).order_by('-discount_percent').first()
+
+    @property
     def current_price(self):
-        return self.offer_price if self.offer_price else self.regular_price
+        base = self.offer_price if self.offer_price else self.regular_price
+        sale = self.active_flash_sale
+        if sale:
+            return (base * (1 - sale.discount_percent / 100)).quantize(Decimal('0.01'))
+        return base
 
     @property
     def discount_percent(self):
-        if self.offer_price and self.regular_price:
-            return int((1 - self.offer_price / self.regular_price) * 100)
+        if self.regular_price and self.current_price < self.regular_price:
+            return int((1 - self.current_price / self.regular_price) * 100)
         return 0
 
     @property
@@ -300,7 +314,11 @@ class ProductVariant(models.Model):
 
     @property
     def current_price(self):
-        return self.offer_price if self.offer_price else self.price
+        base = self.offer_price if self.offer_price else self.price
+        sale = self.product.active_flash_sale
+        if sale:
+            return (base * (1 - sale.discount_percent / 100)).quantize(Decimal('0.01'))
+        return base
 
     @property
     def in_stock(self):

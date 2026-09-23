@@ -11,6 +11,28 @@ from marketing.models import NewsletterSubscriber, Banner, HomepageSection, Cont
 from products.models import Product, Collection, FragranceFamily, GiftSet, Occasion
 
 
+def _ordered_cms_sections():
+    """Homepage blocks the Marketing admin can show/hide and reorder.
+    Types with no HomepageSection row yet default to shown, so nothing
+    currently visible disappears just because no row was ever created.
+    """
+    section_rows = {s.section_type: s for s in HomepageSection.objects.all()}
+    types = ['best_sellers', 'new_arrivals', 'collections', 'gift_sets']
+    sections = []
+    for section_type in types:
+        row = section_rows.get(section_type)
+        if row and not row.is_active:
+            continue
+        sections.append({
+            'type': section_type,
+            'order': row.order if row else 0,
+            'title': row.title if row else '',
+            'subtitle': row.subtitle if row else '',
+        })
+    sections.sort(key=lambda s: s['order'])
+    return sections
+
+
 def home(request):
     banners = Banner.objects.filter(is_active=True, position='hero')
     best_sellers = Product.objects.filter(is_active=True, is_best_seller=True)[:8]
@@ -19,7 +41,7 @@ def home(request):
     fragrance_families = FragranceFamily.objects.all()[:10]
     occasions = Occasion.objects.all()[:10]
     featured = Product.objects.filter(is_active=True, is_featured=True)[:4]
-    sections = HomepageSection.objects.filter(is_active=True)
+    cms_sections = _ordered_cms_sections()
     newsletter_form = NewsletterForm()
 
     context = build_luxury_page_context()
@@ -31,7 +53,7 @@ def home(request):
         'fragrance_families': fragrance_families,
         'occasions': occasions,
         'featured': featured,
-        'sections': sections,
+        'cms_sections': cms_sections,
         'newsletter_form': newsletter_form,
     })
     return render(request, 'core/home.html', context)

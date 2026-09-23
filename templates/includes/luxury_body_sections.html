@@ -38,41 +38,121 @@
   {% include 'includes/perfume_finder_section.html' %}
   {% endif %}
 
-  <!-- GIFT SETS -->
-  {% if gift_sets %}
-  <section class="lux-section lux-gifts" id="luxGifts">
-    <div class="container">
-      <div class="lux-section-head lux-gifts-head">
-        <div>
-          <span class="lux-label">Perfect Gifts</span>
-          <h2 class="lux-heading">Luxury Gift Sets</h2>
+  <!-- CMS-CONTROLLED SECTIONS: shown/hidden/reordered from Admin -> Marketing -> Homepage sections -->
+  {% for section in cms_sections %}
+
+    {% if section.type == 'gift_sets' and gift_sets %}
+    <section class="lux-section lux-gifts" id="luxGifts">
+      <div class="container">
+        <div class="lux-section-head lux-gifts-head">
+          <div>
+            <span class="lux-label">Perfect Gifts</span>
+            <h2 class="lux-heading">{{ section.title|default:"Luxury Gift Sets" }}</h2>
+            {% if section.subtitle %}<p class="lux-section-sub">{{ section.subtitle }}</p>{% endif %}
+          </div>
+          <a href="{% url 'products:gift_sets' %}" class="lux-link-arrow">View All Gifts <i class="bi bi-arrow-right"></i></a>
         </div>
-        <a href="{% url 'products:gift_sets' %}" class="lux-link-arrow">View All Gifts <i class="bi bi-arrow-right"></i></a>
-      </div>
-      <div class="row g-4">
-        {% for gift_set in gift_sets %}
-        <div class="col-6 col-lg-3">
-          <article class="lux-gift-card">
-            <a href="{% url 'products:gift_set_detail' gift_set.slug %}" class="lux-gift-image">
-              {% if gift_set.display_image_url %}
-              <img src="{{ gift_set.display_image_url }}" alt="{{ gift_set.name }}" loading="lazy">
-              {% else %}
-              <div class="lux-gift-image-empty" aria-hidden="true">
-                <i class="bi bi-gift"></i>
-                <span>Gift Set</span>
-              </div>
-              {% endif %}
-            </a>
-            <h3><a href="{% url 'products:gift_set_detail' gift_set.slug %}">{{ gift_set.name }}</a></h3>
-            <p class="lux-product-price">{{ gift_set.current_price|format_price }}</p>
-            <a href="{% url 'products:gift_set_detail' gift_set.slug %}" class="lux-link-arrow">View Gift Set <i class="bi bi-arrow-right"></i></a>
-          </article>
+        <div class="row g-4">
+          {% for gift_set in gift_sets %}
+          <div class="col-6 col-lg-3">
+            <article class="lux-gift-card">
+              <a href="{% url 'products:gift_set_detail' gift_set.slug %}" class="lux-gift-image">
+                {% if gift_set.display_image_url %}
+                <img src="{{ gift_set.display_image_url }}" alt="{{ gift_set.name }}" loading="lazy">
+                {% else %}
+                <div class="lux-gift-image-empty" aria-hidden="true">
+                  <i class="bi bi-gift"></i>
+                  <span>Gift Set</span>
+                </div>
+                {% endif %}
+              </a>
+              <h3><a href="{% url 'products:gift_set_detail' gift_set.slug %}">{{ gift_set.name }}</a></h3>
+              <p class="lux-product-price">{{ gift_set.current_price|format_price }}</p>
+              <a href="{% url 'products:gift_set_detail' gift_set.slug %}" class="lux-link-arrow">View Gift Set <i class="bi bi-arrow-right"></i></a>
+            </article>
+          </div>
+          {% endfor %}
         </div>
-        {% endfor %}
       </div>
-    </div>
-  </section>
-  {% endif %}
+    </section>
+    {% endif %}
+
+    {% if section.type == 'best_sellers' and best_sellers %}
+    <section class="lux-section lux-collection" id="luxBestSellers">
+      <div class="container">
+        <div class="lux-section-head lux-reveal">
+          <div>
+            <span class="lux-label">Customer Favourites</span>
+            <h2 class="lux-heading">{{ section.title|default:"Best Sellers" }}</h2>
+            {% if section.subtitle %}<p class="lux-section-sub">{{ section.subtitle }}</p>{% endif %}
+          </div>
+          <a href="{% url 'products:shop' %}?sort=popular" class="lux-link-arrow">Shop All <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="lux-collection-grid">
+          {% for product in best_sellers %}
+          {% include 'includes/lux_product_card.html' %}
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+    {% if section.type == 'new_arrivals' and new_arrivals %}
+    <section class="lux-section lux-collection" id="luxNewArrivals">
+      <div class="container">
+        <div class="lux-section-head lux-reveal">
+          <div>
+            <span class="lux-label">Just Dropped</span>
+            <h2 class="lux-heading">{{ section.title|default:"New Arrivals" }}</h2>
+            {% if section.subtitle %}<p class="lux-section-sub">{{ section.subtitle }}</p>{% endif %}
+          </div>
+          <a href="{% url 'products:shop' %}?sort=newest" class="lux-link-arrow">Shop All <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="lux-collection-grid">
+          {% for product in new_arrivals %}
+          {% include 'includes/lux_product_card.html' %}
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+    {% if section.type == 'collections' and collections %}
+    <section class="lux-section lux-gifts" id="luxCollections">
+      <div class="container">
+        <div class="lux-section-head lux-gifts-head">
+          <div>
+            <span class="lux-label">Shop by Collection</span>
+            <h2 class="lux-heading">{{ section.title|default:"Collections" }}</h2>
+            {% if section.subtitle %}<p class="lux-section-sub">{{ section.subtitle }}</p>{% endif %}
+          </div>
+          <a href="{% url 'products:collections' %}" class="lux-link-arrow">View All Collections <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="row g-4">
+          {% for collection in collections %}
+          <div class="col-6 col-lg-3">
+            <article class="lux-gift-card">
+              <a href="{% url 'products:collection_detail' collection.slug %}" class="lux-gift-image">
+                {% if collection.image %}
+                <img src="{{ collection.image.url }}" alt="{{ collection.name }}" loading="lazy">
+                {% else %}
+                <div class="lux-gift-image-empty" aria-hidden="true">
+                  <i class="bi bi-bookmark-star"></i>
+                  <span>{{ collection.name }}</span>
+                </div>
+                {% endif %}
+              </a>
+              <h3><a href="{% url 'products:collection_detail' collection.slug %}">{{ collection.name }}</a></h3>
+              <a href="{% url 'products:collection_detail' collection.slug %}" class="lux-link-arrow">Shop Collection <i class="bi bi-arrow-right"></i></a>
+            </article>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+  {% endfor %}
 
   <!-- CRAFTED WITH EXCELLENCE -->
   <section class="lux-section lux-excellence" id="luxExcellence">

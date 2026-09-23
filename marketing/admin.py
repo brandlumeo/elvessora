@@ -1,8 +1,9 @@
 import csv
 
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.http import HttpResponse
 
+from .campaigns import send_campaign
 from .models import (
     NewsletterSubscriber, Banner, HomepageSection, PromoPopup,
     AbandonedCartReminder, ContactEnquiry, FlashSale, EmailCampaign,
@@ -88,8 +89,28 @@ class FlashSaleAdmin(admin.ModelAdmin):
     list_editable = ['is_active']
 
 
+@admin.action(description='Send now to all active newsletter subscribers')
+def send_campaigns_now(modeladmin, request, queryset):
+    sent_count = 0
+    skipped = 0
+    for campaign in queryset:
+        if campaign.status == 'sent':
+            skipped += 1
+            continue
+        recipient_count = send_campaign(campaign)
+        sent_count += 1
+        modeladmin.message_user(
+            request, f'"{campaign.subject}" sent to {recipient_count} subscriber(s).'
+        )
+    if skipped:
+        modeladmin.message_user(
+            request, f'{skipped} campaign(s) skipped — already sent.', level=messages.WARNING
+        )
+
+
 @admin.register(EmailCampaign)
 class EmailCampaignAdmin(admin.ModelAdmin):
     list_display = ['subject', 'status', 'scheduled_at', 'sent_at', 'created_at']
     list_filter = ['status']
     search_fields = ['subject']
+    actions = [send_campaigns_now]
