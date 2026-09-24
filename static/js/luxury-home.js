@@ -12,7 +12,7 @@
 
     /* --- Solid nav after scrolling past hero --- */
     var header = document.querySelector('.site-header');
-    var hero = document.getElementById('luxHero') || document.getElementById('luxCollectionHero');
+    var hero = document.getElementById('luxSignatureBanner') || document.getElementById('luxCollectionHero');
 
     function updateNav() {
         if (!hero) return;
@@ -26,7 +26,7 @@
     /* --- Section scroll rail --- */
     var railLinks = document.querySelectorAll('.lux-scroll-rail a');
     var sectionIds = home
-        ? ['luxHero', 'luxCollection', 'luxPerfumeFinder', 'luxSpotlight']
+        ? ['luxCollection', 'luxPerfumeFinder', 'luxSpotlight']
         : ['luxCollection', 'luxCompare', 'luxGifts'];
     var sections = sectionIds.map(function (id) {
         return document.getElementById(id);

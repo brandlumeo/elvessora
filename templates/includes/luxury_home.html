@@ -31,8 +31,8 @@
     </div>
   </section>
 
-  <!-- SIGNATURE MOMENT (fixed, above the hero) -->
-  <section class="lux-signature-banner">
+  <!-- SIGNATURE MOMENT (now the site's hero) -->
+  <section class="lux-signature-banner" id="luxSignatureBanner">
     <img src="{% static 'images/hero/elvessora-divine-aura-dubai-hero.jpg' %}"
          alt="{{ site_settings.brand_name }} Divine Aura — Dubai skyline"
          class="lux-signature-img"
@@ -46,79 +46,11 @@
         <a href="{% url 'products:collection' %}" class="lux-btn lux-btn-gold">Discover the Collection <i class="bi bi-arrow-right"></i></a>
       </div>
     </div>
-  </section>
-
-  <!-- HERO -->
-  <section class="lux-hero" id="luxHero"{% if banners %} data-hero-carousel{% endif %}>
-    <div class="lux-hero-bg"></div>
-    <div class="lux-hero-glow"></div>
-
-    <div class="lux-hero-slides">
-      <div class="lux-hero-slide is-active" data-hero-slide>
-        <div class="container lux-hero-grid">
-          <div class="lux-hero-copy lux-reveal lux-reveal--instant">
-            <p class="lux-eyebrow">{{ homepage.hero_eyebrow }}</p>
-            <h1 class="lux-hero-title">{{ homepage.hero_title|linebreaksbr }}</h1>
-            <p class="lux-hero-desc">{{ homepage.hero_description }}</p>
-            <div class="lux-hero-btns">
-              <a href="{% url 'products:collection' %}" class="lux-btn lux-btn-gold">{{ homepage.hero_cta_primary_text }} <i class="bi bi-arrow-right"></i></a>
-              <a href="{% url 'products:shop' %}" class="lux-btn lux-btn-outline">{{ homepage.hero_cta_secondary_text }}</a>
-            </div>
-            {% if hero_features %}
-            <div class="lux-hero-features">
-              {% for item in hero_features %}
-              <div class="lux-feature">
-                <i class="bi {{ item.icon }}"></i>
-                <span>{{ item.title }}</span>
-              </div>
-              {% endfor %}
-            </div>
-            {% endif %}
-          </div>
-          <div class="lux-hero-visual lux-reveal lux-reveal--instant">
-            {% if homepage.hero_image %}
-            <img src="{{ homepage.hero_image.url }}" alt="{{ site_settings.brand_name }} luxury perfume" class="lux-hero-feature-img" loading="eager">
-            {% else %}
-            <img src="{% static 'images/hero/elvessora-divine-aura-hero.png' %}"
-                 alt="{{ site_settings.brand_name }} luxury fragrance"
-                 class="lux-hero-feature-img"
-                 loading="eager">
-            {% endif %}
-          </div>
-        </div>
-      </div>
-
-      {% for banner in banners %}
-      <div class="lux-hero-slide" data-hero-slide>
-        <div class="container lux-hero-grid">
-          <div class="lux-hero-copy">
-            <h1 class="lux-hero-title">{{ banner.title }}</h1>
-            {% if banner.subtitle %}<p class="lux-hero-desc">{{ banner.subtitle }}</p>{% endif %}
-            <div class="lux-hero-btns">
-              <a href="{{ banner.link_url|default:'#' }}" class="lux-btn lux-btn-gold">{{ banner.button_text|default:"Shop Now" }} <i class="bi bi-arrow-right"></i></a>
-            </div>
-          </div>
-          <div class="lux-hero-visual">
-            {% if banner.image %}<img src="{{ banner.image.url }}" alt="{{ banner.title }}" class="lux-hero-feature-img" loading="lazy">{% endif %}
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-
-    <span class="lux-hero-tagline-vertical">Scents That<br>Stay With You</span>
-
-    {% if banners %}
-    <button type="button" class="lux-hero-nav lux-hero-nav-prev" data-hero-prev aria-label="Previous slide"><i class="bi bi-chevron-left"></i></button>
-    <button type="button" class="lux-hero-nav lux-hero-nav-next" data-hero-next aria-label="Next slide"><i class="bi bi-chevron-right"></i></button>
-    <div class="lux-hero-pagination" data-hero-pagination></div>
-    {% endif %}
 
     <nav class="lux-scroll-rail" aria-label="Page sections">
-      <a href="#luxHero" class="is-active">01</a>
-      <a href="#luxCollection">02</a>
-      <a href="#luxPerfumeFinder">03</a>
-      <a href="#luxSpotlight">04</a>
+      <a href="#luxCollection" class="is-active">01</a>
+      <a href="#luxPerfumeFinder">02</a>
+      <a href="#luxSpotlight">03</a>
     </nav>
   </section>
 
