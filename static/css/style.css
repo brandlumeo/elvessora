@@ -31,7 +31,13 @@
 
 html, body {
     max-width: 100%;
-    overflow-x: hidden;
+    /* overflow-x: hidden here forces overflow-y to compute as "auto" too
+       (a real CSS spec quirk: one non-visible axis forces the visible
+       other axis to auto), turning <html> into an explicit scroll
+       container instead of the true viewport — which breaks
+       position: sticky site-wide. overflow-x: clip prevents the same
+       horizontal bleed without that side effect. */
+    overflow-x: clip;
 }
 
 body {
