@@ -1,17 +1,55 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Collections — {{ site_settings.brand_name }}{% endblock %}
+
+{% block body_class %}page-luxury-home{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/luxury-home.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-<div class="page-header"><div class="container"><h1>Collections</h1></div></div>
-<div class="container pb-5">
-    <div class="row g-4">
+<div class="lux-page">
+<div class="lux-home">
+
+  <section class="lux-section lux-gifts" id="luxCollections">
+    <div class="container">
+      <div class="lux-section-head lux-gifts-head">
+        <div>
+          <span class="lux-label">Shop by Collection</span>
+          <h1 class="lux-heading">Collections</h1>
+        </div>
+      </div>
+
+      {% if collections %}
+      <div class="row g-4">
         {% for collection in collections %}
-        <div class="col-md-4">
-            <a href="{% url 'products:collection_detail' collection.slug %}" class="text-decoration-none">
-                <div class="family-card"><h5>{{ collection.name }}</h5><p class="small text-muted">{{ collection.description|truncatewords:20 }}</p></div>
+        <div class="col-6 col-lg-4">
+          <article class="lux-gift-card">
+            <a href="{% url 'products:collection_detail' collection.slug %}" class="lux-gift-image">
+              {% if collection.image %}
+              <img src="{{ collection.image.url }}" alt="{{ collection.name }}" loading="lazy">
+              {% else %}
+              <div class="lux-gift-image-empty" aria-hidden="true">
+                <i class="bi bi-bookmark-star"></i>
+                <span>{{ collection.name }}</span>
+              </div>
+              {% endif %}
             </a>
+            <h3><a href="{% url 'products:collection_detail' collection.slug %}">{{ collection.name }}</a></h3>
+            {% if collection.description %}<p class="lux-text">{{ collection.description|truncatewords:20 }}</p>{% endif %}
+            <a href="{% url 'products:collection_detail' collection.slug %}" class="lux-link-arrow">Shop Collection <i class="bi bi-arrow-right"></i></a>
+          </article>
         </div>
         {% endfor %}
+      </div>
+      {% else %}
+      <p class="lux-text">No collections available right now — check back soon.</p>
+      {% endif %}
     </div>
+  </section>
+
+</div>
 </div>
 {% endblock %}
