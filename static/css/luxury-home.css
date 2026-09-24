@@ -494,34 +494,6 @@ body.page-luxury-home,
     color: var(--lux-gold);
 }
 
-/* ========== HERO ANIMATION BANNER ========== */
-.lux-hero-animation-banner {
-    padding: 2.5rem 0 0;
-    background: #060f20;
-}
-
-.lux-hero-animation-frame {
-    position: relative;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 28px 64px rgba(6, 16, 34, 0.25);
-}
-
-.lux-hero-animation-img {
-    display: block;
-    width: 100%;
-    height: auto;
-}
-
-@media (max-width: 767.98px) {
-    .lux-hero-animation-banner {
-        padding: 1.25rem 0 0;
-    }
-    .lux-hero-animation-frame {
-        border-radius: 14px;
-    }
-}
-
 /* ========== SIGNATURE MOMENT BANNER ========== */
 .lux-signature-banner {
     position: relative;

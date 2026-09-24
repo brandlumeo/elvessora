@@ -3,15 +3,31 @@
 <div class="lux-page">
 <div class="lux-home" id="luxHome">
 
-  <!-- HERO ANIMATION (fixed, top of the hero page) -->
-  <section class="lux-hero-animation-banner">
-    <div class="container">
-      <div class="lux-hero-animation-frame">
-        <img src="{% static 'images/hero/elvessora-hero-animation.webp' %}"
-             alt="Elvessora Divine Aura — cinematic reveal"
-             class="lux-hero-animation-img"
-             loading="eager">
+  <!-- SCROLL CINEMA (scroll-scrubbed animation, top of the hero page) -->
+  <section class="lux-scroll-cinema" id="luxScrollCinema"
+           data-sprite-src="{% static 'images/hero/elvessora-cinema-sprite.webp' %}"
+           data-frame-count="80"
+           data-cols="10"
+           data-cell-w="640"
+           data-cell-h="360"
+           aria-label="Elvessora Divine Aura — cinematic reveal">
+    <div class="lux-scroll-cinema__pin">
+      <div class="lux-scroll-cinema__frame-wrap">
+        <img class="lux-scroll-cinema__poster"
+             src="{% static 'images/ezifimage/ezgif-frame-001.png' %}"
+             alt=""
+             aria-hidden="true"
+             loading="eager" decoding="async">
+        <canvas class="lux-scroll-cinema__canvas" aria-hidden="true"></canvas>
       </div>
+      <div class="lux-scroll-cinema__loader" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <span class="lux-scroll-cinema__loader-bar"></span>
+        <span class="lux-scroll-cinema__loader-text">Loading experience</span>
+      </div>
+      <p class="lux-scroll-cinema__hint" aria-hidden="true">
+        <span>Scroll to explore</span>
+        <i class="bi bi-chevron-down"></i>
+      </p>
     </div>
   </section>
 
