@@ -594,12 +594,12 @@
 
 /* ===== Luxury Navbar (dark premium) ===== */
 .site-header {
-    z-index: 1040;
+    z-index: 2000;
     background: var(--primary-bg);
 }
 
 .site-header.site-chrome {
-    position: sticky;
+    position: sticky !important;
     top: 0;
 }
 
