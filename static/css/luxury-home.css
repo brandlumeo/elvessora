@@ -767,6 +767,14 @@ body.page-luxury-home,
     margin-bottom: 2rem;
 }
 
+.lux-collections-group {
+    margin-bottom: 4rem;
+}
+
+.lux-collections-group:last-child {
+    margin-bottom: 0;
+}
+
 .lux-gift-card {
     height: 100%;
     padding: 1rem;

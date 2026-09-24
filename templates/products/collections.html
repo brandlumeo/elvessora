@@ -23,18 +23,27 @@
       </div>
 
       {% if collections %}
-      <div class="row g-4">
-        {% for collection in collections %}
-        <div class="col-6 col-lg-4">
-          <article class="lux-gift-card">
-            {% include 'includes/lux_collection_card.html' %}
-            <h3><a href="{% url 'products:collection_detail' collection.slug %}">{{ collection.name }}</a></h3>
-            {% if collection.description %}<p class="lux-text">{{ collection.description|truncatewords:20 }}</p>{% endif %}
-            <a href="{% url 'products:collection_detail' collection.slug %}" class="lux-link-arrow">Shop Collection <i class="bi bi-arrow-right"></i></a>
-          </article>
+      {% for collection in collections %}
+      <div class="lux-collections-group">
+        <div class="lux-section-head lux-gifts-head">
+          <div>
+            <h2 class="lux-heading lux-heading-serif">{{ collection.name }}</h2>
+            {% if collection.description %}<p class="lux-text">{{ collection.description }}</p>{% endif %}
+          </div>
+          <a href="{% url 'products:collection_detail' collection.slug %}" class="lux-link-arrow">View Full Collection <i class="bi bi-arrow-right"></i></a>
         </div>
-        {% endfor %}
+
+        {% if collection.card_products %}
+        <div class="lux-collection-grid">
+          {% for product in collection.card_products %}
+          {% include 'includes/lux_product_card.html' %}
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="lux-text">No products in this collection yet.</p>
+        {% endif %}
       </div>
+      {% endfor %}
       {% else %}
       <p class="lux-text">No collections available right now — check back soon.</p>
       {% endif %}
