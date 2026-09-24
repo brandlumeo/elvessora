@@ -3,40 +3,12 @@
 <div class="lux-page">
 <div class="lux-home" id="luxHome">
 
-  <!-- SCROLL CINEMA (scroll-scrubbed animation, top of the hero page) -->
-  <section class="lux-scroll-cinema" id="luxScrollCinema"
-           data-sprite-src="{% static 'images/hero/elvessora-cinema-sprite.webp' %}"
-           data-frame-count="80"
-           data-cols="10"
-           data-cell-w="960"
-           data-cell-h="540"
-           aria-label="Elvessora Divine Aura — cinematic reveal">
-    <div class="lux-scroll-cinema__pin">
-      <div class="lux-scroll-cinema__frame-wrap">
-        <img class="lux-scroll-cinema__poster"
-             src="{% static 'images/hero/elvessora-cinema-poster.webp' %}"
-             alt=""
-             aria-hidden="true"
-             loading="eager" decoding="async" fetchpriority="high">
-        <canvas class="lux-scroll-cinema__canvas" aria-hidden="true"></canvas>
-      </div>
-      <div class="lux-scroll-cinema__loader" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-        <span class="lux-scroll-cinema__loader-bar"></span>
-        <span class="lux-scroll-cinema__loader-text">Loading experience</span>
-      </div>
-      <p class="lux-scroll-cinema__hint" aria-hidden="true">
-        <span>Scroll to explore</span>
-        <i class="bi bi-chevron-down"></i>
-      </p>
-    </div>
-  </section>
-
-  <!-- SIGNATURE MOMENT (now the site's hero) -->
+  <!-- SIGNATURE MOMENT (the site's hero) -->
   <section class="lux-signature-banner" id="luxSignatureBanner">
     <img src="{% static 'images/hero/elvessora-divine-aura-dubai-hero.jpg' %}"
          alt="{{ site_settings.brand_name }} Divine Aura — Dubai skyline"
          class="lux-signature-img"
-         loading="eager">
+         loading="eager" fetchpriority="high">
     <div class="lux-signature-overlay"></div>
     <div class="container lux-signature-inner">
       <div class="lux-signature-content lux-reveal lux-reveal--instant">
@@ -52,6 +24,34 @@
       <a href="#luxPerfumeFinder">02</a>
       <a href="#luxSpotlight">03</a>
     </nav>
+  </section>
+
+  <!-- SCROLL CINEMA (scroll-scrubbed animation, right under the hero) -->
+  <section class="lux-scroll-cinema" id="luxScrollCinema"
+           data-sprite-src="{% static 'images/hero/elvessora-cinema-sprite.webp' %}"
+           data-frame-count="80"
+           data-cols="10"
+           data-cell-w="960"
+           data-cell-h="540"
+           aria-label="Elvessora Divine Aura — cinematic reveal">
+    <div class="lux-scroll-cinema__pin">
+      <div class="lux-scroll-cinema__frame-wrap">
+        <img class="lux-scroll-cinema__poster"
+             src="{% static 'images/hero/elvessora-cinema-poster.webp' %}"
+             alt=""
+             aria-hidden="true"
+             loading="eager" decoding="async">
+        <canvas class="lux-scroll-cinema__canvas" aria-hidden="true"></canvas>
+      </div>
+      <div class="lux-scroll-cinema__loader" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <span class="lux-scroll-cinema__loader-bar"></span>
+        <span class="lux-scroll-cinema__loader-text">Loading experience</span>
+      </div>
+      <p class="lux-scroll-cinema__hint" aria-hidden="true">
+        <span>Scroll to explore</span>
+        <i class="bi bi-chevron-down"></i>
+      </p>
+    </div>
   </section>
 
 </div>
