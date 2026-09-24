@@ -10,14 +10,22 @@
         document.body.classList.add('page-luxury-home');
     }
 
-    /* --- Solid nav after scrolling past hero --- */
+    /* --- Solid nav after scrolling past the hero-like sections --- */
     var header = document.querySelector('.site-header');
-    var hero = document.getElementById('luxSignatureBanner') || document.getElementById('luxCollectionHero');
+    // The homepage stacks several hero-like sections (Signature banner,
+    // scroll cinema, hero) before real content — use whichever is the
+    // last one in the DOM as the "past the hero" boundary, and check its
+    // actual scroll position (not just its own height) so the nav goes
+    // solid only once that whole stack has scrolled by, regardless of
+    // how much is stacked above it.
+    var hero = document.getElementById('luxHero')
+        || document.getElementById('luxSignatureBanner')
+        || document.getElementById('luxCollectionHero');
 
     function updateNav() {
         if (!hero) return;
-        var threshold = hero.offsetHeight * 0.35;
-        document.body.classList.toggle('is-nav-solid', window.scrollY > threshold);
+        var rect = hero.getBoundingClientRect();
+        document.body.classList.toggle('is-nav-solid', rect.bottom < window.innerHeight * 0.65);
     }
 
     window.addEventListener('scroll', updateNav, { passive: true });
