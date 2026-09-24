@@ -64,8 +64,16 @@
         currentFrame = index;
     }
 
+    function viewportHeight() {
+        // window.innerHeight jumps around on mobile as the browser's
+        // address bar shows/hides mid-scroll, which made the pin flicker
+        // and the frame index jitter. visualViewport.height stays stable
+        // through that resize, so prefer it wherever it's available.
+        return window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    }
+
     function getProgress() {
-        var scrollRange = section.offsetHeight - window.innerHeight;
+        var scrollRange = section.offsetHeight - viewportHeight();
         if (scrollRange <= 0) return 0;
         var rect = section.getBoundingClientRect();
         return Math.max(0, Math.min(1, -rect.top / scrollRange));
@@ -73,10 +81,11 @@
 
     function updatePinState() {
         var rect = section.getBoundingClientRect();
+        var vh = viewportHeight();
 
         if (rect.top > 0) {
             pin.classList.remove('is-fixed', 'is-bottom');
-        } else if (rect.bottom >= window.innerHeight) {
+        } else if (rect.bottom >= vh) {
             pin.classList.remove('is-bottom');
             pin.classList.add('is-fixed');
         } else {
@@ -110,12 +119,24 @@
         }
     }
 
+    function onViewportResize() {
+        resizeCanvas();
+        update();
+    }
+
     function init() {
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas, { passive: true });
         window.addEventListener('orientationchange', resizeCanvas, { passive: true });
         if (window.ResizeObserver) {
             new ResizeObserver(resizeCanvas).observe(pin);
+        }
+        if (window.visualViewport) {
+            // Mobile browsers resize the visual viewport (not window) when
+            // the address bar shows/hides mid-scroll — without this, the
+            // pin height and scroll progress go stale until the next
+            // full window resize (orientation change), causing jitter.
+            window.visualViewport.addEventListener('resize', onViewportResize, { passive: true });
         }
         window.addEventListener('scroll', onScroll, { passive: true });
 
