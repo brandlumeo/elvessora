@@ -132,16 +132,7 @@
           {% for collection in collections %}
           <div class="col-6 col-lg-3">
             <article class="lux-gift-card">
-              <a href="{% url 'products:collection_detail' collection.slug %}" class="lux-gift-image">
-                {% if collection.image %}
-                <img src="{{ collection.image.url }}" alt="{{ collection.name }}" loading="lazy">
-                {% else %}
-                <div class="lux-gift-image-empty" aria-hidden="true">
-                  <i class="bi bi-bookmark-star"></i>
-                  <span>{{ collection.name }}</span>
-                </div>
-                {% endif %}
-              </a>
+              {% include 'includes/lux_collection_card.html' %}
               <h3><a href="{% url 'products:collection_detail' collection.slug %}">{{ collection.name }}</a></h3>
               <a href="{% url 'products:collection_detail' collection.slug %}" class="lux-link-arrow">Shop Collection <i class="bi bi-arrow-right"></i></a>
             </article>

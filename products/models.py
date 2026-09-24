@@ -86,6 +86,11 @@ class Collection(models.Model):
     def get_absolute_url(self):
         return reverse('products:collection_detail', kwargs={'slug': self.slug})
 
+    @property
+    def card_products(self):
+        """Up to 4 active products for the collection card's photo collage."""
+        return self.products.filter(is_active=True).prefetch_related('images')[:4]
+
     def __str__(self):
         return self.name
 

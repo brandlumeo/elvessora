@@ -817,6 +817,32 @@ body.page-luxury-home,
     color: rgba(200, 169, 106, 0.75);
 }
 
+.lux-gift-collage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 3px;
+    width: 100%;
+    height: 100%;
+    padding: 0.5rem;
+}
+
+.lux-gift-collage-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.lux-gift-collage-cell img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 0.3rem;
+}
+
 .lux-gift-card h3 {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.2rem;

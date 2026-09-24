@@ -1,0 +1,18 @@
+{% load static fragrance_extras %}
+<a href="{% url 'products:collection_detail' collection.slug %}" class="lux-gift-image">
+  {% if collection.card_products %}
+  <div class="lux-gift-collage">
+    {% for product in collection.card_products %}
+    {% product_image_url product as p_img %}
+    <span class="lux-gift-collage-cell"><img src="{{ p_img }}" alt="{{ product.name }}" loading="lazy"></span>
+    {% endfor %}
+  </div>
+  {% elif collection.image %}
+  <img src="{{ collection.image.url }}" alt="{{ collection.name }}" loading="lazy">
+  {% else %}
+  <div class="lux-gift-image-empty" aria-hidden="true">
+    <i class="bi bi-bookmark-star"></i>
+    <span>{{ collection.name }}</span>
+  </div>
+  {% endif %}
+</a>
