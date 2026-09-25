@@ -248,11 +248,10 @@
     var heroCarousel = document.querySelector('[data-hero-carousel]');
     if (heroCarousel) {
         var heroSlides = Array.prototype.slice.call(heroCarousel.querySelectorAll('[data-hero-slide]'));
-        var heroPrev = heroCarousel.querySelector('[data-hero-prev]');
-        var heroNext = heroCarousel.querySelector('[data-hero-next]');
         var heroPagination = heroCarousel.querySelector('[data-hero-pagination]');
         var heroIndex = 0;
         var heroTimer = null;
+        var HERO_INTERVAL_MS = 3000;
 
         if (heroSlides.length > 1) {
             heroSlides.forEach(function (slide, i) {
@@ -282,17 +281,11 @@
 
             function restartHeroAutoplay() {
                 if (heroTimer) clearInterval(heroTimer);
-                heroTimer = setInterval(function () { goToHeroSlide(heroIndex + 1); }, 6000);
+                heroTimer = setInterval(function () { goToHeroSlide(heroIndex + 1); }, HERO_INTERVAL_MS);
             }
-
-            if (heroPrev) heroPrev.addEventListener('click', function () { goToHeroSlide(heroIndex - 1); restartHeroAutoplay(); });
-            if (heroNext) heroNext.addEventListener('click', function () { goToHeroSlide(heroIndex + 1); restartHeroAutoplay(); });
 
             goToHeroSlide(0);
             restartHeroAutoplay();
-
-            heroCarousel.addEventListener('mouseenter', function () { if (heroTimer) clearInterval(heroTimer); });
-            heroCarousel.addEventListener('mouseleave', restartHeroAutoplay);
         }
     }
 })();
