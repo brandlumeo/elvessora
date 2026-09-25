@@ -2,8 +2,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Promo popup
     const promoModal = document.getElementById('promoModal');
     if (promoModal && !sessionStorage.getItem('promoShown')) {
-        new bootstrap.Modal(promoModal).show();
-        sessionStorage.setItem('promoShown', 'true');
+        // Wait until the page has fully loaded and settled, so the modal's
+        // scroll lock and fade don't land on top of a first visit's heaviest
+        // moment (hero image, fonts, animation frames all still arriving).
+        var showPromo = function () {
+            setTimeout(function () {
+                new bootstrap.Modal(promoModal).show();
+                sessionStorage.setItem('promoShown', 'true');
+            }, 2500);
+        };
+        if (document.readyState === 'complete') showPromo();
+        else window.addEventListener('load', showPromo, { once: true });
     }
 
     // Share button

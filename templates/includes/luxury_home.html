@@ -28,11 +28,7 @@
 
   <!-- SCROLL CINEMA (scroll-scrubbed animation, right under the hero) -->
   <section class="lux-scroll-cinema" id="luxScrollCinema"
-           data-sprite-src="{% static 'images/hero/elvessora-cinema-sprite.webp' %}"
-           data-frame-count="72"
-           data-cols="10"
-           data-cell-w="960"
-           data-cell-h="540"
+           data-frames="{% cinema_frame_urls 72 %}"
            aria-label="Elvessora Divine Aura — cinematic reveal">
     <div class="lux-scroll-cinema__pin">
       <div class="lux-scroll-cinema__frame-wrap">

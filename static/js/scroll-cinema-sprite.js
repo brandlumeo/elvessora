@@ -1,10 +1,14 @@
 (function () {
     'use strict';
 
-    // Scroll-scrubbed hero animation, driven by a single sprite-sheet image
-    // (a grid of frames) instead of a video. No video codec dependency —
-    // the sprite loads once and each scroll-driven frame is a synchronous
-    // canvas drawImage crop, so there's no seek/decode latency to manage.
+    // Scroll-scrubbed hero animation, driven by individual small frames.
+    // The frames used to live in one 9600x4320 sprite sheet, but decoding
+    // that on first draw froze the main thread (~166MB of pixels, and wider
+    // than many mobile GPUs' 8192px texture limit), which made the site feel
+    // laggy for first-time visitors. Now each frame is decoded off the main
+    // thread (createImageBitmap / img.decode) and loading only starts once
+    // the page is idle or the section is near, so it never competes with the
+    // hero image. Until a frame is ready, the nearest loaded frame is drawn.
     var section = document.getElementById('luxScrollCinema');
     if (!section) return;
 
@@ -14,11 +18,10 @@
     var loader = section.querySelector('.lux-scroll-cinema__loader');
     var hint = section.querySelector('.lux-scroll-cinema__hint');
 
-    var spriteSrc = section.dataset.spriteSrc;
-    var frameCount = parseInt(section.dataset.frameCount, 10) || 1;
-    var cols = parseInt(section.dataset.cols, 10) || 1;
-    var cellW = parseInt(section.dataset.cellW, 10) || 1;
-    var cellH = parseInt(section.dataset.cellH, 10) || 1;
+    var frameUrls;
+    try { frameUrls = JSON.parse(section.dataset.frames || '[]'); } catch (e) { frameUrls = []; }
+    var frameCount = frameUrls.length;
+    if (!frameCount) return;
 
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var ctx = canvas.getContext('2d');
@@ -26,15 +29,94 @@
     var ticking = false;
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     var currentFrame = -1;
+    var drawnSource = null;
+    var frames = new Array(frameCount);
+    var loadedCount = 0;
+    var loadingStarted = false;
+    var canvasW = 0;
+    var canvasH = 0;
 
-    var sprite = new Image();
-    sprite.src = spriteSrc;
+    function loadFrame(i) {
+        return new Promise(function (resolve) {
+            var img = new Image();
+            img.decoding = 'async';
+            img.src = frameUrls[i];
+            var done = function (bitmap) {
+                frames[i] = bitmap || img;
+                loadedCount++;
+                onFrameLoaded(i);
+                resolve();
+            };
+            var fail = function () { resolve(); };
+            if (window.createImageBitmap) {
+                img.onload = function () {
+                    createImageBitmap(img).then(done, function () { done(null); });
+                };
+                img.onerror = fail;
+            } else if (img.decode) {
+                img.decode().then(function () { done(null); }, fail);
+            } else {
+                img.onload = function () { done(null); };
+                img.onerror = fail;
+            }
+        });
+    }
+
+    // Load order: first frame, then a coarse pass across the whole range
+    // (so fast scrolling always has something close), then the gaps.
+    function loadOrder() {
+        var order = [];
+        var seen = {};
+        [8, 4, 2, 1].forEach(function (step) {
+            for (var i = 0; i < frameCount; i += step) {
+                if (!seen[i]) { seen[i] = true; order.push(i); }
+            }
+        });
+        return order;
+    }
+
+    function startLoading() {
+        if (loadingStarted) return;
+        loadingStarted = true;
+        var queue = loadOrder();
+        var concurrency = 4;
+        function next() {
+            if (!queue.length) return Promise.resolve();
+            return loadFrame(queue.shift()).then(next);
+        }
+        for (var c = 0; c < concurrency; c++) next();
+    }
+
+    function onFrameLoaded(i) {
+        if (!ready) {
+            ready = true;
+            section.classList.add('is-ready');
+            if (loader) loader.hidden = true;
+        }
+        if (ready) {
+            if (reducedMotion) {
+                var still = nearestLoaded(Math.floor(frameCount * 0.55));
+                drawFrame(still, true);
+            } else {
+                onScroll();
+            }
+        }
+    }
+
+    function nearestLoaded(index) {
+        if (frames[index]) return index;
+        for (var d = 1; d < frameCount; d++) {
+            if (index - d >= 0 && frames[index - d]) return index - d;
+            if (index + d < frameCount && frames[index + d]) return index + d;
+        }
+        return -1;
+    }
 
     function resizeCanvas() {
-        var width = pin.clientWidth;
-        var height = pin.clientHeight;
-        canvas.width = Math.floor(width * dpr);
-        canvas.height = Math.floor(height * dpr);
+        canvasW = pin.clientWidth;
+        canvasH = pin.clientHeight;
+        canvas.width = Math.floor(canvasW * dpr);
+        canvas.height = Math.floor(canvasH * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = 'high';
@@ -45,23 +127,23 @@
     }
 
     function drawFrame(index, force) {
-        if (!force && index === currentFrame) return;
-        var width = pin.clientWidth;
-        var height = pin.clientHeight;
-        var col = index % cols;
-        var row = Math.floor(index / cols);
-        var sx = col * cellW;
-        var sy = row * cellH;
+        if (index < 0) return;
+        var src = frames[index];
+        if (!src) return;
+        if (!force && src === drawnSource) return;
 
-        var coverScale = Math.max(width / cellW, height / cellH);
-        var drawW = cellW * coverScale;
-        var drawH = cellH * coverScale;
-        var x = (width - drawW) / 2;
-        var y = (height - drawH) / 2;
+        var srcW = src.naturalWidth || src.width;
+        var srcH = src.naturalHeight || src.height;
+        var coverScale = Math.max(canvasW / srcW, canvasH / srcH);
+        var drawW = srcW * coverScale;
+        var drawH = srcH * coverScale;
+        var x = (canvasW - drawW) / 2;
+        var y = (canvasH - drawH) / 2;
 
-        ctx.clearRect(0, 0, width, height);
-        ctx.drawImage(sprite, sx, sy, cellW, cellH, x, y, drawW, drawH);
+        ctx.drawImage(src, x, y, drawW, drawH);
         currentFrame = index;
+        drawnSource = src;
+        if (poster && poster.style.opacity !== '0') poster.style.opacity = '0';
     }
 
     function viewportHeight() {
@@ -72,43 +154,37 @@
         return window.visualViewport ? window.visualViewport.height : window.innerHeight;
     }
 
-    function getProgress() {
-        var scrollRange = section.offsetHeight - viewportHeight();
-        if (scrollRange <= 0) return 0;
-        var rect = section.getBoundingClientRect();
-        return Math.max(0, Math.min(1, -rect.top / scrollRange));
+    var pinState = '';
+    function setPinState(state) {
+        if (state === pinState) return;
+        pinState = state;
+        pin.classList.toggle('is-fixed', state === 'fixed');
+        pin.classList.toggle('is-bottom', state === 'bottom');
     }
 
-    function updatePinState() {
+    var lastHintOpacity = -1;
+    function update() {
+        ticking = false;
         var rect = section.getBoundingClientRect();
         var vh = viewportHeight();
 
-        if (rect.top > 0) {
-            pin.classList.remove('is-fixed', 'is-bottom');
-        } else if (rect.bottom >= vh) {
-            pin.classList.remove('is-bottom');
-            pin.classList.add('is-fixed');
-        } else {
-            pin.classList.remove('is-fixed');
-            pin.classList.add('is-bottom');
-        }
-    }
-
-    function update() {
-        ticking = false;
-        updatePinState();
+        if (rect.top > 0) setPinState('');
+        else if (rect.bottom >= vh) setPinState('fixed');
+        else setPinState('bottom');
 
         if (!ready) return;
 
-        var progress = getProgress();
+        var scrollRange = rect.height - vh;
+        var progress = scrollRange <= 0 ? 0 : Math.max(0, Math.min(1, -rect.top / scrollRange));
         var index = Math.min(frameCount - 1, Math.floor(progress * frameCount));
-        drawFrame(index, false);
+        drawFrame(nearestLoaded(index), false);
 
         if (hint) {
-            hint.style.opacity = String(Math.max(0, 1 - progress * 4));
-        }
-        if (poster) {
-            poster.style.opacity = '0';
+            var opacity = Math.max(0, 1 - progress * 4);
+            if (opacity !== lastHintOpacity) {
+                lastHintOpacity = opacity;
+                hint.style.opacity = String(opacity);
+            }
         }
     }
 
@@ -124,6 +200,24 @@
         update();
     }
 
+    // Start fetching frames when the section is about to be seen, or once
+    // the browser is idle after load — whichever comes first.
+    function scheduleLoading() {
+        if ('IntersectionObserver' in window) {
+            var io = new IntersectionObserver(function (entries) {
+                if (entries.some(function (e) { return e.isIntersecting; })) {
+                    io.disconnect();
+                    startLoading();
+                }
+            }, { rootMargin: '600px 0px' });
+            io.observe(section);
+        }
+        var idle = window.requestIdleCallback || function (cb) { return setTimeout(cb, 300); };
+        var kick = function () { idle(startLoading, { timeout: 2000 }); };
+        if (document.readyState === 'complete') kick();
+        else window.addEventListener('load', kick, { once: true });
+    }
+
     function init() {
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas, { passive: true });
@@ -131,6 +225,12 @@
         if (window.ResizeObserver) {
             new ResizeObserver(resizeCanvas).observe(pin);
         }
+
+        if (reducedMotion) {
+            scheduleLoading();
+            return;
+        }
+
         if (window.visualViewport) {
             // Mobile browsers resize the visual viewport (not window) when
             // the address bar shows/hides mid-scroll — without this, the
@@ -140,31 +240,8 @@
         }
         window.addEventListener('scroll', onScroll, { passive: true });
 
-        sprite.addEventListener('load', function () {
-            ready = true;
-            section.classList.add('is-ready');
-            if (loader) loader.hidden = true;
-            update();
-        });
-        sprite.addEventListener('error', function () {
-            if (loader) loader.hidden = true;
-        });
-
+        scheduleLoading();
         update();
-    }
-
-    if (reducedMotion) {
-        sprite.addEventListener('load', function () {
-            ready = true;
-            section.classList.add('is-ready');
-            if (loader) loader.hidden = true;
-            if (poster) poster.style.opacity = '0';
-            resizeCanvas();
-            drawFrame(Math.floor(frameCount * 0.55), true);
-        }, { once: true });
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas, { passive: true });
-        return;
     }
 
     if (document.readyState === 'loading') {

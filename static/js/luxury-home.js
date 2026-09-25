@@ -28,7 +28,18 @@
         document.body.classList.toggle('is-nav-solid', rect.bottom < window.innerHeight * 0.65);
     }
 
-    window.addEventListener('scroll', updateNav, { passive: true });
+    // All scroll-driven UI updates run at most once per animation frame,
+    // instead of forcing layout on every raw scroll event.
+    var scrollTasks = [updateNav];
+    var scrollTicking = false;
+    window.addEventListener('scroll', function () {
+        if (scrollTicking) return;
+        scrollTicking = true;
+        window.requestAnimationFrame(function () {
+            scrollTicking = false;
+            scrollTasks.forEach(function (fn) { fn(); });
+        });
+    }, { passive: true });
     updateNav();
 
     /* --- Section scroll rail --- */
@@ -53,17 +64,22 @@
         });
     });
 
+    var navLinks = document.querySelectorAll('.nav-menu--flat [data-nav-section], .nav-menu--home [data-nav-section]');
+    var lastRailIdx = -1;
+
     function updateRail() {
         var scrollMid = window.scrollY + window.innerHeight * 0.4;
         var activeIdx = 0;
         sections.forEach(function (section, i) {
             if (section.offsetTop <= scrollMid) activeIdx = i;
         });
+        if (activeIdx === lastRailIdx) return;
+        lastRailIdx = activeIdx;
+
         railLinks.forEach(function (link, i) {
             link.classList.toggle('is-active', i === activeIdx);
         });
 
-        var navLinks = document.querySelectorAll('.nav-menu--flat [data-nav-section], .nav-menu--home [data-nav-section]');
         if (navLinks.length && sections[activeIdx]) {
             var activeId = sections[activeIdx].id;
             navLinks.forEach(function (link) {
@@ -84,7 +100,7 @@
         });
     });
 
-    window.addEventListener('scroll', updateRail, { passive: true });
+    scrollTasks.push(updateRail);
     updateRail();
 
     /* --- Collection carousel ---
@@ -176,8 +192,9 @@
         revealEls.forEach(function (el) { el.classList.add('is-visible'); });
     }
 
+    // The IntersectionObserver above handles reveals while scrolling; this
+    // one-off pass just catches anything already on screen at load.
     revealInView();
-    window.addEventListener('scroll', revealInView, { passive: true });
 
     /* --- Best Seller thumbnail switcher --- */
     var spotlightPanel = document.querySelector('[data-spotlight-panel]');
