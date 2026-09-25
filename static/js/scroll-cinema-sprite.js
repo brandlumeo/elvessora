@@ -18,8 +18,14 @@
     var loader = section.querySelector('.lux-scroll-cinema__loader');
     var hint = section.querySelector('.lux-scroll-cinema__hint');
 
+    // Phones held upright get a dedicated 9:16 frame set (cropped from the
+    // high-res source) so the animation fills the screen in portrait
+    // instead of showing a heavily zoomed crop of the 16:9 frames.
+    var usePortrait = window.innerWidth < window.innerHeight && section.dataset.framesPortrait;
     var frameUrls;
-    try { frameUrls = JSON.parse(section.dataset.frames || '[]'); } catch (e) { frameUrls = []; }
+    try {
+        frameUrls = JSON.parse((usePortrait ? section.dataset.framesPortrait : section.dataset.frames) || '[]');
+    } catch (e) { frameUrls = []; }
     var frameCount = frameUrls.length;
     if (!frameCount) return;
 
@@ -126,44 +132,6 @@
         }
     }
 
-    // How much wider than the screen the frame is drawn on portrait
-    // screens (1 = whole frame visible edge to edge).
-    var PORTRAIT_ZOOM = 1.15;
-
-    // Cheap blur: shrink the frame into a tiny canvas, then scale it back
-    // up with smoothing — far lighter on phones than ctx.filter = 'blur()'.
-    var blurCanvas = document.createElement('canvas');
-    blurCanvas.width = 32;
-    blurCanvas.height = 18;
-    var blurCtx = blurCanvas.getContext('2d');
-
-    function drawBackdrop(src, srcW, srcH) {
-        blurCtx.drawImage(src, 0, 0, blurCanvas.width, blurCanvas.height);
-        var scale = Math.max(canvasW / srcW, canvasH / srcH);
-        var w = srcW * scale;
-        var h = srcH * scale;
-        ctx.drawImage(blurCanvas, (canvasW - w) / 2, (canvasH - h) / 2, w, h);
-        ctx.fillStyle = 'rgba(6, 16, 34, 0.55)';
-        ctx.fillRect(0, 0, canvasW, canvasH);
-    }
-
-    // Soften the frame's top/bottom edges into the blurred backdrop.
-    function fadeEdges(y, h) {
-        var band = Math.min(48, h * 0.18);
-        var edge = 'rgba(6, 16, 34, 0.6)';
-        var clear = 'rgba(6, 16, 34, 0)';
-        var top = ctx.createLinearGradient(0, y, 0, y + band);
-        top.addColorStop(0, edge);
-        top.addColorStop(1, clear);
-        ctx.fillStyle = top;
-        ctx.fillRect(0, y, canvasW, band);
-        var bottom = ctx.createLinearGradient(0, y + h - band, 0, y + h);
-        bottom.addColorStop(0, clear);
-        bottom.addColorStop(1, edge);
-        ctx.fillStyle = bottom;
-        ctx.fillRect(0, y + h - band, canvasW, band);
-    }
-
     function drawFrame(index, force) {
         if (index < 0) return;
         var src = frames[index];
@@ -172,23 +140,13 @@
 
         var srcW = src.naturalWidth || src.width;
         var srcH = src.naturalHeight || src.height;
-        var portrait = canvasW < canvasH;
-
-        // Landscape screens: cover-fit. Portrait (phones): cover-fitting a
-        // 16:9 frame into a tall screen zoomed in ~4x and cropped most of
-        // the shot, so fit the frame to the screen width instead and fill
-        // the space above/below with a soft blurred copy of the same frame.
-        var scale = portrait
-            ? (canvasW * PORTRAIT_ZOOM) / srcW
-            : Math.max(canvasW / srcW, canvasH / srcH);
-        var drawW = srcW * scale;
-        var drawH = srcH * scale;
+        var coverScale = Math.max(canvasW / srcW, canvasH / srcH);
+        var drawW = srcW * coverScale;
+        var drawH = srcH * coverScale;
         var x = (canvasW - drawW) / 2;
         var y = (canvasH - drawH) / 2;
 
-        if (portrait) drawBackdrop(src, srcW, srcH);
         ctx.drawImage(src, x, y, drawW, drawH);
-        if (portrait) fadeEdges(y, drawH);
         currentFrame = index;
         drawnSource = src;
         if (poster && poster.style.opacity !== '0') poster.style.opacity = '0';

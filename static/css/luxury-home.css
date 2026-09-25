@@ -218,15 +218,6 @@ body.page-luxury-home,
     transition: opacity 0.35s ease;
 }
 
-/* Portrait screens: show the whole frame instead of a heavily cropped
-   zoom (matches the canvas fit in scroll-cinema-sprite.js). */
-@media (orientation: portrait) {
-    .lux-scroll-cinema__poster {
-        object-fit: contain;
-        transform: scale(1.15);
-    }
-}
-
 .lux-scroll-cinema__canvas {
     display: block;
     image-rendering: high-quality;
