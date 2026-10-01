@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static fragrance_extras %}
+
+{% block title %}{% if order.payment_status == 'pending' %}Confirming Payment{% else %}Payment Not Completed{% endif %} — {{ site_settings.brand_name }}{% endblock %}
+{% block extra_css %}<link href="{% static 'css/marketplace-checkout.css' %}" rel="stylesheet">{% endblock %}
+
+{% block content %}
+<div class="mkt-topbar">
+    <div class="container">
+        <span class="mkt-topbar-brand">{{ site_settings.brand_name|default:"Elvessora" }}</span>
+        <span class="mkt-secure"><i class="bi bi-shield-check"></i> 100% Secure Checkout</span>
+    </div>
+</div>
+<div class="mkt-wrap">
+  <div class="container">
+    {% if order.payment_status == 'pending' %}
+    <div class="mkt-confirm-header">
+        <div class="mkt-confirm-check" style="background:#fff8e1;color:#b7791f;"><i class="bi bi-hourglass-split"></i></div>
+        <div>
+            <h1>We're confirming your payment</h1>
+            <p>Your payment for order <strong>{{ order.order_number }}</strong> is still being confirmed. This usually takes a moment — refresh this page shortly. If you were charged, your order will be confirmed automatically and you'll receive an email.</p>
+        </div>
+    </div>
+    <div class="mkt-confirm-actions">
+        <a href="{% url 'orders:payment_failed' order.order_number %}" class="mkt-btn-primary"><i class="bi bi-arrow-clockwise"></i> Refresh Status</a>
+        <a href="{% url 'orders:tracking' %}?order_number={{ order.order_number }}" class="mkt-btn-secondary">Track Your Order</a>
+    </div>
+    {% elif order.payment_status == 'paid' %}
+    <div class="mkt-confirm-header">
+        <div class="mkt-confirm-check"><i class="bi bi-check-lg"></i></div>
+        <div>
+            <h1>Payment received</h1>
+            <p>Your order <strong>{{ order.order_number }}</strong> is paid and confirmed.</p>
+        </div>
+    </div>
+    <div class="mkt-confirm-actions">
+        <a href="{% url 'orders:order_confirmation' order.order_number %}" class="mkt-btn-primary"><i class="bi bi-receipt"></i> View Order</a>
+    </div>
+    {% else %}
+    <div class="mkt-confirm-header">
+        <div class="mkt-confirm-check" style="background:#fdecea;color:#c62828;"><i class="bi bi-x-lg"></i></div>
+        <div>
+            <h1>Payment not completed</h1>
+            <p>We couldn't complete the payment for order <strong>{{ order.order_number }}</strong>. Your cart is still saved — you can try again or choose Cash on Delivery.</p>
+        </div>
+    </div>
+    <div class="mkt-confirm-actions">
+        <a href="{% url 'cart:cart' %}" class="mkt-btn-primary"><i class="bi bi-bag"></i> Back to Cart</a>
+        <a href="{% url 'core:contact' %}" class="mkt-btn-secondary">Contact Support</a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -83,6 +83,11 @@ class Order(models.Model):
         # 'razorpay' ('Online Payment') removed — India-only gateway, kept
         # in git history for when the India store is built. The
         # razorpay_* fields below stay so nothing breaks and re-adding is easy.
+        # Nomod's hosted checkout is the online option at checkout; it
+        # offers cards, Apple Pay, Google Pay, Tabby and Tamara itself. The
+        # direct tamara/tabby/tap choices are no longer offered but stay so
+        # past orders keep their labels.
+        ('nomod', 'Pay Online (Nomod)'),
         ('tamara', 'Pay in Installments (Tamara)'),
         ('tabby', 'Pay in 4 (Tabby)'),
         ('tap', 'Credit / Debit Card (Tap)'),
@@ -125,6 +130,7 @@ class Order(models.Model):
     tamara_checkout_id = models.CharField(max_length=100, blank=True)
     tabby_payment_id = models.CharField(max_length=100, blank=True)
     tap_charge_id = models.CharField(max_length=100, blank=True)
+    nomod_checkout_id = models.CharField(max_length=100, blank=True, db_index=True)
     amazon_fulfillment_status = models.CharField(max_length=50, blank=True)
 
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')

@@ -2,18 +2,23 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.db import transaction
 from django.db.models import Q
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
 from decimal import Decimal
 import json
+import logging
+import time
 
 from cart.cart_service import CartService
 from core.models import SiteSettings
-from . import tamara, tabby, tap
+from . import nomod, tamara, tabby, tap
 from .forms import CheckoutForm
 from .models import Order, OrderItem, Coupon, Payment
+
+logger = logging.getLogger(__name__)
 
 ORDER_ACCESS_SESSION_KEY = 'order_access'
 
@@ -72,7 +77,10 @@ def checkout(request):
                 'shipping_country': default_address.country,
             }
 
-    form = CheckoutForm(request.POST or None, initial=initial, user=request.user)
+    form = CheckoutForm(
+        request.POST or None, initial=initial, user=request.user,
+        online_available=nomod.is_configured() or settings.DEBUG,
+    )
 
     if request.method == 'POST' and form.is_valid():
         if not request.user.is_authenticated and not form.cleaned_data.get('guest_email'):
@@ -82,6 +90,7 @@ def checkout(request):
         payment_method = form.cleaned_data['payment_method']
         online_configured = {
             'tamara': tamara.is_configured(), 'tabby': tabby.is_configured(), 'tap': tap.is_configured(),
+            'nomod': nomod.is_configured(),
         }.get(payment_method, True)
         if payment_method != 'cod' and not online_configured and not settings.DEBUG:
             messages.error(request, 'That payment method is currently unavailable. Please choose another.')
@@ -201,6 +210,33 @@ def checkout(request):
             # CAPTURED, so an abandoned/failed Tap charge never permanently
             # reduces stock.
             return redirect(charge['checkout_url'])
+
+        if payment_method == 'nomod' and nomod.is_configured():
+            # Re-read the stored (DB-rounded) totals so the amount sent to
+            # Nomod is exactly the amount we verify against on return.
+            order.refresh_from_db()
+
+            def nomod_url(name):
+                return f"{request.build_absolute_uri(reverse(name))}?order={order.order_number}"
+
+            try:
+                nomod_session = nomod.create_checkout(
+                    order,
+                    success_url=nomod_url('orders:nomod_success'),
+                    failure_url=nomod_url('orders:nomod_failure'),
+                    cancelled_url=nomod_url('orders:nomod_cancel'),
+                )
+            except nomod.NomodError:
+                order.delete()
+                messages.error(request, "We couldn't start your online payment. Please try again or choose Cash on Delivery.")
+                return redirect('orders:checkout')
+
+            order.nomod_checkout_id = nomod_session['checkout_id']
+            order.save(update_fields=['nomod_checkout_id', 'updated_at'])
+            # Stock is decremented only once Nomod confirms the checkout is
+            # paid (return handler, webhook or reconcile command), so an
+            # abandoned checkout never permanently reduces stock.
+            return redirect(nomod_session['checkout_url'])
 
         # DEBUG-only fallback: no online payment provider configured, but this is a
         # dev/demo environment (see README) — auto-confirm so the flow is testable end-to-end.
@@ -475,10 +511,16 @@ def tabby_webhook(request):
         return HttpResponse(status=400)
 
     payment_id = body.get('id')
-    status = body.get('status')
     order = Order.objects.filter(tabby_payment_id=payment_id).order_by('-id').first()
     if order is None:
         return HttpResponse(status=404)
+
+    # This endpoint is unauthenticated, so never trust the posted status:
+    # re-fetch the payment from Tabby and act on what Tabby itself reports.
+    try:
+        status = tabby.get_payment(payment_id).get('status')
+    except tabby.TabbyError:
+        return HttpResponse(status=200)
 
     if status == 'AUTHORIZED':
         if order.payment_status != 'paid':
@@ -598,4 +640,214 @@ def tap_webhook(request):
         order.payment_status = 'failed'
         order.save()
 
+    return HttpResponse(status=200)
+
+
+# --- Nomod Hosted Checkout ------------------------------------------------
+
+NOMOD_RETURN_POLLS = 3
+NOMOD_RETURN_POLL_SECONDS = 1.5
+
+
+def _mark_order_paid(order_pk):
+    """Marks an order paid exactly once. The row lock stops the return
+    redirect and the webhook (which can arrive together) from both
+    confirming the order and decrementing stock twice."""
+    with transaction.atomic():
+        order = Order.objects.select_for_update().get(pk=order_pk)
+        if order.payment_status == 'paid':
+            return order
+        order.payment_status = 'paid'
+        order.status = 'confirmed'
+        order.save()
+        _decrement_stock(order)
+    return order
+
+
+def _mark_order_unpaid(order_pk, cancel=False):
+    """Records a failed/cancelled/expired payment, unless the order has
+    already been paid (a late failure event must never undo a payment)."""
+    with transaction.atomic():
+        order = Order.objects.select_for_update().get(pk=order_pk)
+        if order.payment_status == 'paid':
+            return order
+        order.payment_status = 'failed'
+        if cancel:
+            order.status = 'cancelled'
+        order.save()
+    return order
+
+
+def _sync_nomod_order(order):
+    """Re-fetches the order's checkout from Nomod and applies its state.
+    Returns one of: 'paid', 'pending', 'cancelled', 'expired', 'error'.
+    The browser redirect and webhook body are never trusted on their own.
+    """
+    if order.payment_status == 'paid':
+        return 'paid'
+    if not order.nomod_checkout_id:
+        return 'error'
+    try:
+        checkout = nomod.get_checkout(order.nomod_checkout_id)
+    except nomod.NomodError:
+        return 'error'
+
+    status = (checkout.get('status') or '').lower()
+    if nomod.is_paid_for_order(checkout, order):
+        _mark_order_paid(order.pk)
+        return 'paid'
+    if status == nomod.STATUS_PAID:
+        # Paid, but not for this order's exact amount/currency/reference.
+        # Leave it for a human rather than confirming or failing it.
+        logger.error('Nomod checkout %s is paid but failed verification for order %s',
+                     order.nomod_checkout_id, order.order_number)
+        return 'error'
+    if status == nomod.STATUS_CANCELLED:
+        _mark_order_unpaid(order.pk, cancel=True)
+        return 'cancelled'
+    if status == nomod.STATUS_EXPIRED:
+        _mark_order_unpaid(order.pk, cancel=True)
+        return 'expired'
+    if status not in nomod.KNOWN_STATUSES:
+        logger.warning('Nomod checkout %s for order %s has unrecognised status %r (charges: %s)',
+                       order.nomod_checkout_id, order.order_number, status, checkout.get('charges'))
+    return 'pending'
+
+
+def _nomod_return_order(request):
+    """The order named in a Nomod redirect, and whether this browser session
+    is the one that created it (only then do we show it or clear the cart)."""
+    order_number = request.GET.get('order', '')
+    order = Order.objects.filter(order_number=order_number, payment_method='nomod').first()
+    granted = order is not None and order_number in request.session.get(ORDER_ACCESS_SESSION_KEY, [])
+    return order, granted
+
+
+def _nomod_outcome_redirect(request, order, state):
+    if state == 'paid':
+        CartService(request).clear()
+        return redirect('orders:order_confirmation', order_number=order.order_number)
+    if state == 'cancelled':
+        messages.info(request, 'Payment cancelled. Your cart is still saved.')
+        return redirect('cart:cart')
+    # failed / expired / still processing / couldn't verify: payment_failed
+    # shows "failed" or "still confirming" based on the order's status.
+    return redirect('orders:payment_failed', order_number=order.order_number)
+
+
+def nomod_success(request):
+    order, granted = _nomod_return_order(request)
+    if order is None:
+        messages.error(request, 'Order not found.')
+        return redirect('cart:cart')
+
+    state = _sync_nomod_order(order)
+    # Nomod can redirect a moment before the charge settles; give it a few
+    # short re-checks before telling the customer it's still processing.
+    polls = 0
+    while state == 'pending' and polls < NOMOD_RETURN_POLLS:
+        time.sleep(NOMOD_RETURN_POLL_SECONDS)
+        state = _sync_nomod_order(order)
+        polls += 1
+
+    if not granted:
+        messages.info(request, 'Thank you. You can check your order status with your order number and email.')
+        return redirect('orders:tracking')
+    order.refresh_from_db()
+    return _nomod_outcome_redirect(request, order, state)
+
+
+def nomod_failure(request):
+    order, granted = _nomod_return_order(request)
+    if order is None:
+        messages.error(request, 'Your payment was not completed.')
+        return redirect('cart:cart')
+
+    state = _sync_nomod_order(order)
+    if state == 'pending':
+        _mark_order_unpaid(order.pk)
+        state = 'failed'
+
+    if not granted:
+        return redirect('orders:tracking')
+    order.refresh_from_db()
+    if state != 'paid':
+        messages.error(request, 'Your payment was not completed. Please try again or choose Cash on Delivery.')
+    return _nomod_outcome_redirect(request, order, state)
+
+
+def nomod_cancel(request):
+    order, granted = _nomod_return_order(request)
+    if order is None:
+        messages.info(request, 'Payment cancelled. Your cart is still saved.')
+        return redirect('cart:cart')
+
+    state = _sync_nomod_order(order)
+    if state == 'pending':
+        # The order is kept (marked cancelled) rather than deleted, so a
+        # payment that still lands later can be matched to it.
+        _mark_order_unpaid(order.pk, cancel=True)
+        state = 'cancelled'
+
+    if not granted:
+        return redirect('orders:tracking')
+    order.refresh_from_db()
+    return _nomod_outcome_redirect(request, order, state)
+
+
+def _order_from_nomod_event(data):
+    """Finds our order from a webhook's charge data. Nomod's charge payload
+    isn't fully documented, so accept a checkout id or our reference from
+    the fields it may appear in."""
+    checkout = data.get('checkout')
+    metadata = data.get('metadata')
+    checkout_ids = {
+        data.get('checkout_id'),
+        checkout if isinstance(checkout, str) else None,
+        checkout.get('id') if isinstance(checkout, dict) else None,
+    } - {None, ''}
+    references = {
+        data.get('reference_id'),
+        checkout.get('reference_id') if isinstance(checkout, dict) else None,
+        metadata.get('order') if isinstance(metadata, dict) else None,
+    } - {None, ''}
+    if not checkout_ids and not references:
+        return None
+
+    query = Q(nomod_checkout_id__in=checkout_ids) | Q(order_number__in=references, payment_method='nomod')
+    return Order.objects.filter(query).exclude(nomod_checkout_id='').order_by('-id').first()
+
+
+@csrf_exempt
+def nomod_webhook(request):
+    """Safety net for when the shopper closes the tab before being
+    redirected back. The signature is verified, and the order's state is
+    always re-fetched from Nomod rather than taken from the payload."""
+    if request.method != 'POST':
+        return HttpResponse(status=405)
+    if not nomod.verify_webhook_signature(request.headers, request.body):
+        return HttpResponse(status=401)
+
+    try:
+        body = json.loads(request.body)
+    except ValueError:
+        return HttpResponse(status=400)
+
+    event_type = body.get('type', '')
+    data = body.get('data') or {}
+    order = _order_from_nomod_event(data) if isinstance(data, dict) else None
+    if order is None:
+        logger.warning('Nomod webhook %s (%s) did not match an order', body.get('eventId'), event_type)
+        return HttpResponse(status=200)
+
+    if event_type == 'charge.refunded':
+        with transaction.atomic():
+            order = Order.objects.select_for_update().get(pk=order.pk)
+            if order.payment_status == 'paid':
+                order.payment_status = 'refunded'
+                order.status = 'refunded'
+                order.save()
+        return HttpResponse(status=200)
+
+    _sync_nomod_order(order)
     return HttpResponse(status=200)

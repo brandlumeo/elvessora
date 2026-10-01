@@ -202,6 +202,16 @@ TAP_SECRET_KEY = os.environ.get('TAP_SECRET_KEY', '')
 TAP_PUBLIC_KEY = os.environ.get('TAP_PUBLIC_KEY', '')
 TAP_API_BASE_URL = os.environ.get('TAP_API_BASE_URL', 'https://api.tap.company/v2')
 
+# Nomod Hosted Checkout — the online payment option at checkout (cards,
+# Apple Pay, Google Pay, Tabby and Tamara all appear on Nomod's hosted page;
+# enable each in the Nomod dashboard's Payment Method settings). Leave
+# NOMOD_API_KEY unset to hide online payment and offer Cash on Delivery only.
+# Both values come from Nomod: Settings > Tools & Customisations > Apps & APIs
+# (API key under Nomod Hosted Checkout; signing secret under Webhooks).
+NOMOD_API_KEY = os.environ.get('NOMOD_API_KEY', '')
+NOMOD_WEBHOOK_SECRET = os.environ.get('NOMOD_WEBHOOK_SECRET', '')
+NOMOD_API_BASE_URL = os.environ.get('NOMOD_API_BASE_URL', 'https://api.nomod.com')
+
 # Amazon Multi-Channel Fulfillment (SP-API). AWS IAM credentials and region
 # are not needed — SP-API authenticates with LWA alone, and the AE
 # marketplace's endpoint/region are hardcoded via Marketplaces.AE.

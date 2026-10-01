@@ -51,8 +51,11 @@ GCC_FLAGS = {
 }
 
 PAYMENT_LABELS = {
+    'nomod': 'Nomod (Online)',
     'razorpay': 'Card',
     'tamara': 'Tamara',
+    'tabby': 'Tabby',
+    'tap': 'Tap (Card)',
     'cod': 'Cash on Delivery',
 }
 
@@ -478,7 +481,7 @@ def _compulsory_sections():
             'priority': 'Medium',
             'icon': 'bi-credit-card',
             'url': _admin_url('admin:orders_payment_changelist'),
-            'items': ['Razorpay/Tamara payment records', 'Refund records'],
+            'items': ['Online payment records', 'Refund records'],
         },
     ]
 

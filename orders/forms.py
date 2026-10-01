@@ -4,12 +4,9 @@ from crispy_forms.layout import Submit
 
 
 class CheckoutForm(forms.Form):
-    PAYMENT_CHOICES = [
-        ('tamara', 'Pay in Installments with Tamara'),
-        ('tabby', 'Pay in 4 with Tabby'),
-        ('tap', 'Credit / Debit Card'),
-        ('cod', 'Cash on Delivery (UAE)'),
-    ]
+    ONLINE_CHOICE = ('nomod', 'Pay Online — Card, Apple Pay, Google Pay, Tabby or Tamara')
+    COD_CHOICE = ('cod', 'Cash on Delivery (UAE)')
+    PAYMENT_CHOICES = [ONLINE_CHOICE, COD_CHOICE]
 
     shipping_name = forms.CharField(max_length=150, label='Full Name')
     shipping_phone = forms.CharField(max_length=20, label='Phone')
@@ -25,7 +22,12 @@ class CheckoutForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
+        online_available = kwargs.pop('online_available', True)
         super().__init__(*args, **kwargs)
+        if not online_available:
+            # No payment gateway configured: only offer Cash on Delivery.
+            self.fields['payment_method'].choices = [self.COD_CHOICE]
+            self.fields['payment_method'].initial = 'cod'
         if self.user and self.user.is_authenticated:
             self.fields['guest_email'].widget = forms.HiddenInput()
         self.helper = FormHelper()
