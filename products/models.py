@@ -264,8 +264,18 @@ class Product(models.Model):
 
     @property
     def default_variant(self):
-        variant = self.variants.filter(stock_quantity__gt=0).first()
-        return variant or self.variants.first()
+        """The size the product card's "Add to cart" adds: the smallest
+        in-stock size, so it matches the price shown on the card."""
+        variants = sorted(self.variants.all(), key=ProductVariant.size_ml)
+        in_stock = [v for v in variants if v.stock_quantity > 0]
+        return (in_stock or variants or [None])[0]
+
+    @property
+    def base_variant(self):
+        """The smallest size; its price is kept in step with the product's
+        own price when that is edited in the admin."""
+        variants = sorted(self.variants.all(), key=ProductVariant.size_ml)
+        return variants[0] if variants else None
 
     @property
     def in_stock(self):
@@ -316,6 +326,12 @@ class ProductVariant(models.Model):
         verbose_name_plural = 'Inventory'
         unique_together = ['product', 'size']
         ordering = ['size']
+
+    @staticmethod
+    def size_ml(variant):
+        """Numeric ml for sorting ('50ml' before '100ml', unlike a text sort)."""
+        digits = ''.join(ch for ch in variant.size if ch.isdigit())
+        return int(digits) if digits else 0
 
     @property
     def current_price(self):

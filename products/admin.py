@@ -146,6 +146,28 @@ class ProductAdmin(admin.ModelAdmin):
         ('Flags', {'fields': ('is_best_seller', 'is_new_arrival', 'is_featured', 'is_active')}),
     )
 
+    def save_related(self, request, form, formsets, change):
+        # Runs after the Inventory rows are saved, so the price entered in
+        # Pricing wins. Checkout charges the size's price while the shop card
+        # shows the product's price, so keep the base (smallest) size in step
+        # whenever the product price is edited.
+        super().save_related(request, form, formsets, change)
+        if not {'regular_price', 'offer_price'} & set(form.changed_data):
+            return
+        product = form.instance
+        variant = product.base_variant
+        if variant is None:
+            return
+        if variant.price != product.regular_price or variant.offer_price != product.offer_price:
+            variant.price = product.regular_price
+            variant.offer_price = product.offer_price
+            variant.save(update_fields=['price', 'offer_price'])
+            from django.contrib import messages
+            messages.info(
+                request,
+                f'The {variant.size} price was updated to match: AED {variant.current_price}.',
+            )
+
     def current_price_display(self, obj):
         return f'AED {obj.current_price}'
     current_price_display.short_description = 'Price'
