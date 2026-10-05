@@ -141,12 +141,13 @@ def create_checkout(order, success_url, failure_url, cancelled_url):
     """Creates a Nomod hosted checkout for an order. Returns
     {'checkout_id', 'checkout_url'}; raises NomodError on failure."""
     amount = _money(order.total)
-    name_parts = (order.shipping_name or 'Customer').split(' ', 1)
-    customer = {
-        'first_name': name_parts[0],
-        'last_name': name_parts[1] if len(name_parts) > 1 else name_parts[0],
-        'email': order.guest_email or (order.user.email if order.user_id else ''),
-    }
+    name_parts = (order.shipping_name or '').strip().split(None, 1)
+    customer = {'email': order.guest_email or (order.user.email if order.user_id else '')}
+    # Nomod rejects customer details without both a first and last name, so
+    # for a single-word name no details are prefilled and the customer types
+    # them on Nomod's page, rather than seeing the name twice ("Akash Akash").
+    if len(name_parts) == 2:
+        customer['first_name'], customer['last_name'] = name_parts
     phone = _e164_phone(order.shipping_phone)
     if phone:
         customer['phone_number'] = phone
@@ -156,7 +157,6 @@ def create_checkout(order, success_url, failure_url, cancelled_url):
         'amount': str(amount),
         'currency': CURRENCY,
         'items': _items(order, amount),
-        'customer': customer,
         'success_url': success_url,
         'failure_url': failure_url,
         'cancelled_url': cancelled_url,
@@ -165,6 +165,8 @@ def create_checkout(order, success_url, failure_url, cancelled_url):
     discount = _money(order.discount_amount)
     if discount > 0:
         payload['discount'] = str(discount)
+    if 'first_name' in customer:
+        payload['customer'] = customer
 
     data = _request('POST', '/v1/checkout', json=payload)
     checkout_id = data.get('id', '')

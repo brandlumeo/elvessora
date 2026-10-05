@@ -85,6 +85,14 @@ class NomodPayloadTests(NomodTestBase):
         self.assertEqual(payload['customer']['phone_number'], '+971501234567')
         self.assertEqual(payload['reference_id'], self.order.order_number)
 
+    def test_single_word_name_sends_no_customer(self):
+        # Nomod rejects a customer without both names, and repeating the
+        # first name as the last ("Akash Akash") looks wrong.
+        self.order.shipping_name = 'Akash'
+        with mock.patch.object(nomod, '_request', return_value={'id': 'c', 'url': 'https://pay'}) as req:
+            nomod.create_checkout(self.order, 'https://s', 'https://f', 'https://c')
+        self.assertNotIn('customer', req.call_args.kwargs['json'])
+
     def test_phone_normalisation(self):
         self.assertEqual(nomod._e164_phone('+971 50 123 4567'), '+971501234567')
         self.assertEqual(nomod._e164_phone('00971501234567'), '+971501234567')
