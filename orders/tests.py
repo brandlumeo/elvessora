@@ -212,3 +212,28 @@ class CheckoutFormTests(TestCase):
     def test_nomod_and_cod_offered(self):
         form = CheckoutForm(online_available=True)
         self.assertEqual([c[0] for c in form.fields['payment_method'].choices], ['nomod', 'cod'])
+
+
+class ReconcileCommandTests(NomodTestBase):
+    def run_reconcile(self, age_minutes, checkout):
+        from datetime import timedelta
+        from django.core.management import call_command
+        from django.utils import timezone
+        Order.objects.filter(pk=self.order.pk).update(created_at=timezone.now() - timedelta(minutes=age_minutes))
+        with mock.patch.object(nomod, 'get_checkout', return_value=checkout):
+            call_command('reconcile_nomod_payments', stdout=mock.MagicMock())
+        self.order.refresh_from_db()
+
+    def test_unpaid_checkout_is_cancelled_after_two_hours(self):
+        self.run_reconcile(180, self.checkout(status='enabled'))
+        self.assertEqual(self.order.status, 'cancelled')
+        self.assertEqual(self.order.payment_status, 'failed')
+
+    def test_recent_unpaid_checkout_is_left_pending(self):
+        self.run_reconcile(30, self.checkout(status='enabled'))
+        self.assertEqual(self.order.payment_status, 'pending')
+
+    def test_paid_checkout_is_confirmed(self):
+        self.run_reconcile(180, self.checkout())
+        self.assertEqual(self.order.payment_status, 'paid')
+
