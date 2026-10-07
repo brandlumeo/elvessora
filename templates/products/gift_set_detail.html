@@ -9,7 +9,7 @@
         <div class="col-lg-6">
             <div class="product-detail-image">
                 {% if gift_set.display_image_url %}
-                <img src="{{ gift_set.display_image_url }}" alt="{{ gift_set.name }}">
+                {% include 'includes/gift_set_visual.html' %}
                 {% else %}
                 <div class="placeholder-img"><i class="bi bi-gift"></i></div>
                 {% endif %}

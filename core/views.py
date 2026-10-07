@@ -17,7 +17,7 @@ def _ordered_cms_sections():
     currently visible disappears just because no row was ever created.
     """
     section_rows = {s.section_type: s for s in HomepageSection.objects.all()}
-    types = ['best_sellers', 'new_arrivals', 'collections', 'gift_sets']
+    types = ['best_sellers', 'collections', 'gift_sets']
     sections = []
     for section_type in types:
         row = section_rows.get(section_type)
@@ -36,7 +36,6 @@ def _ordered_cms_sections():
 def home(request):
     banners = Banner.objects.filter(is_active=True, position='hero')
     best_sellers = Product.objects.filter(is_active=True, is_best_seller=True)[:8]
-    new_arrivals = Product.objects.filter(is_active=True, is_new_arrival=True)[:8]
     collections = Collection.objects.filter(is_active=True)[:6]
     fragrance_families = FragranceFamily.objects.all()[:10]
     occasions = Occasion.objects.all()[:10]
@@ -48,7 +47,6 @@ def home(request):
     context.update({
         'banners': banners,
         'best_sellers': best_sellers,
-        'new_arrivals': new_arrivals,
         'collections': collections,
         'fragrance_families': fragrance_families,
         'occasions': occasions,

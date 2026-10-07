@@ -92,7 +92,7 @@ body.page-collection .lux-page {
 }
 
 .col-fragrance-name {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: clamp(1.75rem, 3vw, 2.25rem);
     font-weight: 600;
     color: var(--lux-navy, #061022);
@@ -220,7 +220,7 @@ body.page-collection .lux-page {
 
 .col-compare-table td strong {
     color: var(--lux-navy, #061022);
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.05rem;
 }
 
@@ -261,7 +261,7 @@ body.page-collection .lux-page {
 }
 
 .col-cta-card h3 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.35rem;
     color: var(--lux-navy, #061022);
     margin-bottom: 0.5rem;

@@ -1,0 +1,105 @@
+/* ==========================================================================
+   Elvessora — Collection page hero.
+   The photo sits in a position:fixed layer that the section clips
+   (clip-path), so it stays still on screen while the title and buttons
+   scroll up over it. Works on iOS too, unlike background-attachment: fixed.
+   ========================================================================== */
+.mx-collection-hero {
+    position: relative;
+    display: grid;
+    align-items: center;
+    min-height: max(600px, calc(100svh - var(--vx-header, 150px)));
+    overflow: hidden;
+    clip-path: inset(0);
+    isolation: isolate;
+    background: var(--vx-ink);
+}
+.mx-collection-hero__bg {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+}
+.mx-collection-hero__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+}
+/* Dark on the far left for the text; the bottle in the centre and the gold spray stay bright */
+.mx-collection-hero__shade {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+        linear-gradient(90deg, rgba(6, 16, 34, .9) 0%, rgba(6, 16, 34, .62) 24%, rgba(6, 16, 34, .12) 40%, transparent 52%),
+        linear-gradient(180deg, transparent 72%, var(--vx-ink) 100%);
+}
+.mx-collection-hero__inner { padding-block: clamp(80px, 10vw, 140px); }
+.mx-collection-hero__copy { max-width: 580px; }
+
+.mx-collection-hero .lux-eyebrow {
+    margin: 0 0 14px;
+    font-size: .78rem;
+    font-weight: 500;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--vx-gold);
+}
+.mx-collection-hero .lux-hero-title {
+    margin: 0 0 22px;
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6.4vw, 5.8rem);
+    font-weight: 700;
+    line-height: .96;
+    letter-spacing: -.04em;
+    color: var(--vx-cream) !important;
+}
+.mx-collection-hero .lux-hero-desc {
+    max-width: 480px;
+    margin: 0 0 34px;
+    font-size: clamp(1rem, 1.3vw, 1.12rem);
+    font-weight: 300;
+    line-height: 1.75;
+    color: rgba(244, 236, 220, .8);
+}
+.mx-collection-hero .lux-hero-btns { display: flex; flex-wrap: wrap; gap: 12px; }
+.mx-collection-hero .lux-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 50px;
+    padding: 0 30px;
+    border: 0 !important;
+    border-radius: 999px !important;
+    font-size: .95rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    text-decoration: none;
+}
+.mx-collection-hero .lux-btn-gold { background: var(--vx-gold) !important; color: #061022 !important; }
+.mx-collection-hero .lux-btn-gold:hover { background: var(--vx-gold-hover) !important; }
+.mx-collection-hero .lux-btn-outline {
+    background: rgba(255, 255, 255, .12) !important;
+    color: var(--vx-cream) !important;
+    backdrop-filter: blur(8px);
+}
+.mx-collection-hero .lux-btn-outline:hover { background: rgba(255, 255, 255, .2) !important; }
+
+/* Section numbers down the right edge */
+.mx-collection-hero .lux-scroll-rail a { color: rgba(244, 236, 220, .55); }
+.mx-collection-hero .lux-scroll-rail a.is-active,
+.mx-collection-hero .lux-scroll-rail a:hover { color: var(--vx-gold); }
+
+/* Phones and tablets: photo on top, title stacked underneath (side-by-side
+   only works once the screen is wide enough to keep text off the bottle) */
+@media (max-width: 991.98px) {
+    .mx-collection-hero { align-items: end; min-height: 640px; }
+    .mx-collection-hero__bg img { object-position: 47% 50%; }
+    .mx-collection-hero__shade {
+        background: linear-gradient(180deg, rgba(6, 16, 34, .15) 0%, rgba(6, 16, 34, .35) 35%, rgba(6, 16, 34, .9) 65%, var(--vx-ink) 100%);
+    }
+    .mx-collection-hero__inner { padding-block: 0 56px; }
+    .mx-collection-hero .lux-scroll-rail { display: none; }
+}

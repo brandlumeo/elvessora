@@ -208,6 +208,8 @@
         var heartEl = spotlightPanel.querySelector('[data-spotlight-heart]');
         var baseEl = spotlightPanel.querySelector('[data-spotlight-base]');
         var thumbs = spotlightPanel.querySelectorAll('[data-spotlight-thumb]');
+        var productInput = spotlightPanel.querySelector('[data-spotlight-product]');
+        var variantInput = spotlightPanel.querySelector('[data-spotlight-variant]');
 
         function selectSpotlight(thumb) {
             thumbs.forEach(function (t) {
@@ -235,6 +237,9 @@
             if (topEl) topEl.textContent = thumb.getAttribute('data-top') || '';
             if (heartEl) heartEl.textContent = thumb.getAttribute('data-heart') || '';
             if (baseEl) baseEl.textContent = thumb.getAttribute('data-base') || '';
+            // Keep the "Add to Bag" form pointed at the fragrance on show.
+            if (productInput && thumb.hasAttribute('data-id')) productInput.value = thumb.getAttribute('data-id');
+            if (variantInput && thumb.hasAttribute('data-variant')) variantInput.value = thumb.getAttribute('data-variant');
         }
 
         thumbs.forEach(function (thumb) {

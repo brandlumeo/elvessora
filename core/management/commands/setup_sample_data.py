@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from core.models import SiteSettings, FAQ, LegalPage
 from products.models import (
     Category, Collection, FragranceFamily, Occasion,
-    Product, ProductVariant, GiftSet,
+    Product, ProductVariant,
 )
 from products.management.commands.load_elvessora_fragrances import upsert_elvessora_fragrances
 from orders.models import Coupon
@@ -114,32 +114,6 @@ class Command(BaseCommand):
             'answer': '5% VAT is applied on all orders as per UAE tax regulations.',
             'order': 4,
         })
-
-        products = list(Product.objects.all())
-        if products:
-            gift1, _ = GiftSet.objects.get_or_create(name='Luxury Duo Gift Box', defaults={
-                'gift_type': 'box',
-                'description': 'Premium gift box with two bestselling Elvessora fragrances. Includes custom gift wrapping and personalized message card.',
-                'regular_price': Decimal('7999'),
-                'offer_price': Decimal('6499'),
-                'custom_wrapping_available': True,
-                'personalized_message_available': True,
-                'stock_quantity': 15,
-            })
-            if gift1.products.count() == 0 and len(products) >= 2:
-                gift1.products.set(products[:2])
-
-            gift2, _ = GiftSet.objects.get_or_create(name='Discovery Mini Collection', defaults={
-                'gift_type': 'mini',
-                'description': 'Set of 4 miniature perfumes — perfect for gifting or discovering new favourites.',
-                'regular_price': Decimal('3499'),
-                'offer_price': Decimal('2999'),
-                'custom_wrapping_available': True,
-                'personalized_message_available': True,
-                'stock_quantity': 20,
-            })
-            if gift2.products.count() == 0 and len(products) >= 4:
-                gift2.products.set(products[:4])
 
         for page_type, title, content in [
             ('privacy', 'Privacy Policy',

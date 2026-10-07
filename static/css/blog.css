@@ -58,7 +58,7 @@
     color: var(--blog-gold); margin-bottom: 16px; display: block;
 }
 .blog-hero h1 {
-    font-family: 'Cormorant Garamond', serif; font-size: clamp(2.6rem, 5vw, 4rem);
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif); font-size: clamp(2.6rem, 5vw, 4rem);
     font-weight: 600; line-height: 1.12; color: #fff; margin-bottom: 20px;
 }
 .blog-hero p {
@@ -134,7 +134,7 @@
 }
 .featured-title-link { text-decoration: none; display: block; }
 .featured-title {
-    font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif); font-size: clamp(1.8rem, 3vw, 2.5rem);
     line-height: 1.2; margin-bottom: 16px; color: var(--royal-blue-dark); transition: color 0.2s;
 }
 .featured-title-link:hover .featured-title { color: var(--royal-blue); }
@@ -157,7 +157,7 @@
 
 /* ========================= LATEST ARTICLES ========================= */
 .latest-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 32px; }
-.latest-head h2 { font-family: 'Cormorant Garamond', serif; color: var(--royal-blue-dark); font-size: 2.1rem; margin: 0; }
+.latest-head h2 { font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif); color: var(--royal-blue-dark); font-size: 2.1rem; margin: 0; }
 .latest-head a { color: var(--royal-blue-dark); font-size: 0.85rem; font-weight: 600; text-decoration: none; }
 .latest-head a:hover { color: var(--blog-gold); }
 
@@ -180,7 +180,7 @@
 .card-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
 .article-card:hover .card-img { transform: scale(1.07); }
 .card-title {
-    font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; line-height: 1.3;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif); font-size: 1.3rem; line-height: 1.3;
     color: var(--royal-blue-dark); margin-bottom: 8px; transition: color 0.25s;
 }
 .article-card:hover .card-title { color: var(--blog-gold); }
@@ -196,7 +196,7 @@
     color: var(--blog-gold); text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem;
     display: block; margin-bottom: 10px;
 }
-.knowledge-head h2 { font-family: 'Cormorant Garamond', serif; color: var(--royal-blue-dark); font-size: 2.3rem; margin-bottom: 12px; }
+.knowledge-head h2 { font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif); color: var(--royal-blue-dark); font-size: 2.3rem; margin-bottom: 12px; }
 .knowledge-head p { color: var(--text-muted); font-size: 0.98rem; }
 .knowledge-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; }
 @media (max-width: 991px) { .knowledge-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -209,7 +209,7 @@
 .knowledge-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
 .knowledge-block:hover .knowledge-img { transform: scale(1.06); }
 .knowledge-block h3 {
-    font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--royal-blue-dark);
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif); font-size: 1.2rem; color: var(--royal-blue-dark);
     margin-bottom: 6px; transition: color 0.25s;
 }
 .knowledge-block:hover h3 { color: var(--blog-gold); }
@@ -222,7 +222,7 @@
     color: var(--blog-gold); text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem;
     display: block; margin-bottom: 10px;
 }
-.shop-stories-head h2 { font-family: 'Cormorant Garamond', serif; color: var(--royal-blue-dark); font-size: 2.3rem; margin-bottom: 12px; }
+.shop-stories-head h2 { font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif); color: var(--royal-blue-dark); font-size: 2.3rem; margin-bottom: 12px; }
 .shop-stories-head p { color: var(--text-muted); font-size: 0.98rem; }
 .shop-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; }
 @media (max-width: 991px) { .shop-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -237,7 +237,7 @@
 .shop-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
 .shop-card:hover .shop-img { transform: scale(1.06); }
 .shop-body { padding: 18px 18px 22px; flex-grow: 1; display: flex; flex-direction: column; }
-.shop-name { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--royal-blue-dark); margin-bottom: 4px; }
+.shop-name { font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif); font-size: 1.15rem; color: var(--royal-blue-dark); margin-bottom: 4px; }
 .shop-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 10px; flex-grow: 1; }
 .shop-rating { font-size: 0.8rem; color: var(--blog-gold); margin-bottom: 8px; }
 .shop-price-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
@@ -268,7 +268,7 @@
 .blog-newsletter .kicker {
     color: var(--blog-gold); text-transform: uppercase; letter-spacing: 2px; font-size: 0.72rem;
 }
-.blog-newsletter h3 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; margin: 8px 0 10px; color: #fff; }
+.blog-newsletter h3 { font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif); font-size: 2.2rem; margin: 8px 0 10px; color: #fff; }
 .blog-newsletter p { color: var(--silver); margin-bottom: 0; }
 .nl-form { display: flex; gap: 10px; }
 .nl-input {
@@ -324,7 +324,7 @@
     color: var(--blog-gold); display: inline-block; margin-bottom: 1.5rem;
 }
 .article-title {
-    font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 5vw, 4rem);
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif); font-size: clamp(2.5rem, 5vw, 4rem);
     line-height: 1.15; color: #fff; margin-bottom: 1.5rem;
 }
 .article-excerpt {
@@ -340,8 +340,8 @@
 
 .article-body-wrapper { max-width: 760px; margin: 4rem auto 6rem; padding: 0 1rem; }
 .article-content { font-size: 1.15rem; line-height: 1.85; color: var(--blog-text-dark); }
-.article-content h2 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--blog-navy); margin: 3rem 0 1.5rem; }
-.article-content h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--blog-navy); margin: 2rem 0 1rem; }
+.article-content h2 { font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif); font-size: 2.2rem; color: var(--blog-navy); margin: 3rem 0 1.5rem; }
+.article-content h3 { font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif); font-size: 1.6rem; color: var(--blog-navy); margin: 2rem 0 1rem; }
 .article-content p { margin-bottom: 1.8rem; }
 .article-content img {
     display: block; max-width: 100%; height: auto; margin: 2.5rem auto;
@@ -351,7 +351,7 @@
 .article-content figure img { margin: 0 auto 1rem; }
 .article-content figcaption { text-align: center; font-size: 0.85rem; color: var(--blog-text-light); font-style: italic; }
 .article-content blockquote {
-    font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; line-height: 1.5; color: var(--blog-gold);
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif); font-size: 1.6rem; line-height: 1.5; color: var(--blog-gold);
     text-align: center; margin: 3rem auto; padding: 2rem;
     border-top: 1px solid var(--blog-gold); border-bottom: 1px solid var(--blog-gold);
     font-style: italic;
@@ -374,7 +374,7 @@
 .article-share a:hover { color: var(--blog-gold); }
 
 .blog-faqs { margin: 4rem 0; padding: 3rem; background: #f9f9f9; }
-.blog-faqs h2 { font-family: 'Cormorant Garamond', serif; text-align: center; margin-bottom: 2rem; font-size: 1.9rem; }
+.blog-faqs h2 { font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif); text-align: center; margin-bottom: 2rem; font-size: 1.9rem; }
 .faq-accordion .accordion-item { border: none; border-bottom: 1px solid #eaeaea; background: transparent; }
 .faq-accordion .accordion-button { background: transparent; color: var(--blog-navy); font-weight: 600; padding: 1.5rem 0; box-shadow: none !important; }
 .faq-accordion .accordion-button:not(.collapsed) { color: var(--blog-gold); }
@@ -382,17 +382,17 @@
 
 .related-products-section { background: var(--blog-navy); color: #fff; padding: 6rem 0; }
 .related-products-section .kicker { color: var(--blog-gold); text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem; text-align: center; display: block; margin-bottom: 10px; }
-.related-products-section h2 { font-family: 'Cormorant Garamond', serif; text-align: center; margin-bottom: 3rem; font-size: 2.5rem; color: #fff; }
+.related-products-section h2 { font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif); text-align: center; margin-bottom: 3rem; font-size: 2.5rem; color: #fff; }
 .rp-card { text-decoration: none; color: inherit; display: block; }
 .rp-img-wrap { position: relative; overflow: hidden; aspect-ratio: 3/4; border-radius: 4px; background: rgba(255,255,255,0.05); margin-bottom: 16px; }
 .rp-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
 .rp-card:hover .rp-img { transform: scale(1.06); }
-.rp-name { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: #fff; margin-bottom: 4px; transition: color 0.25s; }
+.rp-name { font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif); font-size: 1.15rem; color: #fff; margin-bottom: 4px; transition: color 0.25s; }
 .rp-card:hover .rp-name { color: var(--blog-gold); }
 .rp-price { font-size: 0.9rem; color: var(--blog-gold); font-weight: 600; }
 
 .related-articles { padding: 5rem 0; background: #fff; }
-.related-articles h2 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; text-align: center; margin-bottom: 3rem; }
+.related-articles h2 { font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif); font-size: 2.2rem; text-align: center; margin-bottom: 3rem; }
 
 @media (max-width: 767px) {
     .article-hero { min-height: 46vh; }

@@ -18,10 +18,10 @@
                         <a href="{% url 'core:home' %}" class="nav-menu-link{% if request.resolver_match.url_name == 'home' %} is-active{% endif %}">{% trans "Home" %}</a>
                     </li>
                     <li class="nav-menu-item">
-                        <a href="{% url 'products:collection' %}" class="nav-menu-link{% if request.resolver_match.url_name == 'collection' %} is-active{% endif %}">{% trans "Collection" %}</a>
+                        <a href="{% url 'products:shop' %}" class="nav-menu-link{% if request.resolver_match.namespace == 'products' and request.resolver_match.url_name == 'shop' %} is-active{% endif %}">{% trans "Shop" %}</a>
                     </li>
                     <li class="nav-menu-item">
-                        <a href="{% url 'products:shop' %}" class="nav-menu-link{% if request.resolver_match.namespace == 'products' and request.resolver_match.url_name == 'shop' %} is-active{% endif %}">{% trans "Shop" %}</a>
+                        <a href="{% url 'products:collection' %}" class="nav-menu-link{% if request.resolver_match.url_name == 'collection' %} is-active{% endif %}">{% trans "Collection" %}</a>
                     </li>
                     <li class="nav-menu-item">
                         <a href="{% url 'quiz:finder' %}" class="nav-menu-link{% if request.resolver_match.namespace == 'quiz' %} is-active{% endif %}">{% trans "Perfume Finder" %}</a>
@@ -108,8 +108,8 @@
             <div class="container">
                 <ul class="mobile-nav-list">
                     <li><a href="{% url 'core:home' %}">{% trans "Home" %}</a></li>
-                    <li><a href="{% url 'products:collection' %}">{% trans "Collection" %}</a></li>
                     <li><a href="{% url 'products:shop' %}">{% trans "Shop" %}</a></li>
+                    <li><a href="{% url 'products:collection' %}">{% trans "Collection" %}</a></li>
                     <li><a href="{% url 'quiz:finder' %}">{% trans "Perfume Finder" %}</a></li>
                     <li><a href="{% url 'core:about' %}">{% trans "About Us" %}</a></li>
                     <li><a href="{% url 'core:contact' %}">{% trans "Contact" %}</a></li>

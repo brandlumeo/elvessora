@@ -1,0 +1,29 @@
+{% load fragrance_extras %}
+{% product_image_url product as image_url %}
+<article class="vx-card vx-reveal">
+  <div class="vx-card__top">
+    <span class="vx-badge">{% if product.is_best_seller %}Bestseller{% elif product.is_new_arrival %}New{% else %}Signature{% endif %}</span>
+    {% if product.default_variant %}<span class="vx-mono">{{ product.default_variant.size }}</span>{% endif %}
+  </div>
+  <a href="{% url 'products:product_detail' product.slug %}" class="vx-vitrine vx-vitrine--case" aria-label="View {{ product.name }}">
+    <img src="{{ image_url }}" alt="{{ product.name }}" loading="lazy">
+  </a>
+  <div class="vx-card__body">
+    <span class="vx-eyebrow">{{ product.get_concentration_display }}</span>
+    <h3 class="vx-card__name"><a href="{% url 'products:product_detail' product.slug %}">{{ product|product_short_name }}</a></h3>
+    <p class="vx-card__desc">{{ product.short_description|default:product.description|truncatewords:16 }}</p>
+    <ul class="vx-chips vx-chips--center">
+      {% for note in product.heart_notes|split_fragrance_notes|slice:":3" %}<li>{{ note }}</li>{% endfor %}
+    </ul>
+    <p class="vx-price">{{ product.current_price|format_price }}</p>
+    <div class="vx-card__actions">
+      <form action="{% url 'cart:add' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="product_id" value="{{ product.id }}">
+        {% if product.default_variant %}<input type="hidden" name="variant_id" value="{{ product.default_variant.id }}">{% endif %}
+        <button type="submit" class="vx-btn vx-btn--gold vx-btn--sm"><i class="bi bi-bag"></i> Add to Bag</button>
+      </form>
+      <a href="{% url 'products:product_detail' product.slug %}" class="vx-btn vx-btn--ghost vx-btn--sm">View</a>
+    </div>
+  </div>
+</article>

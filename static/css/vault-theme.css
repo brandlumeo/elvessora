@@ -1,0 +1,944 @@
+/* ==========================================================================
+   Elvessora — "Vault" theme: black & gold tokens and shared components.
+   Loaded site-wide from base.html, after every other stylesheet.
+   The header and footer each have their own black & gold block at the end
+   of this file.
+   ========================================================================== */
+
+:root {
+    --vx-ink: #070605;
+    --vx-ink-2: #0e0b08;
+    --vx-ink-3: #16110b;
+    --vx-panel: rgba(30, 23, 14, .55);
+    --vx-line: rgba(233, 185, 73, .2);
+    --vx-line-strong: rgba(233, 185, 73, .45);
+    --vx-gold: #e9b949;
+    --vx-gold-soft: #d7ad5f;
+    --vx-gold-deep: #a8792a;
+    --vx-cream: #f4ecdc;
+    --vx-muted: #a99f8d;
+    --vx-serif: 'Cormorant Garamond', 'Times New Roman', serif;
+    --vx-sans: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --vx-radius: 22px;
+}
+
+/* ---------- Type ---------- */
+.vx-eyebrow {
+    display: inline-block;
+    font-family: var(--vx-sans);
+    font-size: .68rem;
+    font-weight: 600;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    color: var(--vx-gold);
+}
+.vx-display {
+    margin: 0;
+    max-width: 15ch;
+    font-family: var(--vx-serif);
+    font-size: clamp(2.6rem, 7.2vw, 6.2rem);
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: -.01em;
+    color: var(--vx-cream);
+    text-shadow: 0 6px 40px rgba(0, 0, 0, .55);
+}
+.vx-display em, .vx-heading em, .vx-title em { font-style: italic; color: var(--vx-gold); }
+.vx-heading {
+    margin: 10px 0 14px;
+    font-family: var(--vx-serif);
+    font-size: clamp(2.1rem, 4.4vw, 3.6rem);
+    font-weight: 400;
+    line-height: 1.08;
+    color: var(--vx-cream);
+}
+.vx-title {
+    margin: 0 0 8px;
+    font-family: var(--vx-serif);
+    font-size: clamp(2rem, 3.6vw, 3rem);
+    font-weight: 400;
+    line-height: 1.08;
+    color: var(--vx-cream);
+}
+.vx-subline { margin: 0 0 16px; font-size: .68rem; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--vx-gold); line-height: 1.7; }
+.vx-lead { max-width: 620px; margin: 0 auto; color: var(--vx-muted); font-size: .98rem; line-height: 1.75; }
+.vx-copy { margin: 0 0 18px; color: rgba(244, 236, 220, .72); font-size: .93rem; line-height: 1.8; }
+.vx-mono { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; font-size: .72rem; letter-spacing: .08em; color: var(--vx-muted); }
+.vx-price { margin: 0; font-family: var(--vx-serif); font-size: 1.7rem; font-weight: 500; color: var(--vx-gold); line-height: 1.1; }
+.vx-price small { font-family: var(--vx-sans); font-size: .72rem; letter-spacing: .1em; color: var(--vx-muted); }
+.vx-price--lg { font-size: clamp(2rem, 3.4vw, 2.8rem); }
+
+/* ---------- Buttons & links ---------- */
+.vx-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
+.vx-actions form { margin: 0; }
+.vx-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 50px;
+    padding: 0 28px;
+    border: 1px solid transparent;
+    border-radius: 99px;
+    font-family: var(--vx-sans);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: transform .3s ease, box-shadow .3s ease, background .3s ease, color .3s ease, border-color .3s ease;
+}
+.vx-btn i { font-size: .95rem; transition: transform .3s ease; }
+.vx-btn:hover i.bi-arrow-right { transform: translateX(4px); }
+.vx-btn--gold {
+    color: #1a1206;
+    background: linear-gradient(135deg, #f4cf6d 0%, var(--vx-gold) 45%, #c99332 100%);
+    box-shadow: 0 10px 30px -10px rgba(233, 185, 73, .6), inset 0 1px 0 rgba(255, 255, 255, .4);
+}
+.vx-btn--gold:hover { color: #1a1206; transform: translateY(-2px); box-shadow: 0 16px 40px -12px rgba(233, 185, 73, .8), inset 0 1px 0 rgba(255, 255, 255, .4); }
+.vx-btn--ghost { color: var(--vx-cream); border-color: var(--vx-line-strong); background: rgba(7, 6, 5, .35); backdrop-filter: blur(6px); }
+.vx-btn--ghost:hover { color: #1a1206; border-color: var(--vx-gold); background: var(--vx-gold); }
+.vx-btn--sm { min-height: 42px; padding: 0 18px; font-size: .64rem; letter-spacing: .16em; }
+.vx-btn:focus-visible, .vx-link:focus-visible, .vx-round:focus-visible, .vx-dots button:focus-visible, .vx-thumb:focus-visible {
+    outline: 2px solid var(--vx-gold);
+    outline-offset: 3px;
+}
+
+.vx-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--vx-gold);
+    text-decoration: none;
+}
+.vx-link i { transition: transform .3s ease; }
+.vx-link:hover { color: #ffd77a; }
+.vx-link:hover i { transform: translateX(4px); }
+
+.vx-round {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    border: 1px solid var(--vx-line-strong);
+    border-radius: 50%;
+    background: rgba(7, 6, 5, .5);
+    color: var(--vx-gold);
+    transition: all .3s ease;
+}
+.vx-round:hover { background: var(--vx-gold); color: #1a1206; border-color: var(--vx-gold); }
+
+/* ---------- Surfaces ---------- */
+.vx-glass {
+    position: relative;
+    border: 1px solid var(--vx-line);
+    border-radius: var(--vx-radius);
+    background: linear-gradient(160deg, rgba(44, 34, 20, .62) 0%, rgba(16, 12, 8, .72) 100%);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 30px 80px -40px rgba(0, 0, 0, .9), inset 0 1px 0 rgba(255, 236, 190, .06);
+}
+
+.vx-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.vx-chips li {
+    padding: 6px 13px;
+    border: 1px solid var(--vx-line-strong);
+    border-radius: 99px;
+    background: rgba(233, 185, 73, .07);
+    font-size: .72rem;
+    font-weight: 500;
+    color: var(--vx-cream);
+}
+.vx-chips--center { justify-content: center; }
+
+.vx-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border: 1px solid var(--vx-line-strong);
+    border-radius: 99px;
+    background: rgba(233, 185, 73, .1);
+    font-size: .58rem;
+    font-weight: 700;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--vx-gold);
+}
+
+/* ---------- Layout ---------- */
+.vx-section { position: relative; padding-block: clamp(70px, 9vw, 130px); background: var(--vx-ink); color: var(--vx-cream); }
+.vx-section--tight { padding-block: clamp(30px, 4vw, 60px); }
+.vx-head { margin-bottom: clamp(34px, 4.5vw, 60px); text-align: center; }
+.vx-head--row { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; text-align: left; }
+.vx-head--row .vx-lead { margin: 0; }
+.vx-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(30px, 5vw, 80px); align-items: center; }
+.vx-split--reverse > :first-child { order: 0; }
+
+/* ---------- Product image frames. The bottle photos are shown exactly as
+   uploaded (no tint or zoom); frames use the photos' own 1145x1374 shape
+   so the whole picture shows without bars. ---------- */
+.vx-vitrine { position: relative; display: block; overflow: hidden; background: var(--vx-ink-2); }
+.vx-vitrine img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+.vx-vitrine--orb {
+    width: min(100%, 460px);
+    aspect-ratio: 1145 / 1374;
+    border: 1px solid var(--vx-line-strong);
+    border-radius: 24px;
+    box-shadow: 0 0 0 8px rgba(233, 185, 73, .06), 0 40px 120px -30px rgba(233, 185, 73, .45);
+}
+
+.vx-vitrine--case {
+    aspect-ratio: 1145 / 1374;
+    margin: 0 4px;
+    border: 1px solid var(--vx-line-strong);
+    border-radius: 16px;
+}
+
+/* ---------- Vault card ---------- */
+.vx-card {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    gap: 18px;
+    padding: 18px 18px 26px;
+    border: 1px solid var(--vx-line);
+    border-radius: var(--vx-radius);
+    background: linear-gradient(180deg, rgba(36, 27, 15, .7) 0%, rgba(12, 9, 6, .9) 60%);
+    transition: transform .5s cubic-bezier(.2, .7, .2, 1), border-color .4s ease, box-shadow .5s ease;
+}
+.vx-card:hover { transform: translateY(-6px); border-color: var(--vx-line-strong); box-shadow: 0 30px 70px -30px rgba(233, 185, 73, .35); }
+.vx-card__top { display: flex; justify-content: space-between; align-items: center; padding-inline: 4px; }
+.vx-card__body { display: grid; align-content: start; justify-items: center; gap: 12px; padding-top: 6px; text-align: center; border-top: 1px solid var(--vx-line); }
+.vx-card__body .vx-eyebrow { margin-top: 14px; font-size: .6rem; }
+.vx-card__name { margin: 0; font-family: var(--vx-serif); font-size: clamp(1.5rem, 2.2vw, 1.9rem); font-weight: 500; letter-spacing: .12em; text-transform: uppercase; }
+.vx-card__name a { color: var(--vx-cream); text-decoration: none; transition: color .3s ease; }
+.vx-card__name a:hover { color: var(--vx-gold); }
+.vx-card__desc { margin: 0; max-width: 34ch; color: var(--vx-muted); font-size: .82rem; line-height: 1.65; }
+.vx-card .vx-price { margin-top: 4px; }
+.vx-card__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.vx-card__actions form { margin: 0; }
+
+/* ---------- Reveal on scroll (only when JS has opted in) ---------- */
+.vx-motion .vx-reveal { opacity: 0; transform: translateY(34px); transition: opacity 1s ease, transform 1s cubic-bezier(.2, .7, .2, 1); }
+.vx-motion .vx-reveal.is-in { opacity: 1; transform: none; }
+.vx-motion .vx-notes__grid .vx-reveal:nth-child(2),
+.vx-motion .vx-vault__grid .vx-reveal:nth-child(3n + 2) { transition-delay: .12s; }
+.vx-motion .vx-notes__grid .vx-reveal:nth-child(3),
+.vx-motion .vx-vault__grid .vx-reveal:nth-child(3n) { transition-delay: .24s; }
+
+@media (max-width: 991.98px) {
+    .vx-split { grid-template-columns: 1fr; }
+    .vx-split--reverse > :first-child { order: 1; }
+    .vx-vitrine--orb { width: min(100%, 360px); }
+}
+@media (max-width: 575.98px) {
+    .vx-btn { min-height: 46px; padding: 0 22px; }
+    .vx-vitrine--orb { width: min(100%, 300px); }
+    .vx-head--row { align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .vx-motion .vx-reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ==========================================================================
+   SITE-WIDE DARK LAYER
+   Everything below is scoped to <main> (plus the page body behind it); the
+   header and footer are styled separately at the end of this file.
+   ========================================================================== */
+
+body { background: var(--vx-ink); }
+main {
+    background: var(--vx-ink);
+    color: var(--vx-cream);
+    /* Bootstrap components inside main pick up these */
+    --bs-body-color: var(--vx-cream);
+    --bs-body-bg: var(--vx-ink);
+    --bs-emphasis-color: var(--vx-cream);
+    --bs-secondary-color: var(--vx-muted);
+    --bs-tertiary-bg: var(--vx-ink-2);
+    --bs-border-color: var(--vx-line);
+    --bs-link-color: var(--vx-gold);
+    --bs-link-color-rgb: 233, 185, 73;
+    --bs-link-hover-color: #ffd77a;
+    --bs-link-hover-color-rgb: 255, 215, 122;
+    --bs-heading-color: var(--vx-cream);
+    /* Legacy palette used by style.css / luxury.css, re-pointed for dark */
+    --text: var(--vx-cream);
+    --text-muted: var(--vx-muted);
+    --royal-blue: var(--vx-gold);
+    --highlight-blue: var(--vx-muted);
+    --light: var(--vx-ink-2);
+    --royal-blue-pale: var(--vx-ink-2);
+    --silver-light: var(--vx-line);
+    --lux-muted: var(--vx-muted);
+    --lux-bg-soft: var(--vx-ink-2);
+    --lux-white: var(--vx-ink-2);
+}
+
+main h1, main h2, main h3, main h4, main h5, main h6 { color: var(--vx-cream); }
+main p, main li, main dd, main td, main label { color: inherit; }
+main hr { border-color: var(--vx-line); opacity: 1; }
+main .text-muted, main .text-secondary, main .small.text-muted, main .text-muted.small { color: var(--vx-muted) !important; }
+main .text-dark { color: var(--vx-cream) !important; }
+main .bg-white, main .bg-light { background-color: var(--vx-ink-2) !important; }
+main .border, main .border-top, main .border-bottom { border-color: var(--vx-line) !important; }
+main .table { --bs-table-bg: transparent; --bs-table-color: var(--vx-cream); --bs-table-border-color: var(--vx-line); --bs-table-striped-bg: rgba(233, 185, 73, .04); --bs-table-hover-bg: rgba(233, 185, 73, .06); color: var(--vx-cream); }
+main .card { --bs-card-bg: var(--vx-ink-2); --bs-card-border-color: var(--vx-line); --bs-card-cap-bg: var(--vx-ink-3); color: var(--vx-cream); }
+main .list-group { --bs-list-group-bg: var(--vx-ink-2); --bs-list-group-color: var(--vx-cream); --bs-list-group-border-color: var(--vx-line); }
+main .alert { border-color: var(--vx-line); }
+main .breadcrumb { --bs-breadcrumb-divider-color: var(--vx-muted); --bs-breadcrumb-item-active-color: var(--vx-muted); }
+main .pagination { --bs-pagination-bg: var(--vx-ink-2); --bs-pagination-color: var(--vx-cream); --bs-pagination-border-color: var(--vx-line); --bs-pagination-hover-bg: var(--vx-ink-3); --bs-pagination-hover-color: var(--vx-gold); --bs-pagination-active-bg: var(--vx-gold); --bs-pagination-active-border-color: var(--vx-gold); --bs-pagination-active-color: #1a1206; --bs-pagination-disabled-bg: var(--vx-ink); --bs-pagination-disabled-color: var(--vx-muted); }
+
+/* ---------- Forms ---------- */
+main .form-control,
+main .form-select,
+main input[type="text"], main input[type="email"], main input[type="tel"], main input[type="password"],
+main input[type="number"], main input[type="search"], main input[type="date"], main input[type="url"],
+main textarea, main select {
+    background-color: rgba(255, 245, 225, .04);
+    border-color: var(--vx-line-strong);
+    color: var(--vx-cream);
+}
+main .form-select, main select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23e9b949' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+main select option { background: var(--vx-ink-2); color: var(--vx-cream); }
+main .form-control::placeholder, main input::placeholder, main textarea::placeholder { color: rgba(169, 159, 141, .7); }
+main .form-control:focus, main .form-select:focus, main input:focus, main textarea:focus, main select:focus {
+    background-color: rgba(255, 245, 225, .06);
+    border-color: var(--vx-gold);
+    color: var(--vx-cream);
+    box-shadow: 0 0 0 .2rem rgba(233, 185, 73, .18);
+}
+main .form-control:disabled, main .form-control[readonly] { background-color: rgba(255, 245, 225, .02); color: var(--vx-muted); }
+main .form-check-input { background-color: transparent; border-color: var(--vx-line-strong); }
+main .form-check-input:checked { background-color: var(--vx-gold); border-color: var(--vx-gold); }
+main .form-label, main .form-check-label, main .requiredField, main .form-label.small { color: var(--vx-cream); }
+main .asteriskField { color: var(--vx-gold); }
+main .form-text, main .helptext { color: var(--vx-muted); }
+main .input-group-text { background: var(--vx-ink-3); border-color: var(--vx-line-strong); color: var(--vx-gold); }
+main input:-webkit-autofill { -webkit-box-shadow: 0 0 0 40px var(--vx-ink-2) inset; -webkit-text-fill-color: var(--vx-cream); }
+
+/* ---------- Buttons used across inner pages ---------- */
+main .btn-gold, main .lux-btn-gold, main .pf-btn--gold {
+    background: linear-gradient(135deg, #f4cf6d 0%, var(--vx-gold) 45%, #c99332 100%) !important;
+    border-color: transparent !important;
+    color: #1a1206 !important;
+}
+main .btn-gold:hover, main .lux-btn-gold:hover, main .pf-btn--gold:hover { color: #1a1206 !important; filter: brightness(1.06); }
+main .lux-btn-outline, main .btn-outline-dark, main .btn-outline-secondary, main .btn-silver, main .btn-outline-primary, main .mkt-btn-secondary, main .pf-btn--outline {
+    background: transparent !important;
+    border: 1px solid var(--vx-line-strong) !important;
+    color: var(--vx-cream) !important;
+}
+main .lux-btn-outline:hover, main .btn-outline-dark:hover, main .btn-outline-secondary:hover, main .btn-silver:hover, main .btn-outline-primary:hover, main .mkt-btn-secondary:hover, main .pf-btn--outline:hover {
+    background: var(--vx-gold) !important;
+    border-color: var(--vx-gold) !important;
+    color: #1a1206 !important;
+}
+main .btn-primary, main .btn-dark {
+    background: var(--vx-ink-3);
+    border-color: var(--vx-line-strong);
+    color: var(--vx-cream);
+}
+main .btn-primary:hover, main .btn-dark:hover { background: var(--vx-gold); border-color: var(--vx-gold); color: #1a1206; }
+main .btn-link { color: var(--vx-gold); }
+main .btn-google-auth { background: var(--vx-ink-3) !important; border-color: var(--vx-line-strong) !important; color: var(--vx-cream) !important; }
+
+/* ---------- Light panels -> dark glass ---------- */
+main .page-header {
+    background: radial-gradient(ellipse 70% 120% at 50% 0%, rgba(166, 112, 32, .25), transparent 70%), var(--vx-ink-2);
+    border-bottom: 1px solid var(--vx-line);
+}
+main .page-header h1 { color: var(--vx-cream); font-weight: 500; }
+
+main .filter-sidebar, main .shop-toolbar, main .delivery-info-bar, main .product-specs,
+main .col-fragrance-row, main .col-compare-wrap, main .col-cta-card, main .lux-gift-card,
+main .about-activity-card, main .about-vision-card, main .about-sidebar-card,
+main .mkt-card, main .mkt-auth-card, main .mkt-auth-alt-card, main .mkt-topbar,
+main .lux-testimonial-card, main .pf-hero, main .pf-filter-group, main .pf-panel--quiz,
+main .pf-result-card, main .pf-no-results, main .lux-whatsapp-box,
+html body main .faq-sidebar, html body main .faq-contact-card, html body main .faq-body {
+    background: linear-gradient(160deg, rgba(40, 31, 18, .7) 0%, rgba(14, 11, 8, .85) 100%) !important;
+    border-color: var(--vx-line) !important;
+    color: var(--vx-cream);
+    box-shadow: 0 24px 60px -36px rgba(0, 0, 0, .9);
+}
+main .mkt-wrap, main .lux-page, main .lux-section, main .lux-subsection,
+main .lux-section.lux-collection, main .lux-section.lux-gifts, main .col-page-compare,
+main .pf-section, main .shop-favorites-section, main .testimonials-section {
+    background: var(--vx-ink) !important;
+    color: var(--vx-cream);
+}
+main .lux-section + .lux-section { border-top: 1px solid rgba(233, 185, 73, .08); }
+main .pf-section { border-top-color: var(--vx-line); }
+
+/* Bootstrap accordion (FAQ etc.) */
+main .accordion {
+    --bs-accordion-bg: transparent;
+    --bs-accordion-color: var(--vx-cream);
+    --bs-accordion-border-color: var(--vx-line);
+    --bs-accordion-btn-color: var(--vx-cream);
+    --bs-accordion-btn-bg: transparent;
+    --bs-accordion-active-color: var(--vx-gold);
+    --bs-accordion-active-bg: rgba(233, 185, 73, .06);
+    --bs-accordion-btn-focus-box-shadow: 0 0 0 .2rem rgba(233, 185, 73, .18);
+    --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23e9b949' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
+    --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23e9b949' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
+}
+html body main .accordion-item { background: rgba(30, 23, 14, .5) !important; border-color: var(--vx-line) !important; color: var(--vx-cream); }
+html body main .accordion-button, html body main .accordion-button.collapsed { background: transparent !important; color: var(--vx-cream) !important; box-shadow: none; }
+html body main .accordion-button:not(.collapsed) { color: var(--vx-gold) !important; background: rgba(233, 185, 73, .06) !important; }
+main .accordion-body { color: rgba(244, 236, 220, .78); }
+
+/* ---------- Text that was navy-on-white ---------- */
+main .product-collection, main .product-tag, main .product-notes, main .lux-product-tag,
+main .lux-text, main .lux-hero-desc, main .col-fragrance-desc, main .col-note-line, main .col-page-intro,
+main .about-intro-text, main .about-story-text, main .about-subtitle, main .about-sidebar-legal,
+main .mkt-auth-subtitle, main .pf-subtitle, main .pf-hero-perks li, main .pf-budget-labels,
+main .pf-results-sub, main .pf-result-notes, main .pf-quiz-step-label, main .pf-filter-label small,
+html body main .desc, html body main .count, main .htu-step-label {
+    color: var(--vx-muted) !important;
+}
+main .lux-heading, main .lux-hero-title, main .col-fragrance-name, main .about-title,
+main .mkt-section-title, main .mkt-contact-name, main .mkt-topbar-brand, main .pf-title, main .pf-filter-label,
+main .pf-quiz-q, main .pf-results-title, main .pf-result-body h4 a, main .pf-no-results h4, main .pf-result-why,
+main .lux-product-card h3 a, main .product-card .product-title, main .product-card h5 a, main .product-card h3 a,
+main .section-label-dark, html body main .kicker, main .htu-num {
+    color: var(--vx-cream) !important;
+}
+main .lux-label, main .htu-eyebrow, main .pf-label, main .lux-link-arrow { color: var(--vx-gold) !important; }
+main .price-offer, main .lux-product-price, main .pf-result-price, main .lux-spotlight-price { color: var(--vx-gold) !important; }
+main .price-regular, main del { color: var(--vx-muted); }
+
+/* ---------- Product imagery: photos are shown as uploaded; containers
+   behind them are dark so any letterboxing blends into the page. ---------- */
+main .product-image, main .product-detail-image, main .lux-product-image-wrap, main .lux-product-image,
+main .col-fragrance-visual, main .lux-gift-image, main .lux-gift-collage-cell, main .pf-result-image,
+main .gift-product-thumb, main .cart-item-image, main .mkt-item-thumb {
+    background: var(--vx-ink-2) !important;
+    border-color: var(--vx-line-strong) !important;
+}
+
+/* ---------- Product cards (shop grid, rails, wishlist) ---------- */
+main .product-card, main .product-card.luxury-card, main .lux-product-card {
+    background: linear-gradient(180deg, rgba(36, 27, 15, .7) 0%, rgba(12, 9, 6, .92) 70%) !important;
+    border: 1px solid var(--vx-line) !important;
+    border-radius: 18px;
+    overflow: hidden;
+    color: var(--vx-cream);
+    transition: transform .5s cubic-bezier(.2, .7, .2, 1), border-color .4s ease, box-shadow .5s ease;
+}
+main .product-card:hover, main .lux-product-card:hover { transform: translateY(-5px); border-color: var(--vx-line-strong) !important; box-shadow: 0 26px 60px -30px rgba(233, 185, 73, .35); }
+main .lux-product-card { padding: 12px 12px 18px; }
+main .lux-product-card h3, main .lux-product-card .lux-product-tag, main .lux-product-card .lux-product-price { padding-inline: 6px; }
+main .lux-product-card .lux-product-image-wrap { border-radius: 12px; }
+main .lux-product-wishlist, main .lux-product-view, main .lux-product-add button, main .lux-product-wishlist-btn {
+    background: rgba(7, 6, 5, .78) !important;
+    border-color: var(--vx-line-strong) !important;
+    color: var(--vx-gold) !important;
+}
+main .lux-product-add button:hover, main .lux-product-view:hover { background: var(--vx-gold) !important; color: #1a1206 !important; }
+main .product-card .card-body, main .product-card .product-info { background: transparent; }
+main .lux-gift-image:has(.lux-gift-image-empty), main .lux-gift-image-empty {
+    background: radial-gradient(ellipse at 50% 30%, rgba(166, 112, 32, .3), transparent 70%), var(--vx-ink-2) !important;
+    color: var(--vx-gold) !important;
+}
+main .lux-gift-image-empty span { color: var(--vx-gold) !important; }
+
+main .badge-new, main .badge-bestseller, main .badge-sale, main .product-badge {
+    background: rgba(7, 6, 5, .78) !important;
+    border: 1px solid var(--vx-line-strong);
+    color: var(--vx-gold) !important;
+    letter-spacing: .14em;
+    backdrop-filter: blur(4px);
+}
+main .filter-sidebar h5, main .filter-sidebar h6, main .filter-sidebar h6 i { color: var(--vx-gold) !important; }
+main .btn-outline-gold { border-color: var(--vx-line-strong) !important; color: var(--vx-gold) !important; }
+main .btn-outline-gold:hover { background: var(--vx-gold) !important; color: #1a1206 !important; }
+main .product-tag { background: rgba(233, 185, 73, .08) !important; border-color: var(--vx-line) !important; }
+
+/* ---------- Product detail page bits ---------- */
+main .delivery-info-bar span { color: rgba(244, 236, 220, .8) !important; }
+main .delivery-info-bar i, main .product-specs dt { color: var(--vx-gold) !important; }
+main .fp-tier-dot { background: var(--vx-ink-3) !important; border-color: var(--vx-line-strong) !important; }
+main .fp-tier-dot.is-active, main .fp-tier-dot.active { background: var(--vx-gold) !important; }
+main .nav-tabs { --bs-nav-tabs-border-color: var(--vx-line); --bs-nav-tabs-link-active-bg: var(--vx-ink-2); --bs-nav-tabs-link-active-color: var(--vx-gold); --bs-nav-tabs-link-active-border-color: var(--vx-line) var(--vx-line) var(--vx-ink-2); --bs-nav-link-color: var(--vx-muted); --bs-nav-link-hover-color: var(--vx-gold); }
+main .tab-content { color: var(--vx-cream); }
+
+/* ---------- Perfume finder ---------- */
+main .pf-hero-badge, main .pf-mode-btn, main .pf-chip, main .pf-quiz-opt, main .pf-compare-bar {
+    background: rgba(7, 6, 5, .65) !important;
+    border-color: var(--vx-line-strong) !important;
+    color: var(--vx-cream) !important;
+}
+main .pf-mode-btn:hover, main .pf-mode-btn.is-active, main .pf-chip.is-active, main .pf-quiz-opt.is-selected {
+    background: var(--vx-gold) !important;
+    border-color: var(--vx-gold) !important;
+    color: #1a1206 !important;
+}
+main .pf-chip.pf-photo-card, main .pf-chip.pf-photo-card.is-active { background: var(--vx-ink-2) !important; color: #fff !important; }
+main .pf-hero-visual { background: radial-gradient(ellipse at 50% 40%, rgba(166, 112, 32, .45), var(--vx-ink-2) 75%) !important; }
+main .pf-photo-card { border-color: var(--vx-line) !important; }
+main .pf-photo-card.is-selected { border-color: var(--vx-gold) !important; box-shadow: 0 0 0 3px rgba(233, 185, 73, .2), 0 18px 40px -16px rgba(233, 185, 73, .5); }
+main .pf-photo-card-check { background: var(--vx-gold) !important; color: #1a1206 !important; }
+main .pf-quiz-progress { background: var(--vx-line) !important; }
+main .pf-budget-slider input[type="range"] { background: linear-gradient(90deg, var(--vx-gold) 0%, var(--vx-gold) var(--pf-fill, 50%), rgba(233, 185, 73, .15) var(--pf-fill, 50%), rgba(233, 185, 73, .15) 100%) !important; }
+main .pf-budget-slider input[type="range"]::-webkit-slider-thumb { background: var(--vx-ink) !important; border-color: var(--vx-gold) !important; }
+main .pf-budget-slider input[type="range"]::-moz-range-thumb { background: var(--vx-ink) !important; border-color: var(--vx-gold) !important; }
+main .pf-result-why { background: rgba(233, 185, 73, .06) !important; }
+main .pf-result-badge { background: var(--vx-gold) !important; color: #1a1206 !important; }
+main .pf-compare-modal-inner { background: var(--vx-ink-2) !important; color: var(--vx-cream); }
+
+/* ---------- Homepage extras ---------- */
+main .lux-testimonial-card p { color: rgba(244, 236, 220, .82) !important; }
+main .lux-testimonial-card strong { color: var(--vx-cream) !important; }
+main .lux-testimonial-card small { color: var(--vx-muted) !important; }
+main .lux-testimonial-card.is-featured { border-color: var(--vx-line-strong) !important; box-shadow: 0 30px 70px -30px rgba(233, 185, 73, .35); }
+main .lux-testimonial-stars { color: var(--vx-gold) !important; }
+main .lux-whatsapp-box .lux-text { color: var(--vx-muted) !important; }
+main .fav-hotspot.is-active, main .fav-dot.is-active { background: var(--vx-gold) !important; color: #1a1206 !important; border-color: var(--vx-gold) !important; }
+main .lux-hero-pagination-item.is-active { background: var(--vx-gold) !important; color: #1a1206 !important; }
+
+/* ---------- Form fields inside page-specific cards (these carry their own
+   higher-specificity white field rules) ---------- */
+main .mkt-auth-card .form-control, main .mkt-contact-form .form-control, main .mkt-checkout-form .form-control,
+main .mkt-checkout-form .form-select, main .mkt-contact-form .form-select,
+main .auth-card .form-control, main .checkout-form-lux .form-control, main .checkout-form-lux .form-select,
+main .password-field-wrap .form-control {
+    background-color: rgba(255, 245, 225, .04) !important;
+    border-color: var(--vx-line-strong) !important;
+    color: var(--vx-cream) !important;
+}
+main .mkt-auth-card .form-control:focus, main .mkt-contact-form .form-control:focus, main .mkt-checkout-form .form-control:focus,
+main .auth-card .form-control:focus, main .checkout-form-lux .form-control:focus, main .password-field-wrap .form-control:focus {
+    border-color: var(--vx-gold) !important;
+    box-shadow: 0 0 0 .2rem rgba(233, 185, 73, .18) !important;
+}
+main .mkt-auth-card .form-label, main .mkt-contact-form .form-label, main .mkt-checkout-form .form-label,
+main .mkt-auth-card .form-check-label, main .mkt-checkout-form .form-check-label, main .checkout-form-lux .form-label {
+    color: var(--vx-cream) !important;
+}
+main .mkt-auth-links, main .mkt-auth-links a { color: var(--vx-muted) !important; }
+main .mkt-auth-links a:hover { color: var(--vx-gold) !important; }
+main .mkt-guest-link { background: transparent !important; border-color: var(--vx-line-strong) !important; color: var(--vx-cream) !important; }
+main .mkt-guest-link:hover { background: var(--vx-gold) !important; color: #1a1206 !important; }
+main .password-toggle, main .password-field-wrap button { color: var(--vx-gold) !important; background: transparent !important; }
+
+/* ---------- Collection landing ---------- */
+main .col-fragrance-notes { background: rgba(233, 185, 73, .05) !important; border-color: var(--vx-line) !important; }
+main .col-fragrance-tag { background: rgba(7, 6, 5, .7) !important; border: 1px solid var(--vx-line-strong); color: var(--vx-gold) !important; }
+main .col-fragrance-tag.is-new { background: var(--vx-gold) !important; color: #1a1206 !important; }
+
+/* ---------- FAQ ---------- */
+html body main .faq-category { color: var(--vx-cream); border-color: var(--vx-line); background: transparent; }
+html body main .faq-category i { color: var(--vx-gold); }
+html body main .faq-category:hover, html body main .faq-category.active, html body main .faq-category.is-active {
+    background: rgba(233, 185, 73, .08) !important;
+    color: var(--vx-gold) !important;
+}
+
+/* ---------- Navy text -> cream. Inside <main> the old navy variables are
+   mostly used as text colour on white, so they are re-pointed here; the
+   handful of places that used them as a background are pinned below. ---------- */
+main {
+    --royal-blue-dark: var(--vx-cream);
+    --primary-bg: var(--vx-cream);
+    --primary-blue: var(--vx-gold);
+    --blog-navy: var(--vx-cream);
+    --blog-text-dark: var(--vx-cream);
+    --blog-text-light: var(--vx-muted);
+}
+main .lux-page { --lux-navy: var(--vx-cream); --lux-navy-mid: var(--vx-gold); }
+main .pf-section { --pf-navy: var(--vx-cream); --pf-navy-mid: var(--vx-gold); --pf-muted: var(--vx-muted); --pf-beige: var(--vx-ink-2); --pf-beige-soft: var(--vx-ink-2); }
+main .shop-favorites-section { --fav-navy: var(--vx-ink); --fav-navy-mid: var(--vx-ink-2); --fav-panel: var(--vx-ink-3); }
+
+/* Places that used those variables as a background */
+main .about-hero, main .about-closing, main .about-closing-banner, main .hero-section,
+main .blog-hero, main .article-hero, main .blog-newsletter, main .related-products-section,
+html body main .faq-hero, html body main .faq-cta, main .brand-marquee {
+    background: radial-gradient(ellipse 70% 120% at 50% 0%, rgba(166, 112, 32, .28), transparent 70%), var(--vx-ink-2) !important;
+    color: var(--vx-cream);
+    border-color: var(--vx-line) !important;
+}
+main .about-closing-banner, html body main .faq-cta, main .blog-newsletter { border: 1px solid var(--vx-line-strong) !important; }
+main .collection-card, main .perfume-placeholder.variant-dark { background: var(--vx-ink-2) !important; }
+main .pf-photo-card { background: var(--vx-ink-2) !important; }
+main .pf-help-float { background: rgba(7, 6, 5, .9) !important; color: var(--vx-cream) !important; border-color: var(--vx-line-strong) !important; }
+main .pf-help-float i { color: var(--vx-gold) !important; }
+main .col-compare-table th { background: var(--vx-ink-3) !important; color: var(--vx-gold) !important; }
+main .blog-pill.active, main .shop-card:hover .shop-btn, html body main .faq-category.active, main .occasion-card-luxury:hover {
+    background: var(--vx-gold) !important;
+    border-color: var(--vx-gold) !important;
+    color: #1a1206 !important;
+}
+main .whatsapp-cta-box .btn-whatsapp:hover { background: #1fae54 !important; }
+
+/* Collection landing hero */
+main .lux-collection-hero, main .lux-collection-hero .lux-hero-bg {
+    background: radial-gradient(ellipse 60% 80% at 75% 40%, rgba(166, 112, 32, .3), transparent 70%), var(--vx-ink) !important;
+}
+main .lux-collection-hero .lux-hero-title { color: var(--vx-cream) !important; }
+main .col-note-line strong, main .col-note-line span:first-child, main .col-fragrance-notes dt, main .col-fragrance-notes strong { color: var(--vx-gold) !important; }
+
+/* About page sidebar + cards */
+main .about-sidebar-card h5, main .about-sidebar-card h6, main .about-activity-card h3, main .about-activity-card h4,
+main .about-activity-card h5, main .about-vision-card h3, main .about-vision-card h4, main .about-vision-card h5 { color: var(--vx-cream) !important; }
+main .about-sidebar-card a { color: var(--vx-cream); }
+main .about-sidebar-card a:hover { color: var(--vx-gold); }
+main .about-activity-icon { background: rgba(233, 185, 73, .1) !important; color: var(--vx-gold) !important; }
+main .about-social a { background: var(--vx-ink-3) !important; border-color: var(--vx-line-strong) !important; color: var(--vx-gold) !important; }
+main .about-social a:hover { background: var(--vx-gold) !important; color: #1a1206 !important; }
+
+/* ---------- Leftover dark-on-dark text (contact, sign-in, gift sets) ---------- */
+main .mkt-card span:not([class]), main .mkt-card a:not([class]),
+main .mkt-auth-card h1, main .mkt-auth-card h2, main .mkt-auth-card p, main .mkt-auth-alt-card p, main .mkt-auth-alt-card h2 {
+    color: var(--vx-cream) !important;
+}
+main .mkt-card a:not([class]):hover { color: var(--vx-gold) !important; }
+
+/* ---------- Cart & checkout ---------- */
+main .cart-lux-card, main .order-summary-lux, main .mkt-steps {
+    background: linear-gradient(160deg, rgba(40, 31, 18, .7) 0%, rgba(14, 11, 8, .85) 100%) !important;
+    border-color: var(--vx-line) !important;
+    color: var(--vx-cream);
+}
+main .cart-lux-item { border-color: var(--vx-line) !important; }
+main .cart-lux-thumb { flex: 0 0 auto; display: block; }
+main .order-summary-lux h5, main .order-summary-lux .summary-row.total span:last-child { color: var(--vx-gold) !important; }
+main .order-summary-lux .summary-row { border-color: var(--vx-line) !important; color: var(--vx-cream); }
+main .mkt-step { color: var(--vx-muted) !important; }
+main .mkt-step-num { background: var(--vx-ink-3) !important; border-color: var(--vx-line-strong) !important; color: var(--vx-muted) !important; }
+main .mkt-step.active, main .mkt-step.done, main .mkt-step.is-done { color: var(--vx-gold) !important; }
+main .mkt-step.active .mkt-step-num, main .mkt-step.done .mkt-step-num, main .mkt-step.is-done .mkt-step-num {
+    background: var(--vx-gold) !important;
+    border-color: var(--vx-gold) !important;
+    color: #1a1206 !important;
+}
+main .mkt-step-line, main .mkt-steps hr { background: var(--vx-line) !important; border-color: var(--vx-line) !important; }
+main .shop-page, main .auth-page, main .account-page { background: var(--vx-ink) !important; }
+
+
+/* ==========================================================================
+   HEADER — warm black with gold accents, so the gold logo and cream nav
+   text sit on a matching ground. Scoped to .site-header.
+   ========================================================================== */
+.site-header {
+    background: var(--vx-ink);
+    --primary-bg: #0d0a07;
+    --secondary-bg: #070605;
+}
+.site-header .nav-promo,
+.site-header .top-bar,
+.site-header .top-bar-mobile {
+    background: #050403;
+    color: rgba(244, 236, 220, .78);
+    border-bottom: 1px solid rgba(233, 185, 73, .14);
+}
+.site-header .nav-promo-link,
+.site-header .top-links a { color: rgba(244, 236, 220, .85); }
+.site-header .nav-promo-link:hover,
+.site-header .top-links a:hover { color: var(--vx-gold); }
+.site-header .nav-promo i { color: var(--vx-gold); }
+
+.site-header .luxury-nav {
+    position: relative;
+    background: linear-gradient(180deg, #120e09 0%, #0a0806 100%);
+    border-bottom: 0;
+    box-shadow: 0 10px 30px -12px rgba(0, 0, 0, .85);
+}
+/* Hairline of gold under the nav, brightest in the middle */
+.site-header .luxury-nav::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(233, 185, 73, .55) 30%, rgba(244, 207, 109, .9) 50%, rgba(233, 185, 73, .55) 70%, transparent 100%);
+    pointer-events: none;
+}
+
+.site-header .nav-menu-link {
+    position: relative;
+    color: rgba(244, 236, 220, .82);
+}
+.site-header .nav-menu-link:hover,
+.site-header .nav-menu-link.show,
+.site-header .nav-menu--flat .nav-menu-link.is-active { color: var(--vx-gold); }
+.site-header .nav-menu--flat .nav-menu-link::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 2px;
+    width: 0;
+    height: 1px;
+    background: var(--vx-gold);
+    transform: translateX(-50%);
+    transition: width .3s ease;
+}
+.site-header .nav-menu--flat .nav-menu-link:hover::after,
+.site-header .nav-menu--flat .nav-menu-link.is-active::after { width: 22px; }
+
+.site-header .nav-icon-btn {
+    color: rgba(244, 236, 220, .88);
+    border-color: rgba(233, 185, 73, .28);
+    background: rgba(233, 185, 73, .05);
+}
+.site-header .nav-icon-btn:hover,
+.site-header .nav-icon-btn.is-active {
+    color: var(--vx-gold);
+    border-color: rgba(233, 185, 73, .6);
+    background: rgba(233, 185, 73, .12);
+}
+.site-header .nav-icon-badge,
+.site-header .nav-icon-btn .badge {
+    background: var(--vx-gold) !important;
+    color: #1a1206 !important;
+}
+
+.site-header .nav-actions .lang-switcher-toggle {
+    color: var(--vx-cream);
+    border-color: rgba(233, 185, 73, .45);
+    background: rgba(233, 185, 73, .06);
+}
+.site-header .nav-actions .lang-switcher-toggle .bi-globe2 { color: var(--vx-gold); }
+.site-header .nav-actions .lang-switcher-toggle:hover,
+.site-header .lang-switcher.is-open .lang-switcher-toggle {
+    border-color: var(--vx-gold);
+    background: rgba(233, 185, 73, .14);
+}
+
+.site-header .nav-search,
+.site-header .nav-search-form {
+    background: rgba(255, 245, 225, .04);
+    border-color: rgba(233, 185, 73, .3);
+}
+.site-header .nav-search-panel { background: rgba(10, 8, 6, .98); }
+.site-header .nav-search-panel.is-open { border-top-color: rgba(233, 185, 73, .2); }
+.site-header .nav-search-form input,
+.site-header .nav-search input { color: var(--vx-cream); }
+.site-header .nav-search-close { color: rgba(244, 236, 220, .75); }
+.site-header .nav-search-close:hover { color: var(--vx-gold); }
+
+.site-header .dropdown-menu {
+    --bs-dropdown-bg: #0e0b08;
+    --bs-dropdown-color: var(--vx-cream);
+    --bs-dropdown-border-color: rgba(233, 185, 73, .25);
+    --bs-dropdown-link-color: rgba(244, 236, 220, .85);
+    --bs-dropdown-link-hover-color: var(--vx-gold);
+    --bs-dropdown-link-hover-bg: rgba(233, 185, 73, .08);
+    --bs-dropdown-link-active-color: #1a1206;
+    --bs-dropdown-link-active-bg: var(--vx-gold);
+    --bs-dropdown-divider-bg: rgba(233, 185, 73, .18);
+    --bs-dropdown-header-color: var(--vx-gold);
+    box-shadow: 0 24px 60px -20px rgba(0, 0, 0, .9);
+}
+
+.site-header .mobile-nav-collapse {
+    background: #0a0806;
+    border-top-color: rgba(233, 185, 73, .18);
+}
+.site-header .mobile-nav-list li a {
+    color: rgba(244, 236, 220, .85);
+    border-bottom-color: rgba(233, 185, 73, .1);
+}
+.site-header .mobile-nav-list li a:hover { color: var(--vx-gold); }
+.site-header .mobile-nav-lang { border-top-color: rgba(233, 185, 73, .15); }
+.site-header .mobile-nav-lang .lang-switcher-toggle {
+    color: var(--vx-cream);
+    border-color: rgba(233, 185, 73, .3);
+    background: rgba(255, 245, 225, .04);
+}
+.site-header .navbar-toggler,
+.site-header [data-bs-toggle="collapse"] { color: var(--vx-gold); border-color: rgba(233, 185, 73, .35); }
+
+
+/* ==========================================================================
+   FOOTER — deep black with a warm gold glow and gold hairlines, matching
+   the header. Scoped to .site-footer.
+   ========================================================================== */
+.site-footer {
+    --silver: rgba(244, 236, 220, .68);
+    --silver-light: rgba(244, 236, 220, .68);
+    position: relative;
+    margin-top: 0;
+    padding: 80px 0 34px;
+    background:
+        radial-gradient(ellipse 60% 70% at 50% 0%, rgba(166, 112, 32, .22), transparent 70%),
+        radial-gradient(ellipse 40% 60% at 100% 100%, rgba(120, 70, 20, .18), transparent 70%),
+        linear-gradient(180deg, #0d0a07 0%, #050403 100%);
+    color: rgba(244, 236, 220, .68);
+    border-top: 0;
+}
+/* Gold hairline across the top, brightest in the middle */
+.site-footer::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(233, 185, 73, .55) 25%, rgba(244, 207, 109, .95) 50%, rgba(233, 185, 73, .55) 75%, transparent 100%);
+}
+.site-footer h5, .site-footer h6 {
+    position: relative;
+    padding-bottom: 12px;
+    color: var(--vx-gold);
+    font-family: var(--vx-sans);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+}
+.site-footer h5::after, .site-footer h6::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 26px;
+    height: 1px;
+    background: var(--vx-gold);
+}
+.site-footer .footer-legal { color: rgba(244, 236, 220, .85); letter-spacing: .14em; }
+.site-footer p i { color: var(--vx-gold); margin-right: 4px; }
+
+.site-footer .footer-links li { margin-bottom: 10px; }
+.site-footer .footer-links a {
+    color: rgba(244, 236, 220, .72);
+    transition: color .25s ease, padding-left .25s ease;
+}
+.site-footer .footer-links a:hover { color: var(--vx-gold); padding-left: 4px; }
+
+.site-footer .social-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.site-footer .social-links a {
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    border: 1px solid rgba(233, 185, 73, .35);
+    border-radius: 50%;
+    background: rgba(233, 185, 73, .05);
+    color: var(--vx-gold);
+    font-size: 1rem;
+    transition: all .3s ease;
+}
+.site-footer .social-links a:hover { background: var(--vx-gold); border-color: var(--vx-gold); color: #1a1206; transform: translateY(-2px); }
+
+.site-footer .newsletter-form .input-group {
+    padding: 5px;
+    border: 1px solid rgba(233, 185, 73, .35);
+    border-radius: 99px;
+    background: rgba(255, 245, 225, .04);
+}
+.site-footer .newsletter-form .form-control {
+    border: 0;
+    background: transparent;
+    color: var(--vx-cream);
+    box-shadow: none;
+    padding-left: 16px;
+}
+.site-footer .newsletter-form .form-control::placeholder { color: rgba(244, 236, 220, .45); }
+.site-footer .newsletter-form .btn-gold {
+    border: 0;
+    border-radius: 99px !important;
+    padding: 10px 22px;
+    background: linear-gradient(135deg, #f4cf6d 0%, var(--vx-gold) 45%, #c99332 100%);
+    color: #1a1206;
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+}
+.site-footer .newsletter-form .btn-gold:hover { color: #1a1206; filter: brightness(1.06); }
+
+.site-footer hr { margin: 40px 0 22px; border: 0; height: 1px; opacity: 1; background: linear-gradient(90deg, transparent, rgba(233, 185, 73, .3), transparent); }
+.site-footer .text-muted { color: rgba(244, 236, 220, .55) !important; }
+.site-footer a { text-decoration: none; }
+.site-footer a.text-muted:hover { color: var(--vx-gold) !important; }
+
+@media (max-width: 767.98px) {
+    .site-footer { padding: 56px 0 96px; }
+    .site-footer h5::after, .site-footer h6::after { left: 50%; transform: translateX(-50%); }
+    .site-footer .social-links { justify-content: center; }
+}
+
+/* Gold buttons: a sweep of light on hover */
+.vx-btn--gold, main .btn-gold, main .lux-btn-gold { position: relative; overflow: hidden; isolation: isolate; }
+.vx-btn--gold::after, main .btn-gold::after, main .lux-btn-gold::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, .55) 50%, transparent 70%);
+    transform: translateX(-130%);
+    pointer-events: none;
+}
+.vx-btn--gold:hover::after, main .btn-gold:hover::after, main .lux-btn-gold:hover::after { transform: translateX(130%); transition: transform .8s ease; }
+
+/* ==========================================================================
+   LAYOUT STANDARD — one content width and one vertical rhythm site-wide.
+   ========================================================================== */
+@media (min-width: 1200px) {
+    .container { max-width: 1240px; }
+}
+@media (min-width: 1400px) {
+    .container { max-width: 1320px; }
+}
+.vx-section { padding-block: clamp(64px, 7vw, 104px); }
+.vx-section--tight { padding-block: clamp(28px, 3.5vw, 48px); }
+.vx-head { margin-bottom: clamp(32px, 4vw, 52px); }
+.vx-head .vx-lead { margin-top: 4px; }
+.vx-center { margin-top: clamp(32px, 4vw, 48px); }
+
+/* ==========================================================================
+   SHINY GOLD TEXT — a metallic gradient clipped to the letters, used for
+   every gold text accent. Elements keep var(--vx-gold) as a fallback colour
+   for browsers without background-clip: text.
+   ========================================================================== */
+:root {
+    --vx-gold-metal: linear-gradient(100deg,
+        #b5812a 0%, #e6b445 18%, #f6d47a 32%, #fde7a2 40%,
+        #f0c95f 50%, #c9922f 66%, #eec564 82%, #b5812a 100%);
+}
+.vx-eyebrow, .vx-subline, .vx-price, .vx-link, .vx-stats strong, .vx-accord--core h3,
+.vx-mini-notes dt, .vx-hero__caption .vx-eyebrow, .vx-marquee i, .vx-card .vx-eyebrow,
+main .lux-label, main .pf-label, main .htu-eyebrow, main .lux-link-arrow,
+main .price-offer, main .lux-product-price, main .pf-result-price, main .lux-spotlight-price,
+main .order-summary-lux h5, main .filter-sidebar h6,
+.site-header .nav-menu--flat .nav-menu-link.is-active,
+.site-footer h5, .site-footer h6 {
+    color: var(--vx-gold);
+    background-image: var(--vx-gold-metal);
+    background-size: 200% 100%;
+    background-position: 0 0;
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+/* Muted bits nested inside gold text keep their own colour */
+.vx-price small, main .price-offer small { -webkit-text-fill-color: var(--vx-muted); }
+
+/* A slow glint across the larger gold type */
+.vx-price, .vx-stats strong, .vx-accord--core h3, main .price-offer, main .lux-product-price {
+    animation: vx-gold-glint 6s ease-in-out infinite;
+}
+@keyframes vx-gold-glint { 0%, 100% { background-position: 0 0; } 50% { background-position: 100% 0; } }
+
+/* Links shine brighter on hover */
+.vx-link:hover, main .lux-link-arrow:hover { background-position: 100% 0; filter: brightness(1.12); }
+.vx-link, main .lux-link-arrow { transition: background-position .6s ease, filter .3s ease; }
+
+/* Gold rules and icons get the metallic tone too */
+.vx-hero__rule { background: var(--vx-gold-metal); }
+
+@media (prefers-reduced-motion: reduce) {
+    .vx-price, .vx-stats strong, .vx-accord--core h3, main .price-offer, main .lux-product-price { animation: none; }
+}

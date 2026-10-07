@@ -27,9 +27,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Navbar scroll effect (cinematic homepage uses cinematic-luxury.js)
+    // Navbar scroll effect (the luxury homepage handles its own)
     const nav = document.querySelector('.luxury-nav');
-    if (nav && !document.body.classList.contains('page-cinematic') && !document.body.classList.contains('page-luxury-home')) {
+    if (nav && !document.body.classList.contains('page-luxury-home')) {
         window.addEventListener('scroll', function() {
             nav.classList.toggle('scrolled', window.scrollY > 40);
         }, { passive: true });

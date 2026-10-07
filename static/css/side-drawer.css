@@ -60,7 +60,7 @@
 
 .side-drawer-title {
     margin: 0;
-    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.65rem;
     font-weight: 600;
     color: #fff;
@@ -155,7 +155,7 @@
 .side-drawer-item-info > a {
     color: #fff;
     text-decoration: none;
-    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.15rem;
     line-height: 1.25;
 }

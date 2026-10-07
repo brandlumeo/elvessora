@@ -7,9 +7,12 @@
 
 {% block extra_css %}
 <link href="{% static 'css/luxury-home.css' %}" rel="stylesheet">
-<link href="{% static 'css/favorites-picker.css' %}" rel="stylesheet">
-<link href="{% static 'css/perfume-finder.css' %}" rel="stylesheet">
-<link rel="preload" as="image" href="{% static 'images/hero/elvessora-divine-aura-dubai-hero.jpg' %}" fetchpriority="high">
+<link href="{% static 'css/vault-home.css' %}" rel="stylesheet">
+<link rel="preload" as="image" href="{% static 'images/lifestyle/elvessora-hero-bg20-poster.jpg' %}" fetchpriority="high">
+{% endblock %}
+
+{% block page_css %}
+<link href="{% static 'css/maison-home.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -20,8 +23,6 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/scroll-cinema-sprite.js' %}" defer></script>
 <script src="{% static 'js/luxury-home.js' %}" defer></script>
-<script src="{% static 'js/favorites-picker.js' %}" defer></script>
-<script src="{% static 'js/perfume-finder.js' %}" defer></script>
+<script src="{% static 'js/vault-home.js' %}" defer></script>
 {% endblock %}

@@ -4,7 +4,7 @@
 
 .mkt-wrap {
     background: #f1f3f6;
-    font-family: 'Montserrat', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-family: var(--font-body, 'Inter', 'Helvetica Neue', Arial, sans-serif);
     color: #212121;
     padding: 20px 0 56px;
     min-height: 60vh;
@@ -87,14 +87,14 @@
 
 .mkt-step.done .mkt-step-num,
 .mkt-step.active .mkt-step-num {
-    background: #163A8A;
-    border-color: #163A8A;
-    color: #ffffff;
+    background: #d4b26a;
+    border-color: #d4b26a;
+    color: #1a1206;
 }
 
 .mkt-step.done,
 .mkt-step.active {
-    color: #163A8A;
+    color: #d4b26a;
 }
 
 .mkt-step-line {
@@ -106,7 +106,7 @@
 }
 
 .mkt-step-line.done {
-    background: #163A8A;
+    background: #d4b26a;
 }
 
 /* Generic card */
@@ -134,8 +134,8 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background: #163A8A;
-    color: #ffffff !important;
+    background: #d4b26a;
+    color: #1a1206 !important;
     border: none;
     border-radius: 2px;
     padding: 12px 28px;
@@ -158,8 +158,8 @@
     justify-content: center;
     gap: 8px;
     background: #ffffff;
-    color: #163A8A !important;
-    border: 1.5px solid #163A8A;
+    color: #d4b26a !important;
+    border: 1.5px solid #d4b26a;
     border-radius: 2px;
     padding: 12px 28px;
     font-size: 0.82rem;
@@ -172,8 +172,8 @@
 }
 
 .mkt-btn-secondary:hover {
-    background: #163A8A;
-    color: #ffffff !important;
+    background: #d4b26a;
+    color: #1a1206 !important;
 }
 
 /* Alert */
@@ -235,7 +235,7 @@
 }
 
 .mkt-confirm-header strong {
-    color: #163A8A;
+    color: #d4b26a;
 }
 
 .mkt-confirm-meta-bar {
@@ -348,8 +348,8 @@
 .mkt-checkout-form .form-control:focus,
 .mkt-checkout-form select:focus,
 .mkt-checkout-form textarea:focus {
-    border-color: #163A8A;
-    box-shadow: 0 0 0 2px rgba(22, 58, 138, 0.12);
+    border-color: #d4b26a;
+    box-shadow: 0 0 0 2px rgba(212, 178, 106, 0.12);
     outline: none;
 }
 
@@ -376,9 +376,9 @@
 
 .mkt-checkout-form .btn-gold,
 .mkt-checkout-form input[type="submit"] {
-    background: #163A8A !important;
+    background: #d4b26a !important;
     border: none !important;
-    color: #ffffff !important;
+    color: #1a1206 !important;
     border-radius: 2px !important;
     font-weight: 700;
     letter-spacing: 0.03em;
@@ -483,14 +483,14 @@
 }
 
 .mkt-track-form input:focus {
-    border-color: #163A8A;
-    box-shadow: 0 0 0 2px rgba(22, 58, 138, 0.12);
+    border-color: #d4b26a;
+    box-shadow: 0 0 0 2px rgba(212, 178, 106, 0.12);
     outline: none;
 }
 
 .mkt-track-result-banner {
-    background: #163A8A;
-    color: #ffffff;
+    background: #d4b26a;
+    color: #1a1206;
     border-radius: 2px;
     padding: 20px 24px;
     margin-bottom: 16px;
@@ -569,7 +569,7 @@
 }
 
 .mkt-track-tstep.done::before {
-    background: #163A8A;
+    background: #d4b26a;
 }
 
 .mkt-track-tstep-icon {
@@ -589,13 +589,13 @@
 }
 
 .mkt-track-tstep.done .mkt-track-tstep-icon {
-    background: #163A8A;
-    border-color: #163A8A;
-    color: #ffffff;
+    background: #d4b26a;
+    border-color: #d4b26a;
+    color: #1a1206;
 }
 
 .mkt-track-tstep.done {
-    color: #163A8A;
+    color: #d4b26a;
     font-weight: 700;
 }
 
@@ -688,8 +688,8 @@
 }
 
 .mkt-auth-card .form-control:focus {
-    border-color: #163A8A !important;
-    box-shadow: 0 0 0 2px rgba(22, 58, 138, 0.12) !important;
+    border-color: #d4b26a !important;
+    box-shadow: 0 0 0 2px rgba(212, 178, 106, 0.12) !important;
 }
 
 .mkt-auth-card .helptext,
@@ -719,17 +719,17 @@
 }
 
 .mkt-auth-card .form-check-input:checked {
-    background-color: #163A8A;
-    border-color: #163A8A;
+    background-color: #d4b26a;
+    border-color: #d4b26a;
 }
 
 .mkt-auth-card .btn-gold,
 .mkt-auth-card input[type="submit"] {
     width: 100%;
     margin-top: 0.5rem;
-    background: #163A8A !important;
+    background: #d4b26a !important;
     border: none !important;
-    color: #ffffff !important;
+    color: #1a1206 !important;
     border-radius: 2px !important;
     font-weight: 700;
     letter-spacing: 0.03em;
@@ -776,7 +776,7 @@
 }
 
 .mkt-auth-links a {
-    color: #163A8A;
+    color: #d4b26a;
     text-decoration: none;
     font-weight: 700;
 }
@@ -808,7 +808,7 @@
     gap: 8px;
     margin-top: 16px;
     padding: 12px;
-    color: #163A8A;
+    color: #d4b26a;
     background: #ffffff;
     border: 1px dashed #cfcfcf;
     border-radius: 2px;
@@ -818,7 +818,7 @@
 }
 
 .mkt-guest-link:hover {
-    border-color: #163A8A;
+    border-color: #d4b26a;
     background: #f1f3f6;
     color: #0A2163;
 }
@@ -845,7 +845,7 @@
 }
 
 .mkt-contact-details li i {
-    color: #163A8A;
+    color: #d4b26a;
     font-size: 1rem;
     margin-top: 0.15rem;
     flex-shrink: 0;
@@ -857,7 +857,7 @@
 }
 
 .mkt-contact-details li a:hover {
-    color: #163A8A;
+    color: #d4b26a;
 }
 
 .mkt-contact-name {
@@ -911,8 +911,8 @@
 .mkt-contact-form .form-control:focus,
 .mkt-contact-form select:focus,
 .mkt-contact-form textarea:focus {
-    border-color: #163A8A;
-    box-shadow: 0 0 0 2px rgba(22, 58, 138, 0.12);
+    border-color: #d4b26a;
+    box-shadow: 0 0 0 2px rgba(212, 178, 106, 0.12);
     outline: none;
 }
 
@@ -926,9 +926,9 @@
 
 .mkt-contact-form .btn-gold,
 .mkt-contact-form input[type="submit"] {
-    background: #163A8A !important;
+    background: #d4b26a !important;
     border: none !important;
-    color: #ffffff !important;
+    color: #1a1206 !important;
     border-radius: 2px !important;
     font-weight: 700;
     letter-spacing: 0.03em;

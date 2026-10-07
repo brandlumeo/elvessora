@@ -44,7 +44,8 @@ def post_list(request):
     # Get featured post (only on first page and if no search query)
     featured_post = None
     if not search_query and not category_slug:
-        featured_post = posts_qs.filter(is_featured=True).first()
+        # Fall back to the newest story so the journal always opens on a lead article
+        featured_post = posts_qs.filter(is_featured=True).first() or posts_qs.first()
         if featured_post:
             posts_qs = posts_qs.exclude(id=featured_post.id)
 

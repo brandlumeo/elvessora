@@ -1,122 +1,123 @@
 {% load static humanize fragrance_extras %}
 
-<div class="lux-page">
+<div class="lux-page vx-page">
 <div class="lux-home" id="luxHome">
 
-  <!-- SIGNATURE MOMENT (the site's hero) -->
-  <section class="lux-signature-banner" id="luxSignatureBanner">
-    <img src="{% static 'images/hero/elvessora-divine-aura-dubai-hero.jpg' %}"
-         alt="{{ site_settings.brand_name }} Divine Aura — Dubai skyline"
-         class="lux-signature-img"
-         loading="eager" fetchpriority="high">
-    <div class="lux-signature-overlay"></div>
-    <div class="container lux-signature-inner">
-      <div class="lux-signature-content lux-reveal lux-reveal--instant">
-        <span class="lux-label">Elvessora — Feel Your Aura</span>
-        <h2 class="lux-heading lux-heading-serif">A Fragrance for a Brighter You</h2>
-        <p class="lux-signature-text">Crafted in Dubai with rare ingredients, Divine Aura carries the golden hour with you — wherever you go.</p>
-        <a href="{% url 'products:collection' %}" class="lux-btn lux-btn-gold">Discover the Collection <i class="bi bi-arrow-right"></i></a>
+  <!-- INTRO LOADER: logo + progress while the animation frames load, then
+       the animation plays full-screen and fades into the page. Shown once
+       per visit; fades out on its own if JS fails. -->
+  <div class="vx-loader vx-loader--film" id="vxLoader"
+       data-frame-count="50"
+       data-frame-desktop="{% static 'images/intro-frames/desktop/frame-' %}"
+       data-frame-mobile="{% static 'images/intro-frames/mobile/frame-' %}">
+    <canvas class="vx-loader__film" aria-hidden="true"></canvas>
+    <div class="vx-loader__inner" aria-hidden="true">
+      {% if site_settings.logo %}
+      <img src="{{ site_settings.logo.url }}" alt="" class="vx-loader__logo">
+      {% else %}
+      <img src="{% static 'images/brand/elvessora-logo-gold.png' %}" alt="" class="vx-loader__logo">
+      {% endif %}
+      <span class="vx-loader__line"><span class="vx-loader__bar" data-loader-bar></span></span>
+    </div>
+    <button type="button" class="vx-loader__skip" data-loader-skip>Skip intro <i class="bi bi-chevron-right"></i></button>
+  </div>
+  <script>
+    /* Drop the loader on repeat visits; otherwise start fetching the frames
+       right away (vault-home.js picks them up from window.vxFilm). Portrait
+       screens get the portrait crop so the animation fills a phone. */
+    (function () {
+      var l = document.getElementById('vxLoader');
+      try { if (sessionStorage.getItem('vxIntroSeen')) { l.remove(); return; } } catch (e) {}
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var n = +l.dataset.frameCount;
+      var base = matchMedia('(max-aspect-ratio: 1/1)').matches ? l.dataset.frameMobile : l.dataset.frameDesktop;
+      var film = window.vxFilm = { frames: [], settled: 0, onChange: null };
+      function settle() { film.settled++; if (film.onChange) film.onChange(); }
+      for (var i = 0; i < n; i++) (function (i) {
+        var img = new Image();
+        if (i < n / 2) img.fetchPriority = 'high';   // playback starts once the first half is in
+        img.onload = function () { film.frames[i] = img; settle(); };
+        img.onerror = settle;
+        img.src = base + String(i + 1).padStart(3, '0') + '.webp';
+      })(i);
+    })();
+  </script>
+
+  <!-- HERO -->
+  <section class="vx-hero" id="luxSignatureBanner">
+    <div class="vx-hero__bg" aria-hidden="true">
+      {# The film's src is set by vault-home.js once the intro loader is out of the way #}
+      <video autoplay muted loop playsinline preload="none" poster="{% static 'images/lifestyle/elvessora-hero-bg20-poster.jpg' %}" width="1920" height="1080">
+        <source data-src="{% static 'videos/elvessora-hero-bg20.mp4' %}" type="video/mp4">
+      </video>
+    </div>
+    <div class="vx-hero__shade" aria-hidden="true"></div>
+    <div class="vx-hero__veil" aria-hidden="true"></div>
+    <div class="vx-dust" aria-hidden="true">{% for i in "123456789012345678" %}<span></span>{% endfor %}</div>
+
+    <div class="container vx-hero__grid">
+      <div class="vx-hero__content">
+        <span class="vx-eyebrow vx-rise" style="--d:.1s">Elvessora — Haute Parfumerie Dubai</span>
+        <h1 class="vx-display vx-rise" style="--d:.25s">A Fragrance for a <em>Brighter You.</em></h1>
+        <span class="vx-hero__rule vx-rise" style="--d:.35s" aria-hidden="true"></span>
+        <p class="vx-hero__text vx-rise" style="--d:.45s">Crafted in Dubai with rare oils and precious resins — each Elvessora fragrance carries the golden hour with you, wherever you go.</p>
+        <div class="vx-actions vx-rise" style="--d:.6s">
+          <a href="#luxCollection" class="vx-btn vx-btn--gold" data-vx-scroll>Discover the Collection <i class="bi bi-arrow-right"></i></a>
+          <a href="{% url 'products:shop' %}" class="vx-btn vx-btn--ghost">Shop All</a>
+        </div>
       </div>
     </div>
 
-    <nav class="lux-scroll-rail" aria-label="Page sections">
-      <a href="#luxCollection" class="is-active">01</a>
-      <a href="#luxPerfumeFinder">02</a>
-      <a href="#luxSpotlight">03</a>
-    </nav>
   </section>
 
-  <!-- SCROLL CINEMA (scroll-scrubbed animation, right under the hero) -->
-  <section class="lux-scroll-cinema" id="luxScrollCinema"
-           data-frames="{% cinema_frame_urls 72 %}"
-           data-frames-portrait="{% cinema_frame_urls 72 'cinema-portrait' %}"
-           aria-label="Elvessora Divine Aura — cinematic reveal">
-    <div class="lux-scroll-cinema__pin">
-      <div class="lux-scroll-cinema__frame-wrap">
-        <picture>
-          <source media="(orientation: portrait)" srcset="{% static 'images/hero/cinema-portrait/frame-00.webp' %}">
-          <img class="lux-scroll-cinema__poster"
-               src="{% static 'images/hero/elvessora-cinema-poster.webp' %}"
-               alt=""
-               aria-hidden="true"
-               loading="eager" decoding="async">
-        </picture>
-        <canvas class="lux-scroll-cinema__canvas" aria-hidden="true"></canvas>
-      </div>
-      <div class="lux-scroll-cinema__loader" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-        <span class="lux-scroll-cinema__loader-bar"></span>
-        <span class="lux-scroll-cinema__loader-text">Loading experience</span>
-      </div>
-      <p class="lux-scroll-cinema__hint" aria-hidden="true">
-        <span>Scroll to explore</span>
-        <i class="bi bi-chevron-down"></i>
-      </p>
-    </div>
-  </section>
+  <!-- SIGNATURE SHOWCASE -->
 
-  <!-- HERO (restored, now under the scroll cinema) -->
-  <section class="lux-hero" id="luxHero"{% if banners %} data-hero-carousel{% endif %}>
-    <div class="lux-hero-bg"></div>
-    <div class="lux-hero-glow"></div>
-
-    <div class="lux-hero-slides">
-      <div class="lux-hero-slide is-active" data-hero-slide>
-        <div class="container lux-hero-grid">
-          <div class="lux-hero-copy lux-reveal lux-reveal--instant">
-            <p class="lux-eyebrow">{{ homepage.hero_eyebrow }}</p>
-            <h1 class="lux-hero-title">{{ homepage.hero_title|linebreaksbr }}</h1>
-            <p class="lux-hero-desc">{{ homepage.hero_description }}</p>
-            <div class="lux-hero-btns">
-              <a href="{% url 'products:collection' %}" class="lux-btn lux-btn-gold">{{ homepage.hero_cta_primary_text }} <i class="bi bi-arrow-right"></i></a>
-              <a href="{% url 'products:shop' %}" class="lux-btn lux-btn-outline">{{ homepage.hero_cta_secondary_text }}</a>
-            </div>
-            {% if hero_features %}
-            <div class="lux-hero-features">
-              {% for item in hero_features %}
-              <div class="lux-feature">
-                <i class="bi {{ item.icon }}"></i>
-                <span>{{ item.title }}</span>
-              </div>
-              {% endfor %}
-            </div>
-            {% endif %}
-          </div>
-          <div class="lux-hero-visual lux-reveal lux-reveal--instant">
-            {% if homepage.hero_image %}
-            <img src="{{ homepage.hero_image.url }}" alt="{{ site_settings.brand_name }} luxury perfume" class="lux-hero-feature-img" loading="lazy">
-            {% else %}
-            <img src="{% static 'images/hero/elvessora-divine-aura-hero.png' %}"
-                 alt="{{ site_settings.brand_name }} luxury fragrance"
-                 class="lux-hero-feature-img"
-                 loading="lazy">
-            {% endif %}
-          </div>
-        </div>
-      </div>
-
-      {% for banner in banners %}
-      <div class="lux-hero-slide" data-hero-slide>
-        <div class="container lux-hero-grid">
-          <div class="lux-hero-copy">
-            <h1 class="lux-hero-title">{{ banner.title }}</h1>
-            {% if banner.subtitle %}<p class="lux-hero-desc">{{ banner.subtitle }}</p>{% endif %}
-            <div class="lux-hero-btns">
-              <a href="{{ banner.link_url|default:'#' }}" class="lux-btn lux-btn-gold">{{ banner.button_text|default:"Shop Now" }} <i class="bi bi-arrow-right"></i></a>
-            </div>
-          </div>
-          <div class="lux-hero-visual">
-            {% if banner.image %}<img src="{{ banner.image.url }}" alt="{{ banner.title }}" class="lux-hero-feature-img" loading="lazy">{% endif %}
-          </div>
-        </div>
-      </div>
+  <!-- MARQUEE RIBBON -->
+  <div class="vx-marquee" aria-hidden="true">
+    <div class="vx-marquee__track">
+      {% for i in "12" %}
+      <span>Haute Parfumerie <em>Dubai</em></span><i></i>
+      <span>Rare Oils <em>&amp; Precious Resins</em></span><i></i>
+      <span>Eau de <em>Parfum</em></span><i></i>
+      <span>Made to <em>Linger</em></span><i></i>
+      <span>Hand-Finished <em>Gift Sets</em></span><i></i>
+      <span>Feel Your <em>Aura</em></span><i></i>
       {% endfor %}
     </div>
+  </div>
 
-    <span class="lux-hero-tagline-vertical">Scents That<br>Stay With You</span>
-
-    {% if banners %}
-    <div class="lux-hero-pagination" data-hero-pagination></div>
-    {% endif %}
+  <!-- THE STORY -->
+  <section class="vx-section vx-story" id="luxStory">
+    <div class="container vx-split">
+      <div class="vx-story__visual vx-reveal">
+        <div class="vx-arch">
+          {% if homepage.story_image %}
+          <img src="{{ homepage.story_image.url }}" alt="{{ site_settings.brand_name }} luxury fragrance" loading="lazy">
+          {% else %}
+          <img src="{% static 'images/lifestyle/elvessora-story-spray.jpg' %}" alt="{{ site_settings.brand_name }} luxury fragrance" loading="lazy" width="736" height="957" style="object-position: 50% 8%">
+          {% endif %}
+        </div>
+      </div>
+      <div class="vx-glass vx-story__card vx-reveal">
+        <span class="vx-eyebrow">{{ homepage.story_label }}</span>
+        <h2 class="vx-heading">{{ homepage.story_heading }}</h2>
+        <p class="vx-copy">
+          {% if homepage.story_text %}{{ homepage.story_text|truncatewords:60 }}{% else %}{{ site_settings.about_company|default:"Elvessora crafts premium fragrances in Dubai — blending rare ingredients with modern elegance for those who wear confidence effortlessly."|truncatewords:60 }}{% endif %}
+        </p>
+        <div class="vx-stats">
+          {% if value_props %}
+            {% for item in value_props|slice:":3" %}
+            <div><strong>{{ item.title }}</strong>{% if item.subtitle %}<span>{{ item.subtitle }}</span>{% endif %}</div>
+            {% endfor %}
+          {% else %}
+            <div><strong>{{ signature_fragrances|length }} Signatures</strong><span>Curated collection</span></div>
+            <div><strong>Dubai</strong><span>Crafted in the UAE</span></div>
+            <div><strong>Gift-ready</strong><span>Sets &amp; wrapping</span></div>
+          {% endif %}
+        </div>
+        <a href="{% url 'core:about' %}" class="vx-link">{{ homepage.story_link_text }} <i class="bi bi-arrow-right"></i></a>
+      </div>
+    </div>
   </section>
 
 </div>

@@ -7,179 +7,163 @@
 {% block extra_css %}
 <link href="{% static 'css/blog.css' %}" rel="stylesheet">
 {% endblock %}
+{% block page_css %}
+<link href="{% static 'css/blog-journal.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block content %}
+<div class="journal">
 
-<section class="blog-hero" style="background-image: url('/media/products/ChatGPT_Image_Aug_4_2026_06_57_01_PM.png');">
-    <div class="blog-hero-tagline d-none d-lg-block">Stories<br>Scents<br>Lifestyle</div>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-7">
-                <span class="blog-eyebrow">The Fragrance Journal</span>
-                <h1>Stories Beyond the Scent</h1>
-                <p>Discover the art of perfumery, fragrance tips, ingredient stories, and inspiration curated for fragrance lovers.</p>
+<!-- MASTHEAD -->
+<section class="jr-hero">
+    <img class="jr-hero__bg" src="{% static 'images/lifestyle/elvessora-spray-mist.jpg' %}" alt="" aria-hidden="true" fetchpriority="high">
+    <div class="jr-hero__veil" aria-hidden="true"></div>
+    <div class="container jr-hero__inner">
+        <span class="jr-kicker">The Fragrance Journal</span>
+        <h1 class="jr-hero__title">Stories Beyond <em>the Scent</em></h1>
+        <p class="jr-hero__lead">The art of perfumery, ingredient stories and quiet rituals — notes from the house of {{ site_settings.brand_name }}.</p>
 
-                <div class="blog-hero-search">
-                    <form method="GET" action="{% url 'blog:post_list' %}" class="blog-search-form" role="search">
-                        {% if active_category and active_category != 'all' %}
-                        <input type="hidden" name="category" value="{{ active_category }}">
-                        {% endif %}
-                        <i class="bi bi-search blog-search-icon" aria-hidden="true"></i>
-                        <label for="blog-hero-search-input" class="visually-hidden">Search fragrance stories</label>
-                        <input type="text" id="blog-hero-search-input" name="q" value="{{ search_query }}" placeholder="Search fragrance stories...">
-                        <button type="submit" class="blog-search-submit" aria-label="Search">
-                            <i class="bi bi-arrow-right" aria-hidden="true"></i>
-                        </button>
-                    </form>
-                    {% if search_query %}
-                    <a href="{% url 'blog:post_list' %}{% if active_category and active_category != 'all' %}?category={{ active_category }}{% endif %}" class="blog-clear-search">
-                        <i class="bi bi-x-circle" aria-hidden="true"></i> Clear search
-                    </a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+        <form method="GET" action="{% url 'blog:post_list' %}" class="jr-search" role="search">
+            {% if active_category and active_category != 'all' %}
+            <input type="hidden" name="category" value="{{ active_category }}">
+            {% endif %}
+            <label for="jr-search-input" class="visually-hidden">Search fragrance stories</label>
+            <i class="bi bi-search" aria-hidden="true"></i>
+            <input type="text" id="jr-search-input" name="q" value="{{ search_query }}" placeholder="Search the journal">
+            <button type="submit" aria-label="Search"><i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+        </form>
+        {% if search_query %}
+        <a href="{% url 'blog:post_list' %}{% if active_category and active_category != 'all' %}?category={{ active_category }}{% endif %}" class="jr-clear">
+            <i class="bi bi-x" aria-hidden="true"></i> Clear search
+        </a>
+        {% endif %}
     </div>
+
+    <nav class="jr-tabs" aria-label="Journal categories">
+        <div class="container">
+            <a href="{% url 'blog:post_list' %}" class="{% if active_category == 'all' %}is-active{% endif %}" {% if active_category == 'all' %}aria-current="page"{% endif %}>All Stories</a>
+            {% for cat in categories %}
+            <a href="?category={{ cat.slug }}" class="{% if active_category == cat.slug %}is-active{% endif %}" {% if active_category == cat.slug %}aria-current="page"{% endif %}>{{ cat.name }}</a>
+            {% endfor %}
+        </div>
+    </nav>
 </section>
 
-<div class="blog-filter-bar">
-    <div class="container">
-        <nav class="blog-pills" aria-label="Blog categories">
-            <a href="{% url 'blog:post_list' %}" class="blog-pill {% if active_category == 'all' %}active{% endif %}" {% if active_category == 'all' %}aria-current="page"{% endif %}>All</a>
-            {% for cat in categories %}
-            <a href="?category={{ cat.slug }}" class="blog-pill {% if active_category == cat.slug %}active{% endif %}" {% if active_category == cat.slug %}aria-current="page"{% endif %}>{{ cat.name }}</a>
-            {% endfor %}
-        </nav>
-    </div>
-</div>
-
-<div class="blog-body">
+<div class="jr-body">
     <div class="container">
 
         {% if search_query %}
-        <div class="mb-5">
-            <h2 class="h4 mb-1">Search Results for &ldquo;{{ search_query }}&rdquo;</h2>
-            <p class="text-muted mb-0">{{ page_obj.paginator.count }} stor{{ page_obj.paginator.count|pluralize:"y,ies" }} found</p>
-        </div>
+        <header class="jr-results">
+            <h2>Results for &ldquo;{{ search_query }}&rdquo;</h2>
+            <p>{{ page_obj.paginator.count }} stor{{ page_obj.paginator.count|pluralize:"y,ies" }} found</p>
+        </header>
         {% endif %}
 
+        <!-- LEAD STORY -->
         {% if featured_post and not page_obj.has_previous %}
-        <div class="featured-article">
-            <div class="row g-5 align-items-center">
-                <div class="col-lg-6">
-                    <a href="{{ featured_post.get_absolute_url }}" class="d-block featured-img-wrap">
-                        <span class="featured-badge">Featured Story</span>
-                        {% if featured_post.featured_image %}
-                        <img src="{{ featured_post.featured_image.url }}" alt="{{ featured_post.title }}" class="featured-img">
-                        {% else %}
-                        <img src="{% static 'images/hero/elvessora-divine-aura-hero.png' %}" alt="{{ featured_post.title }}" class="featured-img">
-                        {% endif %}
-                    </a>
-                </div>
-                <div class="col-lg-6">
-                    <div class="featured-content">
-                        <span class="featured-eyebrow">Featured Story</span>
-                        {% if featured_post.category %}<span class="article-cat">{{ featured_post.category.name }}</span>{% endif %}
-                        <a href="{{ featured_post.get_absolute_url }}" class="featured-title-link">
-                            <h2 class="featured-title">{{ featured_post.title }}</h2>
-                        </a>
-                        <p class="featured-desc">{{ featured_post.excerpt }}</p>
-                        <div class="article-byline">
-                            <div class="author-avatar" aria-hidden="true">{{ featured_post.author.first_name|default:featured_post.author.username|slice:":1" }}</div>
-                            <div class="article-byline-text">
-                                <strong>By {{ featured_post.author.get_full_name|default:featured_post.author.username }}</strong>
-                                {{ featured_post.published_at|date:"M d, Y" }} &middot; {{ featured_post.reading_time }} min read
-                            </div>
-                            <a href="{{ featured_post.get_absolute_url }}" class="read-more-link">Read Story <span class="arrow">&rarr;</span></a>
-                        </div>
-                    </div>
-                </div>
+        <article class="jr-lead">
+            <a href="{{ featured_post.get_absolute_url }}" class="jr-lead__media" tabindex="-1" aria-hidden="true">
+                {% if featured_post.featured_image %}
+                <img src="{{ featured_post.featured_image.url }}" alt="">
+                {% else %}
+                <img src="{% static 'images/hero/elvessora-divine-aura-hero.png' %}" alt="">
+                {% endif %}
+            </a>
+            <div class="jr-lead__copy">
+                <span class="jr-kicker">The Lead Story{% if featured_post.category %} · {{ featured_post.category.name }}{% endif %}</span>
+                <h2 class="jr-lead__title"><a href="{{ featured_post.get_absolute_url }}">{{ featured_post.title }}</a></h2>
+                <p class="jr-lead__excerpt">{{ featured_post.excerpt }}</p>
+                <p class="jr-meta">
+                    By {% if featured_post.author %}{{ featured_post.author.get_full_name|default:featured_post.author.username }}{% else %}{{ site_settings.brand_name }}{% endif %}
+                    <span aria-hidden="true">·</span> {{ featured_post.published_at|date:"M d, Y" }}
+                    <span aria-hidden="true">·</span> {{ featured_post.reading_time }} min read
+                </p>
+                <a href="{{ featured_post.get_absolute_url }}" class="vx-btn vx-btn--gold">Read the Story <i class="bi bi-arrow-right"></i></a>
             </div>
-        </div>
+        </article>
         {% endif %}
 
+        <!-- MORE STORIES -->
         {% if page_obj.object_list %}
-        <div class="latest-head">
-            <h2>Latest Articles</h2>
-            {% if active_category != 'all' or search_query %}<a href="{% url 'blog:post_list' %}">View All Articles &rarr;</a>{% endif %}
-        </div>
-        <div class="article-grid">
+        <header class="jr-head jr-head--center jr-head--rule">
+            <span class="jr-kicker">From the Journal</span>
+            <h2>{% if search_query or active_category != 'all' %}Stories{% else %}More Stories{% endif %}</h2>
+            {% if active_category != 'all' or search_query %}<a href="{% url 'blog:post_list' %}" class="jr-link">View all stories <i class="bi bi-arrow-right"></i></a>{% endif %}
+        </header>
+        <div class="jr-grid">
             {% for post in page_obj %}
-            <a href="{{ post.get_absolute_url }}" class="article-card">
-                <div class="card-img-wrap">
+            <a href="{{ post.get_absolute_url }}" class="jr-card">
+                <div class="jr-card__media">
                     {% if post.featured_image %}
-                    <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="card-img" loading="lazy">
+                    <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy">
                     {% else %}
-                    <img src="{% static 'images/hero/elvessora-divine-aura-hero.png' %}" alt="{{ post.title }}" class="card-img" loading="lazy">
+                    <img src="{% static 'images/hero/elvessora-divine-aura-hero.png' %}" alt="{{ post.title }}" loading="lazy">
                     {% endif %}
                 </div>
-                {% if post.category %}<span class="article-cat">{{ post.category.name }}</span>{% endif %}
-                <h3 class="card-title">{{ post.title }}</h3>
-                <p class="card-desc">{{ post.excerpt|truncatewords:16 }}</p>
-                <div class="card-meta">
-                    <span>By {{ post.author.get_full_name|default:post.author.username }} &middot; {{ post.published_at|date:"M d, Y" }} &middot; {{ post.reading_time }} min read</span>
-                    <span class="card-arrow" aria-hidden="true">&rarr;</span>
-                </div>
+                <span class="jr-card__cat">{% if post.category %}{{ post.category.name }}{% else %}Journal{% endif %} <span aria-hidden="true">·</span> {{ post.reading_time }} min read</span>
+                <h3 class="jr-card__title">{{ post.title }}</h3>
+                <p class="jr-card__excerpt">{{ post.excerpt|truncatewords:20 }}</p>
+                <span class="jr-card__more">Read story <i class="bi bi-arrow-right" aria-hidden="true"></i></span>
             </a>
             {% endfor %}
         </div>
 
         {% if page_obj.has_other_pages %}
-        <nav aria-label="Blog pagination" class="mt-4 pt-4 border-top">
-            <ul class="pagination justify-content-center">
-                {% if page_obj.has_previous %}
-                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if active_category and active_category != 'all' %}&category={{ active_category }}{% endif %}">Previous</a></li>
+        <nav aria-label="Journal pagination" class="jr-pages">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if active_category and active_category != 'all' %}&category={{ active_category }}{% endif %}" aria-label="Previous page"><i class="bi bi-arrow-left"></i></a>
+            {% endif %}
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <span class="is-active" aria-current="page">{{ num }}</span>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}{% if active_category and active_category != 'all' %}&category={{ active_category }}{% endif %}">{{ num }}</a>
                 {% endif %}
-                {% for num in page_obj.paginator.page_range %}
-                    {% if page_obj.number == num %}
-                    <li class="page-item active"><span class="page-link" aria-current="page" style="background:var(--champagne-gold); border-color:var(--champagne-gold); color:var(--primary-bg);">{{ num }}</span></li>
-                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                    <li class="page-item"><a class="page-link" href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}{% if active_category and active_category != 'all' %}&category={{ active_category }}{% endif %}">{{ num }}</a></li>
-                    {% endif %}
-                {% endfor %}
-                {% if page_obj.has_next %}
-                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if active_category and active_category != 'all' %}&category={{ active_category }}{% endif %}">Next</a></li>
-                {% endif %}
-            </ul>
+            {% endfor %}
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if active_category and active_category != 'all' %}&category={{ active_category }}{% endif %}" aria-label="Next page"><i class="bi bi-arrow-right"></i></a>
+            {% endif %}
         </nav>
         {% endif %}
 
-        {% else %}
-        <div class="blog-empty">
-            <i class="bi bi-journal-x display-1 mb-3 d-block" style="color: var(--silver);" aria-hidden="true"></i>
-            <h2 class="h3" style="color: var(--royal-blue-dark);">No stories found</h2>
+        {% elif not featured_post or page_obj.has_previous or search_query %}
+        <div class="jr-empty">
+            <i class="bi bi-journal-text" aria-hidden="true"></i>
+            <h2>No stories found</h2>
             <p>Try searching for another fragrance topic.</p>
-            <a href="{% url 'blog:post_list' %}" class="btn btn-outline-gold mt-2">View All Articles</a>
+            <a href="{% url 'blog:post_list' %}" class="vx-btn vx-btn--ghost">View All Stories</a>
         </div>
         {% endif %}
 
     </div>
 </div>
 
+<!-- FRAGRANCE EDUCATION -->
 {% if knowledge_blocks %}
-<section class="knowledge-section">
+<section class="jr-learn">
     <div class="container">
-        <div class="knowledge-head">
-            <span class="kicker">Learn</span>
-            <h2>Discover the World of Fragrance</h2>
+        <header class="jr-head jr-head--center">
+            <span class="jr-kicker">Fragrance Education</span>
+            <h2>Discover the World <em>of Fragrance</em></h2>
             <p>Everything you need to know before you find your next signature scent.</p>
-        </div>
-        <div class="knowledge-grid">
+        </header>
+        <div class="jr-learn__grid">
             {% for block in knowledge_blocks %}
             {% if block.url_name %}
-            <a href="{% url block.url_name %}" class="knowledge-block">
+            <a href="{% url block.url_name %}" class="jr-tile">
             {% elif block.category_slug %}
-            <a href="{% url 'blog:post_list' %}?category={{ block.category_slug }}" class="knowledge-block">
+            <a href="{% url 'blog:post_list' %}?category={{ block.category_slug }}" class="jr-tile">
             {% elif block.post_slug %}
-            <a href="{% url 'blog:post_detail' block.post_slug %}" class="knowledge-block">
+            <a href="{% url 'blog:post_detail' block.post_slug %}" class="jr-tile">
             {% else %}
-            <a href="{% url 'blog:post_list' %}" class="knowledge-block">
+            <a href="{% url 'blog:post_list' %}" class="jr-tile">
             {% endif %}
-                <div class="knowledge-img-wrap">
-                    <img src="{{ block.image }}" alt="{{ block.title }}" class="knowledge-img" loading="lazy">
-                </div>
-                <h3>{{ block.title }}</h3>
-                <p>{{ block.description }}</p>
+                <img src="{{ block.image }}" alt="" loading="lazy">
+                <span class="jr-tile__num">{{ forloop.counter|stringformat:"02d" }}</span>
+                <span class="jr-tile__copy">
+                    <h3>{{ block.title }}</h3>
+                    <p>{{ block.description }}</p>
+                </span>
             </a>
             {% endfor %}
         </div>
@@ -187,36 +171,31 @@
 </section>
 {% endif %}
 
+<!-- SHOP THE STORIES -->
 {% if shop_products %}
-<section class="shop-stories-section">
+<section class="jr-shop">
     <div class="container">
-        <div class="shop-stories-head">
-            <span class="kicker">Shop The Stories</span>
-            <h2>Fragrances From Our Journal</h2>
-            <p>The perfumes behind the stories — explore the scents our editorial team writes about.</p>
-        </div>
-        <div class="shop-grid">
+        <header class="jr-head jr-head--center">
+            <span class="jr-kicker">Shop the Stories</span>
+            <h2>Fragrances <em>from the Journal</em></h2>
+            <p>The perfumes behind the stories — explore the scents our editors write about.</p>
+        </header>
+        <div class="jr-shop__grid">
             {% for product in shop_products %}
-            <a href="{{ product.get_absolute_url }}" class="shop-card">
-                <div class="shop-img-wrap">
+            <a href="{{ product.get_absolute_url }}" class="jr-product">
+                <div class="jr-product__media">
                     {% if product.primary_image %}
-                    <img src="{{ product.primary_image.image.url }}" alt="{{ product.name }}" class="shop-img" loading="lazy">
+                    <img src="{{ product.primary_image.image.url }}" alt="{{ product.name }}" loading="lazy">
                     {% endif %}
                 </div>
-                <div class="shop-body">
-                    <h3 class="shop-name">{{ product.name }}</h3>
-                    {% if product.short_description %}<p class="shop-desc">{{ product.short_description|truncatewords:14 }}</p>{% endif %}
-                    {% if product.average_rating %}
-                    <div class="shop-rating" aria-label="Rated {{ product.average_rating }} out of 5">
-                        {% for i in "12345" %}<i class="bi {% if forloop.counter <= product.average_rating %}bi-star-fill{% else %}bi-star{% endif %}" aria-hidden="true"></i>{% endfor %}
-                        <span class="text-muted">{{ product.average_rating }}</span>
-                    </div>
-                    {% endif %}
-                    <div class="shop-price-row">
-                        <span class="shop-price">AED {{ product.current_price|floatformat:2 }}</span>
-                    </div>
-                    <span class="shop-btn">Explore Fragrance</span>
+                <h3>{{ product.name }}</h3>
+                {% if product.average_rating %}
+                <div class="jr-product__rating" aria-label="Rated {{ product.average_rating }} out of 5">
+                    {% for i in "12345" %}<i class="bi {% if forloop.counter <= product.average_rating %}bi-star-fill{% else %}bi-star{% endif %}" aria-hidden="true"></i>{% endfor %}
                 </div>
+                {% endif %}
+                <span class="jr-product__price">AED {{ product.current_price|floatformat:2 }}</span>
+                <span class="jr-card__more">Explore fragrance <i class="bi bi-arrow-right" aria-hidden="true"></i></span>
             </a>
             {% endfor %}
         </div>
@@ -226,4 +205,5 @@
 
 {% include 'includes/blog_newsletter_cta.html' %}
 
+</div>
 {% endblock %}

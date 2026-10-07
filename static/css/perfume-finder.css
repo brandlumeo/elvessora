@@ -132,7 +132,7 @@
 }
 
 .pf-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: clamp(2rem, 4vw, 2.75rem);
     font-weight: 600;
     color: var(--pf-navy);
@@ -232,7 +232,7 @@
 
 .pf-filter-label {
     display: block;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: clamp(1.25rem, 2.4vw, 1.5rem);
     font-weight: 600;
     color: var(--pf-navy);
@@ -242,7 +242,7 @@
 .pf-filter-label small {
     display: inline-block;
     margin-left: 0.5rem;
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--font-body, 'Inter', 'Helvetica Neue', Arial, sans-serif);
     font-size: 0.65em;
     font-weight: 500;
     letter-spacing: 0.04em;
@@ -439,14 +439,14 @@
 }
 
 .pf-quiz-q {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: clamp(1.5rem, 3vw, 2rem);
     color: var(--pf-navy);
     margin-bottom: 1.25rem;
 }
 
 .pf-quiz-q small {
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--font-body, 'Inter', 'Helvetica Neue', Arial, sans-serif);
     font-size: 0.65em;
     color: var(--pf-muted);
 }
@@ -515,7 +515,7 @@
 }
 
 .pf-results-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: clamp(1.75rem, 3vw, 2.25rem);
     color: var(--pf-navy);
 }
@@ -583,7 +583,7 @@
 }
 
 .pf-result-body h4 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.25rem;
     margin-bottom: 0.35rem;
 }
@@ -900,7 +900,7 @@
     z-index: 2;
     padding: 0.65rem 0.4rem;
     color: #fff;
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--font-body, 'Inter', 'Helvetica Neue', Arial, sans-serif);
     font-weight: 600;
     font-size: 0.82rem;
     letter-spacing: 0.015em;
@@ -909,7 +909,7 @@
 }
 
 .pf-photo-row--gender .pf-photo-card-label {
-    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.05rem;
     font-weight: 600;
     padding: 0.85rem 0.5rem;

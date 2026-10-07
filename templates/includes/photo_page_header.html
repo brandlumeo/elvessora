@@ -1,0 +1,13 @@
+{% load static %}
+{# Photo hero for inner pages: image behind, title on the right over a navy fade. #}
+{# Args: image (static path), label, title, subtitle, focus (object-position on phones, e.g. "20% 50%") #}
+<div class="page-header page-header--video page-header--photo">
+    <img class="page-header__video" src="{% static image %}" alt="" aria-hidden="true"
+         width="1672" height="941" fetchpriority="high"{% if focus %} style="--focus-m: {{ focus }}"{% endif %}>
+    <div class="page-header__shade" aria-hidden="true"></div>
+    <div class="container">
+        {% if label %}<span class="section-label">{{ label }}</span>{% endif %}
+        <h1>{{ title }}</h1>
+        {% if subtitle %}<p class="text-muted">{{ subtitle }}</p>{% endif %}
+    </div>
+</div>

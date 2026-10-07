@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Shop Perfumes — {{ site_settings.brand_name }}{% endblock %}
 
 {% block content %}
-<div class="page-header">
+<div class="page-header page-header--video">
+    <video class="page-header__video" autoplay muted loop playsinline preload="auto"
+           poster="{% static 'video/perfume-bottle-poster.webp' %}" aria-hidden="true">
+        <source src="{% static 'video/perfume-bottle.mp4' %}" type="video/mp4">
+    </video>
+    <div class="page-header__shade" aria-hidden="true"></div>
     <div class="container">
         <span class="section-label">Collection</span>
         <h1>Shop Perfumes</h1>

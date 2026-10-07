@@ -1,0 +1,811 @@
+/* ==========================================================================
+   Elvessora — "Vault" homepage (black & gold haute-parfumerie look).
+   Loaded after luxury-home.css on the homepage only. Site-wide dark tokens
+   and shared components live in vault-theme.css.
+   The header and footer keep their own navy styling — nothing here
+   targets .site-header or .site-footer.
+   ========================================================================== */
+
+body.page-luxury-home { background: var(--vx-ink); }
+
+.vx-page,
+.vx-page .lux-home { background: var(--vx-ink); color: var(--vx-cream); }
+
+/* ---------- Intro loader ---------- */
+.vx-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(ellipse at 50% 45%, #15100a 0%, #050403 70%);
+    /* Fallback if the script never runs: leave on its own. */
+    animation: vx-loader-out .8s ease 2.6s forwards;
+}
+.vx-loader.is-scripted { animation: none; }
+.vx-loader.is-done { opacity: 0; visibility: hidden; transition: opacity .8s ease, visibility 0s .8s; }
+
+.vx-loader__inner { display: grid; justify-items: center; gap: 1.4rem; padding: 0 24px; text-align: center; }
+.vx-loader__logo { width: min(280px, 64vw); height: auto; animation: vx-breathe 2.4s ease-in-out infinite; }
+.vx-loader__line { position: relative; width: min(150px, 40vw); height: 1px; background: var(--vx-line); overflow: hidden; }
+.vx-loader__bar { position: absolute; inset: 0; background: var(--vx-gold); transform: scaleX(0); transform-origin: left; transition: transform .2s ease; }
+
+/* Film variant: the frames play full-screen once loaded, the logo steps aside */
+.vx-loader.vx-loader--film { z-index: 5000; overflow: hidden; background: #000; }
+.vx-loader__film {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity .4s ease;
+}
+.vx-loader--film .vx-loader__inner { position: relative; z-index: 1; transition: opacity .4s ease, transform .4s ease; }
+.vx-loader--film.is-playing .vx-loader__film { opacity: 1; }
+.vx-loader--film.is-playing .vx-loader__inner { opacity: 0; transform: scale(.96); }
+.vx-loader__skip {
+    position: absolute;
+    right: clamp(16px, 3vw, 36px);
+    bottom: clamp(16px, 3vw, 32px);
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    border: 1px solid rgba(244, 236, 220, .25);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, .35);
+    color: rgba(244, 236, 220, .8);
+    font-family: var(--font-ui, var(--font-body));
+    font-size: .66rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color .2s ease, border-color .2s ease;
+}
+.vx-loader__skip:hover, .vx-loader__skip:focus-visible { color: var(--vx-gold); border-color: var(--vx-gold); }
+/* Keep the page still behind the loader */
+html.vx-loading, html.vx-loading body { overflow: hidden; }
+
+@keyframes vx-loader-out { to { opacity: 0; visibility: hidden; } }
+@keyframes vx-breathe { 50% { opacity: .72; } }
+
+/* ---------- Hero ---------- */
+.vx-hero {
+    position: relative;
+    min-height: calc(100svh - var(--vx-header, 110px));
+    min-height: max(560px, calc(100svh - var(--vx-header, 110px)));
+    display: grid;
+    align-items: center;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--vx-ink);
+}
+/* Ambient backdrop: a tiny pre-blurred copy of the hero photo, scaled up */
+.vx-hero__ambient {
+    position: absolute;
+    inset: -40px;
+    z-index: -2;
+    background-size: cover;
+    background-position: center;
+    filter: blur(24px) saturate(1.1);
+    opacity: .55;
+    transform: scale(1.1);
+}
+.vx-hero__veil {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(ellipse 45% 70% at 72% 50%, rgba(166, 112, 32, .22), transparent 70%),
+        linear-gradient(90deg, rgba(7, 6, 5, .96) 0%, rgba(7, 6, 5, .82) 45%, rgba(7, 6, 5, .55) 100%),
+        linear-gradient(180deg, rgba(7, 6, 5, 0) 70%, var(--vx-ink) 100%);
+}
+
+.vx-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+    align-items: center;
+    gap: clamp(30px, 5vw, 80px);
+    padding-block: 50px 100px;
+}
+.vx-hero__content {
+    position: relative;
+    display: grid;
+    justify-items: start;
+    gap: 1.3rem;
+    text-align: left;
+}
+.vx-hero__content .vx-display { max-width: 13ch; font-size: clamp(2.5rem, 4.6vw, 4.7rem); }
+.vx-hero__rule { display: block; width: 70px; height: 1px; background: linear-gradient(90deg, var(--vx-gold), transparent); }
+.vx-hero__text { max-width: 480px; margin: 0; color: rgba(244, 236, 220, .78); font-size: clamp(.95rem, 1.2vw, 1.08rem); line-height: 1.8; }
+
+/* The photo: sharp, framed in a tall arch with a gold hairline */
+.vx-hero__visual {
+    position: relative;
+    justify-self: center;
+    /* Fit the whole arch on screen, even on short laptop displays */
+    width: min(100%, 440px, calc((100svh - var(--vx-header, 110px) - 150px) * 1054 / 1492));
+    min-width: 240px;
+    margin: 0;
+}
+.vx-hero__halo {
+    position: absolute;
+    inset: 8% -14% -6%;
+    z-index: -1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(233, 185, 73, .3) 0%, rgba(166, 112, 32, .12) 45%, transparent 70%);
+    filter: blur(20px);
+    animation: vx-breathe 6s ease-in-out infinite;
+}
+.vx-hero__frame {
+    position: relative;
+    aspect-ratio: 1054 / 1492;
+    border-radius: 999px 999px 24px 24px;
+    overflow: hidden;
+    border: 1px solid rgba(233, 185, 73, .55);
+    box-shadow: 0 0 0 10px rgba(7, 6, 5, .55), 0 0 0 11px rgba(233, 185, 73, .22), 0 50px 120px -40px rgba(0, 0, 0, .95);
+}
+.vx-hero__frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.06);
+    animation: vx-kenburns 14s ease-out forwards;
+}
+.vx-hero__frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(7, 6, 5, .45) 100%);
+    pointer-events: none;
+}
+.vx-hero__caption {
+    position: absolute;
+    left: 50%;
+    bottom: -22px;
+    transform: translateX(-50%);
+    display: grid;
+    justify-items: center;
+    gap: 2px;
+    padding: 12px 26px;
+    border: 1px solid rgba(233, 185, 73, .4);
+    border-radius: 99px;
+    background: rgba(10, 8, 6, .88);
+    backdrop-filter: blur(8px);
+    white-space: nowrap;
+    font-family: var(--vx-serif);
+    font-size: 1.05rem;
+    color: var(--vx-cream);
+}
+.vx-hero__caption .vx-eyebrow { font-size: .56rem; }
+
+@keyframes vx-kenburns { to { transform: scale(1); } }
+
+.vx-rise { opacity: 0; transform: translateY(26px); animation: vx-rise 1.1s cubic-bezier(.2, .7, .2, 1) var(--d, 0s) forwards; }
+@keyframes vx-rise { to { opacity: 1; transform: none; } }
+
+/* Drifting gold dust */
+.vx-dust { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.vx-dust span {
+    position: absolute;
+    bottom: -10px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ffe2a0 0%, rgba(233, 185, 73, .6) 45%, transparent 70%);
+    opacity: 0;
+    animation: vx-float 14s linear infinite;
+}
+.vx-dust span:nth-child(3n)   { width: 6px; height: 6px; animation-duration: 17s; }
+.vx-dust span:nth-child(4n)   { width: 3px; height: 3px; animation-duration: 11s; }
+.vx-dust span:nth-child(1)  { left: 4%;  animation-delay: 0s; }
+.vx-dust span:nth-child(2)  { left: 10%; animation-delay: 4s; }
+.vx-dust span:nth-child(3)  { left: 16%; animation-delay: 8s; }
+.vx-dust span:nth-child(4)  { left: 22%; animation-delay: 2s; }
+.vx-dust span:nth-child(5)  { left: 28%; animation-delay: 10s; }
+.vx-dust span:nth-child(6)  { left: 34%; animation-delay: 6s; }
+.vx-dust span:nth-child(7)  { left: 40%; animation-delay: 12s; }
+.vx-dust span:nth-child(8)  { left: 46%; animation-delay: 1s; }
+.vx-dust span:nth-child(9)  { left: 52%; animation-delay: 7s; }
+.vx-dust span:nth-child(10) { left: 58%; animation-delay: 3s; }
+.vx-dust span:nth-child(11) { left: 64%; animation-delay: 9s; }
+.vx-dust span:nth-child(12) { left: 70%; animation-delay: 5s; }
+.vx-dust span:nth-child(13) { left: 76%; animation-delay: 11s; }
+.vx-dust span:nth-child(14) { left: 82%; animation-delay: 2.5s; }
+.vx-dust span:nth-child(15) { left: 88%; animation-delay: 8.5s; }
+.vx-dust span:nth-child(16) { left: 93%; animation-delay: 5.5s; }
+.vx-dust span:nth-child(17) { left: 13%; animation-delay: 13s; }
+.vx-dust span:nth-child(18) { left: 67%; animation-delay: 14s; }
+@keyframes vx-float {
+    0%   { opacity: 0; transform: translate3d(0, 0, 0); }
+    12%  { opacity: .9; }
+    85%  { opacity: .6; }
+    100% { opacity: 0; transform: translate3d(40px, -95vh, 0); }
+}
+
+.vx-scroll-cue {
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%);
+    display: grid;
+    justify-items: center;
+    gap: 6px;
+    color: rgba(233, 185, 73, .8);
+    font-size: .62rem;
+    letter-spacing: .34em;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.vx-scroll-cue:hover { color: var(--vx-gold); }
+.vx-scroll-cue i { animation: vx-bob 1.8s ease-in-out infinite; }
+@keyframes vx-bob { 50% { transform: translateY(6px); } }
+
+/* ---------- Signature showcase ---------- */
+.vx-showcase {
+    position: relative;
+    min-height: calc(100svh - var(--vx-header, 110px));
+    display: grid;
+    align-content: center;
+    padding-block: 64px 48px;
+    overflow: hidden;
+    isolation: isolate;
+    background: linear-gradient(180deg, var(--vx-ink) 0%, #0d0a06 50%, var(--vx-ink) 100%);
+}
+
+/* Slow golden smoke behind the showcase */
+.vx-smoke { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.vx-smoke span {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: .55;
+    animation: vx-drift 22s ease-in-out infinite alternate;
+}
+.vx-smoke span:nth-child(1) { width: 55vw; height: 40vw; left: -12vw; top: 8%; background: radial-gradient(circle, rgba(166, 112, 32, .55), transparent 65%); }
+.vx-smoke span:nth-child(2) { width: 45vw; height: 45vw; right: -10vw; top: -12%; background: radial-gradient(circle, rgba(214, 160, 62, .4), transparent 65%); animation-duration: 28s; }
+.vx-smoke span:nth-child(3) { width: 60vw; height: 30vw; left: 20%; bottom: -14%; background: radial-gradient(circle, rgba(120, 70, 20, .5), transparent 65%); animation-duration: 25s; }
+@keyframes vx-drift { to { transform: translate3d(6vw, -4vw, 0) scale(1.12); } }
+
+.vx-showcase__stage { display: grid; }
+.vx-slide {
+    grid-area: 1 / 1;
+    display: grid;
+    grid-template-columns: minmax(0, 470px) minmax(0, 1fr);
+    gap: clamp(24px, 5vw, 80px);
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .8s ease, visibility 0s .8s;
+}
+.vx-slide.is-active { opacity: 1; visibility: visible; transition: opacity .8s ease; }
+.vx-slide__card { padding: clamp(24px, 3vw, 40px); transform: translateX(-26px); transition: transform .9s cubic-bezier(.2, .7, .2, 1); }
+.vx-slide.is-active .vx-slide__card { transform: none; }
+.vx-slide__meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
+.vx-slide__buy { margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--vx-line); }
+.vx-slide__buy .vx-price { margin-bottom: 18px; }
+.vx-slide__visual { display: grid; place-items: center; }
+.vx-slide__visual .vx-vitrine { transform: translateY(24px); opacity: 0; transition: transform 1.1s cubic-bezier(.2, .7, .2, 1), opacity 1s ease; }
+.vx-slide.is-active .vx-slide__visual .vx-vitrine { transform: none; opacity: 1; }
+
+.vx-showcase__controls { display: flex; align-items: center; gap: 12px; margin-top: 34px; }
+.vx-dots { display: flex; align-items: center; gap: 8px; margin-left: 10px; }
+.vx-dots button {
+    width: 7px;
+    height: 7px;
+    padding: 0;
+    border: 0;
+    border-radius: 99px;
+    background: rgba(244, 236, 220, .28);
+    transition: width .4s ease, background .4s ease;
+}
+.vx-dots button.is-active { width: 34px; background: var(--vx-gold); }
+.vx-dots button:hover { background: var(--vx-gold-soft); }
+
+/* ---------- The Notes ---------- */
+.vx-notes { position: relative; overflow: hidden; isolation: isolate; }
+.vx-swirl {
+    position: absolute;
+    inset: -20%;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        repeating-radial-gradient(circle at 18% 70%, transparent 0 38px, rgba(214, 160, 62, .05) 39px 40px, transparent 41px 80px),
+        repeating-radial-gradient(circle at 85% 30%, transparent 0 46px, rgba(214, 160, 62, .045) 47px 48px, transparent 49px 96px),
+        radial-gradient(ellipse at 50% 60%, rgba(140, 92, 28, .22), transparent 60%);
+    animation: vx-swirl 60s linear infinite;
+}
+@keyframes vx-swirl { to { transform: rotate(8deg) scale(1.05); } }
+
+.vx-notes__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(16px, 2vw, 28px);
+    align-items: center;
+    max-width: 1020px;
+    margin: 0 auto;
+}
+.vx-accord { padding: 30px 28px 32px; }
+.vx-accord h3 { margin: 6px 0 10px; font-family: var(--vx-serif); font-size: 1.75rem; font-weight: 500; color: var(--vx-cream); }
+.vx-accord p { margin: 0 0 22px; color: var(--vx-muted); font-size: .84rem; line-height: 1.65; }
+.vx-accord__step { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: .66rem; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; color: var(--vx-gold); }
+.vx-accord__step em {
+    padding: 3px 9px;
+    border: 1px solid rgba(233, 185, 73, .45);
+    border-radius: 99px;
+    font-style: normal;
+    font-size: .56rem;
+    letter-spacing: .18em;
+    background: rgba(233, 185, 73, .1);
+}
+.vx-accord ul { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
+.vx-accord li { position: relative; padding-left: 18px; font-size: .86rem; font-weight: 500; color: var(--vx-cream); }
+.vx-accord li::before { content: ""; position: absolute; left: 0; top: .5em; width: 6px; height: 6px; border-radius: 50%; background: var(--vx-gold); box-shadow: 0 0 10px rgba(233, 185, 73, .7); }
+.vx-accord--core {
+    padding-block: 40px;
+    border-color: rgba(233, 185, 73, .55);
+    box-shadow: 0 0 0 1px rgba(233, 185, 73, .12), 0 30px 80px -30px rgba(233, 185, 73, .35);
+}
+.vx-accord--core h3 { color: var(--vx-gold); font-size: 2rem; }
+
+/* ---------- Story ---------- */
+.vx-story { position: relative; }
+.vx-story__visual { display: grid; place-items: center; }
+.vx-arch {
+    position: relative;
+    width: min(100%, 440px);
+    aspect-ratio: 4 / 5;
+    border-radius: 220px 220px 18px 18px;
+    overflow: hidden;
+    border: 1px solid var(--vx-line);
+    box-shadow: 0 0 0 10px rgba(233, 185, 73, .04), 0 40px 120px -40px rgba(233, 185, 73, .45);
+}
+.vx-arch img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.6s ease; }
+.vx-arch:hover img { transform: scale(1.04); }
+.vx-arch::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(7, 6, 5, .55)); }
+.vx-story__card { padding: clamp(26px, 3.4vw, 46px); }
+.vx-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin: 26px 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--vx-line);
+}
+.vx-stats strong { display: block; font-family: var(--vx-serif); font-size: clamp(1.25rem, 2vw, 1.6rem); font-weight: 500; color: var(--vx-gold); line-height: 1.15; }
+.vx-stats span { display: block; margin-top: 6px; font-size: .6rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--vx-muted); }
+
+/* ---------- Spotlight ---------- */
+.vx-spotlight { position: relative; overflow: hidden; }
+.vx-spotlight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 50% 60% at 75% 50%, rgba(166, 112, 32, .28), transparent 70%);
+    pointer-events: none;
+}
+.vx-spotlight__card { position: relative; padding: clamp(26px, 3.4vw, 46px); }
+.vx-spotlight__visual { position: relative; display: grid; place-items: center; }
+.vx-mini-notes { display: grid; gap: 8px; margin: 18px 0 22px; }
+.vx-mini-notes div { display: grid; grid-template-columns: 64px 1fr; gap: 10px; align-items: baseline; }
+.vx-mini-notes dt { font-size: .6rem; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--vx-gold); }
+.vx-mini-notes dd { margin: 0; font-size: .86rem; color: var(--vx-cream); }
+.vx-thumbs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--vx-line); }
+.vx-thumb {
+    width: 54px;
+    height: 54px;
+    padding: 0;
+    border: 1px solid var(--vx-line);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    transition: border-color .3s ease, transform .3s ease, box-shadow .3s ease;
+}
+.vx-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.vx-thumb:hover { transform: translateY(-2px); }
+.vx-thumb.is-active { border-color: var(--vx-gold); box-shadow: 0 0 0 3px rgba(233, 185, 73, .2); }
+[data-spotlight-image].is-swapping { opacity: 0; }
+
+/* ---------- The Vault ---------- */
+.vx-vault { position: relative; }
+.vx-vault::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(166, 112, 32, .18), transparent 70%);
+    pointer-events: none;
+}
+.vx-vault__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(16px, 2vw, 28px);
+}
+.vx-center { display: flex; justify-content: center; margin-top: 44px; }
+
+/* ---------- Gift coffret banner ---------- */
+.vx-coffret {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) auto;
+    gap: 30px;
+    align-items: center;
+    padding: clamp(26px, 4vw, 44px) clamp(24px, 4vw, 52px);
+    border: 1px solid rgba(233, 185, 73, .4);
+    border-radius: 22px;
+    background:
+        radial-gradient(ellipse 40% 120% at 85% 50%, rgba(233, 185, 73, .14), transparent 70%),
+        linear-gradient(135deg, rgba(36, 27, 15, .9), rgba(14, 11, 8, .95));
+    box-shadow: 0 30px 90px -40px rgba(233, 185, 73, .4);
+}
+.vx-coffret .vx-copy { margin-bottom: 0; }
+.vx-coffret__price { display: grid; justify-items: end; gap: 14px; text-align: right; }
+
+/* ---------- Editorial banners ---------- */
+.vx-edits__slides { display: grid; }
+.vx-edit {
+    grid-area: 1 / 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: clamp(24px, 4vw, 60px);
+    padding: clamp(22px, 3vw, 40px);
+    border: 1px solid var(--vx-line);
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(30, 23, 14, .85), rgba(10, 8, 6, .95));
+    opacity: 0;
+    visibility: hidden;
+    /* Outgoing slide leaves quickly; the incoming one waits for it, so the
+       two never overlap mid-fade. */
+    transition: opacity .35s ease, visibility 0s .35s;
+}
+.vx-edit.is-active { opacity: 1; visibility: visible; transition: opacity .6s ease .35s; }
+.vx-edit__media { border-radius: 16px; overflow: hidden; aspect-ratio: 16 / 10; background: #120d08; }
+.vx-edit__media img { width: 100%; height: 100%; object-fit: cover; }
+.vx-edits__pager { display: flex; justify-content: center; gap: 8px; margin-top: 22px; }
+.vx-edits__pager .lux-hero-pagination-item {
+    min-width: 40px;
+    padding: 6px 10px;
+    border: 1px solid var(--vx-line);
+    border-radius: 99px;
+    background: transparent;
+    color: var(--vx-muted);
+    font-size: .7rem;
+    letter-spacing: .14em;
+    transition: all .3s ease;
+}
+.vx-edits__pager .lux-hero-pagination-item.is-active { border-color: var(--vx-gold); background: var(--vx-gold); color: #1a1206; }
+
+/* ---------- Rails, tiles, excellence ---------- */
+.vx-rail {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(230px, calc((100% - 3 * 22px) / 4));
+    gap: 22px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 14px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(233, 185, 73, .4) transparent;
+}
+.vx-rail > * { scroll-snap-align: start; }
+
+.vx-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+.vx-tile { display: grid; gap: 10px; align-content: start; }
+.vx-tile h3 { margin: 6px 0 0; font-family: var(--vx-serif); font-size: 1.35rem; font-weight: 500; }
+.vx-tile h3 a { color: var(--vx-cream); text-decoration: none; }
+.vx-tile h3 a:hover { color: var(--vx-gold); }
+.vx-tile__media, .vx-tile .lux-collection-media, .vx-tile > a:first-child {
+    display: block;
+    aspect-ratio: 4 / 5;
+    border: 1px solid var(--vx-line);
+    border-radius: 18px;
+    overflow: hidden;
+    background: #120d08;
+}
+.vx-tile img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s ease; }
+.vx-tile:hover img { transform: scale(1.05); }
+.vx-tile__empty { display: grid; place-items: center; height: 100%; color: var(--vx-gold); letter-spacing: .2em; text-transform: uppercase; font-size: .72rem; }
+.vx-tile .vx-price { margin: 0; font-size: 1.25rem; }
+
+.vx-excellence__box {
+    display: grid;
+    grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+    gap: clamp(20px, 4vw, 60px);
+    align-items: center;
+    padding: clamp(26px, 4vw, 52px);
+}
+.vx-ingredients { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; margin: 0 0 22px; padding: 0; list-style: none; }
+.vx-ingredients li { display: grid; gap: 4px; }
+.vx-ingredients i { color: var(--vx-gold); font-size: 1.3rem; }
+.vx-ingredients small { color: var(--vx-muted); }
+
+/* ---------- Homepage extras (favourites, reviews, WhatsApp) ---------- */
+.vx-page .testimonials-section,
+.vx-page .lux-whatsapp-cta,
+.vx-page .shop-favorites-section { background: var(--vx-ink) !important; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 991.98px) {
+    .vx-hero__grid { grid-template-columns: 1fr; gap: 46px; padding-block: 40px 110px; }
+    .vx-hero__visual { order: -1; width: min(78%, 340px); min-width: 0; }
+    .vx-hero__content { justify-items: center; text-align: center; }
+    .vx-hero__content .vx-display { max-width: 14ch; }
+    .vx-hero__rule { background: linear-gradient(90deg, transparent, var(--vx-gold), transparent); }
+    .vx-hero__veil {
+        background:
+            radial-gradient(ellipse 70% 40% at 50% 28%, rgba(166, 112, 32, .25), transparent 70%),
+            linear-gradient(180deg, rgba(7, 6, 5, .7) 0%, rgba(7, 6, 5, .9) 55%, var(--vx-ink) 100%);
+    }
+
+    .vx-slide { grid-template-columns: 1fr; gap: 6px; }
+    .vx-slide__visual { order: -1; }
+    .vx-slide__card { transform: translateY(20px); }
+    .vx-showcase { padding-block: 40px 36px; }
+    .vx-showcase__controls { justify-content: center; margin-top: 24px; }
+
+    .vx-notes__grid { grid-template-columns: 1fr; max-width: 520px; }
+    .vx-accord--core { order: -1; }
+
+    .vx-vault__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .vx-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .vx-rail { grid-auto-columns: minmax(220px, 42%); }
+
+    .vx-coffret { grid-template-columns: 1fr; text-align: left; }
+    .vx-coffret__price { justify-items: start; text-align: left; }
+
+    .vx-edit { grid-template-columns: 1fr; }
+    .vx-edit__media { order: -1; }
+
+    .vx-excellence__box { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 575.98px) {
+    .vx-hero__content { gap: 1rem; }
+    .vx-hero .vx-actions { width: 100%; }
+    .vx-hero .vx-actions .vx-btn { flex: 1 1 100%; }
+
+    .vx-vault__grid { grid-template-columns: 1fr; max-width: 400px; margin-inline: auto; }
+    .vx-tiles { gap: 14px; }
+    .vx-rail { grid-auto-columns: 78%; gap: 14px; }
+
+    .vx-stats { grid-template-columns: 1fr 1fr; }
+    .vx-stats > div:last-child:nth-child(odd) { grid-column: 1 / -1; }
+    .vx-arch { width: min(100%, 320px); }
+    .vx-dots { margin-left: 4px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .vx-hero__frame img, .vx-hero__halo, .vx-dust span, .vx-smoke span, .vx-swirl, .vx-loader__logo, .vx-scroll-cue i { animation: none !important; }
+    .vx-rise { opacity: 1; transform: none; animation: none; }
+}
+
+/* ==========================================================================
+   DELIGHT LAYER — small animations and ornaments. Everything here is
+   decorative and switched off under prefers-reduced-motion.
+   ========================================================================== */
+
+/* Gold shimmer sweeping through the italic headline words */
+.vx-display em,
+.vx-heading em {
+    background: var(--vx-gold-metal);
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: vx-shimmer 5s ease-in-out infinite;
+}
+@keyframes vx-shimmer { 0%, 15% { background-position: 100% 0; } 60%, 100% { background-position: 0 0; } }
+
+/* Twinkling sparkles around the hero arch */
+.vx-sparkles { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.vx-sparkles i {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    font-style: normal;
+    font-size: calc(1.15rem * var(--s, 1));
+    color: #ffdf8a;
+    text-shadow: 0 0 12px rgba(255, 210, 110, .9);
+    opacity: 0;
+    animation: vx-twinkle 3.2s ease-in-out var(--d, 0s) infinite;
+}
+@keyframes vx-twinkle {
+    0%, 100% { opacity: 0; transform: scale(.4) rotate(0deg); }
+    45% { opacity: 1; transform: scale(1) rotate(90deg); }
+    70% { opacity: .2; transform: scale(.7) rotate(140deg); }
+}
+
+/* Gold light gliding around the arch border */
+.vx-hero__frame::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    z-index: 2;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(from var(--vx-angle, 0deg), transparent 0 75%, rgba(255, 223, 138, .95) 85%, transparent 95%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    animation: vx-orbit 6s linear infinite;
+    pointer-events: none;
+}
+@property --vx-angle { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@keyframes vx-orbit { to { --vx-angle: 360deg; } }
+
+/* The caption pill gently floats */
+.vx-hero__caption { animation: vx-float-y 5s ease-in-out infinite; }
+@keyframes vx-float-y { 50% { transform: translateX(-50%) translateY(-6px); } }
+
+/* Ornament under centred section headings:  ——— ✦ ——— */
+.vx-head:not(.vx-head--row) .vx-heading::after {
+    content: "✦";
+    display: block;
+    width: 140px;
+    margin: 14px auto 0;
+    font-size: .8rem;
+    line-height: 1;
+    text-align: center;
+    color: var(--vx-gold);
+    background:
+        linear-gradient(90deg, transparent, rgba(233, 185, 73, .7)) left center / 52px 1px no-repeat,
+        linear-gradient(90deg, rgba(233, 185, 73, .7), transparent) right center / 52px 1px no-repeat;
+}
+.vx-motion .vx-head.vx-reveal .vx-heading::after { background-size: 0 1px, 0 1px; transition: background-size 1.2s ease .4s; }
+.vx-motion .vx-head.vx-reveal.is-in .vx-heading::after { background-size: 52px 1px, 52px 1px; }
+
+/* Accord icons bob gently */
+.vx-accord__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 14px;
+    border: 1px solid rgba(233, 185, 73, .4);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(233, 185, 73, .18), rgba(233, 185, 73, .02));
+    color: var(--vx-gold);
+    font-size: 1.15rem;
+    animation: vx-bob-soft 4s ease-in-out infinite;
+}
+.vx-accord:nth-child(2) .vx-accord__icon { animation-delay: .6s; }
+.vx-accord:nth-child(3) .vx-accord__icon { animation-delay: 1.2s; }
+@keyframes vx-bob-soft { 50% { transform: translateY(-6px); box-shadow: 0 10px 24px -10px rgba(233, 185, 73, .6); } }
+.vx-accord { transition: transform .5s cubic-bezier(.2, .7, .2, 1), border-color .4s ease, box-shadow .5s ease; }
+.vx-accord:hover { transform: translateY(-6px); border-color: rgba(233, 185, 73, .5); }
+
+/* Marquee ribbon */
+.vx-marquee {
+    position: relative;
+    overflow: hidden;
+    padding: 18px 0;
+    border-block: 1px solid rgba(233, 185, 73, .22);
+    background: linear-gradient(90deg, #0b0806, #15100a 50%, #0b0806);
+    -webkit-mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+            mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.vx-marquee__track {
+    display: flex;
+    align-items: center;
+    gap: 34px;
+    width: max-content;
+    animation: vx-marquee 38s linear infinite;
+}
+.vx-marquee:hover .vx-marquee__track { animation-play-state: paused; }
+.vx-marquee span {
+    font-family: var(--vx-serif);
+    font-size: clamp(1.15rem, 2vw, 1.6rem);
+    font-style: italic;
+    color: rgba(244, 236, 220, .82);
+    white-space: nowrap;
+}
+.vx-marquee i { font-style: normal; color: var(--vx-gold); font-size: .85rem; }
+@keyframes vx-marquee { to { transform: translateX(-50%); } }
+
+/* Product cards: soft light glint across the photo on hover */
+.vx-vitrine::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 35%, rgba(255, 240, 200, .35) 50%, transparent 65%);
+    transform: translateX(-120%);
+    pointer-events: none;
+}
+.vx-card:hover .vx-vitrine::after,
+.vx-slide__visual .vx-vitrine:hover::after { transform: translateX(120%); transition: transform 1s ease; }
+.vx-card { transform-style: preserve-3d; will-change: transform; }
+
+/* Badge pulse */
+.vx-card .vx-badge { animation: vx-badge-glow 3s ease-in-out infinite; }
+@keyframes vx-badge-glow { 50% { box-shadow: 0 0 14px rgba(233, 185, 73, .45); } }
+
+/* Gold sparkle trail that follows the pointer (created by vault-home.js) */
+.vx-trail {
+    position: fixed;
+    z-index: 3000;
+    pointer-events: none;
+    font-size: 10px;
+    line-height: 1;
+    color: #ffdf8a;
+    text-shadow: 0 0 8px rgba(255, 210, 110, .9);
+    animation: vx-trail .9s ease-out forwards;
+}
+@keyframes vx-trail {
+    from { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+    to { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(.2) rotate(140deg); }
+}
+
+/* Thin gold reading-progress line at the very top of the page */
+.vx-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2100;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, #c99332, #ffdf8a, #e9b949);
+    box-shadow: 0 0 10px rgba(233, 185, 73, .7);
+    transform: scaleX(var(--p, 0));
+    transform-origin: left;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .vx-display em, .vx-heading em, .vx-sparkles i, .vx-hero__frame::before, .vx-hero__caption,
+    .vx-accord__icon, .vx-marquee__track, .vx-card .vx-badge { animation: none !important; }
+    .vx-sparkles i { opacity: .7; }
+    .vx-trail { display: none; }
+}
+
+/* ==========================================================================
+   LAYOUT STANDARD (homepage) — balanced grids, consistent rows.
+   ========================================================================== */
+
+/* Fragrance grid: a centred last row instead of orphans on the left */
+.vx-vault__grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.vx-vault__grid > .vx-card { flex: 0 1 calc((100% - 2 * clamp(16px, 2vw, 28px)) / 3); }
+
+/* Collection / gift tiles: centred, never stretched into gaps */
+.vx-tiles {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 280px));
+    justify-content: center;
+}
+
+/* Product rails: four across, scroll for more */
+.vx-rail { grid-auto-columns: calc((100% - 3 * 22px) / 4); }
+
+/* Story and spotlight: equal-height columns, content vertically centred */
+.vx-story .vx-split, .vx-spotlight .vx-split { align-items: center; }
+
+/* Shop Your Favorites: dark stage for the bottle photo */
+.vx-page .fav-card-image-zone {
+    background: radial-gradient(ellipse 70% 70% at 50% 40%, rgba(166, 112, 32, .28), transparent 70%), #0e0b08 !important;
+}
+
+/* Perfume Finder on the homepage: intro card first, full finder on demand */
+.pf-hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.pf-collapsible:not(.is-open) .pf-mode-tabs,
+.pf-collapsible:not(.is-open) .pf-panel,
+.pf-collapsible:not(.is-open) .pf-results { display: none !important; }
+.pf-collapsible.is-open .pf-hero-actions { display: none; }
+.vx-page .pf-section { padding-block: clamp(64px, 7vw, 104px) !important; }
+.vx-page .pf-section .pf-hero { margin-bottom: 0; }
+.vx-page .pf-section.is-open .pf-hero { margin-bottom: clamp(2rem, 4vw, 3rem); }
+
+@media (max-width: 991.98px) {
+    .vx-vault__grid > .vx-card { flex-basis: calc((100% - clamp(16px, 2vw, 28px)) / 2); }
+    .vx-rail { grid-auto-columns: minmax(220px, 42%); }
+}
+@media (max-width: 575.98px) {
+    .vx-vault__grid > .vx-card { flex-basis: 100%; max-width: 400px; }
+    .vx-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .vx-rail { grid-auto-columns: 78%; }
+    .pf-hero-actions .vx-btn { flex: 1 1 100%; }
+}

@@ -172,7 +172,7 @@
     "dateModified": "{{ post.updated_at|date:'c' }}",
     "author": {
         "@type": "Person",
-        "name": "{{ post.author.get_full_name|default:post.author.username|default:site_settings.brand_name|escapejs }}"
+        "name": "{% if post.author %}{{ post.author.get_full_name|default:post.author.username|escapejs }}{% else %}{{ site_settings.brand_name|escapejs }}{% endif %}"
     },
     "publisher": {
         "@type": "Organization",

@@ -67,20 +67,3 @@ def product_short_name(value):
         if name.startswith(prefix):
             return name[len(prefix):]
     return name
-
-
-@register.simple_tag
-def cinema_frame_urls(count=72, folder='cinema'):
-    """JSON list of the homepage scroll-cinema frame URLs.
-
-    Built per file through the staticfiles storage so hashed (manifest)
-    filenames resolve in production. ``folder`` picks the frame set
-    (``cinema`` = 16:9 landscape, ``cinema-portrait`` = 9:16 for phones).
-    """
-    import json
-
-    from django.templatetags.static import static
-
-    return json.dumps([
-        static('images/hero/%s/frame-%02d.webp' % (folder, i)) for i in range(int(count))
-    ])

@@ -1,0 +1,628 @@
+/* ==========================================================================
+   Elvessora — "Maison" homepage: every section gets its own composition so
+   no two consecutive blocks share a layout.
+     Showcase     → arched stage, product left, free text right
+     The Notes    → editorial columns split by hairlines
+     Story        → photo bleeds off the left edge, text free on the right
+     Spotlight    → circular pedestal with an orbiting ring
+     Coffret      → gold ribbon
+     Finder       → immersive photo banner
+     The Edit     → full-bleed cinematic banner
+     Best Sellers → ranked 01–04
+     New Arrivals → bento: one feature + two side cards
+     Gift Sets    → horizontal cards
+     Excellence   → centred statement
+     Reviews      → open quotes on gold rules
+   Loaded after maison-theme.css (base.html → page_css block).
+   ========================================================================== */
+
+/* ---------- Showcase: arched stage ---------- */
+.page-luxury-home .vx-showcase {
+    min-height: 0;
+    padding-block: clamp(90px, 10vw, 150px) clamp(60px, 7vw, 100px);
+    background:
+        radial-gradient(ellipse 38% 60% at 28% 52%, rgba(166, 112, 32, .22), transparent 70%),
+        var(--vx-ink-2);
+}
+.page-luxury-home .vx-slide { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(40px, 7vw, 110px); }
+.page-luxury-home .vx-slide__visual { order: -1; }
+.page-luxury-home .vx-slide__card.vx-glass { padding: 0; background: none; border-radius: 0; transform: translateX(26px); }
+.page-luxury-home .vx-slide.is-active .vx-slide__card.vx-glass { transform: none; }
+.page-luxury-home .vx-slide .vx-title { margin: 6px 0 14px; font-size: clamp(3rem, 6.4vw, 5.8rem); line-height: .94; letter-spacing: -.045em; }
+.page-luxury-home .vx-slide .vx-copy { max-width: 46ch; font-size: 1.05rem; }
+.page-luxury-home .vx-slide__buy { border-top: 1px solid var(--vx-line); }
+.page-luxury-home .vx-showcase .vx-vitrine--orb {
+    width: min(100%, 480px);
+    border-radius: 999px 999px 20px 20px;
+    box-shadow: 0 0 0 1px rgba(212, 178, 106, .45), 0 0 0 14px rgba(6, 16, 34, .6), 0 0 0 15px rgba(212, 178, 106, .18), 0 60px 120px -50px rgba(0, 0, 0, .9);
+}
+.page-luxury-home .vx-showcase__controls { padding-left: calc(50% + clamp(20px, 3.5vw, 55px)); }
+
+/* ---------- The Notes: editorial columns ---------- */
+.page-luxury-home .vx-notes__grid {
+    max-width: none;
+    gap: 0;
+    align-items: stretch;
+    border-block: 1px solid var(--vx-line);
+}
+.page-luxury-home .vx-accord.vx-glass {
+    padding: clamp(36px, 4vw, 60px) clamp(24px, 3vw, 48px);
+    border: 0;
+    border-radius: 0;
+    background: none;
+}
+.page-luxury-home .vx-accord + .vx-accord { border-left: 1px solid var(--vx-line); }
+.page-luxury-home .vx-accord--core.vx-glass {
+    background: linear-gradient(180deg, rgba(212, 178, 106, .1), transparent 75%);
+    box-shadow: inset 0 2px 0 var(--vx-gold);
+}
+.page-luxury-home .vx-accord h3 { margin: 10px 0 12px; font-size: clamp(2rem, 3vw, 2.6rem); letter-spacing: -.035em; }
+.page-luxury-home .vx-accord__icon { width: 52px; height: 52px; font-size: 1.3rem; }
+.page-luxury-home .vx-accord ul { display: flex; flex-wrap: wrap; gap: 8px; }
+.page-luxury-home .vx-accord li {
+    padding: 7px 14px 7px 26px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .06);
+    font-size: .85rem;
+}
+.page-luxury-home .vx-accord li::before { left: 12px; top: 50%; width: 5px; height: 5px; transform: translateY(-50%); }
+
+/* ---------- Story: photo bleeds off the left edge ---------- */
+.page-luxury-home .vx-story { padding: 0; overflow: hidden; }
+.page-luxury-home .vx-story .vx-split { min-height: min(92svh, 880px); }
+.page-luxury-home .vx-story__visual { position: absolute; top: 0; bottom: 0; left: 0; width: 50vw; }
+.page-luxury-home .vx-arch { width: 100%; height: 100%; aspect-ratio: auto; border-radius: 0; }
+.page-luxury-home .vx-arch::after { content: ""; background: linear-gradient(90deg, transparent 70%, var(--vx-ink-2) 100%); }
+.page-luxury-home .vx-story__card.vx-glass {
+    grid-column: 2;
+    padding: clamp(90px, 10vw, 140px) 0 clamp(90px, 10vw, 140px) clamp(16px, 4vw, 70px);
+    background: none;
+}
+.page-luxury-home .vx-story .vx-heading { font-size: clamp(2.8rem, 5.4vw, 5rem); }
+
+/* ---------- Spotlight: circular pedestal ---------- */
+.page-luxury-home .vx-spotlight {
+    background:
+        radial-gradient(circle at 74% 50%, rgba(212, 178, 106, .16), transparent 34%),
+        var(--vx-ink);
+}
+.page-luxury-home .vx-spotlight__card.vx-glass { padding: 0; background: none; }
+.page-luxury-home .vx-spotlight__visual { position: relative; }
+.page-luxury-home .vx-spotlight__visual::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(112%, 560px);
+    aspect-ratio: 1;
+    border: 1px dashed rgba(212, 178, 106, .35);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: mx-orbit 60s linear infinite;
+    pointer-events: none;
+}
+@keyframes mx-orbit { to { transform: translate(-50%, -50%) rotate(360deg); } }
+.page-luxury-home .vx-spotlight .vx-vitrine--orb {
+    width: min(100%, 460px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgba(212, 178, 106, .55), 0 50px 120px -40px rgba(212, 178, 106, .35);
+}
+.page-luxury-home .vx-mini-notes {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    margin: 26px 0 28px;
+    border-block: 1px solid var(--vx-line);
+}
+.page-luxury-home .vx-mini-notes div { grid-template-columns: 1fr; gap: 6px; padding: 18px 16px; }
+.page-luxury-home .vx-mini-notes div:first-child { padding-left: 0; }
+.page-luxury-home .vx-mini-notes div + div { border-left: 1px solid var(--vx-line); }
+.page-luxury-home .vx-thumb { width: 58px; height: 58px; border-radius: 50%; }
+.page-luxury-home .vx-thumbs { border-top: 0; padding-top: 0; }
+
+/* ---------- Coffret: gold ribbon ---------- */
+.page-luxury-home .vx-coffret {
+    padding: clamp(30px, 4vw, 48px) 0;
+    border-block: 1px solid rgba(212, 178, 106, .45);
+    border-radius: 0;
+    background: linear-gradient(90deg, transparent, rgba(212, 178, 106, .08) 50%, transparent);
+}
+.page-luxury-home .vx-coffret .vx-title { font-size: clamp(2.2rem, 4vw, 3.4rem); }
+
+/* ---------- Perfume Finder: immersive photo banner ---------- */
+.page-luxury-home .pf-collapsible .pf-hero {
+    position: relative;
+    display: block;
+    min-height: clamp(520px, 64svh, 640px);
+    border: 0;
+    border-radius: var(--vx-radius);
+    background: var(--vx-ink-2) !important;
+    overflow: hidden;
+    isolation: isolate;
+}
+.page-luxury-home .pf-collapsible .pf-hero-visual {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    padding: 0;
+    background: none !important;
+}
+.page-luxury-home .pf-collapsible .pf-hero-frame {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+.page-luxury-home .pf-collapsible .pf-hero:hover .pf-hero-frame { transform: none; box-shadow: none; }
+.page-luxury-home .pf-collapsible .pf-hero-img { object-position: 70% 45%; }
+.page-luxury-home .pf-collapsible .pf-hero-frame-glow {
+    background: linear-gradient(90deg, rgba(6, 16, 34, .94) 0%, rgba(6, 16, 34, .8) 34%, rgba(6, 16, 34, .2) 66%, rgba(6, 16, 34, .1) 100%) !important;
+}
+.page-luxury-home .pf-collapsible .pf-hero-copy {
+    position: relative;
+    max-width: 560px;
+    min-height: inherit;
+    padding: clamp(40px, 6vw, 80px);
+}
+.page-luxury-home .pf-collapsible .pf-title { font-size: clamp(2.4rem, 4.6vw, 4rem); line-height: 1.02; letter-spacing: -.035em; }
+.page-luxury-home .pf-collapsible .pf-hero-badge {
+    left: auto;
+    right: 24px;
+    bottom: 24px;
+    border: 0;
+    background: rgba(6, 16, 34, .6) !important;
+    color: var(--vx-cream) !important;
+}
+
+/* ---------- The Edit: full-bleed cinematic banner ---------- */
+.page-luxury-home .vx-edit {
+    position: relative;
+    grid-template-columns: 1fr;
+    align-items: end;
+    min-height: clamp(440px, 62svh, 620px);
+    padding: 0;
+    overflow: hidden;
+    isolation: isolate;
+}
+.page-luxury-home .vx-edit__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    aspect-ratio: auto;
+    border-radius: 0;
+}
+.page-luxury-home .vx-edit__media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(6, 16, 34, .92) 0%, rgba(6, 16, 34, .45) 45%, rgba(6, 16, 34, .05) 100%);
+}
+.page-luxury-home .vx-edit__copy { max-width: 680px; padding: clamp(30px, 5vw, 64px); }
+.page-luxury-home .vx-edits__pager { justify-content: center; }
+.page-luxury-home .vx-edit .vx-title { font-size: clamp(2.4rem, 5vw, 4.4rem); line-height: 1; letter-spacing: -.035em; }
+
+/* ---------- Best Sellers: ranked ---------- */
+.page-luxury-home #luxBestSellers .vx-rail { counter-reset: mx-rank; }
+.page-luxury-home #luxBestSellers .lux-product-card { counter-increment: mx-rank; }
+.page-luxury-home #luxBestSellers .lux-product-image-wrap::after {
+    content: counter(mx-rank, decimal-leading-zero);
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    z-index: 2;
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 3.6vw, 3.6rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -.04em;
+    color: transparent;
+    -webkit-text-stroke: 1.2px rgba(244, 236, 220, .9);
+    text-shadow: 0 6px 24px rgba(0, 0, 0, .35);
+    pointer-events: none;
+}
+.page-luxury-home #luxBestSellers .lux-product-card:first-child .lux-product-image-wrap::after {
+    color: var(--vx-gold);
+    -webkit-text-stroke: 0;
+}
+
+/* ---------- New Arrivals: bento (one feature, side cards) ---------- */
+@media (min-width: 992px) {
+    .page-luxury-home #luxNewArrivals .vx-rail {
+        grid-auto-flow: row;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+        grid-auto-columns: auto;
+        gap: 22px;
+        overflow: visible;
+        padding-bottom: 0;
+    }
+    .page-luxury-home #luxNewArrivals .lux-product-card:first-child { grid-row: span 2; }
+    .page-luxury-home #luxNewArrivals .lux-product-card:first-child h3 { font-size: 1.7rem; }
+    .page-luxury-home #luxNewArrivals .lux-product-card:not(:first-child) {
+        display: grid;
+        grid-template-columns: 42% minmax(0, 1fr);
+        grid-template-rows: 1fr auto auto auto 1fr;
+        column-gap: 6px;
+        padding-bottom: 0;
+        text-align: left;
+    }
+    .page-luxury-home #luxNewArrivals .lux-product-card:not(:first-child) .lux-product-image-wrap { grid-column: 1; grid-row: 1 / -1; aspect-ratio: auto; height: 100%; min-height: 220px; }
+    .page-luxury-home #luxNewArrivals .lux-product-card:not(:first-child) h3 { grid-column: 2; grid-row: 2; margin: 0 0 6px; font-size: 1.5rem; }
+    .page-luxury-home #luxNewArrivals .lux-product-card:not(:first-child) .lux-product-tag { grid-column: 2; grid-row: 3; }
+    .page-luxury-home #luxNewArrivals .lux-product-card:not(:first-child) .lux-product-price { grid-column: 2; grid-row: 4; margin-top: 8px; font-size: 1.25rem; }
+}
+
+/* ---------- Gift Sets: horizontal cards ---------- */
+.page-luxury-home #luxGifts .vx-tiles {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+    max-width: 1040px;
+    margin-inline: auto;
+    gap: 24px;
+}
+.page-luxury-home #luxGifts .vx-tile {
+    display: grid;
+    grid-template-columns: 46% minmax(0, 1fr);
+    grid-template-rows: 1fr auto auto auto 1fr;
+    column-gap: clamp(20px, 2.5vw, 32px);
+    row-gap: 10px;
+    align-items: start;
+    justify-items: start;
+    text-align: left;
+    border-radius: var(--vx-radius);
+    background: var(--vx-panel);
+    overflow: hidden;
+}
+.page-luxury-home #luxGifts .vx-tile__media { grid-column: 1; grid-row: 1 / -1; border-radius: 0; }
+.page-luxury-home #luxGifts .vx-tile h3 { grid-column: 2; grid-row: 2; margin: 0; padding-right: 20px; font-size: clamp(1.4rem, 2vw, 1.8rem); letter-spacing: -.03em; }
+.page-luxury-home #luxGifts .vx-tile .vx-price { grid-column: 2; grid-row: 3; font-size: 1.4rem; }
+.page-luxury-home #luxGifts .vx-tile .vx-link { grid-column: 2; grid-row: 4; margin-top: 6px; padding-top: 0; }
+
+/* ---------- Collections: tall framed tiles ---------- */
+.page-luxury-home #luxCollections .vx-tile .lux-gift-image { border-radius: 24px; aspect-ratio: 3 / 4; }
+.page-luxury-home #luxCollections .vx-tile h3 { margin-top: 8px; font-size: 1.4rem; }
+
+/* ---------- Excellence: centred statement ---------- */
+.page-luxury-home .vx-excellence {
+    background:
+        radial-gradient(ellipse 50% 70% at 50% 100%, rgba(166, 112, 32, .2), transparent 70%),
+        var(--vx-ink);
+}
+.page-luxury-home .vx-excellence__box.vx-glass {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    max-width: 900px;
+    margin-inline: auto;
+    padding: 0;
+    background: none;
+    text-align: center;
+}
+.page-luxury-home .vx-excellence .vx-heading { font-size: clamp(3.2rem, 8vw, 7rem); line-height: .95; letter-spacing: -.05em; }
+.page-luxury-home .vx-excellence .vx-copy { max-width: 640px; margin-inline: auto; font-size: clamp(1.05rem, 1.5vw, 1.25rem); }
+.page-luxury-home .vx-ingredients { justify-content: center; }
+
+/* ---------- Reviews: open quotes on gold rules ---------- */
+.page-luxury-home .testimonials-section .lux-section-head { justify-content: center; text-align: center; margin-bottom: clamp(36px, 4vw, 56px); }
+.page-luxury-home .testimonials-section .lux-heading { font-size: clamp(2.3rem, 4.6vw, 4rem); }
+.page-luxury-home .lux-testimonial-card,
+.page-luxury-home .lux-testimonial-card.is-featured {
+    position: relative;
+    height: 100%;
+    padding: 34px 6px 0 !important;
+    border: 0 !important;
+    border-top: 1px solid rgba(212, 178, 106, .45) !important;
+    border-radius: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+}
+.page-luxury-home .lux-testimonial-card::before {
+    content: "\201C";
+    position: absolute;
+    top: -6px;
+    right: 6px;
+    font-family: var(--font-display);
+    font-size: 5rem;
+    line-height: 1;
+    color: rgba(212, 178, 106, .35);
+}
+.page-luxury-home .lux-testimonial-card p {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -.01em;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 991.98px) {
+    .page-luxury-home .vx-slide { grid-template-columns: 1fr; gap: 36px; }
+    .page-luxury-home .vx-slide__card.vx-glass { transform: translateY(20px); text-align: left; }
+    .page-luxury-home .vx-showcase__controls { padding-left: 0; justify-content: flex-start; }
+    .page-luxury-home .vx-showcase .vx-vitrine--orb { width: min(86%, 380px); }
+
+    .page-luxury-home .vx-accord + .vx-accord { border-left: 0; border-top: 1px solid var(--vx-line); }
+
+    .page-luxury-home .vx-story .vx-split { min-height: 0; }
+    .page-luxury-home .vx-story__visual { position: relative; width: 100vw; margin-inline: calc(50% - 50vw); aspect-ratio: 4 / 5; max-height: 76svh; }
+    .page-luxury-home .vx-arch::after { background: linear-gradient(0deg, var(--vx-ink-2) 0%, transparent 30%); }
+    .page-luxury-home .vx-story__card.vx-glass { grid-column: 1; padding: 0 0 clamp(64px, 9vw, 90px); }
+
+    .page-luxury-home .vx-spotlight__visual::before { width: min(96%, 420px); }
+    .page-luxury-home .vx-spotlight .vx-vitrine--orb { width: min(80%, 360px); }
+
+    .page-luxury-home .pf-collapsible .pf-hero-frame-glow {
+        background: linear-gradient(0deg, rgba(6, 16, 34, .96) 0%, rgba(6, 16, 34, .8) 45%, rgba(6, 16, 34, .1) 100%) !important;
+    }
+    .page-luxury-home .pf-collapsible .pf-hero { display: flex; align-items: flex-end; min-height: 680px; }
+    .page-luxury-home .pf-collapsible .pf-hero-copy { min-height: 0; padding: 32px 24px; }
+    .page-luxury-home .pf-collapsible .pf-hero-badge { top: 20px; bottom: auto; }
+
+    .page-luxury-home #luxGifts .vx-tile { grid-template-columns: 42% minmax(0, 1fr); }
+}
+@media (max-width: 575.98px) {
+    .page-luxury-home .vx-mini-notes { grid-template-columns: 1fr; }
+    .page-luxury-home .vx-mini-notes div { padding: 12px 0; }
+    .page-luxury-home .vx-mini-notes div + div { border-left: 0; border-top: 1px solid var(--vx-line); }
+    .page-luxury-home #luxGifts .vx-tile { grid-template-columns: 1fr; grid-template-rows: auto; padding-bottom: 22px; }
+    .page-luxury-home #luxGifts .vx-tile__media { grid-row: auto; }
+    .page-luxury-home #luxGifts .vx-tile > :not(.vx-tile__media) { grid-column: 1; grid-row: auto; padding-inline: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .page-luxury-home .vx-spotlight__visual::before { animation: none; }
+}
+.page-luxury-home .vx-edits .vx-edits__pager.lux-hero-pagination { position: static; display: flex; justify-content: center; margin-top: 22px; }
+
+/* ---------- Find Your Signature Scent: slightly smaller cards ---------- */
+@media (min-width: 992px) {
+    .page-luxury-home .vx-vault__grid { max-width: 1000px; margin-inline: auto; gap: 22px; }
+    .page-luxury-home .vx-vault__grid > .vx-card { flex-basis: calc((100% - 2 * 22px) / 3); }
+}
+.page-luxury-home .vx-vault .vx-card { gap: 12px; padding-bottom: 22px; }
+.page-luxury-home .vx-vault .vx-card__top { padding: 12px 14px 0; }
+.page-luxury-home .vx-vault .vx-card__body { gap: 10px; padding-inline: 16px; }
+.page-luxury-home .vx-vault .vx-card__name { font-size: clamp(1.25rem, 1.7vw, 1.5rem); }
+.page-luxury-home .vx-vault .vx-card__desc { font-size: .8rem; }
+.page-luxury-home .vx-vault .vx-price { font-size: 1.3rem; }
+.page-luxury-home .vx-vault .vx-card__actions { max-width: 260px; }
+.page-luxury-home .vx-vault__grid { align-items: stretch; }
+.page-luxury-home .vx-vault .vx-card { height: auto; align-self: stretch; }
+
+/* ---------- Gift Coffret: text left, couple photo bleeding off the right ---------- */
+.page-luxury-home .vx-gift-feature {
+    position: relative;
+    display: grid;
+    align-items: center;
+    min-height: min(88svh, 820px);
+    overflow: hidden;
+    background: var(--vx-ink-2);
+}
+.page-luxury-home .vx-gift-feature__media {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 50vw;
+    margin: 0;
+}
+.page-luxury-home .vx-gift-feature__media img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0%; }
+.page-luxury-home .vx-gift-feature__media::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 -1px;
+    width: 30%;
+    background: linear-gradient(90deg, var(--vx-ink-2), transparent);
+}
+.page-luxury-home .vx-gift-feature .vx-coffret {
+    grid-template-columns: 1fr;
+    gap: 34px;
+    max-width: 50%;
+    padding: 0 clamp(16px, 4vw, 70px) 0 0;
+    border: 0;
+    background: none;
+}
+.page-luxury-home .vx-gift-feature .vx-title { font-size: clamp(2.8rem, 5.4vw, 5rem); line-height: .98; letter-spacing: -.04em; }
+.page-luxury-home .vx-gift-feature .vx-copy { max-width: 44ch; font-size: 1.05rem; }
+.page-luxury-home .vx-gift-feature .vx-coffret__price {
+    justify-items: start;
+    gap: 18px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(212, 178, 106, .4);
+    text-align: left;
+}
+
+@media (max-width: 991.98px) {
+    .page-luxury-home .vx-gift-feature { display: block; min-height: 0; padding-top: 0; }
+    .page-luxury-home .vx-gift-feature__media { position: relative; width: 100%; aspect-ratio: 4 / 5; max-height: 76svh; }
+    .page-luxury-home .vx-gift-feature__media::after { inset: auto 0 -1px 0; width: auto; height: 35%; background: linear-gradient(0deg, var(--vx-ink-2), transparent); }
+    .page-luxury-home .vx-gift-feature .vx-coffret { max-width: none; padding: 0; }
+}
+
+/* ---------- Reviews: centred heading, three quotes side by side ---------- */
+.page-luxury-home .mx-reviews__list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(24px, 3vw, 40px);
+}
+@media (max-width: 991.98px) {
+    .page-luxury-home .mx-reviews__list { grid-template-columns: 1fr; max-width: 560px; margin-inline: auto; }
+}
+
+/* ---------- New Arrivals: a little smaller ---------- */
+@media (min-width: 992px) {
+    .page-luxury-home #luxNewArrivals .vx-rail { max-width: 860px; margin-inline: auto; gap: 16px; }
+    .page-luxury-home #luxNewArrivals .lux-product-card:first-child h3 { font-size: 1.4rem; }
+    .page-luxury-home #luxNewArrivals .lux-product-card:not(:first-child) h3 { font-size: 1.25rem; }
+    .page-luxury-home #luxNewArrivals .lux-product-card:not(:first-child) .lux-product-price { font-size: 1.1rem; }
+    .page-luxury-home #luxNewArrivals .lux-product-card:not(:first-child) .lux-product-image-wrap { min-height: 180px; }
+}
+
+/* ==========================================================================
+   Best Seller Spotlight — full-bleed cinematic:
+   the bottle photo fills the section from the middle to the right edge,
+   fading into black under the copy; pickers along the bottom
+   ========================================================================== */
+.page-luxury-home .mx-cine {
+    position: relative;
+    display: grid;
+    align-items: center;
+    min-height: min(94svh, 900px);
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--vx-ink);
+}
+.page-luxury-home .mx-cine__media {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -2;
+    width: 64%;
+    margin: 0;
+}
+.page-luxury-home .mx-cine__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 45%;
+    transition: opacity .35s ease, transform 8s ease;
+}
+.page-luxury-home .mx-cine:hover .mx-cine__media img { transform: scale(1.05); }
+.page-luxury-home .mx-cine__shade {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+        linear-gradient(90deg, var(--vx-ink) 0%, var(--vx-ink) 34%, rgba(6, 16, 34, .75) 46%, rgba(6, 16, 34, .1) 66%, rgba(6, 16, 34, .25) 100%),
+        linear-gradient(0deg, var(--vx-ink) 0%, rgba(6, 16, 34, 0) 26%),
+        linear-gradient(180deg, rgba(6, 16, 34, .55) 0%, rgba(6, 16, 34, 0) 18%);
+}
+.page-luxury-home .mx-cine__inner { display: grid; gap: clamp(40px, 5vw, 64px); padding-block: clamp(90px, 10vw, 140px) clamp(40px, 4vw, 56px); }
+.page-luxury-home .mx-cine__copy { max-width: 560px; }
+.page-luxury-home .mx-cine__name {
+    margin: 12px 0 18px;
+    font-family: var(--font-display);
+    font-size: clamp(3.4rem, 7.5vw, 6.8rem);
+    font-weight: 700;
+    line-height: .9;
+    letter-spacing: -.05em;
+    color: var(--vx-cream);
+    text-shadow: 0 10px 40px rgba(0, 0, 0, .5);
+}
+.page-luxury-home .mx-cine__desc { max-width: 46ch; font-size: 1.06rem; }
+
+/* Notes: one line of three, split by thin rules */
+.page-luxury-home .mx-cine__notes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 26px 0 30px;
+    border-block: 1px solid rgba(244, 236, 220, .14);
+}
+.page-luxury-home .mx-cine__notes > div { padding: 16px 16px 16px 0; }
+.page-luxury-home .mx-cine__notes > div + div { padding-left: 16px; border-left: 1px solid rgba(244, 236, 220, .14); }
+.page-luxury-home .mx-cine__notes dt { margin-bottom: 6px; font-size: .7rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--vx-gold); }
+.page-luxury-home .mx-cine__notes dd { margin: 0; font-size: .92rem; line-height: 1.5; color: var(--vx-cream); }
+
+.page-luxury-home .mx-cine__buy { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 26px; }
+.page-luxury-home .mx-cine__buy .vx-price--lg { margin: 0; font-size: clamp(2.2rem, 3.4vw, 3rem); letter-spacing: -.03em; }
+
+/* Pickers along the bottom */
+.page-luxury-home .mx-cine__pickers {
+    justify-content: flex-start;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.page-luxury-home .mx-cine__pickers .vx-thumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    opacity: .5;
+    transition: opacity .3s ease, transform .3s ease, box-shadow .3s ease;
+}
+.page-luxury-home .mx-cine__pickers .vx-thumb:hover { opacity: 1; transform: translateY(-3px); }
+.page-luxury-home .mx-cine__pickers .vx-thumb.is-active { opacity: 1; box-shadow: 0 0 0 2px var(--vx-ink), 0 0 0 4px var(--vx-gold); }
+
+@media (max-width: 991.98px) {
+    .page-luxury-home .mx-cine { display: block; min-height: 0; }
+    .page-luxury-home .mx-cine__media { position: relative; width: 100%; aspect-ratio: 4 / 5; max-height: 74svh; }
+    .page-luxury-home .mx-cine__shade { bottom: auto; height: min(74svh, 125vw); background: linear-gradient(0deg, var(--vx-ink) 0%, rgba(6, 16, 34, 0) 40%); }
+    .page-luxury-home .mx-cine__inner { margin-top: -90px; padding-block: 0 64px; position: relative; }
+    .page-luxury-home .mx-cine__pickers { justify-content: center; }
+}
+@media (max-width: 575.98px) {
+    .page-luxury-home .mx-cine__notes { grid-template-columns: 1fr; }
+    .page-luxury-home .mx-cine__notes > div, .page-luxury-home .mx-cine__notes > div + div { padding: 12px 0; border-left: 0; }
+    .page-luxury-home .mx-cine__notes > div + div { border-top: 1px solid rgba(244, 236, 220, .14); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .page-luxury-home .mx-cine__media img { transition: opacity .35s ease; }
+    .page-luxury-home .mx-cine:hover .mx-cine__media img { transform: none; }
+}
+
+/* ==========================================================================
+   Hero — bg20 film (Secret Romance bottle splashing into pastel water)
+   fills the whole hero; the bottle stays centre-left and the headline
+   sits on the right half over a navy fade
+   ========================================================================== */
+.page-luxury-home .vx-hero { isolation: isolate; background: var(--vx-ink); }
+.page-luxury-home .vx-hero__bg { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
+.page-luxury-home .vx-hero__bg img,
+.page-luxury-home .vx-hero__bg video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+    animation: mx-hero-settle 2.6s cubic-bezier(.2, .7, .2, 1) both;
+}
+@keyframes mx-hero-settle { from { transform: scale(1.06); opacity: 0; } to { transform: none; opacity: 1; } }
+.page-luxury-home .vx-hero__shade {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+        linear-gradient(90deg, rgba(6, 16, 34, .1) 0%, rgba(6, 16, 34, .05) 38%, rgba(6, 16, 34, .7) 58%, rgba(6, 16, 34, .9) 100%),
+        linear-gradient(180deg, transparent 75%, var(--vx-ink) 100%);
+}
+.page-luxury-home .vx-hero__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.page-luxury-home .vx-hero__content {
+    grid-column: 2;
+    justify-self: start;
+    justify-items: start;
+    max-width: 580px;
+    text-align: left;
+}
+.page-luxury-home .vx-hero .vx-actions { justify-content: flex-start; }
+
+@media (max-width: 991.98px) {
+    .page-luxury-home .vx-hero { align-items: end; min-height: max(640px, calc(100svh - 70px)); }
+    .page-luxury-home .vx-hero__bg img,
+    .page-luxury-home .vx-hero__bg video { height: 50%; object-position: 50% 50%; }
+    .page-luxury-home .vx-hero__shade { background: linear-gradient(180deg, rgba(6, 16, 34, .05) 0%, rgba(6, 16, 34, .05) 34%, var(--vx-ink) 50%, var(--vx-ink) 100%); }
+    .page-luxury-home .vx-hero__grid { grid-template-columns: 1fr; padding-block: 0 56px; }
+    .page-luxury-home .vx-hero__content { grid-column: 1; justify-self: center; justify-items: center; text-align: center; }
+    .page-luxury-home .vx-hero .vx-actions { justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .page-luxury-home .vx-hero__bg img, .page-luxury-home .vx-hero__bg video { animation: none; }
+}
+
+/* ---------- Reviews: light-blue band with navy text ---------- */
+.page-luxury-home .vx-page .testimonials-section,
+.page-luxury-home .testimonials-section {
+    background: linear-gradient(180deg, #edf2fa 0%, #dfe8f5 100%) !important;
+    color: #061022;
+}
+.page-luxury-home .testimonials-section .lux-label {
+    color: #8a6a2a;
+    background: none;
+    -webkit-text-fill-color: #8a6a2a;
+}
+.page-luxury-home .testimonials-section .lux-heading { color: #061022 !important; }
+.page-luxury-home .lux-testimonial-card,
+.page-luxury-home .lux-testimonial-card.is-featured { border-top-color: rgba(138, 106, 42, .45) !important; }
+.page-luxury-home .lux-testimonial-card::before { color: rgba(138, 106, 42, .3); }
+.page-luxury-home .lux-testimonial-card p { color: #0b1830 !important; }
+.page-luxury-home .lux-testimonial-card strong { color: #061022 !important; }
+.page-luxury-home .lux-testimonial-card small { color: #5a6782 !important; }
+.page-luxury-home .lux-testimonial-stars { color: #b8892f !important; }

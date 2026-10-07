@@ -1,5 +1,5 @@
 {% load static %}
-<section class="pf-section{% if standalone %} pf-section--standalone{% endif %}" id="luxPerfumeFinder" data-perfume-finder>
+<section class="pf-section{% if standalone %} pf-section--standalone{% else %} pf-collapsible{% endif %}" id="luxPerfumeFinder" data-perfume-finder>
   <div class="container">
 
     <!-- Hero banner with uploaded image -->
@@ -13,15 +13,29 @@
           <li><i class="bi bi-sliders"></i> Quick filters or guided quiz</li>
           <li><i class="bi bi-gem"></i> Signature Elvessora collection</li>
         </ul>
+        {% if not standalone %}
+        <div class="pf-hero-actions">
+          <button type="button" class="vx-btn vx-btn--gold" data-pf-open="filters"><i class="bi bi-sliders"></i> Use Quick Filters</button>
+          <button type="button" class="vx-btn vx-btn--ghost" data-pf-open="quiz"><i class="bi bi-magic"></i> Take the Quiz</button>
+        </div>
+        {% endif %}
       </div>
       <div class="pf-hero-visual">
         <div class="pf-hero-frame">
           <div class="pf-hero-frame-glow" aria-hidden="true"></div>
-          <img src="{% static 'images/perfume-finder/elvessora-finder-hero-divine-aura.webp' %}"
-               alt="Man holding a bottle of Elvessora Divine Aura parfum"
+          {% if standalone %}
+          <img src="{% static 'images/lifestyle/elvessora-candlelit-toast.jpg' %}"
+               alt="Two bottles of Elvessora Secret Romance raised in a candlelit toast"
                class="pf-hero-img"
-               width="680"
-               height="850"
+               width="1086"
+               height="1448"
+          {% else %}
+          <img src="{% static 'images/lifestyle/elvessora-finder-silhouette.jpg' %}"
+               alt="Silhouette of a woman spraying perfume in warm window light"
+               class="pf-hero-img"
+               width="1081"
+               height="1351"
+          {% endif %}
                loading="eager">
           <span class="pf-hero-badge">Elvessora Signature</span>
         </div>
@@ -409,12 +423,6 @@
     </div>
 
   </div>
-
-  <!-- Floating help button -->
-  <button type="button" class="pf-help-float" data-pf-help aria-label="Need help choosing? Start quiz">
-    <i class="bi bi-stars"></i>
-    <span>Need Help Choosing?</span>
-  </button>
 
   <!-- Compare bar -->
   <div class="pf-compare-bar" data-compare-bar hidden>

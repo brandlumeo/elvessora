@@ -1,0 +1,68 @@
+/* ==========================================================================
+   Elvessora — Perfume Finder page hero: bg10 (candlelit toast) fills the
+   right of the banner and fades into black under the copy on the left.
+   ========================================================================== */
+.pf-section--standalone .pf-hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+    min-height: clamp(520px, 70svh, 680px);
+    border: 0 !important;
+    border-radius: var(--vx-radius);
+    background: var(--vx-ink-2) !important;
+    box-shadow: none !important;
+    overflow: hidden;
+    isolation: isolate;
+}
+.pf-section--standalone .pf-hero-visual {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    width: 62%;
+    padding: 0;
+    background: none !important;
+}
+.pf-section--standalone .pf-hero-frame {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+.pf-section--standalone .pf-hero:hover .pf-hero-frame { transform: none; box-shadow: none; }
+.pf-section--standalone .pf-hero-img { object-position: 50% 40%; }
+.pf-section--standalone .pf-hero-frame-glow {
+    background:
+        linear-gradient(90deg, var(--vx-ink-2) 0%, rgba(11, 24, 48, .55) 22%, rgba(11, 24, 48, 0) 48%),
+        linear-gradient(0deg, rgba(6, 16, 34, .45) 0%, transparent 30%) !important;
+}
+.pf-section--standalone .pf-hero-copy {
+    position: relative;
+    max-width: 680px;
+    padding: clamp(40px, 6vw, 80px);
+}
+.pf-section--standalone .pf-title {
+    font-size: clamp(2.6rem, 5vw, 4.4rem);
+    line-height: 1;
+    letter-spacing: -.04em;
+}
+.pf-section--standalone .pf-hero-badge {
+    left: auto;
+    right: 24px;
+    bottom: 24px;
+    border: 0;
+    background: rgba(6, 16, 34, .6) !important;
+    color: var(--vx-cream) !important;
+}
+
+@media (max-width: 991.98px) {
+    .pf-section--standalone .pf-hero { display: flex; flex-direction: column; min-height: 0; }
+    .pf-section--standalone .pf-hero-visual { position: relative; z-index: 0; width: 100%; aspect-ratio: 4 / 5; max-height: 62svh; }
+    .pf-section--standalone .pf-hero-frame-glow { background: linear-gradient(0deg, var(--vx-ink-2) 0%, rgba(11, 24, 48, 0) 45%) !important; }
+    .pf-section--standalone .pf-hero-copy { order: 2; margin-top: -60px; padding: 0 24px 36px; }
+    .pf-section--standalone .pf-hero-badge { top: 18px; bottom: auto; }
+}

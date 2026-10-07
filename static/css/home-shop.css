@@ -16,7 +16,7 @@
 }
 
 .shop-section-head h2 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: clamp(1.75rem, 3.5vw, 2.5rem);
     font-weight: 600;
     color: var(--shop-navy);

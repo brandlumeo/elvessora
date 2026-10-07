@@ -2,47 +2,62 @@
 {% load static crispy_forms_tags %}
 
 {% block title %}Contact Us — {{ site.brand_name }}{% endblock %}
-{% block extra_css %}<link href="{% static 'css/marketplace-checkout.css' %}" rel="stylesheet">{% endblock %}
+
+{% block body_class %}page-maison page-contact{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/marketplace-checkout.css' %}" rel="stylesheet">
+<link href="{% static 'css/maison-pages.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-<div class="mkt-topbar">
-    <div class="container">
-        <span class="mkt-secure"><i class="bi bi-headset"></i> We usually reply within a day</span>
+<div class="mx-page">
+
+  <!-- HERO: title beside a full-height photo -->
+  <section class="mx-hero mx-hero--split">
+    <div class="container mx-hero__inner">
+      <span class="mx-eyebrow"><i class="bi bi-headset"></i> We usually reply within a day</span>
+      <h1 class="mx-display">Contact Us</h1>
     </div>
-</div>
-<div class="mkt-wrap">
-<div class="container">
-    <div class="row g-4">
-        <div class="col-lg-4">
-            <div class="mkt-card">
-                <h2 class="mkt-section-title">Contact Details</h2>
-                <p class="mkt-contact-name">{{ site.brand_name|default:"ELVESSORA GENERAL TRADING LLC" }}</p>
-                <ul class="mkt-contact-details">
-                    {% if site.business_address %}
-                    <li><i class="bi bi-geo-alt"></i> <span>{{ site.business_address|linebreaksbr }}</span></li>
-                    {% else %}
-                    <li><i class="bi bi-geo-alt"></i> <span>Dubai, United Arab Emirates</span></li>
-                    {% endif %}
-                    {% if site.email %}
-                    <li><i class="bi bi-envelope"></i> <a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
-                    {% endif %}
-                    {% if site.phone %}
-                    <li><i class="bi bi-telephone"></i> <a href="tel:{{ site.phone|cut:' ' }}">{{ site.phone }}</a></li>
-                    {% endif %}
-                </ul>
-                {% if site.whatsapp_url %}
-                <a href="{{ site.whatsapp_chat_url }}" class="mkt-contact-whatsapp" target="_blank" rel="noopener noreferrer">
-                    <i class="bi bi-whatsapp"></i> WhatsApp{% if site.phone %}: {{ site.phone }}{% endif %}
-                </a>
-                {% endif %}
-            </div>
-        </div>
-        <div class="col-lg-8">
-            <div class="mkt-card mkt-contact-form">
-                <h2 class="mkt-section-title">Send Us a Message</h2>
-                {% crispy form %}
-            </div>
-        </div>
+    <figure class="mx-hero__media">
+      <img src="{% static 'images/lifestyle/elvessora-neck-spray.jpg' %}"
+           alt="" aria-hidden="true" width="512" height="640" fetchpriority="high">
+    </figure>
+  </section>
+
+  <section class="mx-section">
+    <div class="container mx-contact-layout">
+
+      <aside class="mx-card mx-card--details fade-up">
+        <h2 class="mx-card__title">Contact Details</h2>
+        <p class="mx-card__legal">{{ site.brand_name|default:"ELVESSORA GENERAL TRADING LLC" }}</p>
+        <ul class="mx-contact">
+          {% if site.business_address %}
+          <li><span class="mx-contact__icon"><i class="bi bi-geo-alt"></i></span> <span>{{ site.business_address|linebreaksbr }}</span></li>
+          {% else %}
+          <li><span class="mx-contact__icon"><i class="bi bi-geo-alt"></i></span> <span>Dubai, United Arab Emirates</span></li>
+          {% endif %}
+          {% if site.email %}
+          <li><span class="mx-contact__icon"><i class="bi bi-envelope"></i></span> <a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+          {% endif %}
+          {% if site.phone %}
+          <li><span class="mx-contact__icon"><i class="bi bi-telephone"></i></span> <a href="tel:{{ site.phone|cut:' ' }}">{{ site.phone }}</a></li>
+          {% endif %}
+        </ul>
+        {% if site.whatsapp_url %}
+        <a href="{{ site.whatsapp_chat_url }}" class="mx-btn mx-btn--whatsapp" target="_blank" rel="noopener noreferrer">
+          <i class="bi bi-whatsapp"></i> WhatsApp{% if site.phone %}: {{ site.phone }}{% endif %}
+        </a>
+        {% endif %}
+      </aside>
+
+      <div class="mx-card mx-form mkt-contact-form fade-up">
+        <h2 class="mx-card__title">Send Us a Message</h2>
+        {% crispy form %}
+      </div>
+
     </div>
-</div>
+  </section>
+
 </div>
 {% endblock %}

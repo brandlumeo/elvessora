@@ -97,7 +97,7 @@
 }
 
 .bottle-label {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.6rem;
     font-weight: 700;
     color: var(--royal-blue);
@@ -258,7 +258,7 @@
 .hero-stats strong {
     font-size: 1.4rem;
     color: #fff;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
 }
 
 .hero-stats span {
@@ -437,7 +437,7 @@
 }
 
 .product-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.15rem !important;
     font-weight: 600;
 }
@@ -668,7 +668,7 @@
 }
 
 .nav-brand-text {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.65rem;
     font-weight: 700;
     color: var(--champagne-gold);
@@ -1174,7 +1174,7 @@
 
 .collection-card h5 {
     color: #fff;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.5rem;
     margin-bottom: 10px;
 }
@@ -1351,7 +1351,7 @@
 }
 
 .about-hero h1 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: clamp(2.2rem, 5vw, 3.4rem);
     font-weight: 700;
     color: #fff;
@@ -1384,7 +1384,7 @@
 
 .about-hero-stats strong {
     display: block;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.6rem;
     color: var(--champagne-gold);
     line-height: 1.2;
@@ -1426,7 +1426,7 @@
 }
 
 .about-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: clamp(1.75rem, 3vw, 2.25rem);
     color: var(--primary-bg);
     margin-bottom: 8px;
@@ -1471,7 +1471,7 @@
 }
 
 .about-activity-card h3 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.2rem;
     color: var(--primary-blue);
     margin-bottom: 10px;
@@ -1532,7 +1532,7 @@
 }
 
 .about-vision-card h3 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.25rem;
     color: var(--primary-blue);
     margin-bottom: 12px;
@@ -1562,7 +1562,7 @@
 
 .about-closing-banner strong {
     color: var(--champagne-gold);
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.25rem;
 }
 
@@ -1589,7 +1589,7 @@
 
 .about-sidebar-card h4,
 .about-sidebar-card h5 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     color: var(--primary-bg);
     margin-bottom: 12px;
 }
@@ -1717,7 +1717,7 @@
 }
 
 .about-section-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.75rem;
     color: var(--primary-blue);
     margin-bottom: 20px;
@@ -1754,7 +1754,7 @@
 }
 
 .activity-card h5 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.15rem;
     color: var(--primary-blue);
     margin-bottom: 8px;
@@ -1793,7 +1793,7 @@
 }
 
 .about-vision-card h5 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     color: var(--primary-blue);
     margin-bottom: 10px;
     display: flex;
@@ -1812,7 +1812,7 @@
 
 .about-closing strong {
     color: var(--champagne-gold);
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.1rem;
     letter-spacing: 0.5px;
 }
@@ -1955,7 +1955,7 @@
 
 .fp-eyebrow {
     display: inline-block;
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--font-body, 'Inter', 'Helvetica Neue', Arial, sans-serif);
     font-size: 0.7rem;
     font-weight: 600;
     letter-spacing: 0.28em;
@@ -1965,7 +1965,7 @@
 }
 
 .fp-title {
-    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: clamp(2.1rem, 4.5vw, 3rem);
     font-weight: 600;
     color: #fff;
@@ -2039,7 +2039,7 @@
 }
 
 .fp-panel-head h3 {
-    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.65rem;
     color: #fff;
     margin: 0 0 0.35rem;
@@ -2205,7 +2205,7 @@
 }
 
 .fp-tier-head h4 {
-    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.35rem;
     color: #fff;
     margin: 0 0 0.15rem;

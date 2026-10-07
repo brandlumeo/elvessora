@@ -4,7 +4,7 @@
 {% block title %}Gift Sets — {{ site_settings.brand_name }}{% endblock %}
 {% block extra_css %}<link href="{% static 'css/luxury-home.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
-<div class="page-header"><div class="container"><h1>Gift Sets</h1><p class="text-muted">Perfect presents with custom wrapping & personalized messages</p></div></div>
+{% include 'includes/photo_page_header.html' with image='images/lifestyle/elvessora-gift-embrace.jpg' label='The Gift Coffret' title='Gift Sets' subtitle='Perfect presents with custom wrapping & personalized messages' focus='38% 50%' %}
 <div class="container pb-5">
     <div class="row g-4">
         {% for gift_set in gift_sets %}
@@ -12,7 +12,7 @@
             <article class="lux-gift-card">
                 <a href="{% url 'products:gift_set_detail' gift_set.slug %}" class="lux-gift-image">
                     {% if gift_set.display_image_url %}
-                    <img src="{{ gift_set.display_image_url }}" alt="{{ gift_set.name }}" loading="lazy">
+                    {% include 'includes/gift_set_visual.html' with lazy=True %}
                     {% else %}
                     <div class="lux-gift-image-empty" aria-hidden="true">
                         <i class="bi bi-gift"></i>

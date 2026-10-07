@@ -32,46 +32,23 @@
 
   <!-- COLLECTION PAGE HERO -->
 
-  <section class="lux-hero lux-collection-hero" id="luxCollectionHero">
-
-    <div class="lux-hero-bg"></div>
-
-    <div class="lux-hero-glow"></div>
-
-    <div class="container lux-hero-grid">
-
-      <div class="lux-hero-copy lux-reveal lux-reveal--instant">
-
-        <p class="lux-eyebrow">Elvessora Signature</p>
-
-        <h1 class="lux-hero-title">{{ homepage.collection_heading|linebreaksbr }}</h1>
-
-        <p class="lux-hero-desc">Five luxury fragrances crafted in Dubai — each with its own character, story, and signature accords. Explore the complete line below.</p>
-
-        <div class="lux-hero-btns">
-
-          <a href="#luxCollection" class="lux-btn lux-btn-gold">Explore Fragrances <i class="bi bi-arrow-down"></i></a>
-
-          <a href="{% url 'products:shop' %}" class="lux-btn lux-btn-outline">Shop Collection</a>
-
-        </div>
-
-      </div>
-
-      <div class="lux-hero-visual lux-reveal lux-reveal--instant">
-
-        <img src="{% static 'images/hero/elvessora-secret-romance-collection.png' %}"
-
-             alt="{{ site_settings.brand_name }} signature fragrance"
-
-             class="lux-hero-feature-img lux-collection-hero-img"
-
-             loading="eager">
-
-      </div>
-
+  <section class="mx-collection-hero" id="luxCollectionHero">
+    <!-- Photo stays fixed to the screen while the text scrolls over it -->
+    <div class="mx-collection-hero__bg" aria-hidden="true">
+      <img src="{% static 'images/lifestyle/elvessora-enchante-bloom-spray.jpg' %}" alt="" width="1536" height="1024" fetchpriority="high">
     </div>
-
+    <div class="mx-collection-hero__shade" aria-hidden="true"></div>
+    <div class="container mx-collection-hero__inner">
+      <div class="mx-collection-hero__copy lux-reveal lux-reveal--instant">
+        <p class="lux-eyebrow">Elvessora Signature</p>
+        <h1 class="lux-hero-title">{{ homepage.collection_heading|linebreaksbr }}</h1>
+        <p class="lux-hero-desc">Five luxury fragrances crafted in Dubai — each with its own character, story, and signature accords. Explore the complete line below.</p>
+        <div class="lux-hero-btns">
+          <a href="#luxCollection" class="lux-btn lux-btn-gold">Explore Fragrances <i class="bi bi-arrow-down"></i></a>
+          <a href="{% url 'products:shop' %}" class="lux-btn lux-btn-outline">Shop Collection</a>
+        </div>
+      </div>
+    </div>
     <nav class="lux-scroll-rail" aria-label="Page sections">
 
       <a href="#luxCollection" class="is-active">01</a>
@@ -99,6 +76,11 @@
 {% endblock %}
 
 
+
+{% block page_css %}
+<link href="{% static 'css/maison-collection.css' %}" rel="stylesheet">
+<link rel="preload" as="image" href="{% static 'images/lifestyle/elvessora-gold-spray.jpg' %}">
+{% endblock %}
 
 {% block extra_js %}
 

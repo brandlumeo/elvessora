@@ -1,0 +1,1062 @@
+/* ==========================================================================
+   Elvessora — "Maison" layer: a Rolex-style presentation on the black base.
+   Bold sans headlines, generous centred sections, flat surfaces, soft pill
+   buttons and a calm header with the logo in the middle; gold is kept for
+   accents only. Loaded site-wide from base.html after vault-theme.css, so
+   it re-tunes the Vault tokens and components rather than replacing them.
+   ========================================================================== */
+
+:root {
+    /* Headlines in a high-contrast Garamond, everything else in Jost */
+    --font-display: 'Cormorant Garamond', 'Times New Roman', serif;
+    --font-body: 'Jost', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-ui: var(--font-body);
+
+    --vx-ink: #061022;
+    --vx-ink-2: #0b1830;
+    --vx-ink-3: #12233f;
+    --vx-panel: #0e1d38;
+    --vx-line: rgba(255, 255, 255, .1);
+    --vx-line-strong: rgba(255, 255, 255, .2);
+    --vx-gold: #d4b26a;
+    --vx-gold-soft: #e0c488;
+    --vx-gold-deep: #a8843f;
+    --vx-gold-hover: #e3c787;
+    --vx-cream: #f4ecdc;
+    --vx-muted: #a7b2c6;
+    --vx-serif: var(--font-display);
+    --vx-sans: var(--font-body);
+    --vx-radius: 16px;
+    /* Gold text stays flat — no metallic sweep */
+    --vx-gold-metal: linear-gradient(var(--vx-gold), var(--vx-gold));
+
+    /* Legacy palette used by style.css / luxury.css */
+    --champagne-gold: var(--vx-gold);
+    --lux-gold: var(--vx-gold);
+}
+
+body {
+    font-family: var(--font-body);
+    /* Cormorant's capitals run ~14% smaller than Jost's; match their cap
+       heights so headlines keep their size (Jost itself is unchanged) */
+    font-size-adjust: cap-height .7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- Type: refined Garamond headlines ---------- */
+h1, h2, h3, h4, h5, h6,
+.vx-display, .vx-heading, .vx-title, .lux-heading, .page-header h1 {
+    font-family: var(--font-display);
+    letter-spacing: -.005em;
+}
+main h1, main h2, main h3 { font-weight: 600; }
+
+.vx-display {
+    font-size: clamp(2.8rem, 6vw, 5.4rem);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -.012em;
+    text-shadow: none;
+}
+.vx-heading {
+    margin: 12px 0 16px;
+    font-size: clamp(2.4rem, 5.2vw, 4.6rem);
+    font-weight: 500;
+    line-height: 1.04;
+    letter-spacing: -.012em;
+}
+.vx-title {
+    font-size: clamp(2rem, 3.6vw, 3.2rem);
+    font-weight: 500;
+    line-height: 1.06;
+    letter-spacing: -.01em;
+}
+main .lux-heading { font-weight: 500; letter-spacing: -.01em; }
+
+/* Highlighted words: gold italic */
+.vx-display em, .vx-heading em, .vx-title em {
+    font-style: italic;
+    color: var(--vx-gold);
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    animation: none;
+}
+
+/* Small label above a headline: widely tracked capitals */
+.vx-eyebrow, .vx-subline, main .lux-label, main .pf-label, main .htu-eyebrow {
+    font-family: var(--font-ui);
+    font-size: .74rem;
+    font-weight: 500;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+}
+.vx-lead { font-size: 1.05rem; font-weight: 300; line-height: 1.7; color: var(--vx-muted); }
+.vx-copy { font-size: 1rem; font-weight: 300; line-height: 1.75; color: rgba(244, 236, 220, .78); }
+
+/* Section titles: no ornament under them */
+.vx-head:not(.vx-head--row) .vx-heading::after { content: none; }
+
+/* Flat gold everywhere the Vault used shining metal */
+.vx-eyebrow, .vx-subline, .vx-price, .vx-link, .vx-stats strong, .vx-accord--core h3,
+.vx-mini-notes dt, .vx-hero__caption .vx-eyebrow, .vx-marquee i, .vx-card .vx-eyebrow,
+main .lux-label, main .pf-label, main .htu-eyebrow, main .lux-link-arrow,
+main .price-offer, main .lux-product-price, main .pf-result-price, main .lux-spotlight-price,
+main .order-summary-lux h5, main .filter-sidebar h6,
+.site-header .nav-menu--flat .nav-menu-link.is-active,
+.site-footer h5, .site-footer h6 {
+    animation: none;
+    filter: none;
+}
+
+/* Prices: clean sans, gold */
+.vx-price, main .lux-product-price, main .price-offer, main .pf-result-price, main .lux-spotlight-price {
+    font-family: var(--font-ui);
+    font-weight: 500;
+    letter-spacing: .02em;
+}
+.vx-price { font-size: 1.5rem; }
+.vx-price--lg { font-size: clamp(1.9rem, 3vw, 2.5rem); }
+
+/* ---------- Buttons: soft pills, small tracked capitals ---------- */
+.vx-btn,
+main .btn-gold, main .lux-btn-gold, main .pf-btn--gold,
+main .lux-btn-outline, main .btn-outline-dark, main .btn-outline-secondary, main .btn-silver,
+main .btn-outline-primary, main .mkt-btn-secondary, main .pf-btn--outline, main .btn-outline-gold {
+    border-radius: 999px !important;
+    font-family: var(--font-ui);
+    font-weight: 500;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    box-shadow: none !important;
+}
+.vx-btn { min-height: 48px; padding: 0 30px; font-size: .78rem; gap: 10px; }
+.vx-btn--sm { min-height: 40px; padding: 0 20px; font-size: .72rem; letter-spacing: .14em; }
+.vx-btn:hover { transform: none; }
+
+.vx-btn--gold,
+main .btn-gold, main .lux-btn-gold, main .pf-btn--gold {
+    background: var(--vx-gold) !important;
+    border-color: var(--vx-gold) !important;
+    color: #061022 !important;
+}
+.vx-btn--gold:hover,
+main .btn-gold:hover, main .lux-btn-gold:hover, main .pf-btn--gold:hover {
+    background: var(--vx-gold-hover) !important;
+    border-color: var(--vx-gold-hover) !important;
+    color: #061022 !important;
+    filter: none;
+}
+/* No light sweep across gold buttons */
+.vx-btn--gold::after, main .btn-gold::after, main .lux-btn-gold::after { content: none; }
+
+.vx-btn--ghost,
+main .lux-btn-outline, main .btn-outline-dark, main .btn-outline-secondary, main .btn-silver,
+main .btn-outline-primary, main .mkt-btn-secondary, main .pf-btn--outline, main .btn-outline-gold {
+    background: rgba(255, 255, 255, .1) !important;
+    border: 1px solid transparent !important;
+    color: var(--vx-cream) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+.vx-btn--ghost:hover,
+main .lux-btn-outline:hover, main .btn-outline-dark:hover, main .btn-outline-secondary:hover, main .btn-silver:hover,
+main .btn-outline-primary:hover, main .mkt-btn-secondary:hover, main .pf-btn--outline:hover, main .btn-outline-gold:hover {
+    background: rgba(255, 255, 255, .18) !important;
+    border-color: transparent !important;
+    color: var(--vx-cream) !important;
+}
+main .btn-primary, main .btn-dark { border-radius: 999px; background: rgba(255, 255, 255, .1); border-color: transparent; }
+main .btn-primary:hover, main .btn-dark:hover { background: var(--vx-gold); border-color: var(--vx-gold); color: #061022; }
+
+.vx-link, main .lux-link-arrow {
+    font-family: var(--font-body);
+    font-size: .95rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+}
+.vx-link:hover, main .lux-link-arrow:hover { color: var(--vx-gold-hover); }
+
+.vx-round {
+    border: 0;
+    background: rgba(255, 255, 255, .1);
+    color: var(--vx-cream);
+}
+.vx-round:hover { background: var(--vx-gold); color: #061022; }
+
+.vx-dots button { background: rgba(255, 255, 255, .25); }
+.vx-dots button.is-active { width: 28px; background: var(--vx-cream); }
+
+/* ---------- Surfaces: flat, quiet, rounded ---------- */
+.vx-glass {
+    border: 0;
+    border-radius: var(--vx-radius);
+    background: var(--vx-panel);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+}
+.vx-chips li { border: 0; background: rgba(255, 255, 255, .08); font-size: .78rem; font-weight: 400; letter-spacing: .03em; }
+.vx-badge {
+    border: 0;
+    background: rgba(255, 255, 255, .1);
+    color: var(--vx-cream);
+    font-size: .66rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    animation: none !important;
+    box-shadow: none !important;
+}
+
+/* Product frames: no glow, no glint */
+.vx-vitrine { background: var(--vx-ink-3); }
+.vx-vitrine::after { content: none; }
+.vx-vitrine--orb, .vx-vitrine--case { border: 0; border-radius: 14px; box-shadow: none; }
+
+/* Fragrance cards */
+.vx-card {
+    gap: 16px;
+    padding: 0 0 26px;
+    border: 0;
+    border-radius: var(--vx-radius);
+    background: var(--vx-panel);
+    overflow: hidden;
+    will-change: auto;
+}
+.vx-card:hover { transform: none; box-shadow: none; }
+.vx-card .vx-vitrine--case { margin: 0; border-radius: 0; }
+.vx-card .vx-vitrine img { transition: transform 1.2s cubic-bezier(.2, .7, .2, 1); }
+.vx-card:hover .vx-vitrine img { transform: scale(1.04); }
+.vx-card__top { padding: 16px 18px 0; }
+.vx-card__body { border-top: 0; padding: 0 20px; }
+.vx-card__body .vx-eyebrow { margin-top: 0; }
+.vx-card__name { font-size: clamp(1.4rem, 2vw, 1.75rem); font-weight: 700; letter-spacing: -.02em; text-transform: none; }
+.vx-card__name a:hover { color: var(--vx-gold); }
+
+/* ---------- Section rhythm: alternating black bands ---------- */
+.vx-section { padding-block: clamp(80px, 9vw, 140px); }
+.vx-section--tight { padding-block: clamp(32px, 4vw, 56px); }
+.vx-head { margin-bottom: clamp(40px, 5vw, 68px); }
+
+.vx-page .vx-showcase,
+.vx-page .vx-story,
+.vx-page .vx-vault,
+.vx-page #luxNewArrivals,
+.vx-page #luxGifts,
+.vx-page .testimonials-section { background: var(--vx-ink-2) !important; }
+
+/* Remove ambient glows, smoke, dust and sparkles */
+.vx-smoke, .vx-swirl, .vx-dust, .vx-sparkles, .vx-hero__halo, .vx-hero__ambient, .vx-trail { display: none !important; }
+.vx-spotlight::before, .vx-vault::before { content: none; }
+.vx-showcase { background: var(--vx-ink-2); }
+
+/* Reading-progress line: thin and flat */
+.vx-progress { height: 2px; background: var(--vx-gold); box-shadow: none; }
+
+/* ---------- Homepage hero: photo bleeds to the edge, text beside it ---------- */
+.vx-hero { background: var(--vx-ink); }
+.vx-hero__veil { display: none; }
+.vx-hero__grid { padding-block: 60px 110px; }
+.vx-hero__content { justify-items: center; text-align: center; gap: 1.4rem; }
+.vx-hero__content .vx-display { max-width: 12ch; font-size: clamp(2.8rem, 5.4vw, 5.2rem); }
+.vx-hero__rule { display: none; }
+.vx-hero__text { max-width: 460px; color: rgba(244, 236, 220, .76); font-size: clamp(1rem, 1.25vw, 1.12rem); font-weight: 300; line-height: 1.7; }
+.vx-hero .vx-actions { justify-content: center; }
+
+.vx-hero__frame {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+.vx-hero__frame::before { content: none; }
+.vx-hero__frame::after { background: linear-gradient(180deg, transparent 70%, rgba(6, 16, 34, .55) 100%); }
+.vx-hero__frame img { transform: none; animation: none; }
+
+.vx-hero__caption {
+    left: 32px;
+    right: auto;
+    bottom: 28px;
+    transform: none;
+    justify-items: start;
+    gap: 4px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    backdrop-filter: none;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 600;
+    animation: none;
+}
+.vx-hero__caption .vx-eyebrow { font-size: .7rem; }
+
+.vx-scroll-cue {
+    color: rgba(244, 236, 220, .7);
+    font-size: .72rem;
+    font-weight: 500;
+    letter-spacing: .12em;
+}
+
+@media (min-width: 992px) {
+    .vx-hero { align-items: stretch; }
+    .vx-hero__grid { align-items: center; min-height: inherit; }
+    .vx-hero__content { max-width: 560px; justify-self: center; }
+    /* Photo fills the right half of the screen, edge to edge */
+    .vx-hero__visual {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 50vw;
+        min-width: 0;
+    }
+    .vx-hero__frame { width: 100%; height: 100%; aspect-ratio: auto; }
+    .vx-hero__frame img { object-position: 50% 62%; }
+    .vx-scroll-cue { left: 25%; }
+}
+
+@media (max-width: 991.98px) {
+    .vx-hero__grid { padding-block: 0 100px; gap: 40px; }
+    /* Full-width photo on top */
+    .vx-hero__visual {
+        width: 100vw;
+        max-width: none;
+        margin-inline: calc(50% - 50vw);
+    }
+    .vx-hero__frame { aspect-ratio: 4 / 5; max-height: 72svh; width: 100%; }
+    .vx-hero__frame img { object-position: 50% 60%; }
+    .vx-hero__caption { left: 20px; bottom: 20px; }
+}
+
+/* ---------- Homepage sections ---------- */
+.vx-slide__card { padding: clamp(28px, 3.4vw, 48px); }
+.vx-slide__buy { border-top-color: var(--vx-line); }
+
+.vx-accord { padding: 36px 30px 38px; text-align: left; }
+.vx-accord:hover { transform: none; border-color: transparent; }
+.vx-accord h3 { font-size: 1.7rem; font-weight: 700; letter-spacing: -.02em; }
+.vx-accord p { font-size: .92rem; font-weight: 300; }
+.vx-accord__icon {
+    border: 0;
+    background: rgba(212, 178, 106, .14);
+    animation: none;
+}
+.vx-accord__step em { border: 0; background: rgba(255, 255, 255, .1); color: var(--vx-cream); }
+.vx-accord li { font-weight: 400; }
+.vx-accord li::before { box-shadow: none; }
+.vx-accord--core { border: 1px solid rgba(212, 178, 106, .5); box-shadow: none; }
+
+.vx-arch { border: 0; border-radius: var(--vx-radius); box-shadow: none; aspect-ratio: 4 / 5; }
+.vx-arch::after { content: none; }
+.vx-stats { border-top-color: var(--vx-line); }
+.vx-stats strong { font-family: var(--font-display); font-weight: 500; letter-spacing: 0; }
+.vx-stats span { font-weight: 500; letter-spacing: .12em; }
+
+.vx-thumb { border: 0; border-radius: 10px; }
+.vx-thumb.is-active { box-shadow: 0 0 0 2px var(--vx-gold); }
+.vx-thumbs { border-top-color: var(--vx-line); }
+
+.vx-coffret {
+    border: 0;
+    border-radius: var(--vx-radius);
+    background: var(--vx-panel);
+    box-shadow: none;
+}
+
+.vx-edit { border: 0; border-radius: var(--vx-radius); background: var(--vx-panel); }
+.vx-edit__media { border-radius: 12px; background: var(--vx-ink-3); }
+.vx-edits__pager .lux-hero-pagination-item { border: 0; background: rgba(255, 255, 255, .08); color: var(--vx-muted); letter-spacing: .06em; }
+.vx-edits__pager .lux-hero-pagination-item.is-active { background: var(--vx-cream); color: #061022; }
+
+.vx-tile h3 { font-family: var(--font-display); font-size: 1.45rem; font-weight: 600; letter-spacing: 0; }
+.vx-tile__media, .vx-tile .lux-collection-media, .vx-tile > a:first-child { border: 0; border-radius: 14px; background: var(--vx-ink-3); }
+
+.vx-rail { scrollbar-color: rgba(255, 255, 255, .25) transparent; }
+
+/* Marquee: tracked uppercase, a gold accent word in each phrase, hairline gold borders */
+.vx-marquee {
+    padding: 22px 0;
+    border: 0;
+    background:
+        radial-gradient(60% 140% at 50% 50%, rgba(212, 178, 106, .07), transparent 70%),
+        var(--vx-ink);
+}
+.vx-marquee::before, .vx-marquee::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212, 178, 106, .55) 30%, rgba(212, 178, 106, .55) 70%, transparent);
+}
+.vx-marquee::before { top: 0; }
+.vx-marquee::after { bottom: 0; }
+.vx-marquee__track { gap: clamp(28px, 4vw, 56px); animation-duration: 48s; }
+.vx-marquee span {
+    font-family: var(--font-ui);
+    font-style: normal;
+    font-weight: 300;
+    font-size: clamp(.82rem, 1.25vw, 1rem);
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    color: rgba(244, 236, 220, .82);
+}
+.vx-marquee em { font-style: normal; font-weight: 500; color: var(--vx-gold); }
+/* Small gold diamond flanked by hairlines between phrases */
+.vx-marquee i {
+    position: relative;
+    flex: none;
+    width: 56px; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212, 178, 106, .6) 35%, transparent 42%, transparent 58%, rgba(212, 178, 106, .6) 65%, transparent);
+    -webkit-background-clip: border-box;
+            background-clip: border-box;
+}
+.vx-marquee i::before {
+    content: "";
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 6px; height: 6px;
+    border: 1px solid var(--vx-gold);
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.vx-page .fav-card-image-zone { background: var(--vx-ink-3) !important; }
+
+/* Intro loader: plain black */
+.vx-loader { background: radial-gradient(ellipse at 50% 45%, #0b1830 0%, #040b18 70%); }
+
+/* ==========================================================================
+   INNER PAGES
+   ========================================================================== */
+main .page-header {
+    padding-block: clamp(56px, 7vw, 100px);
+    background: var(--vx-ink-2);
+    border-bottom: 0;
+    text-align: center;
+}
+main .page-header h1 {
+    font-size: clamp(2.4rem, 5vw, 4.2rem);
+    font-weight: 700;
+    letter-spacing: -.03em;
+    line-height: 1.04;
+}
+
+/* Product cards (shop grid, rails, wishlist) */
+main .product-card, main .product-card.luxury-card, main .lux-product-card {
+    background: var(--vx-panel) !important;
+    border: 0 !important;
+    border-radius: var(--vx-radius);
+    box-shadow: none !important;
+}
+main .product-card:hover, main .lux-product-card:hover { transform: none; box-shadow: none !important; }
+main .lux-product-card { padding: 0 0 22px; }
+main .lux-product-card h3, main .lux-product-card .lux-product-tag, main .lux-product-card .lux-product-price { padding-inline: 18px; }
+main .lux-product-card h3 { margin-top: 16px; font-size: 1.15rem; font-weight: 700; letter-spacing: -.01em; text-transform: none; }
+main .lux-product-card .lux-product-image-wrap { border: 0; border-radius: 0; aspect-ratio: 1145 / 1374; }
+main .lux-product-card .lux-product-image-wrap img { padding: 0; object-fit: cover; }
+
+/* Image containers: dark, no outline */
+main .product-image, main .product-detail-image, main .lux-product-image-wrap, main .lux-product-image,
+main .col-fragrance-visual, main .lux-gift-image, main .lux-gift-collage-cell, main .pf-result-image,
+main .gift-product-thumb, main .cart-item-image, main .mkt-item-thumb {
+    background: var(--vx-ink-3) !important;
+    border-color: transparent !important;
+}
+main .lux-product-card img, main .product-card img { transition: transform 1.2s cubic-bezier(.2, .7, .2, 1); }
+main .lux-product-card:hover img, main .product-card:hover img { transform: scale(1.04); }
+
+main .lux-product-wishlist, main .lux-product-view, main .lux-product-add button, main .lux-product-wishlist-btn {
+    background: rgba(6, 16, 34, .65) !important;
+    border-color: transparent !important;
+    color: var(--vx-cream) !important;
+    backdrop-filter: blur(8px);
+}
+main .lux-product-add button:hover, main .lux-product-view:hover { background: var(--vx-gold) !important; color: #061022 !important; }
+
+main .badge-new, main .badge-bestseller, main .badge-sale, main .product-badge {
+    background: rgba(6, 16, 34, .65) !important;
+    border: 0;
+    border-radius: 999px;
+    color: var(--vx-cream) !important;
+    letter-spacing: .08em;
+}
+main .product-tag { background: rgba(255, 255, 255, .06) !important; border-color: transparent !important; }
+
+main .lux-gift-image:has(.lux-gift-image-empty), main .lux-gift-image-empty { background: var(--vx-ink-3) !important; }
+
+/* Cards and panels */
+main .card { --bs-card-bg: var(--vx-panel); --bs-card-border-color: transparent; --bs-card-border-radius: var(--vx-radius); }
+
+/* Forms: soft grey fields, gold focus */
+main .form-control,
+main .form-select,
+main input[type="text"], main input[type="email"], main input[type="tel"], main input[type="password"],
+main input[type="number"], main input[type="search"], main input[type="date"], main input[type="url"],
+main textarea, main select {
+    background-color: rgba(255, 255, 255, .05);
+    border-color: rgba(255, 255, 255, .14);
+    border-radius: 10px;
+}
+main .form-select, main select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23d4b26a' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+main .form-control:focus, main .form-select:focus, main input:focus, main textarea:focus, main select:focus {
+    background-color: rgba(255, 255, 255, .07);
+    border-color: var(--vx-gold);
+    box-shadow: none;
+}
+main .input-group-text { background: rgba(255, 255, 255, .08); border-color: rgba(255, 255, 255, .14); }
+main .form-label, main .form-check-label { font-weight: 500; }
+
+main .pagination { --bs-pagination-active-color: #061022; --bs-pagination-border-radius: 999px; }
+
+/* ==========================================================================
+   HEADER — black bar, logo in the centre, links on a quiet second row
+   ========================================================================== */
+.site-header { background: var(--vx-ink); }
+.site-header .nav-promo {
+    padding: 8px 0;
+    background: #040b18;
+    border-bottom: 1px solid rgba(255, 255, 255, .08);
+    color: rgba(244, 236, 220, .72);
+    font-size: .76rem;
+    letter-spacing: .02em;
+}
+.site-header .nav-promo i { color: var(--vx-gold); }
+.site-header .nav-promo-link { color: rgba(244, 236, 220, .85); }
+
+.site-header .luxury-nav {
+    background: linear-gradient(180deg, #0b1830 0%, #061022 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, .08);
+    box-shadow: none;
+}
+.site-header .luxury-nav::after { content: none; }
+
+.site-header .nav-menu-link {
+    padding: 8px 16px;
+    font-family: var(--font-ui);
+    font-size: .74rem;
+    font-weight: 400;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: rgba(244, 236, 220, .78);
+    transition: color .2s ease;
+}
+.site-header .nav-menu--flat .nav-menu-link { font-size: .74rem; letter-spacing: .2em; }
+.site-header .nav-menu-link:hover,
+.site-header .nav-menu--flat .nav-menu-link.is-active { color: var(--vx-gold); }
+.site-header .nav-menu--flat .nav-menu-link::after { bottom: 0; height: 2px; border-radius: 2px; }
+.site-header .nav-menu--flat .nav-menu-link:hover::after,
+.site-header .nav-menu--flat .nav-menu-link.is-active::after { width: 18px; }
+
+/* Plain icons, no rings */
+.site-header .nav-icon-btn {
+    border: 0;
+    background: transparent;
+    color: rgba(244, 236, 220, .9);
+    font-size: 1.15rem;
+}
+.site-header .nav-icon-btn:hover,
+.site-header .nav-icon-btn.is-active {
+    border: 0;
+    background: rgba(255, 255, 255, .08);
+    color: var(--vx-gold);
+}
+.site-header .nav-icon-badge,
+.site-header .nav-icon-btn .badge { background: var(--vx-gold) !important; color: #061022 !important; }
+
+.site-header .nav-signin-btn {
+    height: 40px;
+    padding: 0 18px 0 14px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .1);
+    color: var(--vx-cream);
+    font-size: .72rem;
+    font-weight: 500;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+}
+.site-header .nav-signin-btn:hover { background: var(--vx-gold); color: #061022; }
+
+.site-header .nav-actions .lang-switcher-toggle {
+    border: 0;
+    background: rgba(255, 255, 255, .08);
+    color: var(--vx-cream);
+}
+.site-header .nav-actions .lang-switcher-toggle:hover,
+.site-header .lang-switcher.is-open .lang-switcher-toggle { background: rgba(255, 255, 255, .14); }
+
+.site-header .nav-toggle { border: 0; background: transparent; }
+.site-header .nav-toggle span { background: var(--vx-cream); }
+
+.site-header .nav-search-panel { background: #061022; }
+.site-header .nav-search-form { border-color: rgba(255, 255, 255, .14); background: rgba(255, 255, 255, .06); border-radius: 999px; }
+
+.site-header .dropdown-menu {
+    --bs-dropdown-bg: #0b1830;
+    --bs-dropdown-border-color: rgba(255, 255, 255, .1);
+    --bs-dropdown-link-hover-bg: rgba(255, 255, 255, .06);
+    --bs-dropdown-divider-bg: rgba(255, 255, 255, .1);
+    --bs-dropdown-border-radius: 14px;
+}
+.site-header .mobile-nav-collapse { background: #061022; border-top-color: rgba(255, 255, 255, .08); }
+.site-header .mobile-nav-list li a {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 500;
+    letter-spacing: -.01em;
+    text-transform: none;
+    border-bottom-color: rgba(255, 255, 255, .08);
+}
+
+.brand-logo-link:hover .brand-logo-img { transform: none; filter: none; }
+
+/* Centred logo from tablets up: [ space | logo | actions ] */
+@media (min-width: 768px) {
+    .site-header .nav-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        grid-template-areas: "left brand actions" "menu menu menu";
+        align-items: center;
+        column-gap: 20px;
+        row-gap: 0;
+        min-height: 0;
+    }
+    .site-header .nav-brand {
+        grid-area: brand;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 72px;
+    }
+    .site-header .nav-actions { grid-area: actions; justify-self: end; margin-left: 0; }
+    .site-header .brand-logo-img { height: 46px; max-width: 230px; }
+}
+/* Desktop: links on their own row under the logo */
+@media (min-width: 1200px) {
+    .site-header .nav-menu {
+        grid-area: menu;
+        justify-content: center;
+        min-height: 48px;
+        border-top: 1px solid rgba(255, 255, 255, .08);
+    }
+}
+
+/* ==========================================================================
+   FOOTER — flat black, plain columns
+   ========================================================================== */
+.site-footer {
+    padding: clamp(64px, 7vw, 96px) 0 36px;
+    background: linear-gradient(180deg, #0b1830 0%, #040b18 100%);
+    color: rgba(244, 236, 220, .66);
+}
+.site-footer::before { background: rgba(255, 255, 255, .08); }
+.site-footer h5, .site-footer h6 {
+    padding-bottom: 0;
+    margin-bottom: 18px;
+    font-family: var(--font-ui);
+    font-size: .74rem;
+    font-weight: 500;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+}
+.site-footer h5::after, .site-footer h6::after { content: none; }
+.site-footer .footer-legal { font-weight: 500; letter-spacing: .08em; }
+.site-footer .footer-links li { margin-bottom: 12px; }
+.site-footer .footer-links a { color: rgba(244, 236, 220, .7); font-size: .92rem; }
+.site-footer .footer-links a:hover { color: var(--vx-gold); padding-left: 0; }
+
+.site-footer .social-links { gap: 6px; }
+.site-footer .social-links a {
+    width: 40px;
+    height: 40px;
+    border: 0;
+    background: rgba(255, 255, 255, .06);
+    color: var(--vx-cream);
+}
+.site-footer .social-links a:hover { background: var(--vx-gold); color: #061022; transform: none; }
+
+.site-footer .newsletter-form .input-group {
+    border: 0;
+    background: rgba(255, 255, 255, .08);
+}
+.site-footer .newsletter-form .btn-gold {
+    padding: 10px 24px;
+    background: var(--vx-gold);
+    color: #061022;
+    font-size: .88rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+}
+.site-footer .newsletter-form .btn-gold:hover { background: var(--vx-gold-hover); filter: none; }
+.site-footer hr { background: rgba(255, 255, 255, .08); }
+
+/* Floating helpers */
+.scroll-top-btn { border-radius: 999px; }
+
+/* ==========================================================================
+   FLAT PANELS — inner-page cards and bands lose the warm brown glow
+   ========================================================================== */
+main .filter-sidebar, main .shop-toolbar, main .delivery-info-bar, main .product-specs,
+main .col-fragrance-row, main .col-compare-wrap, main .col-cta-card, main .lux-gift-card,
+main .about-activity-card, main .about-vision-card, main .about-sidebar-card,
+main .mkt-card, main .mkt-auth-card, main .mkt-auth-alt-card, main .mkt-topbar,
+main .lux-testimonial-card, main .pf-hero, main .pf-filter-group, main .pf-panel--quiz,
+main .pf-result-card, main .pf-no-results, main .lux-whatsapp-box,
+html body main .faq-sidebar, html body main .faq-contact-card, html body main .faq-body {
+    background: var(--vx-panel) !important;
+    border-color: transparent !important;
+    border-radius: var(--vx-radius);
+    box-shadow: none !important;
+}
+main .lux-testimonial-card.is-featured { border: 1px solid rgba(212, 178, 106, .45) !important; box-shadow: none !important; }
+main .lux-section + .lux-section { border-top: 0; }
+
+main .about-hero, main .about-closing, main .about-closing-banner, main .hero-section,
+main .blog-hero, main .article-hero, main .blog-newsletter, main .related-products-section,
+html body main .faq-hero, html body main .faq-cta, main .brand-marquee,
+main .lux-collection-hero, main .lux-collection-hero .lux-hero-bg {
+    background: var(--vx-ink-2) !important;
+    border-color: transparent !important;
+}
+main .about-closing-banner, html body main .faq-cta, main .blog-newsletter { border: 0 !important; border-radius: var(--vx-radius); }
+
+html body main .accordion-item { background: var(--vx-panel) !important; border-color: var(--vx-line) !important; }
+html body main .accordion-button:not(.collapsed) { background: transparent !important; }
+main .accordion { --bs-accordion-active-bg: transparent; --bs-accordion-btn-focus-box-shadow: none; }
+html body main .faq-category:hover, html body main .faq-category.active, html body main .faq-category.is-active { background: rgba(255, 255, 255, .06) !important; }
+
+main .pf-hero-visual { background: var(--vx-ink-3) !important; }
+main .pf-hero-badge, main .pf-mode-btn, main .pf-chip, main .pf-quiz-opt, main .pf-compare-bar {
+    background: rgba(255, 255, 255, .07) !important;
+    border-color: transparent !important;
+}
+main .pf-mode-btn:hover, main .pf-mode-btn.is-active, main .pf-chip.is-active, main .pf-quiz-opt.is-selected {
+    background: var(--vx-gold) !important;
+    color: #061022 !important;
+}
+main .pf-photo-card.is-selected { box-shadow: 0 0 0 2px var(--vx-gold); }
+main .pf-result-why { background: rgba(255, 255, 255, .05) !important; }
+
+main .col-fragrance-tag { background: rgba(6, 16, 34, .65) !important; border: 0; color: var(--vx-cream) !important; }
+main .about-activity-icon { background: rgba(212, 178, 106, .14) !important; }
+main .about-social a { border-color: transparent !important; background: rgba(255, 255, 255, .07) !important; color: var(--vx-cream) !important; }
+
+/* Welcome / promo pop-up */
+.promo-modal {
+    border: 0;
+    border-radius: 20px;
+    background: var(--vx-ink-2);
+    color: var(--vx-cream);
+}
+.promo-modal h4 { font-family: var(--font-display); font-weight: 700; letter-spacing: -.02em; color: var(--vx-cream); }
+.promo-modal p { color: var(--vx-muted); }
+.promo-modal .btn-close { filter: invert(1); }
+.promo-modal .promo-code {
+    border: 0;
+    border-radius: 999px;
+    background: var(--vx-gold);
+    color: #061022;
+    font-weight: 600;
+    letter-spacing: .08em;
+}
+
+/* Phone tab bar: black, matching the header */
+.bottom-tab-bar {
+    background: rgba(6, 16, 34, .94);
+    border-top: 1px solid rgba(255, 255, 255, .08);
+    box-shadow: none;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+.bottom-tab { color: rgba(244, 236, 220, .6); font-weight: 500; }
+.bottom-tab.is-active { color: var(--vx-gold); }
+.bottom-tab-badge-gold { color: #061022; }
+
+/* ==========================================================================
+   CARD ALIGNMENT — equal heights, centred text, buttons on one baseline
+   ========================================================================== */
+
+/* Fragrance cards (home "Find Your Signature Scent") */
+.vx-card { display: flex; flex-direction: column; height: 100%; }
+.vx-card__body { flex: 1 1 auto; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.vx-card .vx-price { margin-top: auto; padding-top: 6px; }
+.vx-card__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    width: 100%;
+    max-width: 300px;
+}
+.vx-card__actions form, .vx-card__actions .vx-btn { width: 100%; }
+
+/* Collection and gift tiles */
+.vx-tiles { align-items: stretch; }
+.vx-tile { display: flex; flex-direction: column; align-items: center; gap: 10px; height: 100%; text-align: center; }
+.vx-tile__media, .vx-tile .lux-collection-media, .vx-tile > a:first-child { width: 100%; }
+.vx-tile .vx-price { margin: 0; }
+.vx-tile .vx-link { margin-top: auto; padding-top: 6px; }
+
+/* Product cards in rails, shop grid and wishlist */
+main .lux-product-card { display: flex; flex-direction: column; height: 100%; text-align: center; }
+main .lux-product-card .lux-product-price { margin-top: auto; padding-top: 6px; margin-bottom: 0; }
+main .product-card .product-info { text-align: center; }
+main .product-card .product-meta { justify-content: center; }
+main .product-card .product-price-row, main .product-card .product-price { justify-content: center; }
+main .product-card .product-card-buttons { display: grid; gap: 8px; margin-top: 14px; }
+main .product-card .btn-card-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    min-height: 42px;
+}
+
+/* Gift set picture: the perfumes in the box, side by side */
+.gift-collage {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2px;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    background: var(--vx-ink-2);
+}
+.gift-collage--n1 { grid-template-columns: 1fr; }
+.gift-collage--n2 { grid-template-rows: 1fr; }
+.gift-collage--n3 > :first-child { grid-row: span 2; }
+.gift-collage--n4 { grid-template-rows: repeat(2, minmax(0, 1fr)); }
+.gift-collage__cell { display: block; min-height: 0; overflow: hidden; background: var(--vx-ink-3); }
+.gift-collage__cell img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 1s ease; }
+.vx-tile:hover .gift-collage__cell img, .lux-gift-card:hover .gift-collage__cell img { transform: scale(1.04); }
+.product-detail-image .gift-collage { aspect-ratio: 1145 / 1374; border-radius: var(--vx-radius); overflow: hidden; }
+
+/* Dropdowns: a single chevron on the right (some page styles reset the
+   background shorthand, which tiled the arrow across the whole field) */
+main .form-select, main select {
+    background-repeat: no-repeat !important;
+    background-position: right 16px center !important;
+    background-size: 14px 10px !important;
+    padding-right: 44px !important;
+}
+
+/* Collection collage: dark, edge to edge (matches the gift set picture) */
+.lux-gift-collage { gap: 2px; padding: 0; background: var(--vx-ink-2); }
+.lux-gift-collage-cell { border-radius: 0; background: var(--vx-ink-3) !important; }
+.lux-gift-collage-cell img { padding: 0; object-fit: cover; }
+
+/* ==========================================================================
+   SHOP HERO — looping bottle film behind the title
+   ========================================================================== */
+main .page-header--video {
+    position: relative;
+    display: grid;
+    align-items: center;
+    min-height: clamp(420px, 62svh, 640px);
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--vx-ink) !important;
+    text-align: left;
+}
+.page-header__video {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 30% 50%;
+}
+/* Dark on the right where the title sits, fading to the bottle on the left */
+.page-header__shade {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+        linear-gradient(90deg, rgba(6, 16, 34, .15) 0%, rgba(6, 16, 34, .2) 45%, rgba(6, 16, 34, .85) 66%, rgba(6, 16, 34, .92) 100%),
+        linear-gradient(180deg, transparent 70%, var(--vx-ink) 100%);
+}
+main .page-header--video .container { display: grid; justify-items: start; }
+main .page-header--video .container > * { margin-left: 63%; max-width: 37%; }
+main .page-header--video h1 { margin: 12px 0 14px; font-size: clamp(2.6rem, 4.4vw, 4.2rem); }
+main .page-header--video .text-muted { color: rgba(244, 236, 220, .82) !important; font-size: 1.1rem; font-weight: 300; }
+
+@media (max-width: 767.98px) {
+    main .page-header--video { align-items: end; min-height: 560px; text-align: center; }
+    .page-header__video { object-position: 27% 50%; }
+    .page-header__shade { background: linear-gradient(180deg, rgba(6, 16, 34, .05) 0%, rgba(6, 16, 34, .25) 35%, rgba(6, 16, 34, .92) 66%, var(--vx-ink) 100%); }
+    main .page-header--video .container { justify-items: center; padding-bottom: 8px; }
+    main .page-header--video .container > * { margin-left: 0; max-width: none; }
+}
+/* Photo variant (Best Sellers, New Arrivals, Gift Sets): a still image, a little taller */
+main .page-header--photo { min-height: clamp(500px, 74svh, 760px); }
+@media (max-width: 767.98px) {
+    main .page-header--photo { min-height: 640px; }
+    .page-header--photo .page-header__video { object-position: var(--focus-m, 50% 50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .page-header--video:not(.page-header--photo) .page-header__video { display: none; }
+    main .page-header--video { background: var(--vx-ink) url('../video/perfume-bottle-poster.webp') 30% 50% / cover no-repeat !important; }
+}
+
+/* ==========================================================================
+   NAVY → WARM BLACK — cart/wishlist drawer and leftover navy pieces
+   ========================================================================== */
+.side-drawer-backdrop { background: rgba(6, 16, 34, .6); backdrop-filter: blur(3px); }
+.side-drawer-inner {
+    background: linear-gradient(180deg, #0b1830 0%, #061022 100%);
+    color: var(--vx-cream);
+    border-left: 1px solid rgba(255, 255, 255, .08);
+}
+.side-drawer-header, .side-drawer-item { border-bottom-color: rgba(255, 255, 255, .08); }
+.side-drawer-title { font-family: var(--font-display); font-weight: 600; letter-spacing: 0; color: var(--vx-cream); }
+.side-drawer-close { border: 0; background: rgba(255, 255, 255, .08); color: var(--vx-cream); }
+.side-drawer-close:hover, .side-drawer-close:focus-visible { background: var(--vx-gold); color: #061022; }
+.side-drawer-thumb { background: var(--vx-ink-3); border-radius: 10px; }
+.side-drawer-item-info > a { color: var(--vx-cream); }
+.side-drawer-item-info > a:hover,
+.side-drawer-price, .side-drawer-subtotal strong, .side-drawer-empty i { color: var(--vx-gold); }
+.side-drawer-meta { color: var(--vx-muted); }
+.side-drawer-footer { background: rgba(0, 0, 0, .25); border-top-color: rgba(255, 255, 255, .08); }
+.side-drawer .btn-gold {
+    border: 0;
+    border-radius: 999px;
+    background: var(--vx-gold);
+    color: #061022;
+    font-weight: 600;
+}
+.side-drawer .btn-gold:hover { background: var(--vx-gold-hover); color: #061022; }
+.side-drawer .btn-outline-gold {
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .1);
+    color: var(--vx-cream);
+    font-weight: 600;
+}
+.side-drawer .btn-outline-gold:hover { background: rgba(255, 255, 255, .18); color: var(--vx-cream); }
+
+.scroll-top-btn { background: rgba(14, 29, 56, .92) !important; color: var(--vx-gold) !important; border: 1px solid rgba(212, 178, 106, .35) !important; }
+.scroll-top-btn:hover { background: var(--vx-gold) !important; color: #061022 !important; }
+
+main .product-card .product-actions { background: linear-gradient(transparent, rgba(6, 16, 34, .85)); }
+main .fp-note-icon { background: rgba(212, 178, 106, .14); }
+main .pf-compare-modal { background: rgba(6, 16, 34, .7); }
+main .pf-hero-frame-glow { background: linear-gradient(to top, rgba(6, 16, 34, .55) 0%, transparent 60%); }
+
+/* Sign-in / register buttons and checkboxes */
+main .btn-primary.btn-gold, main input.btn-gold, main button.btn-gold {
+    background: var(--vx-gold) !important;
+    border-color: var(--vx-gold) !important;
+    color: #061022 !important;
+}
+main .form-check-input:checked { background-color: var(--vx-gold) !important; border-color: var(--vx-gold) !important; }
+
+/* Product page fragrance profile: warm black instead of navy */
+main .fp-bg {
+    background:
+        radial-gradient(ellipse 70% 55% at 10% 0%, rgba(212, 178, 106, .12), transparent 55%),
+        radial-gradient(ellipse 55% 50% at 100% 100%, rgba(166, 112, 32, .18), transparent 55%),
+        linear-gradient(165deg, #0b1830 0%, #0b1830 48%, #061022 100%);
+}
+
+/* ==========================================================================
+   BLOG — warm black bands instead of navy / white
+   ========================================================================== */
+main .blog-hero, main .blog-newsletter, main .article-hero { background-color: var(--vx-ink-2) !important; }
+main .knowledge-section, main .shop-stories-section { background: var(--vx-ink-2) !important; }
+main .knowledge-head h2, main .shop-stories-head h2 { color: var(--vx-cream); font-weight: 700; letter-spacing: -.03em; }
+main .knowledge-head p, main .shop-stories-head p, main .knowledge-block p, main .shop-desc { color: var(--vx-muted); }
+main .knowledge-block h3, main .shop-name, main .shop-price { color: var(--vx-cream); }
+main .knowledge-block:hover h3 { color: var(--vx-gold); }
+main .knowledge-img-wrap, main .shop-img-wrap { background: var(--vx-ink-3); border-radius: 12px; }
+main .shop-card {
+    background: var(--vx-panel) !important;
+    border-radius: var(--vx-radius);
+    box-shadow: none;
+}
+main .shop-card:hover { box-shadow: none; }
+main .shop-card .shop-img-wrap { border-radius: 0; }
+main .shop-btn {
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .1);
+    color: var(--vx-cream);
+    font-size: .85rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+}
+main .shop-card:hover .shop-btn { background: var(--vx-gold) !important; color: #061022 !important; }
+
+/* Legal pages: the same film header, title centred over it */
+main .page-header--center { text-align: center; min-height: clamp(380px, 52svh, 540px); }
+main .page-header--center .page-header__video { object-position: 50% 50%; }
+main .page-header--center .page-header__shade {
+    background:
+        radial-gradient(ellipse 60% 70% at 50% 55%, rgba(6, 16, 34, .55), rgba(6, 16, 34, .25) 70%),
+        linear-gradient(180deg, rgba(6, 16, 34, .35) 0%, transparent 40%, var(--vx-ink) 100%);
+}
+main .page-header--center .container { justify-items: center; }
+main .page-header--center .container > * { margin-left: 0; max-width: 820px; }
+main .page-header--center h1 { font-size: clamp(2.6rem, 5.6vw, 4.6rem); text-shadow: 0 6px 30px rgba(0, 0, 0, .5); }
+main .page-header--center .text-muted { font-size: .9rem !important; letter-spacing: .04em; }
+@media (max-width: 767.98px) {
+    main .page-header--center { align-items: center; min-height: 380px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    main .page-header--center { background-image: url('../video/elvessora-legal-poster.webp') !important; background-position: center !important; }
+}
+
+/* Gold labels that also fade in (hero) keep their entrance animation;
+   the flat-gold rule above switches animation off for .vx-eyebrow */
+.vx-eyebrow.vx-rise { animation: vx-rise 1.1s cubic-bezier(.2, .7, .2, 1) var(--d, 0s) forwards; }
+@media (prefers-reduced-motion: reduce) { .vx-eyebrow.vx-rise { animation: none; opacity: 1; transform: none; } }
+
+/* ==========================================================================
+   RESPONSIVE FIXES
+   ========================================================================== */
+/* Bootstrap's g-5 gutter (3rem) is wider than the container's padding, so on
+   phones the row's negative margins push columns past the screen edges */
+@media (max-width: 991.98px) {
+    .row.g-5, .row.gx-5 { --bs-gutter-x: 1.5rem; }
+}
+/* Product cards carry a slider min-width; inside a grid column they must fit the column */
+.row > [class*="col"] > .lux-product-card { flex: none; width: 100%; min-width: 0; }
+/* Product page delivery info: a tall stacked box on phones pushed the photo
+   below the fold — show it as one swipeable row of pills instead */
+@media (max-width: 767.98px) {
+    main .delivery-info-bar {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 8px;
+        margin: 0 -12px 16px;
+        padding: 0 12px;
+        overflow-x: auto;
+        border: 0;
+        background: none;
+        scrollbar-width: none;
+    }
+    main .delivery-info-bar::-webkit-scrollbar { display: none; }
+    main .delivery-info-bar span {
+        flex: none;
+        padding: 7px 13px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, .07);
+        font-size: .76rem;
+        white-space: nowrap;
+    }
+}
+/* Photo heroes on tablets: same stacked layout as phones so the title never
+   lands on the bottle */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    main .page-header--photo { align-items: end; min-height: 620px; text-align: center; }
+    .page-header--photo .page-header__video { object-position: var(--focus-m, 50% 50%); }
+    .page-header--photo .page-header__shade { background: linear-gradient(180deg, rgba(6, 16, 34, .05) 0%, rgba(6, 16, 34, .25) 40%, rgba(6, 16, 34, .92) 72%, var(--vx-ink) 100%); }
+    main .page-header--photo .container { justify-items: center; padding-bottom: 8px; }
+    main .page-header--photo .container > * { margin-left: 0; max-width: 560px; }
+}

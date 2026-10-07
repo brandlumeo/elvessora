@@ -41,7 +41,7 @@ body.page-luxury-home,
 .lux-eyebrow,
 .lux-label {
     display: block;
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--font-body, 'Inter', 'Helvetica Neue', Arial, sans-serif);
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.28em;
@@ -51,7 +51,7 @@ body.page-luxury-home,
 }
 
 .lux-heading {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: clamp(2rem, 4vw, 3.25rem);
     font-weight: 600;
     line-height: 1.12;
@@ -156,180 +156,6 @@ body.page-luxury-home,
     margin-bottom: 1rem;
 }
 
-/* ========== SCROLL CINEMA (frame sequence above hero) ========== */
-.lux-scroll-cinema {
-    position: relative;
-    height: 1200vh;
-    background: var(--lux-navy);
-    isolation: isolate;
-}
-
-.lux-scroll-cinema__pin {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    height: 100dvh;
-    overflow: hidden;
-}
-
-@media (max-width: 767.98px) {
-    /* Shorter scroll distance on mobile — 1200vh against a short mobile
-       screen made this feel like an endless empty scroll. dvh (rather than
-       vh) keeps the pin's height stable as the address bar shows/hides
-       mid-scroll instead of visibly resizing under the user's thumb. */
-    .lux-scroll-cinema {
-        height: 500vh;
-        height: 500dvh;
-    }
-}
-
-.lux-scroll-cinema__pin.is-fixed {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 4;
-}
-
-.lux-scroll-cinema__pin.is-bottom {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-
-.lux-scroll-cinema__frame-wrap {
-    position: absolute;
-    inset: 0;
-    background: var(--lux-navy);
-}
-
-.lux-scroll-cinema__poster,
-.lux-scroll-cinema__canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.lux-scroll-cinema__poster {
-    object-fit: cover;
-    object-position: center center;
-    transition: opacity 0.35s ease;
-}
-
-.lux-scroll-cinema__canvas {
-    display: block;
-    image-rendering: high-quality;
-}
-
-.lux-scroll-cinema__loader {
-    position: absolute;
-    left: 50%;
-    bottom: clamp(5rem, 12vh, 7rem);
-    transform: translateX(-50%);
-    z-index: 4;
-    width: min(220px, 60vw);
-    text-align: center;
-    color: rgba(255, 255, 255, 0.78);
-    font-size: 0.68rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-}
-
-.lux-scroll-cinema__loader-bar {
-    display: block;
-    height: 2px;
-    margin-bottom: 0.75rem;
-    background: rgba(255, 255, 255, 0.14);
-    overflow: hidden;
-    border-radius: 999px;
-}
-
-.lux-scroll-cinema__loader-bar::after {
-    content: '';
-    display: block;
-    height: 100%;
-    width: calc(var(--load, 0) * 1%);
-    background: linear-gradient(90deg, var(--lux-gold), #f0ddb0);
-    transition: width 0.2s ease;
-}
-
-.lux-scroll-cinema.is-ready .lux-scroll-cinema__loader {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.lux-scroll-cinema__pin::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(ellipse 80% 50% at 50% 100%, rgba(6, 16, 34, 0.28) 0%, transparent 55%),
-        linear-gradient(180deg, rgba(6, 16, 34, 0.12) 0%, transparent 28%);
-    pointer-events: none;
-    z-index: 2;
-}
-
-.lux-scroll-cinema__pin::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: min(22vh, 180px);
-    pointer-events: none;
-    z-index: 3;
-}
-
-.lux-scroll-cinema__hint {
-    position: absolute;
-    bottom: clamp(2rem, 5vh, 3.5rem);
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 5;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.35rem;
-    margin: 0;
-    color: rgba(255, 255, 255, 0.82);
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    transition: opacity 0.25s ease;
-    pointer-events: none;
-}
-
-.lux-scroll-cinema__hint i {
-    font-size: 0.95rem;
-    animation: lux-cinema-bounce 2s ease-in-out infinite;
-}
-
-@keyframes lux-cinema-bounce {
-    0%, 100% { transform: translateY(0); opacity: 0.85; }
-    50% { transform: translateY(5px); opacity: 1; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .lux-scroll-cinema {
-        height: auto;
-    }
-
-    .lux-scroll-cinema__pin,
-    .lux-scroll-cinema__pin.is-fixed,
-    .lux-scroll-cinema__pin.is-bottom {
-        position: relative;
-        height: min(72vh, 640px);
-    }
-
-    .lux-scroll-cinema__hint,
-    .lux-scroll-cinema__loader {
-        display: none;
-    }
-}
-
 /* ========== HERO ========== */
 .lux-hero {
     position: relative;
@@ -383,7 +209,7 @@ body.page-luxury-home,
 }
 
 .lux-hero-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: clamp(2.75rem, 6vw, 4.75rem);
     font-weight: 600;
     line-height: 1.05;
@@ -490,7 +316,7 @@ body.page-luxury-home,
 }
 
 .lux-scroll-rail a {
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--font-body, 'Inter', 'Helvetica Neue', Arial, sans-serif);
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.08em;
@@ -603,7 +429,7 @@ body.page-luxury-home,
     right: clamp(1rem, 3vw, 2.5rem);
     top: 90px;
     z-index: 3;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 0.85rem;
     font-weight: 600;
     letter-spacing: 0.1em;
@@ -658,7 +484,7 @@ body.page-luxury-home,
     padding: 0 0 6px;
     border: none;
     background: none;
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--font-body, 'Inter', 'Helvetica Neue', Arial, sans-serif);
     font-size: 0.78rem;
     font-weight: 600;
     letter-spacing: 0.05em;
@@ -852,7 +678,7 @@ body.page-luxury-home,
 }
 
 .lux-gift-card h3 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.2rem;
     margin-bottom: 0.35rem;
 }
@@ -1001,7 +827,7 @@ body.page-luxury-home,
     background: rgba(255, 255, 255, 0.94);
     color: var(--lux-navy-mid);
     text-decoration: none;
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--font-body, 'Inter', 'Helvetica Neue', Arial, sans-serif);
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.08em;
@@ -1048,7 +874,7 @@ body.page-luxury-home,
 }
 
 .lux-product-card h3 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.35rem;
     margin-bottom: 0.25rem;
 }
@@ -1128,7 +954,7 @@ body.page-luxury-home,
 
 .lux-ingredient-item strong {
     display: block;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
     font-size: 1.1rem;
     color: var(--lux-navy);
 }

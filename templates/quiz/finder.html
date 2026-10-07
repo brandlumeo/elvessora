@@ -10,6 +10,11 @@
 <link href="{% static 'css/perfume-finder.css' %}" rel="stylesheet">
 {% endblock %}
 
+{% block page_css %}
+<link href="{% static 'css/maison-finder.css' %}" rel="stylesheet">
+<link rel="preload" as="image" href="{% static 'images/lifestyle/elvessora-candlelit-toast.jpg' %}">
+{% endblock %}
+
 {% block content %}
 <div class="lux-page">
   {% include 'includes/perfume_finder_section.html' with standalone=True %}
