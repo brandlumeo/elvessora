@@ -208,6 +208,20 @@ NOMOD_API_KEY = os.environ.get('NOMOD_API_KEY', '')
 NOMOD_WEBHOOK_SECRET = os.environ.get('NOMOD_WEBHOOK_SECRET', '')
 NOMOD_API_BASE_URL = os.environ.get('NOMOD_API_BASE_URL', 'https://api.nomod.com')
 
+# Century Express courier. Username/password come from Century Express (UAT
+# first; they issue production credentials once UAT is signed off). Leave
+# CENTURY_USERNAME unset to turn the integration off. CENTURY_AUTO_BOOK books
+# each order with Century as soon as it is confirmed; otherwise staff book
+# from the order admin. CENTURY_ITEM_WEIGHT_KG is the per-item weight sent to
+# Century (products have no weight field).
+CENTURY_USERNAME = os.environ.get('CENTURY_USERNAME', '')
+CENTURY_PASSWORD = os.environ.get('CENTURY_PASSWORD', '')
+CENTURY_API_BASE_URL = os.environ.get(
+    'CENTURY_API_BASE_URL', 'https://mobi.centuryexpress.me:9094/Ablii_Century_API_Int/'
+)
+CENTURY_AUTO_BOOK = os.environ.get('CENTURY_AUTO_BOOK', 'True').lower() in ('true', '1', 'yes')
+CENTURY_ITEM_WEIGHT_KG = float(os.environ.get('CENTURY_ITEM_WEIGHT_KG', '0.5'))
+
 # Amazon Multi-Channel Fulfillment (SP-API). AWS IAM credentials and region
 # are not needed — SP-API authenticates with LWA alone, and the AE
 # marketplace's endpoint/region are hardcoded via Marketplaces.AE.

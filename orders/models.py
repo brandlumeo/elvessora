@@ -132,6 +132,8 @@ class Order(models.Model):
     tap_charge_id = models.CharField(max_length=100, blank=True)
     nomod_checkout_id = models.CharField(max_length=100, blank=True, db_index=True)
     amazon_fulfillment_status = models.CharField(max_length=50, blank=True)
+    century_status = models.CharField('Century Express status', max_length=100, blank=True)
+    century_synced_at = models.DateTimeField('Century Express last checked', null=True, blank=True)
 
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     tracking_number = models.CharField(max_length=100, blank=True)
@@ -172,8 +174,29 @@ class Order(models.Model):
                 import logging
                 logging.getLogger(__name__).error('Failed to trigger MCF: %s', e)
 
+            # Book the delivery with Century Express once the order is
+            # committed; a failure only logs, and staff can retry from admin.
+            from django.conf import settings
+            if settings.CENTURY_AUTO_BOOK and not self.tracking_number:
+                from django.db import transaction
+                transaction.on_commit(lambda: _book_with_century(self.pk))
+
     def __str__(self):
         return self.order_number
+
+
+def _book_with_century(order_pk):
+    from . import century
+    if not century.is_configured():
+        return
+    order = Order.objects.filter(pk=order_pk).first()
+    if not order or order.tracking_number or order.status in ('cancelled', 'refunded'):
+        return
+    try:
+        century.book_consignment(order)
+    except Exception:
+        import logging
+        logging.getLogger(__name__).exception('Failed to book order %s with Century Express', order.order_number)
 
 
 class OrderItem(models.Model):
