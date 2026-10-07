@@ -67,3 +67,20 @@ def product_short_name(value):
         if name.startswith(prefix):
             return name[len(prefix):]
     return name
+
+
+@register.simple_tag
+def intro_frame_urls(folder, count=50):
+    """JSON list of the homepage intro-animation frame URLs.
+
+    Built per file through the staticfiles storage so hashed (manifest)
+    filenames resolve in production; ``{% static %}`` on a bare filename
+    prefix has no manifest entry and raises.
+    """
+    import json
+
+    from django.templatetags.static import static
+
+    return json.dumps([
+        static('images/intro-frames/%s/frame-%03d.webp' % (folder, i)) for i in range(1, int(count) + 1)
+    ])

@@ -8,8 +8,8 @@
        per visit; fades out on its own if JS fails. -->
   <div class="vx-loader vx-loader--film" id="vxLoader"
        data-frame-count="50"
-       data-frame-desktop="{% static 'images/intro-frames/desktop/frame-' %}"
-       data-frame-mobile="{% static 'images/intro-frames/mobile/frame-' %}">
+       data-frame-desktop="{% intro_frame_urls 'desktop' 50 %}"
+       data-frame-mobile="{% intro_frame_urls 'mobile' 50 %}">
     <canvas class="vx-loader__film" aria-hidden="true"></canvas>
     <div class="vx-loader__inner" aria-hidden="true">
       {% if site_settings.logo %}
@@ -29,8 +29,8 @@
       var l = document.getElementById('vxLoader');
       try { if (sessionStorage.getItem('vxIntroSeen')) { l.remove(); return; } } catch (e) {}
       if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      var n = +l.dataset.frameCount;
-      var base = matchMedia('(max-aspect-ratio: 1/1)').matches ? l.dataset.frameMobile : l.dataset.frameDesktop;
+      var urls = JSON.parse(matchMedia('(max-aspect-ratio: 1/1)').matches ? l.dataset.frameMobile : l.dataset.frameDesktop);
+      var n = urls.length;
       var film = window.vxFilm = { frames: [], settled: 0, onChange: null };
       function settle() { film.settled++; if (film.onChange) film.onChange(); }
       for (var i = 0; i < n; i++) (function (i) {
@@ -38,7 +38,7 @@
         if (i < n / 2) img.fetchPriority = 'high';   // playback starts once the first half is in
         img.onload = function () { film.frames[i] = img; settle(); };
         img.onerror = settle;
-        img.src = base + String(i + 1).padStart(3, '0') + '.webp';
+        img.src = urls[i];
       })(i);
     })();
   </script>
