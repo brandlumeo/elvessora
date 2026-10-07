@@ -127,13 +127,9 @@ TIME_ZONE = 'Asia/Dubai'
 USE_I18N = True
 USE_TZ = True
 
-# Storefront languages for multi-region customers (UAE + visitors)
+# English-only storefront; the language switcher has been removed
 LANGUAGES = [
     ('en', 'English'),
-    ('ar', 'العربية'),
-    ('hi', 'हिन्दी'),
-    ('fr', 'Français'),
-    ('ru', 'Русский'),
 ]
 
 LOCALE_PATHS = [BASE_DIR / 'locale']

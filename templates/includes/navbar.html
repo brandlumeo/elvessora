@@ -35,9 +35,6 @@
                 </ul>
 
                 <div class="nav-actions">
-                    <div class="lang-switcher--desktop d-none d-lg-flex">
-                        {% include 'includes/language_switcher.html' with select_id='langSelectNav' %}
-                    </div>
                     <button type="button" class="nav-icon-btn" id="navSearchToggle" title="{% trans 'Search' %}" aria-label="{% trans 'Search perfumes' %}" aria-expanded="false" aria-controls="navSearchPanel">
                         <i class="bi bi-search"></i>
                     </button>
@@ -120,9 +117,6 @@
                     <li><a href="{% url 'accounts:register' %}">{% trans "Create Account" %}</a></li>
                     {% endif %}
                 </ul>
-                <div class="mobile-nav-lang">
-                    {% include 'includes/language_switcher.html' with select_id='langSelectMobileNav' %}
-                </div>
             </div>
         </div>
     </nav>
