@@ -7,11 +7,17 @@ from .models import Notification
 
 @login_required
 def notification_list(request):
-    notifications = request.user.notifications.all()
-    unread_ids = list(notifications.filter(is_read=False).values_list('id', flat=True))
+    notifications = list(request.user.notifications.all())
+    # Remember what was unread before marking it read, so this visit can
+    # still highlight the new ones.
+    unread_ids = {n.id for n in notifications if not n.is_read}
     if unread_ids:
         Notification.objects.filter(id__in=unread_ids).update(is_read=True)
-    return render(request, 'notifications/list.html', {'notifications': notifications})
+    return render(request, 'notifications/list.html', {
+        'notifications': notifications,
+        'unread_ids': unread_ids,
+        'unread_count': len(unread_ids),
+    })
 
 
 @login_required

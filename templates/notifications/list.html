@@ -1,58 +1,73 @@
 {% extends 'base.html' %}
-{% load i18n static %}
+{% load i18n static humanize %}
 
 {% block title %}{% trans "Notifications" %} — {{ site_settings.brand_name }}{% endblock %}
-{% block extra_css %}<link href="{% static 'css/auth-shop.css' %}" rel="stylesheet">{% endblock %}
+{% block extra_css %}<link href="{% static 'css/notifications.css' %}" rel="stylesheet">{% endblock %}
 
 {% block content %}
-<div class="page-header">
-    <div class="container">
-        <span class="section-label">{% trans "Updates" %}</span>
-        <h1>{% trans "Notifications" %}</h1>
-    </div>
-</div>
-<div class="shop-page">
-<div class="container pb-5">
+<div class="shop-page nx-page">
+<div class="container nx-wrap">
+
+    <header class="nx-head">
+        <span class="nx-eyebrow">{% trans "Your Maison" %}</span>
+        <h1 class="nx-title">{% trans "Notifications" %}</h1>
+        <p class="nx-sub">
+            {% if unread_count %}
+                {% blocktrans count counter=unread_count %}{{ counter }} new update{% plural %}{{ counter }} new updates{% endblocktrans %}
+            {% else %}
+                {% trans "You're all caught up." %}
+            {% endif %}
+        </p>
+        <span class="nx-rule" aria-hidden="true"></span>
+    </header>
+
     {% if notifications %}
-    <div class="notif-toolbar">
-        <form action="{% url 'notifications:mark_all_read' %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-sm btn-outline-gold">{% trans "Mark all as read" %}</button>
-        </form>
+    <ol class="nx-list">
+        {% for notification in notifications %}
+        {% with t=notification.notification_type %}
+        <li class="nx-item{% if notification.id in unread_ids %} is-unread{% endif %}
+            {% if t == 'login_alert' %} nx-item--alert{% elif 'cancelled' in t or 'refunded' in t %} nx-item--muted{% elif 'delivered' in t %} nx-item--success{% endif %}">
+            <span class="nx-icon" aria-hidden="true">
+                {% if t == 'login_alert' %}<i class="bi bi-shield-lock"></i>
+                {% elif 'out_for_delivery' in t or 'shipped' in t %}<i class="bi bi-truck"></i>
+                {% elif 'delivered' in t %}<i class="bi bi-gift"></i>
+                {% elif 'cancelled' in t %}<i class="bi bi-x-lg"></i>
+                {% elif 'refunded' in t %}<i class="bi bi-arrow-counterclockwise"></i>
+                {% elif 'welcome' in t %}<i class="bi bi-stars"></i>
+                {% elif 'processing' in t %}<i class="bi bi-hourglass-split"></i>
+                {% else %}<i class="bi bi-bag-check"></i>{% endif %}
+            </span>
+            <div class="nx-body">
+                <div class="nx-meta">
+                    <span class="nx-type">{{ notification.get_notification_type_display }}</span>
+                    <time class="nx-time" datetime="{{ notification.created_at|date:'c' }}" title="{{ notification.created_at|date:'M d, Y — g:i A' }}">
+                        {{ notification.created_at|naturaltime|capfirst }}
+                    </time>
+                </div>
+                <h2 class="nx-item-title">
+                    {{ notification.title }}
+                    {% if notification.id in unread_ids %}<span class="nx-dot" title="{% trans 'New' %}"></span>{% endif %}
+                </h2>
+                <p class="nx-message">{{ notification.message }}</p>
+            </div>
+            {% if notification.link %}
+            <a href="{% url 'notifications:open' notification.pk %}" class="nx-view" aria-label="{% trans 'View' %}: {{ notification.title }}">
+                <span>{% trans "View" %}</span><i class="bi bi-arrow-right"></i>
+            </a>
+            {% endif %}
+        </li>
+        {% endwith %}
+        {% endfor %}
+    </ol>
+    {% else %}
+    <div class="nx-empty">
+        <span class="nx-empty-icon"><i class="bi bi-bell"></i></span>
+        <h2>{% trans "Nothing here yet" %}</h2>
+        <p>{% trans "Order updates, delivery news and account alerts will appear here." %}</p>
+        <a href="{% url 'products:shop' %}" class="btn btn-gold px-4">{% trans "Explore the collection" %}</a>
     </div>
     {% endif %}
 
-    <div class="cart-lux-card notif-list-card">
-        {% for notification in notifications %}
-        <div class="notif-row{% if not notification.is_read %} notif-row-unread{% endif %}">
-            <span class="notif-icon{% if notification.notification_type == 'login_alert' %} notif-icon-alert{% endif %}">
-                {% if notification.notification_type == 'login_alert' %}<i class="bi bi-shield-exclamation"></i>
-                {% elif 'shipped' in notification.notification_type or 'delivery' in notification.notification_type %}<i class="bi bi-truck"></i>
-                {% elif 'delivered' in notification.notification_type %}<i class="bi bi-check-circle"></i>
-                {% elif 'cancelled' in notification.notification_type %}<i class="bi bi-x-circle"></i>
-                {% elif 'refunded' in notification.notification_type %}<i class="bi bi-arrow-counterclockwise"></i>
-                {% elif 'welcome' in notification.notification_type %}<i class="bi bi-stars"></i>
-                {% else %}<i class="bi bi-bag-check"></i>{% endif %}
-            </span>
-            <div class="notif-body">
-                <div class="notif-title-row">
-                    <strong>{{ notification.title }}</strong>
-                    {% if not notification.is_read %}<span class="notif-new-dot" title="{% trans 'Unread' %}"></span>{% endif %}
-                </div>
-                <p class="notif-timestamp">{{ notification.created_at|date:"M d, Y — g:i A" }}</p>
-                <p class="notif-message">{{ notification.message }}</p>
-            </div>
-            {% if notification.link %}
-            <a href="{% url 'notifications:open' notification.pk %}" class="btn btn-sm btn-outline-gold notif-view-btn">{% trans "View" %}</a>
-            {% endif %}
-        </div>
-        {% empty %}
-        <div class="empty-state-lux">
-            <i class="bi bi-bell"></i>
-            <p class="mb-0">{% trans "You have no notifications yet." %}</p>
-        </div>
-        {% endfor %}
-    </div>
 </div>
 </div>
 {% endblock %}
