@@ -25,9 +25,15 @@
     padding: 0;
     background: none !important;
 }
+/* Pinned to the visual's edges rather than height: 100% — Safari doesn't
+   resolve a percentage height inside the phone layout's aspect-ratio box,
+   so the photo grew to its own 3:4 shape, cropping the badge off the top
+   and covering the heading below. */
 .pf-section--standalone .pf-hero-frame {
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    inset: 0;
+    width: auto;
+    height: auto;
     aspect-ratio: auto;
     border: 0;
     border-radius: 0;
@@ -63,6 +69,7 @@
     .pf-section--standalone .pf-hero { display: flex; flex-direction: column; min-height: 0; }
     .pf-section--standalone .pf-hero-visual { position: relative; z-index: 0; width: 100%; aspect-ratio: 4 / 5; max-height: 62svh; }
     .pf-section--standalone .pf-hero-frame-glow { background: linear-gradient(0deg, var(--vx-ink-2) 0%, rgba(11, 24, 48, 0) 45%) !important; }
-    .pf-section--standalone .pf-hero-copy { order: 2; margin-top: -60px; padding: 0 24px 36px; }
+    /* Overlaps the photo's faded bottom edge; z-index keeps the text above it */
+    .pf-section--standalone .pf-hero-copy { order: 2; z-index: 1; margin-top: -60px; padding: 0 24px 36px; }
     .pf-section--standalone .pf-hero-badge { top: 18px; bottom: auto; }
 }
