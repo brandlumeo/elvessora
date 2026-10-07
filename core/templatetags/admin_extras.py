@@ -1,42 +1,81 @@
 from django import template
 from django.urls import reverse
 
-from core.models import SiteSettings
+from core.models import AdminAlertSeen, SiteSettings
 from orders.models import Order
 from products.models import ProductVariant
 
 register = template.Library()
 
 
-@register.simple_tag
-def admin_alert_count():
-    """Pending orders + low-stock variants — shown as the sidebar's bell badge."""
-    threshold = SiteSettings.get().low_stock_threshold
-    pending = Order.objects.filter(status__in=['pending', 'confirmed', 'processing']).count()
-    low_stock = ProductVariant.objects.filter(stock_quantity__lte=threshold).count()
-    return pending + low_stock
+ALERT_ORDER_STATUSES = ['pending', 'confirmed', 'processing']
 
 
-@register.simple_tag
-def admin_alert_items(limit=6):
-    """Pending orders + low-stock variants for the notification bell dropdown."""
+def _unseen_alerts(context):
+    """Pending orders + low-stock variants this admin hasn't seen yet in the
+    bell. Computed once per request and shared by the badge and dropdown.
+
+    Low-stock "seen" marks are dropped once a variant is restocked above the
+    threshold, so it alerts again if it later runs low again.
+    """
+    request = context.get('request')
+    cache = getattr(request, '_elv_admin_alerts', None)
+    if cache is not None:
+        return cache
+
+    user = getattr(request, 'user', None)
+    seen = set()
+    if user is not None and user.is_authenticated:
+        seen = set(AdminAlertSeen.objects.filter(user=user).values_list('key', flat=True))
+
     threshold = SiteSettings.get().low_stock_threshold
+    orders = [
+        o for o in Order.objects.filter(status__in=ALERT_ORDER_STATUSES).order_by('-created_at')
+        .only('pk', 'order_number', 'status', 'shipping_name')
+        if f'order:{o.pk}' not in seen
+    ]
+    low_variants = list(
+        ProductVariant.objects.filter(stock_quantity__lte=threshold)
+        .select_related('product').order_by('stock_quantity')
+    )
+    low_keys = {f'stock:{v.pk}' for v in low_variants}
+    restocked = {k for k in seen if k.startswith('stock:') and k not in low_keys}
+    if restocked:
+        AdminAlertSeen.objects.filter(user=user, key__in=restocked).delete()
+    variants = [v for v in low_variants if f'stock:{v.pk}' not in seen]
+
+    alerts = {'orders': orders, 'variants': variants}
+    if request is not None:
+        request._elv_admin_alerts = alerts
+    return alerts
+
+
+@register.simple_tag(takes_context=True)
+def admin_alert_count(context):
+    """Unseen pending orders + low-stock variants — the bell's badge."""
+    alerts = _unseen_alerts(context)
+    return len(alerts['orders']) + len(alerts['variants'])
+
+
+@register.simple_tag(takes_context=True)
+def admin_alert_items(context, limit=6):
+    """Unseen pending orders + low-stock variants for the bell dropdown.
+    Each item carries a ``key`` the page posts back once the bell is opened."""
+    alerts = _unseen_alerts(context)
     items = []
 
-    for order in Order.objects.filter(
-        status__in=['pending', 'confirmed', 'processing']
-    ).order_by('-created_at')[:limit]:
+    for order in alerts['orders'][:limit]:
         items.append({
+            'key': f'order:{order.pk}',
             'icon': 'bi-bag-check',
             'title': f'Order #{order.order_number}',
             'subtitle': f'{order.get_status_display()} — {order.shipping_name}',
             'url': reverse('admin:orders_order_change', args=[order.pk]),
         })
 
-    for variant in ProductVariant.objects.filter(
-        stock_quantity__lte=threshold
-    ).select_related('product').order_by('stock_quantity')[:limit]:
+    for variant in alerts['variants'][:limit]:
         items.append({
+            'key': f'stock:{variant.pk}',
             'icon': 'bi-exclamation-triangle',
             'title': f'{variant.product.name} ({variant.get_size_display()})',
             'subtitle': f'Low stock — {variant.stock_quantity} left',

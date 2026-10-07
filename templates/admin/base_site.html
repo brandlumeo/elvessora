@@ -77,7 +77,7 @@
         </button>
         <div class="elv-topbar-spacer"></div>
         <div class="elv-topbar-actions">
-            <div class="elv-topbar-notif">
+            <div class="elv-topbar-notif" data-seen-url="{% url 'core:admin_alerts_seen' %}" data-csrf="{{ csrf_token }}">
                 <button type="button" class="elv-topbar-bell" aria-haspopup="true" title="Pending orders &amp; low stock">
                     <i class="bi bi-bell"></i>
                     {% admin_alert_count as elv_alerts %}
@@ -88,7 +88,7 @@
                     <div class="elv-topbar-notif-list">
                         {% admin_alert_items as elv_alert_items %}
                         {% for item in elv_alert_items %}
-                        <a href="{{ item.url }}" class="elv-topbar-notif-item">
+                        <a href="{{ item.url }}" class="elv-topbar-notif-item" data-alert-key="{{ item.key }}">
                             <i class="bi {{ item.icon }}"></i>
                             <span class="elv-topbar-notif-item-text">
                                 <span class="elv-topbar-notif-item-title">{{ item.title }}</span>
@@ -163,8 +163,31 @@
                 o.classList.remove('open');
             });
             if (!wasOpen) el.classList.add('open');
+            if (!wasOpen && el.classList.contains('elv-topbar-notif')) markAlertsSeen(el);
         });
     });
+    // Once the bell is opened, the alerts it shows count as seen: clear the
+    // badge now and don't list them again on later pages.
+    function markAlertsSeen(el) {
+        var items = el.querySelectorAll('[data-alert-key]');
+        if (!items.length || el.dataset.seenSent) return;
+        el.dataset.seenSent = '1';
+        var body = new URLSearchParams();
+        items.forEach(function (a) { body.append('key', a.dataset.alertKey); });
+        fetch(el.dataset.seenUrl, {
+            method: 'POST',
+            headers: { 'X-CSRFToken': el.dataset.csrf },
+            body: body,
+            credentials: 'same-origin'
+        }).then(function (r) {
+            if (!r.ok) { delete el.dataset.seenSent; return; }
+            var badge = el.querySelector('.elv-topbar-badge');
+            if (!badge) return;
+            // The dropdown lists at most a few; any beyond those stay unseen
+            var left = (parseInt(badge.textContent, 10) || 0) - items.length;
+            if (left > 0) badge.textContent = left; else badge.remove();
+        }).catch(function () { delete el.dataset.seenSent; });
+    }
     document.addEventListener('click', function (e) {
         document.querySelectorAll('.elv-topbar-user.open, .elv-topbar-notif.open').forEach(function (el) {
             if (!el.contains(e.target)) {

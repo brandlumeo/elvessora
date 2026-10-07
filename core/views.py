@@ -1,10 +1,14 @@
+import re
+
+from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponse
 from django.utils import timezone
-from .models import SiteSettings, FAQ, LegalPage
+from django.views.decorators.http import require_POST
+from .models import AdminAlertSeen, SiteSettings, FAQ, LegalPage
 from .homepage_context import build_luxury_page_context
 from marketing.forms import ContactForm, NewsletterForm
 from marketing.models import NewsletterSubscriber, Banner, HomepageSection, ContactEnquiry
@@ -166,3 +170,15 @@ def sitemap_xml(request):
         lines.append('</url>')
     lines.append('</urlset>')
     return HttpResponse('\n'.join(lines), content_type='application/xml')
+
+
+@staff_member_required
+@require_POST
+def admin_alerts_seen(request):
+    """Mark the alerts the admin bell just showed as seen by this user."""
+    keys = {k for k in request.POST.getlist('key') if re.fullmatch(r'(order|stock):\d+', k)}
+    AdminAlertSeen.objects.bulk_create(
+        [AdminAlertSeen(user=request.user, key=k) for k in keys],
+        ignore_conflicts=True,
+    )
+    return HttpResponse(status=204)

@@ -327,3 +327,19 @@ class LoginHistory(models.Model):
 
     def __str__(self):
         return f'{self.user} @ {self.created_at:%Y-%m-%d %H:%M}'
+
+
+class AdminAlertSeen(models.Model):
+    """An admin-bell alert (pending order / low-stock variant) a staff user
+    has already seen, so the bell stops showing it to them."""
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='seen_admin_alerts')
+    key = models.CharField(max_length=64)
+    seen_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'key'], name='unique_admin_alert_seen'),
+        ]
+
+    def __str__(self):
+        return f'{self.user} saw {self.key}'

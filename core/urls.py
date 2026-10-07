@@ -9,6 +9,7 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('faq/', views.faq, name='faq'),
     path('legal/<str:page_type>/', views.legal_page, name='legal'),
+    path('admin-alerts/seen/', views.admin_alerts_seen, name='admin_alerts_seen'),
     path('newsletter/subscribe/', views.newsletter_subscribe, name='newsletter_subscribe'),
     path('sitemap.xml', views.sitemap_xml, name='sitemap'),
 ]
