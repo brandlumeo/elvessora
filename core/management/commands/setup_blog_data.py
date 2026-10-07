@@ -33,7 +33,7 @@ class Command(BaseCommand):
             categories[cat_name] = cat
 
         # 3. Create Tags
-        tags_data = ['Luxury', 'Longevity', 'Signature Scent', 'Oud', 'Storage']
+        tags_data = ['Luxury', 'Signature Scent', 'Oud', 'Storage']
         tags = {}
         for tag_name in tags_data:
             tag, _ = BlogTag.objects.get_or_create(name=tag_name)
@@ -81,7 +81,7 @@ class Command(BaseCommand):
                 """,
                 'is_featured': False,
                 'reading_time': 5,
-                'tags': ['Longevity', 'Perfume Tips'],
+                'tags': ['Perfume Tips'],
                 'faqs': []
             },
             {
@@ -180,7 +180,7 @@ class Command(BaseCommand):
                 """,
                 'is_featured': False,
                 'reading_time': 4,
-                'tags': ['Longevity'],
+                'tags': [],
                 'faqs': []
             },
             {
