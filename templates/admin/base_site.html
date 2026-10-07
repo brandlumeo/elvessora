@@ -149,8 +149,23 @@
     var toggle = document.getElementById('elv-sidebar-toggle');
     var sidebar = document.getElementById('elv-sidebar');
     if (toggle && sidebar) {
-        toggle.addEventListener('click', function () {
+        toggle.addEventListener('click', function (e) {
+            e.stopPropagation();
             document.body.classList.toggle('elv-sidebar-collapsed');
+        });
+        // On tablets and phones the sidebar is an overlay drawer: close it
+        // on a tap outside it or on Escape.
+        var drawerMode = window.matchMedia('(max-width: 1100px)');
+        document.addEventListener('click', function (e) {
+            if (drawerMode.matches && document.body.classList.contains('elv-sidebar-collapsed')
+                    && !sidebar.contains(e.target)) {
+                document.body.classList.remove('elv-sidebar-collapsed');
+            }
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && drawerMode.matches) {
+                document.body.classList.remove('elv-sidebar-collapsed');
+            }
         });
     }
     document.querySelectorAll('.elv-topbar-user, .elv-topbar-notif').forEach(function (el) {

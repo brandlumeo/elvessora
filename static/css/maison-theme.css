@@ -1060,3 +1060,24 @@ main .page-header--center .text-muted { font-size: .9rem !important; letter-spac
     main .page-header--photo .container { justify-items: center; padding-bottom: 8px; }
     main .page-header--photo .container > * { margin-left: 0; max-width: 560px; }
 }
+
+/* ---------- Phones: keep the WhatsApp button out of the way ----------
+   At 58px in the corner it sat on top of prices, totals and headings.
+   Make it smaller and tuck it closer to the edge; on the bag and checkout,
+   where it covered the order summary, hide it entirely. */
+@media (max-width: 767.98px) {
+    .whatsapp-float {
+        width: 48px;
+        height: 48px;
+        right: 12px;
+        bottom: calc(14px + 58px + env(safe-area-inset-bottom, 0));
+        padding: 0;
+    }
+    .whatsapp-float i { font-size: 1.35rem; }
+    body.page-cart .whatsapp-float,
+    body.page-checkout .whatsapp-float { display: none; }
+}
+
+/* Checkbox labels in .checkout-form-lux forms (profile preferences etc.)
+   kept auth-shop.css's navy ink, invisible on the dark pages */
+main .checkout-form-lux .form-check-label { color: var(--vx-cream, #f4ecdc); }

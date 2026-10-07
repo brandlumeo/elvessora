@@ -2,6 +2,7 @@
 {% load humanize static fragrance_extras %}
 
 {% block title %}Shopping Cart — {{ site_settings.brand_name }}{% endblock %}
+{% block body_class %}page-cart{% endblock %}
 {% block extra_css %}<link href="{% static 'css/auth-shop.css' %}" rel="stylesheet">{% endblock %}
 
 {% block content %}

@@ -164,6 +164,12 @@ body {
 
 /* Topbar */
 .elv-topbar {
+    /* #header is a flex row: take its full width so the bell and user menu
+       sit at the right edge instead of floating mid-header (Django's
+       responsive.css turns #header into a centred column on phones) */
+    flex: 1 1 auto;
+    align-self: stretch;
+    min-width: 0;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -621,6 +627,14 @@ body.elv-has-sidebar.elv-sidebar-collapsed #container {
     }
     body.elv-has-sidebar.elv-sidebar-collapsed .elv-sidebar {
         transform: translateX(0);
+    }
+    /* Dim the page behind the open drawer; tapping it closes the drawer */
+    body.elv-has-sidebar.elv-sidebar-collapsed::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: rgba(6, 16, 34, 0.45);
+        z-index: 1090;
     }
 }
 
@@ -2287,7 +2301,9 @@ a:hover {
 @media (max-width: 1100px) {
     .elv-charts-row,
     .elv-widgets-row {
-        grid-template-columns: 1fr;
+        /* minmax(0, …) so a wide table scrolls in its panel instead of
+           stretching the column past the screen */
+        grid-template-columns: minmax(0, 1fr);
     }
 }
 
@@ -2642,5 +2658,40 @@ a:hover {
     }
     .elv-mkt-hero-date {
         text-align: left;
+    }
+}
+
+/* ── List tables scroll sideways instead of squashing columns ──
+   Cells keep to one line (SKUs, prices, dates no longer break mid-word,
+   e.g. on laptops where the filter panel takes room); the linked name
+   column still wraps but keeps a readable width. */
+#changelist .results {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+#changelist .results table th,
+#changelist .results table td {
+    white-space: nowrap;
+}
+#changelist .results table tbody th {
+    white-space: normal;
+    min-width: 150px;
+}
+
+@media (max-width: 767.98px) {
+
+    /* Django's responsive.css sizes each field wrapper to 100vw - 30px,
+       which ignores this layout's padding and pushed every input, select
+       and textarea past the right edge of its fieldset */
+    /* (body … to outrank responsive.css, which loads after this file) */
+    body fieldset.aligned .form-row > div,
+    body .aligned .form-row {
+        width: auto;
+        max-width: 100%;
+        min-width: 0;
+    }
+    .related-widget-wrapper {
+        flex-wrap: wrap;
+        max-width: 100%;
     }
 }
