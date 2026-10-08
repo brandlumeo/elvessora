@@ -701,7 +701,7 @@ main .pagination { --bs-pagination-active-color: #061022; --bs-pagination-border
    FLAT PANELS — inner-page cards and bands lose the warm brown glow
    ========================================================================== */
 main .filter-sidebar, main .shop-toolbar, main .delivery-info-bar, main .product-specs,
-main .col-fragrance-row, main .col-compare-wrap, main .col-cta-card, main .lux-gift-card,
+main .col-fragrance-row, main .col-compare-wrap, main .lux-gift-card,
 main .about-activity-card, main .about-vision-card, main .about-sidebar-card,
 main .mkt-card, main .mkt-auth-card, main .mkt-auth-alt-card, main .mkt-topbar,
 main .lux-testimonial-card, main .pf-hero, main .pf-filter-group, main .pf-panel--quiz,

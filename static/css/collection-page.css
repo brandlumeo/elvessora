@@ -224,56 +224,6 @@ body.page-collection .lux-page {
     font-size: 1.05rem;
 }
 
-/* CTA cards */
-.col-page-cta {
-    padding-bottom: clamp(3rem, 6vw, 5rem);
-}
-
-.col-cta-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
-}
-
-.col-cta-card {
-    display: block;
-    padding: 1.75rem;
-    background: #fff;
-    border: 1px solid rgba(200, 169, 106, 0.25);
-    border-radius: 16px;
-    text-decoration: none;
-    color: inherit;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.col-cta-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgba(6, 16, 34, 0.1);
-    border-color: var(--lux-gold, #C8A96A);
-    color: inherit;
-}
-
-.col-cta-card i {
-    font-size: 1.75rem;
-    color: var(--lux-gold, #C8A96A);
-    margin-bottom: 0.75rem;
-    display: block;
-}
-
-.col-cta-card h3 {
-    font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif);
-    font-size: 1.35rem;
-    color: var(--lux-navy, #061022);
-    margin-bottom: 0.5rem;
-}
-
-.col-cta-card p {
-    font-size: 0.85rem;
-    color: rgba(6, 16, 34, 0.65);
-    margin-bottom: 1rem;
-    line-height: 1.6;
-}
-
 body.page-collection .nav-menu-link[href*="collection"] {
     color: var(--lux-gold, #C8A96A) !important;
 }
@@ -288,10 +238,6 @@ body.page-collection .nav-menu-link[href*="collection"] {
     .col-fragrance-row.is-reverse .col-fragrance-visual,
     .col-fragrance-row.is-reverse .col-fragrance-details {
         order: unset;
-    }
-
-    .col-cta-grid {
-        grid-template-columns: 1fr;
     }
 
     .col-compare-table thead {
