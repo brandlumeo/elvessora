@@ -391,7 +391,9 @@
 .rp-card:hover .rp-name { color: var(--blog-gold); }
 .rp-price { font-size: 0.9rem; color: var(--blog-gold); font-weight: 600; }
 
-.related-articles { padding: 5rem 0; background: #fff; }
+/* Dark like the rest of the article page: the theme turns headings and card
+   text cream, which was invisible on the old white background. */
+.related-articles { padding: 5rem 0; background: var(--vx-ink, #061022); border-top: 1px solid rgba(255, 255, 255, .08); }
 .related-articles h2 { font-family: var(--font-display, 'Inter Tight', 'Helvetica Neue', Arial, sans-serif); font-size: 2.2rem; text-align: center; margin-bottom: 3rem; }
 
 @media (max-width: 767px) {
