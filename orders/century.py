@@ -174,6 +174,9 @@ def get_consignment(number):
             raise CenturyError(f'Unexpected status response: {result[:300]}')
     if not isinstance(result, dict):
         return {}
+    # Unknown numbers come back as {"Error": " AWB Not Found"}.
+    if isinstance(result.get('Error'), str) and result['Error'].strip():
+        raise CenturyError(f'Century Express: {result["Error"].strip()} ({number})')
     # Century spells the wrapper "ConsignmnentDetails" in its UAT document;
     # match any spelling so a later fix on their side doesn't break this.
     for key, value in result.items():

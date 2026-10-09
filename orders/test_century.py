@@ -137,6 +137,11 @@ class CenturyStatusTests(CenturyTestBase):
         ]}
         self.assertEqual(century.status_text(details), 'Out For Delivery')
 
+    def test_unknown_consignment_raises(self):
+        with mock.patch.object(century, '_request', return_value={'Error': ' AWB Not Found'}):
+            with self.assertRaises(century.CenturyError):
+                century.sync_order(self.order)
+
     def test_cancelled_order_untouched(self):
         self.order.status = 'cancelled'
         self.sync('Delivered')
