@@ -55,9 +55,7 @@
                     </div>
                     <p class="footer-legal small">ELVESSORA GENERAL TRADING LLC</p>
                     <p style="color: var(--silver);">{{ site_settings.tagline|default:"General Trading & E-commerce — Dubai, UAE" }}</p>
-                    {% if site_settings.business_address %}
-                    <p class="small" style="color: var(--silver);"><i class="bi bi-geo-alt"></i> {{ site_settings.business_address|truncatewords:12 }}</p>
-                    {% endif %}
+                    <p class="small" style="color: var(--silver);"><i class="bi bi-geo-alt"></i> ELVESSORA GENERAL TRADING LLC<br>Dubai, United Arab Emirates</p>
                     {% if site_settings.email %}<p class="small" style="color: var(--silver);"><i class="bi bi-envelope"></i> {{ site_settings.email }}</p>{% endif %}
                     {% if site_settings.phone %}<p class="small" style="color: var(--silver);"><i class="bi bi-telephone"></i> {{ site_settings.phone }}</p>{% endif %}
                     <div class="social-links mt-3">
