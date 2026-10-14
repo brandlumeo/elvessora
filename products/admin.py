@@ -9,17 +9,8 @@ from .models import (
 )
 
 
-@admin.action(description='Export selected as Amazon listing feed (CSV)')
-def export_amazon_feed(modeladmin, request, queryset):
-    csv_content = marketplace_feeds.write_csv(
-        marketplace_feeds.AMAZON_COLUMNS,
-        marketplace_feeds.amazon_feed_rows(queryset),
-    )
-    response = HttpResponse(csv_content, content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="elvessora-amazon-feed.csv"'
-    return response
-
-
+# The Amazon listing feed (marketplace_feeds.amazon_feed_rows) is kept for
+# later but not offered while Elvessora doesn't sell through Amazon.
 @admin.action(description='Export selected as Noon listing feed (CSV)')
 def export_noon_feed(modeladmin, request, queryset):
     csv_content = marketplace_feeds.write_csv(
@@ -120,7 +111,7 @@ class ProductAdmin(admin.ModelAdmin):
     filter_horizontal = ['fragrance_families', 'occasions']
     inlines = [ProductVariantInline, ProductImageInline, ProductVideoInline, ProductImage360Inline, ProductFAQInline]
     list_editable = ['is_active', 'is_best_seller', 'is_new_arrival']
-    actions = [export_amazon_feed, export_noon_feed]
+    actions = [export_noon_feed]
 
     fieldsets = (
         ('Basic Info', {

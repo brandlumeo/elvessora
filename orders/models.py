@@ -151,29 +151,25 @@ class Order(models.Model):
         if not self.order_number:
             self.order_number = f'ELV{uuid.uuid4().hex[:8].upper()}'
             
-        trigger_mcf = False
+        just_confirmed = False
         if self.pk:
             try:
                 old = Order.objects.get(pk=self.pk)
                 if old.status != 'confirmed' and self.status == 'confirmed':
-                    trigger_mcf = True
+                    just_confirmed = True
             except Order.DoesNotExist:
                 if self.status == 'confirmed':
-                    trigger_mcf = True
+                    just_confirmed = True
         else:
             if self.status == 'confirmed':
-                trigger_mcf = True
-                
-        super().save(*args, **kwargs)
-        
-        if trigger_mcf:
-            try:
-                from . import amazon_mcf
-                amazon_mcf.create_fulfillment_order(self)
-            except Exception as e:
-                import logging
-                logging.getLogger(__name__).error('Failed to trigger MCF: %s', e)
+                just_confirmed = True
 
+        super().save(*args, **kwargs)
+
+        # Amazon Multi-Channel Fulfillment (orders/amazon_mcf.py) is not used
+        # while Elvessora doesn't sell through Amazon; to bring it back, call
+        # amazon_mcf.create_fulfillment_order(self) here.
+        if just_confirmed:
             # Book the delivery with Century Express once the order is
             # committed; a failure only logs, and staff can retry from admin.
             from django.conf import settings
