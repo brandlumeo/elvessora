@@ -49,11 +49,14 @@ class CenturyPayloadTests(CenturyTestBase):
         self.assertTrue(p['Isdomestic'])
         self.assertEqual(p['Country'], 'UNITED ARAB EMIRATES')
         self.assertIn('CASH ON DELIVERY: collect AED 630.00', p['SplInstruction'])
+        self.assertEqual(p['MaterialCost'], 630.0)
 
     def test_prepaid_payload(self):
         self.order.payment_method = 'nomod'
         self.order.payment_status = 'paid'
-        self.assertIn('Prepaid', century.consignment_payload(self.order)['SplInstruction'])
+        p = century.consignment_payload(self.order)
+        self.assertIn('Prepaid', p['SplInstruction'])
+        self.assertEqual(p['MaterialCost'], 0)
 
     def test_add_response_parsing(self):
         self.assertEqual(century._parse_add_response('true, 75337954'), '75337954')

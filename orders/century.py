@@ -112,7 +112,10 @@ def consignment_payload(order):
         order.shipping_address.strip(), order.shipping_state.strip(), order.shipping_pincode.strip(),
     ) if part)
     instructions = [f'Elvessora order {order.order_number}']
-    if order.payment_method == 'cod' and order.payment_status != 'paid':
+    # Century ticks NCND (driver collects cash) when MaterialCost is above 0,
+    # so prepaid orders must send 0.
+    collect_cash = order.payment_method == 'cod' and order.payment_status != 'paid'
+    if collect_cash:
         instructions.append(f'CASH ON DELIVERY: collect AED {order.total}')
     else:
         instructions.append('Prepaid - do not collect cash')
@@ -125,7 +128,7 @@ def consignment_payload(order):
         'Weight': float(_weight_kg(order)),
         'Isdomestic': is_domestic,
         'Pieces': 1,
-        'MaterialCost': float(order.total),
+        'MaterialCost': float(order.total) if collect_cash else 0,
         'SplInstruction': '. '.join(instructions),
         'Country': order.shipping_country.upper(),
     }
