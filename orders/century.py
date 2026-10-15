@@ -7,10 +7,11 @@ which returns Century's consignment number -> poll the consignment status
 (Century has no webhooks) and move the order along as the parcel travels.
 
 The document does not cover shipping labels, a cash-on-delivery amount
-field, COD remittance, or the list of status values, so:
-  - COD orders send the amount to collect in the special instructions;
-  - statuses are matched on keywords and the raw text is kept on the order
-    (century_status) so staff can always see what Century said.
+field or COD remittance, so COD orders send the amount to collect in the
+special instructions. Century sent its status list separately
+(StatusList.xlsx, 2026-10-15); it is mapped in CENTURY_STATUSES below, and
+the raw text is kept on the order (century_status) so staff can always see
+what Century said.
 """
 import json
 import logging
@@ -39,6 +40,56 @@ STATUS_KEYS = (
     'status', 'currentstatus', 'consignmentstatus', 'laststatus',
     'statusname', 'trackingstatus', 'statusdescription',
 )
+
+# Century's status names (from their StatusList.xlsx, keyed here by name with
+# their consignmentstatusid in the comment) -> the order status they move an
+# order to. None means the order stays where it is: pickup planning, failed
+# attempts, reschedules, refusals, holds and returns are for staff to handle.
+CENTURY_STATUSES = {
+    'booking': None,                                                # 1
+    'pickup request accepted': None,                                # 135
+    'collection request has been planned': None,                    # 109
+    'shipment not ready': None,                                     # 110
+    'company closed on collection attempt': None,                   # 111
+    'collection cancelled by planning': None,                       # 112
+    'wrong courier route': None,                                    # 130
+    'courier reached after collection time': None,                  # 131
+    'no capacity on van/bike': None,                                # 132
+    'courier moved out of area': None,                              # 133
+    'already collected': None,                                      # 134
+    'shipment under processing': None,                              # 155
+    'collection performed': 'shipped',                              # 84
+    'checked in': 'shipped',                                        # 87
+    'unitization': 'shipped',                                       # 113
+    'data received destination': 'shipped',                         # 114
+    'data received at hub': 'shipped',                              # 147
+    'consignment rerouted': 'shipped',                              # 122
+    'miss route': 'shipped',                                        # 137
+    'shipment processed for oda': 'shipped',                        # 154
+    'do ready for delivery': 'shipped',                             # 127
+    'consignment out for delivery': 'out_for_delivery',             # 10
+    'consignment delivered in good condition': 'delivered',         # 11
+    'wrong address': None,                                          # 16
+    'customer not available': None,                                 # 17
+    'customer not at home': None,                                   # 18
+    'wrong address/number': None,                                   # 19
+    'next day/reschedule': None,                                    # 20, 123
+    'next day/reschedule(location changed)': None,                  # 124
+    'cancelled/refused(consignee refused)': None,                   # 21
+    'cancelled/refused(wrong shipment)': None,                      # 125
+    'cancelled/refused(cancelled by sender)': None,                 # 126
+    'refused no authorized person to sign': None,                   # 138
+    'unreachable/no answer': None,                                  # 22, 152
+    'no service area': None,                                        # 23
+    'no cash': None,                                                # 129
+    'hold for confirmation': None,                                  # 128
+    'need approval for premise entry (restricted area for courier)': None,  # 143
+    'need approval for premise entry (area not accessible)': None,  # 144
+    'driver no time for delivery': None,                            # 145
+    'return to office/hold in hub': None,                           # 115
+    'rto delivered': None,                                          # 120
+    'drs reconciliation performed': None,                           # 121
+}
 
 
 class CenturyError(Exception):
@@ -207,14 +258,20 @@ def status_text(details):
 def order_status_for(text):
     """Maps Century's status text to an order status, or None when it isn't a
     step the order should move to on its own (e.g. returns, failed attempts)."""
-    t = re.sub(r'[^a-z ]', ' ', text.lower())
+    name = ' '.join(text.lower().split())
+    if name in CENTURY_STATUSES:
+        return CENTURY_STATUSES[name]
+    if name:
+        logger.warning('Century status not in their status list: %r', text)
+    # Not in Century's list: fall back to keywords.
+    t = re.sub(r'[^a-z ]', ' ', name)
     if not t.strip():
         return None
     if re.search(r'\b(return|rto|cancel|undeliver|not deliver|attempt|refused|hold)', t):
         return None
     if 'out for delivery' in t or re.search(r'\bofd\b', t):
         return 'out_for_delivery'
-    if 'deliver' in t:
+    if re.search(r'\bdelivered\b', t):
         return 'delivered'
     if re.search(r'\b(picked|pickup done|in transit|transit|dispatch|shipped|checked in|received|arrived|forward)', t):
         return 'shipped'

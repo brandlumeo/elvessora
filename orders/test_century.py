@@ -107,6 +107,20 @@ class CenturyStatusTests(CenturyTestBase):
         self.assertIsNone(century.order_status_for('Return to origin'))
         self.assertIsNone(century.order_status_for('Booked'))
 
+    def test_century_status_list(self):
+        self.assertIsNone(century.order_status_for('Booking'))
+        self.assertIsNone(century.order_status_for('Pickup Request Accepted'))
+        self.assertEqual(century.order_status_for('Collection performed'), 'shipped')
+        self.assertEqual(century.order_status_for('Data Received at HUB'), 'shipped')
+        self.assertEqual(century.order_status_for('DO Ready For Delivery'), 'shipped')
+        self.assertEqual(century.order_status_for('Consignment Out for delivery'), 'out_for_delivery')
+        self.assertEqual(century.order_status_for('Consignment delivered in good condition'), 'delivered')
+        self.assertIsNone(century.order_status_for('Driver no time for delivery'))
+        self.assertIsNone(century.order_status_for('RTO Delivered'))
+        self.assertIsNone(century.order_status_for('Customer Not at home  '))
+        self.assertIsNone(century.order_status_for('Need  approval  for premise entry (Area not accessible)'))
+        self.assertIsNone(century.order_status_for('Cancelled/Refused(Consignee Refused)'))
+
     def sync(self, status_text):
         self.order.tracking_number = '75337954'
         self.order.courier_name = century.COURIER_NAME
